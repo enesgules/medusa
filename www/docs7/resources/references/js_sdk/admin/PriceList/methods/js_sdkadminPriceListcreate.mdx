@@ -1,0 +1,85 @@
+---
+title: create
+---
+
+This method creates a price list. It sends a request to the
+[Create Price List](/api/admin/price-lists/create-price-list)
+API route.
+
+## Example
+
+```ts
+sdk.admin.priceList.create({
+  title: "My Price List",
+  status: "active",
+  type: "sale",
+  prices: [
+    {
+      variant_id: "variant_123",
+      amount: 10,
+      currency_code: "usd",
+      rules: {
+        region_id: "reg_123"
+      }
+    }
+  ]
+})
+.then(({ price_list }) => {
+  console.log(price_list)
+})
+```
+
+<a id="create-parameters" />
+
+## Parameters
+
+**create**
+
+- `body`: [AdminCreatePriceList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreatePriceList) — The details of the price list to create.
+  - `title`: `string` — The price list's title.
+  - `description`: `string` — The price list's description.
+  - `starts_at`: `null` | `string` (optional) — The price list's start date.
+  - `ends_at`: `null` | `string` (optional) — The price list's end date.
+  - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus) (optional) — The price list's status.
+  - `type`: [PriceListType](/resources/references/pricing/types/pricingPriceListType) (optional) — The price list's type.
+  - `rules`: `Record<string, string[]>` (optional) — The price list's rules.
+  - `prices`: [AdminCreatePriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreatePriceListPrice)\[] (optional) — The price list's prices.
+    - `currency_code`: `string` — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` — The price's amount.
+    - `variant_id`: `string` — The ID of the variant this price applies to.
+    - `min_quantity`: `null` | `number` (optional) — The minimum quantity that must be available in the cart for the price to be applied.
+    - `max_quantity`: `null` | `number` (optional) — The maximum quantity allowed to be available in the cart for the price to be applied.
+    - `rules`: `Record<string, string>` (optional) — The price's rules.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `query`: [AdminPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListParams) (optional) — Configure the fields to retrieve in the price list.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+## Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminPriceListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListResponse)> — The price list's details.
+  - `price_list`: [AdminPriceList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceList) — The price list's details.
+    - `id`: `string` — The price list's ID.
+    - `title`: `string` — The price list's title.
+    - `description`: `string` — The price list's description.
+    - `rules`: `Record<string, any>` — The price list's rules.
+    - `starts_at`: `null` | `string` — The price list's start date.
+    - `ends_at`: `null` | `string` — The price list's end date.
+    - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus) — The price list's status.
+    - `type`: [PriceListType](/resources/references/pricing/types/pricingPriceListType) — The price list's type.
+    - `prices`: [AdminPriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPrice)\[] — The price list's prices.
+    - `created_at`: `string` — The date the price list was created.
+    - `updated_at`: `string` — The date the price list was updated.
+    - `deleted_at`: `null` | `string` — The date the price list was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.

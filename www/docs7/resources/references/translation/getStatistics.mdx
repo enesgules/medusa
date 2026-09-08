@@ -1,0 +1,89 @@
+---
+title: getStatistics - Translation Module Reference
+sidebarTitle: getStatistics
+---
+
+This documentation provides a reference to the `getStatistics` method. This belongs to the Translation Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves translation statistics for the specified entities and locales.
+It's useful to understand the translation coverage of different entities across various locales.
+
+You can use this method to get insights into how many fields are translated, missing translations,
+and the expected number of translations based on the entities and locales provided.
+
+## Example
+
+```ts
+const [,count] = await productModuleService.listAndCountProducts()
+const [,variantCount] = await productVariantModuleService.listAndCountProductVariants()
+const stats = await translationModuleService.getStatistics({
+  locales: ["en-US", "fr-FR"],
+  entities: {
+    product: { count }, // for example, 2 products
+    product_variant: { count: variantCount },
+  }
+})
+// Returns:
+// {
+//   product: {
+//     expected: 20, // 2 products × 5 fields × 2 locales
+//     translated: 15,
+//     missing: 5,
+//     by_locale: {
+//       "en-US": { expected: 10, translated: 8, missing: 2 },
+//       "fr-FR": { expected: 10, translated: 7, missing: 3 }
+//     }
+//   }
+// }
+```
+
+<a id="getstatistics-parameters" />
+
+## Parameters
+
+**getStatistics**
+
+- `input`: [TranslationStatisticsInput](/resources/references/translation/interfaces/translationTranslationStatisticsInput) — The entities and locales to check.
+  - `locales`: `string`\[] — Locales to check translations for.
+
+    Example:
+
+    ```
+    ["en-US", "fr-FR"]
+    ```
+  - `entities`: `Record<string, object>` — Key-value pairs of entity types and their configurations.
+    - `count`: `number` — Total number of records for the entity type. For example, total number of products. This is necessary to compute expected translation counts.
+- `sharedContext`: [Context](/resources/references/translation/interfaces/translationContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/translation/interfaces/translationIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="getstatistics-returns" />
+
+## Returns
+
+**getStatistics**
+
+- `Promise`: Promise\<[TranslationStatisticsOutput](/resources/references/translation/types/translationTranslationStatisticsOutput)> — Statistics by entity.
+  - `expected`: `number` — Expected total number of translated fields.
+  - `translated`: `number` — Actual number of translated fields. This doesn't count translations that are null or empty.
+  - `missing`: `number` — Number of missing translations for expected translatable fields.
+  - `by_locale`: `Record<string, [LocaleStatistics](/references/translation/interfaces/translation.LocaleStatistics)>` — Breakdown of statistics by locale.
+    - `expected`: `number` — Expected total number of translated fields.
+    - `translated`: `number` — Actual number of translated fields. This doesn't count translations that are null or empty.
+    - `missing`: `number` — Number of missing translations for expected translatable fields.

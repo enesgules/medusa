@@ -1,0 +1,70 @@
+---
+title: CSVNormalizer
+---
+
+CSV normalizer processes all the allowed columns from a CSV file and remaps
+them into a new object with properties matching the "AdminCreateProduct".
+
+However, further validations must be performed to validate the format and
+the required fields in the normalized output.
+
+## constructor
+
+<a id="constructor-parameters" />
+
+### Parameters
+
+**constructor**
+
+- `rows`: [NormalizedRow](/resources/references/utils/types/utilsNormalizedRow)\[]
+  - `product id`: `string` (optional)
+  - `product handle`: `string`
+
+## Methods
+
+### preProcess
+
+Normalizes a row by converting all keys to lowercase and removing
+the leading "\r" from the keys and the values.
+
+Also, it values the row to contain unknown columns and must contain
+the "product id" or "product handle" columns.
+
+<a id="preprocess-parameters" />
+
+#### Parameters
+
+**preProcess**
+
+- `row`: `Record<string, string \| number \| boolean>`
+- `rowNumber`: `number`
+
+<a id="preprocess-returns" />
+
+#### Returns
+
+**preProcess**
+
+- `product id`: `string`
+- `product handle`: `string`
+
+### proccess
+
+Process CSV rows. The return value is a tree of products
+
+<a id="proccess-parameters" />
+
+#### Parameters
+
+**proccess**
+
+- `resumingFromIndex`: `number` (default: 0)
+
+<a id="proccess-returns" />
+
+#### Returns
+
+**proccess**
+
+- `toCreate`: `object`
+- `toUpdate`: `object`

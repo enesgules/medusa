@@ -1,0 +1,323 @@
+---
+title: updateReturnReasonsWorkflow - Medusa Core Workflows Reference
+sidebarTitle: updateReturnReasonsWorkflow
+---
+
+This documentation provides a reference to the `updateReturnReasonsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow updates return reasons matching the specified filters. It's used by the
+[Update Return Reason Admin API Route](/api/admin/return-reasons/update-a-return-reason).
+
+You can use this workflow within your customizations or your own custom workflows, allowing you to
+update return reasons within your custom flows.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/return-reason/workflows/update-return-reasons.ts#L57)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { updateReturnReasonsWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await updateReturnReasonsWorkflow(req.scope)
+    .run({
+      input: {
+        selector: {
+          id: "rr_123",
+        },
+        update: {
+          value: "damaged",
+        }
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { updateReturnReasonsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await updateReturnReasonsWorkflow(container)
+    .run({
+      input: {
+        selector: {
+          id: "rr_123",
+        },
+        update: {
+          value: "damaged",
+        }
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { updateReturnReasonsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await updateReturnReasonsWorkflow(container)
+    .run({
+      input: {
+        selector: {
+          id: "rr_123",
+        },
+        update: {
+          value: "damaged",
+        }
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { updateReturnReasonsWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = updateReturnReasonsWorkflow
+      .runAsStep({
+        input: {
+          selector: {
+            id: "rr_123",
+          },
+          update: {
+            value: "damaged",
+          }
+        }
+      })
+  }
+)
+```
+
+<a id="updatereturnreasonsworkflow-steps" />
+
+## Steps
+
+- [updateReturnReasonsStep](/resources/references/medusa-workflows/steps/updateReturnReasonsStep): This step updates return reasons matching the specified filters.
+
+<a id="updatereturnreasonsworkflow-input" />
+
+## Input
+
+**updateReturnReasonsWorkflow**
+
+- `UpdateReturnReasonsWorkflowInput`: [UpdateReturnReasonsWorkflowInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcUpdateReturnReasonsWorkflowInput)
+  - `selector`: [FilterableOrderReturnReasonProps](/resources/references/order/interfaces/orderFilterableOrderReturnReasonProps) — The filters to select the return reasons to update.
+    - `$and`: ([FilterableOrderReturnReasonProps](/resources/references/order/interfaces/orderFilterableOrderReturnReasonProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderReturnReasonProps](/resources/references/order/interfaces/orderFilterableOrderReturnReasonProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$and`: ([FilterableOrderReturnReasonProps](/resources/references/order/interfaces/orderFilterableOrderReturnReasonProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderReturnReasonProps](/resources/references/order/interfaces/orderFilterableOrderReturnReasonProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$or`: ([FilterableOrderReturnReasonProps](/resources/references/order/interfaces/orderFilterableOrderReturnReasonProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderReturnReasonProps](/resources/references/order/interfaces/orderFilterableOrderReturnReasonProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `q`: `string` (optional) — Find return reasons  through this search term
+      - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string | string\[]> (optional) — The IDs to filter the return reasons by.
+      - `value`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string | string\[]> (optional) — Filter the return reason by their value.
+      - `label`: `string` | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the return reason by their label.
+      - `description`: `string` | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the return reason by their description.
+    - `$or`: ([FilterableOrderReturnReasonProps](/resources/references/order/interfaces/orderFilterableOrderReturnReasonProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderReturnReasonProps](/resources/references/order/interfaces/orderFilterableOrderReturnReasonProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `$and`: ([FilterableOrderReturnReasonProps](/resources/references/order/interfaces/orderFilterableOrderReturnReasonProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderReturnReasonProps](/resources/references/order/interfaces/orderFilterableOrderReturnReasonProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$or`: ([FilterableOrderReturnReasonProps](/resources/references/order/interfaces/orderFilterableOrderReturnReasonProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderReturnReasonProps](/resources/references/order/interfaces/orderFilterableOrderReturnReasonProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `q`: `string` (optional) — Find return reasons  through this search term
+      - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string | string\[]> (optional) — The IDs to filter the return reasons by.
+      - `value`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string | string\[]> (optional) — Filter the return reason by their value.
+      - `label`: `string` | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the return reason by their label.
+      - `description`: `string` | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the return reason by their description.
+    - `q`: `string` (optional) — Find return reasons  through this search term
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string | string\[]> (optional) — The IDs to filter the return reasons by.
+      - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+      - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+      - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+      - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+      - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+      - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+      - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`\[] (optional)
+      - `$contains`: `string`\[] (optional)
+      - `$contained`: `string`\[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `value`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string | string\[]> (optional) — Filter the return reason by their value.
+      - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+      - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+      - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+      - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+      - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+      - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+      - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`\[] (optional)
+      - `$contains`: `string`\[] (optional)
+      - `$contained`: `string`\[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `label`: `string` | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the return reason by their label.
+      - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+      - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+      - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+      - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+      - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+      - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+      - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`\[] (optional)
+      - `$contains`: `string`\[] (optional)
+      - `$contained`: `string`\[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `description`: `string` | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the return reason by their description.
+      - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+      - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+      - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+      - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+      - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+      - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+      - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`\[] (optional)
+      - `$contains`: `string`\[] (optional)
+      - `$contained`: `string`\[] (optional)
+      - `$exists`: `boolean` (optional)
+  - `update`: `ReturnReasonUpdatableFields` — The data to update the return reasons.
+
+<a id="updatereturnreasonsworkflow-output" />
+
+## Output
+
+**updateReturnReasonsWorkflow**
+
+- `UpdateReturnReasonsWorkflowOutput`: [UpdateReturnReasonsWorkflowOutput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcUpdateReturnReasonsWorkflowOutput)
+  - `id`: `string` — The ID of the return reason
+  - `value`: `string` — The unique value of the return reason
+  - `label`: `string` — The label of the return reason
+  - `description`: `string` (optional) — The description of the return reason
+  - `parent_return_reason_id`: `string` (optional) — The parent return reason ID
+  - `parent_return_reason`: [OrderReturnReasonDTO](/resources/references/order/interfaces/orderOrderReturnReasonDTO) (optional) — The associated order return reason.
+    - `id`: `string` — The ID of the return reason
+    - `value`: `string` — The unique value of the return reason
+    - `label`: `string` — The label of the return reason
+    - `description`: `string` (optional) — The description of the return reason
+    - `parent_return_reason_id`: `string` (optional) — The parent return reason ID
+    - `parent_return_reason`: [OrderReturnReasonDTO](/resources/references/order/interfaces/orderOrderReturnReasonDTO) (optional) — The associated order return reason.
+      - `id`: `string` — The ID of the return reason
+      - `value`: `string` — The unique value of the return reason
+      - `label`: `string` — The label of the return reason
+      - `description`: `string` (optional) — The description of the return reason
+      - `parent_return_reason_id`: `string` (optional) — The parent return reason ID
+      - `parent_return_reason`: [OrderReturnReasonDTO](/resources/references/order/interfaces/orderOrderReturnReasonDTO) (optional) — The associated order return reason.
+      - `return_reason_children`: [OrderReturnReasonDTO](/resources/references/order/interfaces/orderOrderReturnReasonDTO)\[] (optional) — The return reason children of the order return reason.
+      - `metadata`: `null` | `Record<string, unknown>` — The metadata of the return reason
+      - `created_at`: `string` | `Date` — When the return reason was created
+      - `updated_at`: `string` | `Date` — When the return reason was updated
+    - `return_reason_children`: [OrderReturnReasonDTO](/resources/references/order/interfaces/orderOrderReturnReasonDTO)\[] (optional) — The return reason children of the order return reason.
+      - `id`: `string` — The ID of the return reason
+      - `value`: `string` — The unique value of the return reason
+      - `label`: `string` — The label of the return reason
+      - `description`: `string` (optional) — The description of the return reason
+      - `parent_return_reason_id`: `string` (optional) — The parent return reason ID
+      - `parent_return_reason`: [OrderReturnReasonDTO](/resources/references/order/interfaces/orderOrderReturnReasonDTO) (optional) — The associated order return reason.
+      - `return_reason_children`: [OrderReturnReasonDTO](/resources/references/order/interfaces/orderOrderReturnReasonDTO)\[] (optional) — The return reason children of the order return reason.
+      - `metadata`: `null` | `Record<string, unknown>` — The metadata of the return reason
+      - `created_at`: `string` | `Date` — When the return reason was created
+      - `updated_at`: `string` | `Date` — When the return reason was updated
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata of the return reason
+    - `created_at`: `string` | `Date` — When the return reason was created
+    - `updated_at`: `string` | `Date` — When the return reason was updated
+  - `return_reason_children`: [OrderReturnReasonDTO](/resources/references/order/interfaces/orderOrderReturnReasonDTO)\[] (optional) — The return reason children of the order return reason.
+    - `id`: `string` — The ID of the return reason
+    - `value`: `string` — The unique value of the return reason
+    - `label`: `string` — The label of the return reason
+    - `description`: `string` (optional) — The description of the return reason
+    - `parent_return_reason_id`: `string` (optional) — The parent return reason ID
+    - `parent_return_reason`: [OrderReturnReasonDTO](/resources/references/order/interfaces/orderOrderReturnReasonDTO) (optional) — The associated order return reason.
+      - `id`: `string` — The ID of the return reason
+      - `value`: `string` — The unique value of the return reason
+      - `label`: `string` — The label of the return reason
+      - `description`: `string` (optional) — The description of the return reason
+      - `parent_return_reason_id`: `string` (optional) — The parent return reason ID
+      - `parent_return_reason`: [OrderReturnReasonDTO](/resources/references/order/interfaces/orderOrderReturnReasonDTO) (optional) — The associated order return reason.
+      - `return_reason_children`: [OrderReturnReasonDTO](/resources/references/order/interfaces/orderOrderReturnReasonDTO)\[] (optional) — The return reason children of the order return reason.
+      - `metadata`: `null` | `Record<string, unknown>` — The metadata of the return reason
+      - `created_at`: `string` | `Date` — When the return reason was created
+      - `updated_at`: `string` | `Date` — When the return reason was updated
+    - `return_reason_children`: [OrderReturnReasonDTO](/resources/references/order/interfaces/orderOrderReturnReasonDTO)\[] (optional) — The return reason children of the order return reason.
+      - `id`: `string` — The ID of the return reason
+      - `value`: `string` — The unique value of the return reason
+      - `label`: `string` — The label of the return reason
+      - `description`: `string` (optional) — The description of the return reason
+      - `parent_return_reason_id`: `string` (optional) — The parent return reason ID
+      - `parent_return_reason`: [OrderReturnReasonDTO](/resources/references/order/interfaces/orderOrderReturnReasonDTO) (optional) — The associated order return reason.
+      - `return_reason_children`: [OrderReturnReasonDTO](/resources/references/order/interfaces/orderOrderReturnReasonDTO)\[] (optional) — The return reason children of the order return reason.
+      - `metadata`: `null` | `Record<string, unknown>` — The metadata of the return reason
+      - `created_at`: `string` | `Date` — When the return reason was created
+      - `updated_at`: `string` | `Date` — When the return reason was updated
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata of the return reason
+    - `created_at`: `string` | `Date` — When the return reason was created
+    - `updated_at`: `string` | `Date` — When the return reason was updated
+  - `metadata`: `null` | `Record<string, unknown>` — The metadata of the return reason
+  - `created_at`: `string` | `Date` — When the return reason was created
+  - `updated_at`: `string` | `Date` — When the return reason was updated

@@ -1,0 +1,61 @@
+---
+title: update
+---
+
+This method updates a campaign. It sends a request to the
+[Update Campaign](/api/admin/campaigns/update-a-campaign) API route.
+
+## Example
+
+```ts
+sdk.admin.campaign.update("procamp_123", {
+  name: "Summer Campaign"
+})
+.then(({ campaign }) => {
+  console.log(campaign)
+})
+```
+
+<a id="update-parameters" />
+
+## Parameters
+
+**update**
+
+- `id`: `string` — The campaign's ID.
+- `payload`: [AdminUpdateCampaign](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateCampaign) — The data to update in the campaign.
+  - `name`: `string` (optional) — The campaign's name.
+  - `description`: `null` | `string` (optional) — The campaign's description.
+  - `campaign_identifier`: `string` (optional) — The campaign's identifier.
+  - `starts_at`: `null` | `Date` (optional) — The date the campaign and its promotions start at.
+  - `ends_at`: `null` | `Date` (optional) — The date the campaign and its promotions end at.
+  - `budget`: `object` (optional) — The campaign's budget.
+    - `limit`: `null` | `number` (optional) — The budget's limit.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+## Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminCampaignResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaignResponse)> — The campaign's details.
+  - `campaign`: [AdminCampaign](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaign) — The campaign's details.
+    - `id`: `string` — The campaign's ID.
+    - `name`: `string` — The campaign's name.
+    - `description`: `string` — The campaign's description.
+    - `currency`: `string` — The campaign's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `campaign_identifier`: `string` — The campaign's identifier.
+    - `starts_at`: `string` — The date the campaign and its promotions start at.
+    - `ends_at`: `string` — The date the campaign and its promotions end at.
+    - `budget`: `object` — The campaign's budget.
+    - `created_at`: `string`
+    - `updated_at`: `string`
+    - `deleted_at`: `null` | `string`

@@ -1,0 +1,53 @@
+---
+title: uploadFilesStep - Medusa Core Workflows Reference
+sidebarTitle: uploadFilesStep
+---
+
+This documentation provides a reference to the `uploadFilesStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step uploads one or more files using the installed
+[File Module Provider](/resources/infrastructure-modules/file).
+
+## Example
+
+```ts
+const data = uploadFilesStep({
+  files: [
+    {
+      filename: "test.jpg",
+      mimeType: "img/jpg",
+      content: "base64-string",
+      access: "public"
+    }
+  ]
+})
+```
+
+<a id="uploadfilesstep-input" />
+
+## Input
+
+**uploadFilesStep**
+
+- `UploadFilesStepInput`: [UploadFilesStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcUploadFilesStepInput)
+  - `files`: `object`\[] — The files to upload.
+    - `filename`: `string` — The name of the file.
+    - `mimeType`: `string` — The MIME type of the file.
+
+      Example:
+
+      ```
+      img/jpg
+      ```
+    - `content`: `string` — The content of the file. For images, for example, use base64 string. For CSV files, use the CSV content.
+    - `access`: `"public"` | `"private"` — The access level of the file. Use `public` for the file that can be accessed by anyone. For example, for images that are displayed on the storefront. Use `private` for files that are only accessible by authenticated users. For example, for CSV files used to import data.
+
+<a id="uploadfilesstep-output" />
+
+## Output
+
+**uploadFilesStep**
+
+- `FileDTO[]`: [FileDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesFileDTO)\[]
+  - `id`: `string` — The ID of the file. You can use this ID later to retrieve or delete the file.
+  - `url`: `string` — The URL of the file.

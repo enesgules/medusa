@@ -1,0 +1,194 @@
+---
+title: IFileProvider
+---
+
+## Methods
+
+### upload
+
+This method is used to upload a file
+
+<a id="upload-parameters" />
+
+#### Parameters
+
+**upload**
+
+- `file`: [ProviderUploadFileDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderUploadFileDTO) — The contents and metadata of the file. Among the file’s details, you can access the file’s path in the `path` property of the file object.
+  - `filename`: `string` — The filename of the uploaded file
+  - `mimeType`: `string` — The mimetype of the uploaded file
+  - `content`: `string` — The file content as a base64-encoded string
+  - `access`: [FileAccessPermission](/resources/references/types/FileTypes/types/typesFileTypesFileAccessPermission) (optional) — The access level of the file. Defaults to private if not passed
+
+<a id="upload-returns" />
+
+#### Returns
+
+**upload**
+
+- `Promise`: Promise\<[ProviderFileResultDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderFileResultDTO)> — The details of the upload's result.
+  - `url`: `string` — The file's URL that users or systems can use to access the file.
+  - `key`: `string` — The file's key allowing you to later identify the file in the third-party system. For example, the S3 Module Provider returns the file's key in S3, whereas the Local File Module Provider returns the file's path.
+
+### delete
+
+This method is used to delete one or more files from the storage
+
+<a id="delete-parameters" />
+
+#### Parameters
+
+**delete**
+
+- `fileData`: [ProviderDeleteFileDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderDeleteFileDTO) | [ProviderDeleteFileDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderDeleteFileDTO)\[] — The details of the files to remove.
+  - `fileKey`: `string` — The file's key. When uploading a file, the returned key is used here.
+
+<a id="delete-returns" />
+
+#### Returns
+
+**delete**
+
+- `Promise`: Promise\<void> — Resolves when the file is deleted successfully.
+
+### getPresignedDownloadUrl
+
+This method is used to retrieve a download URL of the file. For some file services, such as S3, a presigned URL indicates a temporary URL to get access to a file.
+
+If your file service doesn’t perform or offer a similar functionality, you can just return the URL to download the file.
+
+<a id="getpresigneddownloadurl-parameters" />
+
+#### Parameters
+
+**getPresignedDownloadUrl**
+
+- `fileData`: [ProviderGetFileDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderGetFileDTO) — The details of the file.
+  - `fileKey`: `string` — The file's key allowing you to later identify the file in the third-party system. For example, the S3 Module Provider returns the file's key in S3, whereas the Local File Module Provider returns the file's path.
+
+<a id="getpresigneddownloadurl-returns" />
+
+#### Returns
+
+**getPresignedDownloadUrl**
+
+- `Promise`: Promise\<string> — The presigned URL to download the file
+  - `string`: `string`
+
+### getPresignedUploadUrl
+
+**Optional.**
+
+This method is used to get a presigned upload URL for a file. For some providers,
+such as S3, a presigned URL indicates a temporary URL to get upload a file.
+
+If your provider doesn’t perform or offer a similar functionality, you don't have to
+implement this method. Instead, an error is thrown when the method is called.
+
+#### Example
+
+```ts
+class MyFileProviderService extends AbstractFileProviderService {
+  // ...
+  async getPresignedUploadUrl(
+    fileData: ProviderGetPresignedUploadUrlDTO
+  ): Promise<ProviderFileResultDTO> {
+    // TODO logic to get the presigned upload URL
+    // for example:
+    return this.client.getPresignedUploadUrl(fileData.filename, fileData.mimeType)
+  }
+}
+```
+
+<a id="getpresigneduploadurl-parameters" />
+
+#### Parameters
+
+**getPresignedUploadUrl**
+
+- `fileData`: [ProviderGetPresignedUploadUrlDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderGetPresignedUploadUrlDTO) — The details of the file to get a presigned upload URL for.
+  - `filename`: `string` — The filename of the file to get a presigned upload URL for.
+  - `mimeType`: `string` (optional) — The mimetype of the file to get a presigned upload URL for.
+  - `access`: [FileAccessPermission](/resources/references/types/FileTypes/types/typesFileTypesFileAccessPermission) (optional) — The access level of the file to get a presigned upload URL for.
+  - `expiresIn`: `number` (optional) — The validity of the presigned upload URL in seconds.
+
+<a id="getpresigneduploadurl-returns" />
+
+#### Returns
+
+**getPresignedUploadUrl**
+
+- `Promise`: Promise\<[ProviderFileResultDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderFileResultDTO)> — The presigned URL and file key to upload the file to
+  - `url`: `string` — The file's URL that users or systems can use to access the file.
+  - `key`: `string` — The file's key allowing you to later identify the file in the third-party system. For example, the S3 Module Provider returns the file's key in S3, whereas the Local File Module Provider returns the file's path.
+
+### getDownloadStream
+
+Get the file contents as a readable stream.
+
+<a id="getdownloadstream-parameters" />
+
+#### Parameters
+
+**getDownloadStream**
+
+- `fileData`: [ProviderGetFileDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderGetFileDTO)
+  - `fileKey`: `string` — The file's key allowing you to later identify the file in the third-party system. For example, the S3 Module Provider returns the file's key in S3, whereas the Local File Module Provider returns the file's path.
+
+<a id="getdownloadstream-returns" />
+
+#### Returns
+
+**getDownloadStream**
+
+- `Promise`: Promise\<Readable> — Get the file contents as a readable stream.
+
+### getAsBuffer
+
+Get the file contents as a Node.js Buffer
+
+<a id="getasbuffer-parameters" />
+
+#### Parameters
+
+**getAsBuffer**
+
+- `fileData`: [ProviderGetFileDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderGetFileDTO)
+  - `fileKey`: `string` — The file's key allowing you to later identify the file in the third-party system. For example, the S3 Module Provider returns the file's key in S3, whereas the Local File Module Provider returns the file's path.
+
+<a id="getasbuffer-returns" />
+
+#### Returns
+
+**getAsBuffer**
+
+- `Promise`: Promise\<Buffer\<ArrayBufferLike>> — Get the file contents as a Node.js Buffer
+
+### getUploadStream
+
+Get a writeable stream to upload a file.
+
+<a id="getuploadstream-parameters" />
+
+#### Parameters
+
+**getUploadStream**
+
+- `fileData`: [ProviderUploadStreamDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderUploadStreamDTO)
+  - `filename`: `string` — The filename of the uploaded file
+  - `mimeType`: `string` — The mimetype of the uploaded file
+  - `access`: [FileAccessPermission](/resources/references/types/FileTypes/types/typesFileTypesFileAccessPermission) (optional) — The access level of the file. Defaults to private if not passed
+
+<a id="getuploadstream-returns" />
+
+#### Returns
+
+**getUploadStream**
+
+- `Promise`: Promise\<object> — Get a writeable stream to upload a file.
+  - `writeStream`: `Writable`
+  - `promise`: Promise\<[ProviderFileResultDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderFileResultDTO)>
+    - `url`: `string` — The file's URL that users or systems can use to access the file.
+    - `key`: `string` — The file's key allowing you to later identify the file in the third-party system. For example, the S3 Module Provider returns the file's key in S3, whereas the Local File Module Provider returns the file's path.
+  - `url`: `string`
+  - `fileKey`: `string`

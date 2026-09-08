@@ -1,0 +1,246 @@
+---
+title: updateCartPromotionsWorkflow - Medusa Core Workflows Reference
+sidebarTitle: updateCartPromotionsWorkflow
+---
+
+This documentation provides a reference to the `updateCartPromotionsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow updates a cart's promotions, applying or removing promotion codes from the cart. It also computes the adjustments
+that need to be applied to the cart's line items and shipping methods based on the promotions applied. This workflow is used by
+[Add Promotions Store API Route](/api/store/carts/add-promotions).
+
+You can use this workflow within your own customizations or custom workflows, allowing you to update a cart's promotions within your custom flows.
+
+> **Note**
+>
+> If you use this workflow in another, you must acquire a lock before running it and release the lock after. Learn more in the [Locking Operations in Workflows](/learn/fundamentals/workflows/locks#locks-in-nested-workflows) guide.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/cart/workflows/update-cart-promotions.ts#L85)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { updateCartPromotionsWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await updateCartPromotionsWorkflow(req.scope)
+    .run({
+      input: {
+        cart_id: "cart_123",
+        promo_codes: ["10OFF"],
+        // imported from @medusajs/framework/utils
+        action: PromotionActions.ADD,
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { updateCartPromotionsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await updateCartPromotionsWorkflow(container)
+    .run({
+      input: {
+        cart_id: "cart_123",
+        promo_codes: ["10OFF"],
+        // imported from @medusajs/framework/utils
+        action: PromotionActions.ADD,
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { updateCartPromotionsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await updateCartPromotionsWorkflow(container)
+    .run({
+      input: {
+        cart_id: "cart_123",
+        promo_codes: ["10OFF"],
+        // imported from @medusajs/framework/utils
+        action: PromotionActions.ADD,
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { updateCartPromotionsWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    // Acquire lock from nested workflow here
+    // acquireLockStep({  key: cartId,  timeout: 2,  ttl: 10,  })
+    const result = updateCartPromotionsWorkflow
+      .runAsStep({
+        input: {
+          cart_id: "cart_123",
+          promo_codes: ["10OFF"],
+          // imported from @medusajs/framework/utils
+          action: PromotionActions.ADD,
+        }
+      })
+    // Release lock here
+    // releaseLockStep({ key: cartId })
+  }
+)
+```
+
+<a id="updatecartpromotionsworkflow-steps" />
+
+## Steps
+
+- [acquireLockStep](/resources/references/medusa-workflows/steps/acquireLockStep): This step acquires a lock for a given key. Learn more about locks in the [Locking Module](/resources/infrastructure-modules/locking) guide.
+  - [validateCartStep](/resources/references/medusa-workflows/steps/validateCartStep): This step validates a cart to ensure it exists and is not completed. If not valid, the step throws an error. :::tip You can use the [retrieveCartStep](/resources/references/medusa-workflows/steps/retrieveCartStep) to retrieve a cart's details. :::
+    - [validate](/resources/references/medusa-workflows/updateCartPromotionsWorkflow#validate): This hook is executed before all operations. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution.
+      - [setPromotionContext](/resources/references/medusa-workflows/updateCartPromotionsWorkflow#setpromotioncontext): This hook is executed before promotion rules are evaluated for the draft order. You can consume this hook to return any custom context that should be merged on top of the order context when evaluating promotion rules (e.g. `company.id`, `custom_tier`).
+        - [getPromotionCodesToApply](/resources/references/medusa-workflows/steps/getPromotionCodesToApply): This step retrieves the promotion codes to apply on a cart.
+          - [getActionsToComputeFromPromotionsStep](/resources/references/medusa-workflows/steps/getActionsToComputeFromPromotionsStep): This step retrieves the actions to compute based on the promotions applied on items and shipping methods. :::tip You can use the [retrieveCartStep](/resources/references/medusa-workflows/steps/retrieveCartStep) to retrieve items and shipping methods' details. :::
+            - [prepareAdjustmentsFromPromotionActionsStep](/resources/references/medusa-workflows/steps/prepareAdjustmentsFromPromotionActionsStep): This step prepares the line item or shipping method adjustments using actions computed by the Promotion Module.
+              - [removeLineItemAdjustmentsStep](/resources/references/medusa-workflows/steps/removeLineItemAdjustmentsStep): This step removes line item adjustments from a cart.
+              - [removeShippingMethodAdjustmentsStep](/resources/references/medusa-workflows/steps/removeShippingMethodAdjustmentsStep): This step removes shipping method adjustments from a cart.
+              - [createLineItemAdjustmentsStep](/resources/references/medusa-workflows/steps/createLineItemAdjustmentsStep): This step creates line item adjustments in a cart, such as when a promotion is applied.
+              - [createShippingMethodAdjustmentsStep](/resources/references/medusa-workflows/steps/createShippingMethodAdjustmentsStep): This step creates shipping method adjustments for a cart.
+              - [updateCartPromotionsStep](/resources/references/medusa-workflows/steps/updateCartPromotionsStep): This step updates the promotions applied on a cart.
+                - **when** (when: input.force\_refresh\_payment\_collection === true)
+                - [refreshPaymentCollectionForCartWorkflow](/resources/references/medusa-workflows/refreshPaymentCollectionForCartWorkflow): Refresh a cart's payment collection details.
+                  - [releaseLockStep](/resources/references/medusa-workflows/steps/releaseLockStep): This step releases a lock for a given key. Learn more about locks in the [Locking Module](/resources/infrastructure-modules/locking) guide.
+
+<a id="updatecartpromotionsworkflow-input" />
+
+## Input
+
+**updateCartPromotionsWorkflow**
+
+- `UpdateCartPromotionsWorkflowInput`: [UpdateCartPromotionsWorkflowInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcUpdateCartPromotionsWorkflowInput)
+  - `cart_id`: `string` (optional) — The cart's ID.
+  - `cart`: `any` (optional) — The Cart reference.
+  - `promo_codes`: `string`\[] (optional) — The promotion codes to add to the cart, remove from the cart, or replace all existing promotions in the cart.
+  - `action`: [ADD](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsPromotionActions#add) | [REMOVE](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsPromotionActions#remove) | [REPLACE](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsPromotionActions#replace) (optional) — The action to perform with the specified promotion codes.
+  - `force_refresh_payment_collection`: `boolean` (optional) — Wether to force the refresh of the cart payment collection. If the caller doesn't refresh it explicitly, you should probably set this property to true.
+
+<a id="updatecartpromotionsworkflow-output" />
+
+## Output
+
+**updateCartPromotionsWorkflow**
+
+- `skipped_promo_codes`: `object`\[] (default: skippedPromoCodes)
+  - `code`: `string` — The promotion code that was skipped.
+  - `reason`: `"promotion_limit_exceeded"` | `"campaign_budget_exceeded"` — The reason the promotion code was skipped. - `promotion_limit_exceeded`: the promotion's usage limit has been reached. - `campaign_budget_exceeded`: the promotion's campaign budget has been exhausted.
+
+## Hooks
+
+Hooks allow you to inject custom functionalities into the workflow. You'll receive data from the workflow, as well as additional data sent through an HTTP request.
+
+Learn more about [Hooks](/learn/fundamentals/workflows/workflow-hooks) and [Additional Data](/learn/fundamentals/api-routes/additional-data).
+
+### validate
+
+This hook is executed before all operations. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution.
+
+#### Example
+
+```ts
+import { updateCartPromotionsWorkflow } from "@medusajs/medusa/core-flows"
+
+updateCartPromotionsWorkflow.hooks.validate(
+  (async ({ input, cart }, { container }) => {
+    //TODO
+  })
+)
+```
+
+<a id="input" />
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+**validate**
+
+- `input`: object — The input data for the hook.
+  - `input`: [UpdateCartPromotionsWorkflowInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcUpdateCartPromotionsWorkflowInput)
+    - `cart_id`: `string` (optional) — The cart's ID.
+    - `cart`: `any` (optional) — The Cart reference.
+    - `promo_codes`: `string`\[] (optional) — The promotion codes to add to the cart, remove from the cart, or replace all existing promotions in the cart.
+    - `action`: [ADD](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsPromotionActions#add) | [REMOVE](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsPromotionActions#remove) | [REPLACE](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsPromotionActions#replace) (optional) — The action to perform with the specified promotion codes.
+    - `force_refresh_payment_collection`: `boolean` (optional) — Wether to force the refresh of the cart payment collection. If the caller doesn't refresh it explicitly, you should probably set this property to true.
+  - `cart`: `any`
+
+### setPromotionContext
+
+This hook is executed after the cart is fetched and before promotion rules are evaluated. You can consume this hook to add custom rules that determine whether a promotion is applied. The returned object is merged on top of the cart context, allowing you to override existing context.
+
+#### Example
+
+```ts
+import { updateCartPromotionsWorkflow } from "@medusajs/medusa/core-flows"
+
+updateCartPromotionsWorkflow.hooks.setPromotionContext(
+  (async ({ cart, action, promo_codes }, { container }) => {
+    //TODO
+  })
+)
+```
+
+<a id="input-1" />
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+**setPromotionContext**
+
+- `input`: object — The input data for the hook.
+  - `cart`: `any`
+  - `action`: [PromotionActions](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsPromotionActions)
+    - `ADD`: `"add"` (optional)
+    - `REMOVE`: `"remove"` (optional)
+    - `REPLACE`: `"replace"` (optional)
+  - `promo_codes`: `string`\[]

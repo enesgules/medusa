@@ -1,0 +1,58 @@
+---
+title: refund
+---
+
+This method refunds a payment. It sends a request to the
+[Refund Payment](/api/admin/payments/refund-payment) API route.
+
+The API route uses the `refundPayment` method of the payment provider associated with the payment's collection.
+
+## Example
+
+```ts
+sdk.admin.payment.refund("paycol_123", {})
+.then(({ payment }) => {
+  console.log(payment)
+})
+```
+
+<a id="refund-parameters" />
+
+## Parameters
+
+**refund**
+
+- `id`: `string` — The payment's ID.
+- `body`: [AdminRefundPayment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRefundPayment) — The refund's details.
+  - `amount`: `number` (optional) — Custom amount to refund. If not specified, the payment's amount is refunded.
+  - `refund_reason_id`: `string` (optional) — The ID of the refund's reason.
+  - `note`: `string` (optional) — A note to attach to the refund.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the payment.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="refund-returns" />
+
+## Returns
+
+**refund**
+
+- `Promise`: Promise\<[AdminPaymentResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentResponse)> — The payment's details.
+  - `payment`: [AdminPayment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPayment) — The payment's details.
+    - `refunds`: [AdminRefund](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRefund)\[] (optional) — The associated refunds.
+    - `payment_collection`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection) (optional) — The payment collection this payment belongs to.
+    - `payment_session`: [AdminPaymentSession](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentSession) (optional) — The associated payment session.
+    - `id`: `string` — The ID of the payment.
+    - `amount`: `number` — The payment's total amount.
+    - `authorized_amount`: `number` (optional) — The authorized amount of the payment.
+    - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+    - `provider_id`: `string` — The ID of the associated payment provider.
+    - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+    - `created_at`: `string` | `Date` (optional) — When the payment was created.
+    - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+    - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+    - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+    - `captured_amount`: `number` (optional) — The sum of the associated captures' amounts.
+    - `refunded_amount`: `number` (optional) — The sum of the associated refunds' amounts.
+    - `captures`: [BaseCapture](/resources/references/types/interfaces/typesBaseCapture)\[] (optional) — The associated captures.

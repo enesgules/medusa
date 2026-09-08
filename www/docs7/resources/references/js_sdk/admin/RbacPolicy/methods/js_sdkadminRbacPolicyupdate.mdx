@@ -1,0 +1,61 @@
+---
+title: update
+---
+
+This method updates an RBAC policy's details. It sends a request to the
+Update RBAC Policy API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.15.5](https://github.com/medusajs/medusa/releases/tag/v2.15.5).
+
+## Example
+
+```ts
+sdk.admin.rbacPolicy.update("policy_123", {
+  name: "Read Products",
+  description: "Allows reading product information"
+})
+.then(({ policy }) => {
+  console.log(policy)
+})
+```
+
+<a id="update-parameters" />
+
+## Parameters
+
+**update**
+
+- `id`: `string` — The policy's ID.
+- `body`: [AdminUpdateRbacPolicy](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateRbacPolicy) — The data to update in the policy.
+  - `key`: `string` (optional) — The policy's unique key.
+  - `resource`: `string` (optional) — The resource the policy applies to.
+  - `operation`: `string` (optional) — The operation the policy allows.
+  - `name`: `null` | `string` (optional) — The policy's name.
+  - `description`: `null` | `string` (optional) — The policy's description.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the policy.
+- `query`: [AdminRbacPolicyParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicyParams) (optional) — Configure the fields to retrieve in the policy.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+## Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminRbacPolicyResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicyResponse)> — The policy's details.
+  - `policy`: [AdminRbacPolicy](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicy) — The policy's details.
+    - `id`: `string` — The policy's ID.
+    - `key`: `string` — The policy's unique key.
+    - `resource`: `string` — The resource the policy applies to.
+    - `operation`: `string` — The operation the policy allows.
+    - `name`: `null` | `string` — The policy's name.
+    - `description`: `null` | `string` — The policy's description.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the policy.
+    - `inherited_from_role_id`: `null` | `string` (optional) — The role ID the policy is inherited from, if any.
+    - `created_at`: `string` — The date the policy was created.
+    - `updated_at`: `string` — The date the policy was updated.
+    - `deleted_at`: `null` | `string` — The date the policy was deleted.

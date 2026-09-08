@@ -1,0 +1,66 @@
+---
+title: updateViewConfigurationStep - Medusa Core Workflows Reference
+sidebarTitle: updateViewConfigurationStep
+---
+
+This documentation provides a reference to the `updateViewConfigurationStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step updates a view configuration. Before updating, it retrieves the
+configuration's current state so that it can be restored if the workflow fails.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.10.3](https://github.com/medusajs/medusa/releases/tag/v2.10.3).
+
+## Example
+
+```ts
+const viewConfig = updateViewConfigurationStep({
+  id: "viewconfig_123",
+  data: {
+    name: "Updated View",
+  },
+})
+```
+
+<a id="updateviewconfigurationstep-input" />
+
+## Input
+
+**updateViewConfigurationStep**
+
+- `UpdateViewConfigurationStepInput`: [UpdateViewConfigurationStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcUpdateViewConfigurationStepInput)
+  - `id`: `string` — The ID of the view configuration to update.
+  - `data`: [UpdateViewConfigurationDTO](/resources/references/settings/interfaces/settingsUpdateViewConfigurationDTO) — The attributes to update in the view configuration.
+    - `name`: `string` (optional) — The name of the configuration.
+    - `configuration`: `object` (optional) — The configuration data.
+      - `visible_columns`: `string`\[] (optional) — The visible columns.
+      - `column_order`: `string`\[] (optional) — The column order.
+      - `column_widths`: `Record<string, number>` (optional) — The column widths.
+      - `filters`: `Record<string, any>` (optional) — The filters to apply.
+      - `sorting`: `null` | `object` (optional) — The sorting configuration.
+      - `search`: `string` (optional) — The search string.
+
+<a id="updateviewconfigurationstep-output" />
+
+## Output
+
+**updateViewConfigurationStep**
+
+- `ViewConfigurationDTO`: [ViewConfigurationDTO](/resources/references/settings/interfaces/settingsViewConfigurationDTO) — The view configuration data model.
+  - `id`: `string` — The ID of the configuration.
+  - `entity`: `string` — The entity this configuration is for.
+  - `name`: `string` — The name of the configuration.
+  - `user_id`: `null` | `string` — The user ID this configuration belongs to.
+  - `is_system_default`: `boolean` — Whether this is a system default configuration.
+  - `configuration`: `object` — The configuration data.
+    - `visible_columns`: `string`\[] — The visible columns.
+    - `column_order`: `string`\[] — The column order.
+    - `column_widths`: `Record<string, number>` (optional) — The column widths.
+    - `filters`: `Record<string, any>` (optional) — The filters to apply.
+    - `sorting`: `null` | `object` (optional) — The sorting configuration.
+      - `id`: `string`
+      - `desc`: `boolean`
+    - `search`: `string` (optional) — The search string.
+  - `created_at`: `Date` — The date the configuration was created.
+  - `updated_at`: `Date` — The date the configuration was last updated.

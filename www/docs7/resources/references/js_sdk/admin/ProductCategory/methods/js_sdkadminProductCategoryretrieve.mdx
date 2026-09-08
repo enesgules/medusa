@@ -1,0 +1,70 @@
+---
+title: retrieve
+---
+
+This method retrieves a product category by its ID. It sends a request to the
+[Get Product Category](/api/admin/product-categories/get-a-product-category) API route.
+
+## Example
+
+To retrieve a product category by its ID:
+
+```ts
+sdk.admin.productCategory.retrieve("pcat_123")
+.then(({ product_category }) => {
+  console.log(product_category)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.productCategory.retrieve("pcat_123", {
+  fields: "id,*products"
+})
+.then(({ product_category }) => {
+  console.log(product_category)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The category's ID.
+- `query`: [AdminProductCategoryParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategoryParams) (optional) — Configure the fields to retrieve in the product category.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `include_ancestors_tree`: `boolean` (optional) — Whether to retrieve the parent category. If enabled, the parent category is retrieved in the `parent_category` field.
+  - `include_descendants_tree`: `boolean` (optional) — Whether to retrieve the child categories. If enabled, the child categories are retrieved in the `category_children` field.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminProductCategoryResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategoryResponse)> — The product category's details.
+  - `product_category`: [AdminProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategory) — The category's details.
+    - `category_children`: [AdminProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategory)\[] — The category's children.
+    - `parent_category`: `null` | [AdminProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategory) — The parent category's details.
+    - `products`: [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct)\[] (optional) — The products that belong to this category.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The category's translations.
+    - `id`: `string` — The category's ID.
+    - `name`: `string` — The category's name.
+    - `description`: `string` — The category's description.
+    - `handle`: `string` — The product category's unique handle. Can be used to create human-readable URLs.
+    - `is_active`: `boolean` — Whether the category is active.
+    - `is_internal`: `boolean` — Whether the category is internal.
+    - `rank`: `null` | `number` — The category's ranking among sibling categories.
+    - `external_id`: `null` | `string` — An external identifier for the product category.
+    - `parent_category_id`: `null` | `string` — The ID of the category's parent.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` — The date the category was created.
+    - `updated_at`: `string` — The date the category was updated.
+    - `deleted_at`: `null` | `string` — The date the category was deleted.

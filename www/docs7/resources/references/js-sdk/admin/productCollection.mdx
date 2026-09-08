@@ -1,0 +1,452 @@
+---
+title: productCollection - JS SDK Admin Reference
+sidebarTitle: productCollection
+---
+
+This documentation provides a reference to the `sdk.admin.productCollection` set of methods used to send requests to Medusa's Admin API routes.
+
+## create
+
+This method creates a product collection. It sends a request to the
+[Create Collection](/api/admin/collections/create-collection)
+API route.
+
+### Example
+
+```ts
+sdk.admin.productCollection.create({
+  title: "Summer Collection"
+})
+.then(({ collection }) => {
+  console.log(collection)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [AdminCreateCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateCollection) — The details of the product collection to create.
+  - `title`: `string` — The collection's title.
+  - `handle`: `string` (optional) — The collection's handle.
+  - `external_id`: `null` | `string` (optional) — An external ID for the collection.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [AdminCollectionParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollectionParams) (optional) — Configure the fields to retrieve in the product collection.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminCollectionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollectionResponse)> — The product collection's details.
+  - `collection`: [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) — The collection's details.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The collection's translations.
+    - `id`: `string` — The collection's ID.
+    - `title`: `string` — The collection's title.
+    - `handle`: `string` — The collection's handle.
+    - `created_at`: `string` — The date the collection was created.
+    - `updated_at`: `string` — The date the collection was updated.
+    - `deleted_at`: `null` | `string` — The date the collection was deleted.
+    - `products`: [BaseProduct](/resources/references/types/interfaces/typesBaseProduct)\[] (optional) — The collection's products.
+    - `external_id`: `null` | `string` (optional) — An external ID for the collection.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+
+## update
+
+This method updates a collection. It sends a request to the
+[Update Collection](/api/admin/collections/update-a-collection)
+API route.
+
+### Example
+
+```ts
+sdk.admin.productCollection.update("pcol_123", {
+  title: "Summer Collection"
+})
+.then(({ collection }) => {
+  console.log(collection)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `id`: `string` — The ID of the collection.
+- `body`: [AdminUpdateCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateCollection) — The data to update in the collection.
+  - `title`: `string` (optional) — The collection's title.
+  - `handle`: `string` (optional) — The collection's handle.
+  - `external_id`: `null` | `string` (optional) — An external ID for the collection.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [AdminCollectionParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollectionParams) (optional) — Configure the fields to retrieve in the product collection.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminCollectionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollectionResponse)> — The product collection's details.
+  - `collection`: [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) — The collection's details.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The collection's translations.
+    - `id`: `string` — The collection's ID.
+    - `title`: `string` — The collection's title.
+    - `handle`: `string` — The collection's handle.
+    - `created_at`: `string` — The date the collection was created.
+    - `updated_at`: `string` — The date the collection was updated.
+    - `deleted_at`: `null` | `string` — The date the collection was deleted.
+    - `products`: [BaseProduct](/resources/references/types/interfaces/typesBaseProduct)\[] (optional) — The collection's products.
+    - `external_id`: `null` | `string` (optional) — An external ID for the collection.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+
+## list
+
+This method retrieves a paginated list of collections. It sends a request to the
+[List Collections](/api/admin/collections/list-collections) API route.
+
+### Example
+
+To retrieve the list of collections:
+
+```ts
+sdk.admin.productCollection.list()
+.then(({ collections, count, limit, offset }) => {
+  console.log(collections)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.productCollection.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ collections, count, limit, offset }) => {
+  console.log(collections)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each collection:
+
+```ts
+sdk.admin.productCollection.list({
+  fields: "id,*products"
+})
+.then(({ collections, count, limit, offset }) => {
+  console.log(collections)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `queryParams`: [AdminCollectionListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollectionListParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([BaseCollectionListParams](/resources/references/types/interfaces/typesBaseCollectionListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCollectionListParams](/resources/references/types/interfaces/typesBaseCollectionListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([BaseCollectionListParams](/resources/references/types/interfaces/typesBaseCollectionListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCollectionListParams](/resources/references/types/interfaces/typesBaseCollectionListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseCollectionListParams](/resources/references/types/interfaces/typesBaseCollectionListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCollectionListParams](/resources/references/types/interfaces/typesBaseCollectionListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — A query or keywords to search the collection's searchable fields by.
+    - `id`: `string` | `string`\[] (optional) — Filter by collection ID(s).
+    - `handle`: `string` | `string`\[] (optional) — Filter by collection handle(s).
+    - `title`: `string` | `string`\[] (optional) — Filter by collection title(s).
+    - `external_id`: `string` | `string`\[] (optional) — Filter by external ID(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on collection creation dates.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on collection update dates.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `$or`: ([BaseCollectionListParams](/resources/references/types/interfaces/typesBaseCollectionListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCollectionListParams](/resources/references/types/interfaces/typesBaseCollectionListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([BaseCollectionListParams](/resources/references/types/interfaces/typesBaseCollectionListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCollectionListParams](/resources/references/types/interfaces/typesBaseCollectionListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseCollectionListParams](/resources/references/types/interfaces/typesBaseCollectionListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCollectionListParams](/resources/references/types/interfaces/typesBaseCollectionListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — A query or keywords to search the collection's searchable fields by.
+    - `id`: `string` | `string`\[] (optional) — Filter by collection ID(s).
+    - `handle`: `string` | `string`\[] (optional) — Filter by collection handle(s).
+    - `title`: `string` | `string`\[] (optional) — Filter by collection title(s).
+    - `external_id`: `string` | `string`\[] (optional) — Filter by external ID(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on collection creation dates.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on collection update dates.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the collection's deletion date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `q`: `string` (optional) — A query or keywords to search the collection's searchable fields by.
+  - `id`: `string` | `string`\[] (optional) — Filter by collection ID(s).
+  - `handle`: `string` | `string`\[] (optional) — Filter by collection handle(s).
+  - `title`: `string` | `string`\[] (optional) — Filter by collection title(s).
+  - `external_id`: `string` | `string`\[] (optional) — Filter by external ID(s).
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on collection creation dates.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on collection update dates.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminCollectionListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollectionListResponse)> — The paginated list of collections.
+  - `collections`: [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection)\[] — The list of collections.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The collection's translations.
+    - `id`: `string` — The collection's ID.
+    - `title`: `string` — The collection's title.
+    - `handle`: `string` — The collection's handle.
+    - `created_at`: `string` — The date the collection was created.
+    - `updated_at`: `string` — The date the collection was updated.
+    - `deleted_at`: `null` | `string` — The date the collection was deleted.
+    - `products`: [BaseProduct](/resources/references/types/interfaces/typesBaseProduct)\[] (optional) — The collection's products.
+    - `external_id`: `null` | `string` (optional) — An external ID for the collection.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## retrieve
+
+This method retrieves a collection by its ID. It sends a request to the
+[Get Collection](/api/admin/collections/get-a-collection) API route.
+
+### Example
+
+To retrieve a collection by its ID:
+
+```ts
+sdk.admin.productCollection.retrieve("pcol_123")
+.then(({ collection }) => {
+  console.log(collection)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.productCollection.retrieve("pcol_123", {
+  fields: "id,*products"
+})
+.then(({ collection }) => {
+  console.log(collection)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The collection's ID.
+- `query`: [AdminCollectionParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollectionParams) (optional) — Configure the fields to retrieve in the collection.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminCollectionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollectionResponse)> — The collection's details.
+  - `collection`: [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) — The collection's details.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The collection's translations.
+    - `id`: `string` — The collection's ID.
+    - `title`: `string` — The collection's title.
+    - `handle`: `string` — The collection's handle.
+    - `created_at`: `string` — The date the collection was created.
+    - `updated_at`: `string` — The date the collection was updated.
+    - `deleted_at`: `null` | `string` — The date the collection was deleted.
+    - `products`: [BaseProduct](/resources/references/types/interfaces/typesBaseProduct)\[] (optional) — The collection's products.
+    - `external_id`: `null` | `string` (optional) — An external ID for the collection.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+
+## delete
+
+This method deletes a product collection. It sends a request to the
+[Delete Collection](/api/admin/collections/delete-a-collection)
+API route.
+
+### Example
+
+```ts
+sdk.admin.productCollection.delete("pcol_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The collection's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminCollectionDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollectionDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: `"collection"` — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## updateProducts
+
+This method manages the products of a collection to add or remove them. It sends a request
+to the [Manage Products](/api/admin/collections/manage-products)
+API route.
+
+### Example
+
+```ts
+sdk.admin.productCollection.updateProducts("pcol_123", {
+  add: ["prod_123"],
+  remove: ["prod_321"]
+})
+.then(({ collection }) => {
+  console.log(collection)
+})
+```
+
+<a id="updateproducts-parameters" />
+
+### Parameters
+
+**updateProducts**
+
+- `id`: `string` — The collection's ID.
+- `body`: [AdminUpdateCollectionProducts](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateCollectionProducts) — The products to add or remove.
+  - `add`: `string`\[] (optional) — IDs of products to add to the collection.
+  - `remove`: `string`\[] (optional) — IDs of products to remove from the collection.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updateproducts-returns" />
+
+### Returns
+
+**updateProducts**
+
+- `Promise`: Promise\<[AdminCollectionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollectionResponse)> — The product category's details.
+  - `collection`: [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) — The collection's details.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The collection's translations.
+    - `id`: `string` — The collection's ID.
+    - `title`: `string` — The collection's title.
+    - `handle`: `string` — The collection's handle.
+    - `created_at`: `string` — The date the collection was created.
+    - `updated_at`: `string` — The date the collection was updated.
+    - `deleted_at`: `null` | `string` — The date the collection was deleted.
+    - `products`: [BaseProduct](/resources/references/types/interfaces/typesBaseProduct)\[] (optional) — The collection's products.
+    - `external_id`: `null` | `string` (optional) — An external ID for the collection.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.

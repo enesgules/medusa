@@ -1,0 +1,31 @@
+---
+title: InitiatePaymentInput
+---
+
+The data used initiate a payment in a provider when a payment
+session is created.
+
+## Properties
+
+**InitiatePaymentInput**
+
+- `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+- `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+  - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `data`: `Record<string, unknown>` — Account holder's details as stored in the third-party payment provider.
+  - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `id`: `string` — The ID of the customer in Medusa.
+    - `email`: `string` — The email of the customer.
+    - `company_name`: `string` | `null` (optional) — The customer's company name.
+    - `first_name`: `string` | `null` (optional) — The customer's first name.
+    - `last_name`: `string` | `null` (optional) — The customer's last name.
+    - `phone`: `string` | `null` (optional) — The customer's phone number.
+    - `billing_address`: [PaymentAddressDTO](/resources/references/types/types/typesPaymentAddressDTO) | `null` (optional) — The customer's billing address.
+  - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+- `amount`: [BigNumberInput](/resources/references/types/types/typesBigNumberInput) — The amount to be authorized.
+  - `value`: `string` | `number`
+  - `numeric`: `number`
+  - `raw`: [BigNumberRawValue](/resources/references/types/types/typesBigNumberRawValue) (optional)
+    - `value`: `string` | `number`
+  - `bigNumber`: `BigNumber` (optional)
+- `currency_code`: `string` — The ISO 3 character currency code.

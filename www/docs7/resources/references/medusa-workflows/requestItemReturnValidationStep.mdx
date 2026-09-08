@@ -1,0 +1,111 @@
+---
+title: requestItemReturnValidationStep - Medusa Core Workflows Reference
+sidebarTitle: requestItemReturnValidationStep
+---
+
+This documentation provides a reference to the `requestItemReturnValidationStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that items can be added to a return.
+If the order or return is canceled, the order change is not active,
+the items do not exist in the order, or the return reasons are invalid,
+the step will throw an error.
+
+> **Note**
+>
+> You can retrieve an order, return, and order change details using [Query](/learn/fundamentals/module-links/query),
+> or [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep).
+
+## Example
+
+```ts
+const data = requestItemReturnValidationStep({
+  order: {
+    id: "order_123",
+    items: [
+      {
+        id: "orli_123",
+        // other item details...
+      }
+    ]
+  },
+  orderChange: {
+    id: "orch_123",
+    // other order change details...
+  },
+  orderReturn: {
+    id: "return_123",
+    // other return details...
+  },
+  items: [
+    {
+      id: "orli_123",
+      quantity: 1,
+    }
+  ]
+})
+```
+
+<a id="requestitemreturnvalidationstep-input" />
+
+## Input
+
+**requestItemReturnValidationStep**
+
+- `RequestItemReturnValidationStepInput`: [RequestItemReturnValidationStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcRequestItemReturnValidationStepInput)
+  - `order`: Pick\<[OrderDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderDTO), "id" | "items"> — The order's details.
+    - `id`: `string` — The ID of the order.
+    - `items`: [OrderLineItemDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderLineItemDTO)\[] (optional) — The associated order details / line items.
+  - `orderReturn`: [ReturnDTO](/resources/references/fulfillment/interfaces/fulfillmentReturnDTO) — The return's details.
+    - `id`: `string` — The ID of the return.
+    - `status`: [ReturnStatus](/resources/references/fulfillment/types/fulfillmentReturnStatus) — The status of the return.
+    - `refund_amount`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) (optional) — The refund amount of the return.
+    - `raw_refund_amount`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) (optional) — The raw refund amount of the return.
+    - `order_id`: `string` — The associated order's ID.
+    - `order`: [OrderDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderDTO) (optional) — The associated order.
+    - `items`: [OrderReturnItemDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderReturnItemDTO)\[] — The items of the return
+    - `exchange_id`: `string` (optional) — The associated exchange's ID.
+    - `exchange`: [OrderExchangeDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderExchangeDTO) (optional) — The associated exchange.
+    - `claim_id`: `string` (optional) — The associated claim's ID.
+    - `claim`: [OrderClaimDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderClaimDTO) (optional) — The associated claim.
+    - `display_id`: `number` — The return's display ID.
+    - `location_id`: `string` (optional) — The ID of the location to return the items to.
+    - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications related to updates on the return.
+    - `created_by`: `null` | `string` (optional) — The id of the user that created the return
+    - `shipping_methods`: [OrderShippingMethodDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderShippingMethodDTO)\[] (optional) — The shipping methods used to receive the returned items.
+    - `transactions`: [OrderTransactionDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderTransactionDTO)\[] (optional) — The return's transactions if refund is required.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — The creation date of the return.
+    - `updated_at`: `string` | `Date` (optional) — The update date of the return.
+    - `deleted_at`: `string` | `Date` (optional) — The deletion date of the return.
+    - `canceled_at`: `string` | `Date` (optional) — The cancelation date of the return.
+    - `requested_at`: `string` | `Date` (optional) — The request date of the return.
+    - `received_at`: `string` | `Date` (optional) — The receival date of the return.
+  - `orderChange`: [OrderChangeDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderChangeDTO) — The order change's details.
+    - `id`: `string` — The ID of the order change
+    - `version`: `number` — The version of the order change
+    - `change_type`: `"return"` | `"exchange"` | `"claim"` | `"edit"` | `"transfer"` (optional) — The type of the order change
+    - `carry_over_promotions`: `null` | `boolean` (optional) — Whether to carry over promotions (apply promotions to outbound exchange items).
+    - `no_notification`: `null` | `boolean` (optional) — Whether the customer shouldn't be notified of the order change.
+    - `order_id`: `string` — The ID of the associated order
+    - `return_id`: `string` — The ID of the associated return order
+    - `exchange_id`: `string` — The ID of the associated exchange order
+    - `claim_id`: `string` — The ID of the associated claim order
+    - `order`: [OrderDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderDTO) — The associated order
+    - `return_order`: [ReturnDTO](/resources/references/fulfillment/interfaces/fulfillmentReturnDTO) — The associated return order
+    - `exchange`: [OrderExchangeDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderExchangeDTO) — The associated exchange order
+    - `claim`: [OrderClaimDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderClaimDTO) — The associated claim order
+    - `actions`: [OrderChangeActionDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderChangeActionDTO)\[] — The actions of the order change
+    - `status`: [OrderChangeStatus](/resources/references/fulfillment/types/fulfillmentOrderChangeStatus) — The status of the order change
+    - `requested_by`: `null` | `string` — The requested by of the order change
+    - `requested_at`: `null` | `string` | `Date` — When the order change was requested
+    - `confirmed_by`: `null` | `string` — The confirmed by of the order change
+    - `confirmed_at`: `null` | `string` | `Date` — When the order change was confirmed
+    - `declined_by`: `null` | `string` — The declined by of the order change
+    - `declined_reason`: `null` | `string` — The declined reason of the order change
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata of the order change
+    - `declined_at`: `null` | `string` | `Date` — When the order change was declined
+    - `canceled_by`: `null` | `string` — The canceled by of the order change
+    - `canceled_at`: `null` | `string` | `Date` — When the order change was canceled
+    - `created_at`: `string` | `Date` — When the order change was created
+    - `updated_at`: `string` | `Date` — When the order change was updated
+  - `items`: [RequestItemReturnWorkflowInput](/resources/references/types/WorkflowTypes/OrderWorkflow/interfaces/typesWorkflowTypesOrderWorkflowRequestItemReturnWorkflowInput)\[`"items"`] — The items to be added to the return.

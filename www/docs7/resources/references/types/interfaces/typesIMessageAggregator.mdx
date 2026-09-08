@@ -1,0 +1,92 @@
+---
+title: IMessageAggregator
+---
+
+## Methods
+
+### save
+
+<a id="save-parameters" />
+
+#### Parameters
+
+**save**
+
+- `msg`: [Message](/resources/references/types/EventBusTypes/types/typesEventBusTypesMessage) | [Message](/resources/references/types/EventBusTypes/types/typesEventBusTypesMessage)\[]
+  - `name`: `string` — The event's name.
+
+    Example:
+
+    ```
+    user.created
+    ```
+  - `metadata`: [EventMetadata](/resources/references/types/EventBusTypes/types/typesEventBusTypesEventMetadata) (optional) — Additional meadata to pass with the event.
+    - `eventGroupId`: `string` (optional) — The ID of the event's group. Grouped events are useful when you have distributed transactions where you need to explicitly group, release and clear events upon lifecycle events of a transaction. When set, you must release the grouped events using the Event Module's `releaseGroupedEvents` method to emit the events.
+    - `created_at`: `Date` (optional) — The date the event was emitted.
+    - `published_at`: `Date` (optional) — The date the event was published to the event bus. If it's a grouped event, this will be the date the group was released.
+  - `data`: TData — The data payload that subscribers receive. For example, the ID or IDs of the created user. (e.g. \{ id: "123" } or \{ ids: \["123", "456"] })
+  - `options`: `Record<string, unknown>` (optional)
+
+### getMessages
+
+<a id="getmessages-parameters" />
+
+#### Parameters
+
+**getMessages**
+
+- `format`: [MessageAggregatorFormat](/resources/references/types/interfaces/typesMessageAggregatorFormat) (optional)
+  - `groupBy`: `string`\[] (optional)
+  - `sortBy`: `object` (optional)
+
+<a id="getmessages-returns" />
+
+#### Returns
+
+**getMessages**
+
+- `Record`: `Record<string, [Message](/references/types/EventBusTypes/types/types.EventBusTypes.Message)[]>`
+  - `string`: `string`
+  - `Message[]`: [Message](/resources/references/types/EventBusTypes/types/typesEventBusTypesMessage)\[]
+    - `name`: `string` — The event's name.
+
+      Example:
+
+      ```
+      user.created
+      ```
+    - `metadata`: [EventMetadata](/resources/references/types/EventBusTypes/types/typesEventBusTypesEventMetadata) (optional) — Additional meadata to pass with the event.
+      - `eventGroupId`: `string` (optional) — The ID of the event's group. Grouped events are useful when you have distributed transactions where you need to explicitly group, release and clear events upon lifecycle events of a transaction. When set, you must release the grouped events using the Event Module's `releaseGroupedEvents` method to emit the events.
+      - `created_at`: `Date` (optional) — The date the event was emitted.
+      - `published_at`: `Date` (optional) — The date the event was published to the event bus. If it's a grouped event, this will be the date the group was released.
+    - `data`: TData — The data payload that subscribers receive. For example, the ID or IDs of the created user. (e.g. \{ id: "123" } or \{ ids: \["123", "456"] })
+    - `options`: `Record<string, unknown>` (optional)
+
+### clearMessages
+
+### saveRawMessageData
+
+<a id="saverawmessagedata-type-parameters" />
+
+#### Type Parameters
+
+**saveRawMessageData**
+
+- `T`: `object` (optional)
+
+<a id="saverawmessagedata-parameters" />
+
+#### Parameters
+
+**saveRawMessageData**
+
+- `messageData`: [RawMessageFormat](/resources/references/types/EventBusTypes/types/typesEventBusTypesRawMessageFormat)\<T> | [RawMessageFormat](/resources/references/types/EventBusTypes/types/typesEventBusTypesRawMessageFormat)\<T>\[]
+  - `eventName`: `string`
+  - `data`: TData
+  - `source`: `string`
+  - `object`: `string`
+  - `action`: `string` (optional)
+  - `context`: Pick\<[Context](/resources/references/types/interfaces/typesContext), "eventGroupId"> (optional)
+    - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `options`: `Record<string, any>` (optional)
+- `options`: `Record<string, unknown>` (optional)

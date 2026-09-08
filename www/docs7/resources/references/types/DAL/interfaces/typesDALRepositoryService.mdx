@@ -1,0 +1,458 @@
+---
+title: RepositoryService
+---
+
+Data access layer (DAL) interface to implements for any repository service.
+This layer helps to separate the business logic (service layer) from accessing the
+ORM directly and allows to switch to another ORM without changing the business logic.
+
+## Type parameters
+
+**RepositoryService**
+
+- `T`: `object` (optional)
+
+## Methods
+
+### transaction
+
+<a id="transaction-type-parameters" />
+
+#### Type Parameters
+
+**transaction**
+
+- `TManager`: `object` (optional)
+
+<a id="transaction-parameters" />
+
+#### Parameters
+
+**transaction**
+
+- `task`: (`transactionManager`: TManager) => Promise\<any>
+- `context`: `object` (optional)
+  - `isolationLevel`: `string` (optional)
+  - `transaction`: TManager (optional)
+  - `enableNestedTransactions`: `boolean` (optional)
+
+<a id="transaction-returns" />
+
+#### Returns
+
+**transaction**
+
+- `Promise`: Promise\<any>
+  - `any`: `any`
+
+### getFreshManager
+
+<a id="getfreshmanager-type-parameters" />
+
+#### Type Parameters
+
+**getFreshManager**
+
+- `TManager`: `object` (optional)
+
+<a id="getfreshmanager-returns" />
+
+#### Returns
+
+**getFreshManager**
+
+- `TManager`: TManager
+
+### getActiveManager
+
+<a id="getactivemanager-type-parameters" />
+
+#### Type Parameters
+
+**getActiveManager**
+
+- `TManager`: `object` (optional)
+
+<a id="getactivemanager-returns" />
+
+#### Returns
+
+**getActiveManager**
+
+- `TManager`: TManager
+
+### serialize
+
+<a id="serialize-type-parameters" />
+
+#### Type Parameters
+
+**serialize**
+
+- `TOutput`: `object` | `object`\[] (optional)
+
+<a id="serialize-parameters" />
+
+#### Parameters
+
+**serialize**
+
+- `data`: `any`
+- `options`: `any` (optional)
+
+<a id="serialize-returns" />
+
+#### Returns
+
+**serialize**
+
+- `Promise`: Promise\<TOutput>
+
+### find
+
+<a id="find-parameters" />
+
+#### Parameters
+
+**find**
+
+- `options`: [FindOptions](/resources/references/types/DAL/interfaces/typesDALFindOptions)\<T> (optional)
+  - `where`: [InferEntityType](/resources/references/types/DmlTypes/types/typesDmlTypesInferEntityType)\<T> extends [Constructor](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesConstructor)\<Prototype> ? [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<Prototype, 3> : [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<[InferEntityType](/resources/references/types/DmlTypes/types/typesDmlTypesInferEntityType)\<T>, 3> & [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[InferEntityType](/resources/references/types/DmlTypes/types/typesDmlTypesInferEntityType)\<T> extends [Constructor](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesConstructor)\<Prototype> ? [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<Prototype, 3> : [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<[InferEntityType](/resources/references/types/DmlTypes/types/typesDmlTypesInferEntityType)\<T>, 3>> — The filters to apply on the items.
+    - `$and`: ([BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `options`: [OptionsQuery](/resources/references/types/DAL/interfaces/typesDALOptionsQuery)\<[InferEntityType](/resources/references/types/DmlTypes/types/typesDmlTypesInferEntityType)\<T>> (optional) — The options to apply when retrieving the items.
+    - `populate`: `string`\[] (optional) — Relations to populate in the retrieved items.
+    - `orderBy`: [Order](/resources/references/types/types/typesOrder)\<T> | [Order](/resources/references/types/types/typesOrder)\<T>\[] (optional) — Fields to sort-order items by.
+    - `limit`: `number` (optional) — Limit the number of items retrieved in the list.
+    - `offset`: `number` (optional) — The number of items to skip before the retrieved items in the list.
+    - `fields`: `string`\[] (optional) — The fields to include in each of the items.
+    - `groupBy`: `string` | `string`\[] (optional) — Group results by a field or set of fields.
+    - `filters`: `boolean` | `string`\[] | [Dictionary](/resources/references/types/types/typesDictionary)\<boolean | [Dictionary](/resources/references/types/types/typesDictionary)> (optional) — Filters to apply on the retrieved items.
+    - `strategy`: `string` & `object` | `"select-in"` | `"joined"` | `"balanced"` (optional) — Load strategy (e.g for mikro orm it accept select-in or joined)
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="find-returns" />
+
+#### Returns
+
+**find**
+
+- `Promise`: Promise\<[InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[]>
+  - `InferRepositoryReturnType<T>[]`: [InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[]
+
+### findAndCount
+
+<a id="findandcount-parameters" />
+
+#### Parameters
+
+**findAndCount**
+
+- `options`: [FindOptions](/resources/references/types/DAL/interfaces/typesDALFindOptions)\<T> (optional)
+  - `where`: [InferEntityType](/resources/references/types/DmlTypes/types/typesDmlTypesInferEntityType)\<T> extends [Constructor](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesConstructor)\<Prototype> ? [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<Prototype, 3> : [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<[InferEntityType](/resources/references/types/DmlTypes/types/typesDmlTypesInferEntityType)\<T>, 3> & [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[InferEntityType](/resources/references/types/DmlTypes/types/typesDmlTypesInferEntityType)\<T> extends [Constructor](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesConstructor)\<Prototype> ? [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<Prototype, 3> : [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<[InferEntityType](/resources/references/types/DmlTypes/types/typesDmlTypesInferEntityType)\<T>, 3>> — The filters to apply on the items.
+    - `$and`: ([BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `options`: [OptionsQuery](/resources/references/types/DAL/interfaces/typesDALOptionsQuery)\<[InferEntityType](/resources/references/types/DmlTypes/types/typesDmlTypesInferEntityType)\<T>> (optional) — The options to apply when retrieving the items.
+    - `populate`: `string`\[] (optional) — Relations to populate in the retrieved items.
+    - `orderBy`: [Order](/resources/references/types/types/typesOrder)\<T> | [Order](/resources/references/types/types/typesOrder)\<T>\[] (optional) — Fields to sort-order items by.
+    - `limit`: `number` (optional) — Limit the number of items retrieved in the list.
+    - `offset`: `number` (optional) — The number of items to skip before the retrieved items in the list.
+    - `fields`: `string`\[] (optional) — The fields to include in each of the items.
+    - `groupBy`: `string` | `string`\[] (optional) — Group results by a field or set of fields.
+    - `filters`: `boolean` | `string`\[] | [Dictionary](/resources/references/types/types/typesDictionary)\<boolean | [Dictionary](/resources/references/types/types/typesDictionary)> (optional) — Filters to apply on the retrieved items.
+    - `strategy`: `string` & `object` | `"select-in"` | `"joined"` | `"balanced"` (optional) — Load strategy (e.g for mikro orm it accept select-in or joined)
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="findandcount-returns" />
+
+#### Returns
+
+**findAndCount**
+
+- `Promise`: Promise\<\[[InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[], number]>
+  - `InferRepositoryReturnType<T>[]`: [InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[]
+  - `number`: `number`
+
+### create
+
+<a id="create-parameters" />
+
+#### Parameters
+
+**create**
+
+- `data`: `any`\[]
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="create-returns" />
+
+#### Returns
+
+**create**
+
+- `Promise`: Promise\<[InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[]>
+  - `InferRepositoryReturnType<T>[]`: [InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[]
+
+### update
+
+<a id="update-parameters" />
+
+#### Parameters
+
+**update**
+
+- `data`: `object`\[]
+  - `entity`: `any`
+  - `update`: `any`
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="update-returns" />
+
+#### Returns
+
+**update**
+
+- `Promise`: Promise\<[InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[]>
+  - `InferRepositoryReturnType<T>[]`: [InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[]
+
+### delete
+
+<a id="delete-parameters" />
+
+#### Parameters
+
+**delete**
+
+- `idsOrPKs`: [InferEntityType](/resources/references/types/DmlTypes/types/typesDmlTypesInferEntityType)\<T> extends [Constructor](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesConstructor)\<Prototype> ? [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<Prototype, 3> : [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<[InferEntityType](/resources/references/types/DmlTypes/types/typesDmlTypesInferEntityType)\<T>, 3> & [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[InferEntityType](/resources/references/types/DmlTypes/types/typesDmlTypesInferEntityType)\<T> extends [Constructor](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesConstructor)\<Prototype> ? [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<Prototype, 3> : [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<[InferEntityType](/resources/references/types/DmlTypes/types/typesDmlTypesInferEntityType)\<T>, 3>>
+  - `$and`: ([BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `$or`: ([BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="delete-returns" />
+
+#### Returns
+
+**delete**
+
+- `Promise`: Promise\<string\[] | Record\<string, any>\[]>
+  - `string[] \| Record<string, any>[]`: `string`\[] | `Record<string, any>`\[]
+
+### softDelete
+
+Soft delete entities and cascade to related entities if configured.
+
+<a id="softdelete-parameters" />
+
+#### Parameters
+
+**softDelete**
+
+- `idsOrFilter`: `string` | `string`\[] | [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<unknown, 3> | [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<any, 3> | ([FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<unknown, 3> | [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<any, 3>)\[]
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="softdelete-returns" />
+
+#### Returns
+
+**softDelete**
+
+- `Promise`: Promise\<\[[InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[], Record\<string, unknown\[]>]> — \[T\[], Record\<string, string\[]>] the second value being the map of the entity names and ids that were soft deleted
+  - `InferRepositoryReturnType<T>[]`: [InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[]
+  - `Record`: `Record<string, unknown[]>`
+
+### restore
+
+<a id="restore-parameters" />
+
+#### Parameters
+
+**restore**
+
+- `idsOrFilter`: `string`\[] | [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<unknown, 3> | [FilterQueryProperties](/resources/references/types/types/typesFilterQueryProperties)\<any, 3>
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="restore-returns" />
+
+#### Returns
+
+**restore**
+
+- `Promise`: Promise\<\[[InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[], Record\<string, unknown\[]>]>
+  - `InferRepositoryReturnType<T>[]`: [InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[]
+  - `Record`: `Record<string, unknown[]>`
+
+### upsert
+
+<a id="upsert-parameters" />
+
+#### Parameters
+
+**upsert**
+
+- `data`: `any`\[]
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="upsert-returns" />
+
+#### Returns
+
+**upsert**
+
+- `Promise`: Promise\<[InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[]>
+  - `InferRepositoryReturnType<T>[]`: [InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[]
+
+### upsertWithReplace
+
+<a id="upsertwithreplace-parameters" />
+
+#### Parameters
+
+**upsertWithReplace**
+
+- `data`: `any`\[]
+- `config`: [UpsertWithReplaceConfig](/resources/references/types/DAL/interfaces/typesDALUpsertWithReplaceConfig)\<[InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>> (optional)
+  - `relations`: keyof T\[] (optional) — The relationships that will be updated/created/deleted as part of the upsert
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="upsertwithreplace-returns" />
+
+#### Returns
+
+**upsertWithReplace**
+
+- `Promise`: Promise\<object>
+  - `entities`: [InferRepositoryReturnType](/resources/references/types/DAL/types/typesDALInferRepositoryReturnType)\<T>\[]
+  - `performedActions`: [PerformedActions](/resources/references/types/DAL/types/typesDALPerformedActions)
+    - `created`: `Record<[EntityClassName](/references/types/types/types.EntityClassName), [EntityValues](/references/types/types/types.EntityValues)>`
+    - `updated`: `Record<[EntityClassName](/references/types/types/types.EntityClassName), [EntityValues](/references/types/types/types.EntityValues)>`
+    - `deleted`: `Record<[EntityClassName](/references/types/types/types.EntityClassName), [EntityValues](/references/types/types/types.EntityValues)>`

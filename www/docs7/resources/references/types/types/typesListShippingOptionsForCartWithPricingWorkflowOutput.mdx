@@ -1,0 +1,50 @@
+---
+title: ListShippingOptionsForCartWithPricingWorkflowOutput
+---
+
+The retrieved shipping options with prices.
+
+- `ListShippingOptionsForCartWithPricingWorkflowOutput`: `object`\[] — The retrieved shipping options with prices.
+  - `id`: `string` — The shipping option's ID.
+  - `name`: `string` — The name of the shipping option.
+  - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The shipping option's price type.
+  - `service_zone_id`: `string` — The associated service zone's ID.
+  - `service_zone`: `object` — The service zone details.
+    - `fulfillment_set_id`: `string` — The ID of the fulfillment set associated with the service zone.
+  - `shipping_profile_id`: `string` — The ID of the associated shipping profile.
+  - `provider_id`: `string` — The ID of the associated fulfillment provider. It's used to calculate the shipping option's price, if it's price type is `calculated`, and later it processes shipments created from this shipping option.
+  - `data`: `Record<string, unknown>` — Custom additional data related to the shipping option, useful for the fulfillment provider to process the shipping option and calculate its price. Learn more in [this documentation](/resources/commerce-modules/fulfillment/shipping-option#data-property).
+  - `type`: Omit\<[ShippingOptionTypeDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionTypeDTO), "shipping\_option\_id" | "shipping\_option" | "created\_at" | "updated\_at" | "deleted\_at"> — The shipping option's type.
+    - `id`: `string` — The ID of the shipping option type.
+    - `label`: `string` — The label of the shipping option type.
+    - `description`: `string` — The description of the shipping option type.
+    - `code`: `string` — The code of the shipping option type.
+  - `provider`: `object` — The associated fulfillment provider details.
+    - `id`: `string` — The ID of the provider.
+    - `is_enabled`: `boolean` — Whether the provider is enabled.
+  - `rules`: `object`\[] — The shipping option rules associated with the shipping option.
+    - `attribute`: `string` — The name of a property or table that the rule applies to.
+
+      Example:
+
+      ```
+      customer_group
+      ```
+    - `value`: `string` — The value of the rule.
+    - `operator`: `string` — The operator of the rule.
+
+      Example:
+
+      ```
+      in
+      ```
+  - `amount`: `number` | `undefined` — The amount for the shipping option, which can be flat rate or calculated.
+  - `is_tax_inclusive`: `boolean` | `undefined` — Indicates whether taxes are included in the shipping option amount.
+  - `calculated_price`: [CalculatedShippingOptionPrice](/resources/references/types/types/typesCalculatedShippingOptionPrice) (optional) — The calculated price for the shipping option, if its `price_type` is `calculated`.
+    - `calculated_amount`: `number` — The calculated price.
+    - `is_calculated_price_tax_inclusive`: `boolean` — Whether the calculated price includes taxes. If enabled, Medusa will infer the taxes from the calculated price. If false, Medusa will add taxes to the calculated price.
+  - `stock_location`: `object` (optional) — The details of the associated stock location, which is set if the shipping option's `price_type` is `calculated`.
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `address`: [StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO) — The address of the stock location.
+    - `fulfillment_set_id`: `string` — The ID of the fulfillment set associated with the stock location.

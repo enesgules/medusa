@@ -1,0 +1,59 @@
+---
+title: requestAuthVerification - Auth Module Reference
+sidebarTitle: requestAuthVerification
+---
+
+This documentation provides a reference to the `requestAuthVerification` method. This belongs to the Auth Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method requests a verification code for a certain entity type - email, phone number, etc.
+
+<a id="requestauthverification-parameters" />
+
+## Parameters
+
+**requestAuthVerification**
+
+- `data`: [RequestAuthVerificationDTO](/resources/references/auth/types/authRequestAuthVerificationDTO) — The data required to request a verification.
+  - `entity_id`: `string`
+  - `auth_identity_id`: `string`
+  - `entity_type`: `string`
+  - `code_provider`: `string`
+  - `metadata`: `Record<string, unknown>` | `null` (optional)
+- `sharedContext`: [Context](/resources/references/auth/interfaces/authContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/auth/interfaces/authIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="requestauthverification-returns" />
+
+## Returns
+
+**requestAuthVerification**
+
+- `Promise`: Promise\<[RequestAuthVerificationResponse](/resources/references/auth/types/authRequestAuthVerificationResponse)> — The response containing the verification code.
+  - `id`: `string` (optional)
+  - `entity_id`: `string`
+  - `auth_identity_id`: `string`
+  - `entity_type`: `string`
+  - `code_provider`: `string`
+  - `provider_metadata`: `Record<string, unknown>` | `null` (optional)
+  - `metadata`: `Record<string, unknown>` | `null` (optional)
+  - `verified_at`: `Date` | `null` (optional)
+  - `requested_at`: `Date`
+  - `code`: `string` (optional)
+  - `expires_at`: `Date` (optional)

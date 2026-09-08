@@ -1,0 +1,40 @@
+---
+title: listIndexes
+---
+
+This method retrieves the registered search indexes, their status, and the
+fields each stores. `enabled` is `false` when the Search Module is not
+configured.
+
+## Example
+
+```ts
+sdk.admin.search.listIndexes()
+.then(({ search_indexes, enabled }) => {
+  console.log(search_indexes, enabled)
+})
+```
+
+<a id="listindexes-parameters" />
+
+## Parameters
+
+**listIndexes**
+
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listindexes-returns" />
+
+## Returns
+
+**listIndexes**
+
+- `Promise`: Promise\<[AdminSearchIndexListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSearchIndexListResponse)> — The registered search indexes.
+  - `search_indexes`: [AdminSearchIndex](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSearchIndex)\[] — The registered search indexes.
+    - `name`: `string` — Unique index name, as used in `query.search({ entity })`.
+    - `entity`: `string` — The `query.graph` entrypoint used to hydrate non-indexed fields.
+    - `provider`: `string` — Identifier of the provider backing this index.
+    - `status`: [AdminSearchIndexStatus](/resources/references/types/HttpTypes/types/typesHttpTypesAdminSearchIndexStatus) — Lifecycle status of the index.
+    - `fields`: [AdminSearchIndexField](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSearchIndexField)\[] — Leaf fields stored in the index.
+  - `enabled`: `boolean` — Whether the Search Module is enabled. When `false`, `search_indexes` is empty.

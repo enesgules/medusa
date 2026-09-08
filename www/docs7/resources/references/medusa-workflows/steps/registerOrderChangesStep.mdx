@@ -1,0 +1,40 @@
+---
+title: registerOrderChangesStep - Medusa Core Workflows Reference
+sidebarTitle: registerOrderChangesStep
+---
+
+This documentation provides a reference to the `registerOrderChangesStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step registers an order changes.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { registerOrderChangesStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = registerOrderChangesStep({
+      "order_id": "order_123"
+    })
+  }
+)
+```
+
+<a id="registerorderchangesstep-input" />
+
+## Input
+
+**registerOrderChangesStep**
+
+- `RegisterOrderChangeStepInput`: [RegisterOrderChangeStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcRegisterOrderChangeStepInput)
+  - `order_id`: `string` — The associated order's ID.
+  - `change_type`: [OrderChangeType](/resources/references/order/types/orderOrderChangeType) (optional) — The type of the order change.
+  - `description`: `string` (optional) — The description of the order change.
+  - `internal_note`: `null` | `string` (optional) — The internal note of the order change.
+  - `created_by`: `string` (optional) — The user that created the order change.
+  - `confirmed_by`: `string` (optional) — The user or customer that confirmed the order change.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `details`: `Record<string, unknown>` (optional) — The details of the order change action
+  - `reference`: `string` (optional) — The name of the data model that this change references. For example, `shipping_address`.
+  - `reference_id`: `string` (optional) — The ID of the data model's record referenced.

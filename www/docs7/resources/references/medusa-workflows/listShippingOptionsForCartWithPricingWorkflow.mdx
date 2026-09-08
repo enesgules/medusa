@@ -1,0 +1,318 @@
+---
+title: listShippingOptionsForCartWithPricingWorkflow - Medusa Core Workflows Reference
+sidebarTitle: listShippingOptionsForCartWithPricingWorkflow
+---
+
+This documentation provides a reference to the `listShippingOptionsForCartWithPricingWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow lists shipping options that can be used during checkout for a cart. It also retrieves the prices
+of these shipping options, including calculated prices that may be retrieved from third-party providers.
+
+This workflow is executed in other cart-related workflows, such as [addShippingMethodToCartWorkflow](/resources/references/medusa-workflows/addShippingMethodToCartWorkflow) to retrieve the
+price of the shipping method being added to the cart.
+
+You can use this workflow within your own customizations or custom workflows, allowing you to retrieve the shipping options of a cart and their prices
+in your custom flows.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/cart/workflows/list-shipping-options-for-cart-with-pricing.ts#L182)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { listShippingOptionsForCartWithPricingWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await listShippingOptionsForCartWithPricingWorkflow(req
+      .scope)
+    .run({
+      input: {
+        cart_id: "cart_123",
+        options: [{
+          id: "so_123",
+          data: {
+            carrier_code: "fedex"
+          }
+        }]
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { listShippingOptionsForCartWithPricingWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await listShippingOptionsForCartWithPricingWorkflow(
+      container)
+    .run({
+      input: {
+        cart_id: "cart_123",
+        options: [{
+          id: "so_123",
+          data: {
+            carrier_code: "fedex"
+          }
+        }]
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { listShippingOptionsForCartWithPricingWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await listShippingOptionsForCartWithPricingWorkflow(
+      container)
+    .run({
+      input: {
+        cart_id: "cart_123",
+        options: [{
+          id: "so_123",
+          data: {
+            carrier_code: "fedex"
+          }
+        }]
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { listShippingOptionsForCartWithPricingWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = listShippingOptionsForCartWithPricingWorkflow
+      .runAsStep({
+        input: {
+          cart_id: "cart_123",
+          options: [{
+            id: "so_123",
+            data: {
+              carrier_code: "fedex"
+            }
+          }]
+        }
+      })
+  }
+)
+```
+
+<a id="listshippingoptionsforcartwithpricingworkflow-steps" />
+
+## Steps
+
+- [validatePresenceOfStep](/resources/references/medusa-workflows/steps/validatePresenceOfStep): This step validates the presence of attributes on an object
+  - [setShippingOptionsContext](/resources/references/medusa-workflows/listShippingOptionsForCartWithPricingWorkflow#setshippingoptionscontext)
+    - [setCalculatedShippingPricingContext](/resources/references/medusa-workflows/listShippingOptionsForCartWithPricingWorkflow#setcalculatedshippingpricingcontext): This hook is executed before the calculated shipping methods' prices are refreshed. You can consume it to return any custom context that is merged into the `context` parameter of the fulfillment provider's `calculatePrice` method (framework-provided properties take precedence on a naming conflict).
+      - [calculateShippingOptionsPricesStep](/resources/references/medusa-workflows/steps/calculateShippingOptionsPricesStep): This step calculates the prices for one or more shipping options.
+        - [getTranslatedShippingOptionsStep](/resources/references/medusa-workflows/steps/getTranslatedShippingOptionsStep): This step applies translations to a list of shipping options based on the provided locale. It modifies the shipping options in place and returns them.
+
+<a id="listshippingoptionsforcartwithpricingworkflow-input" />
+
+## Input
+
+**listShippingOptionsForCartWithPricingWorkflow**
+
+- `ListShippingOptionsForCartWithPricingWorkflowInput & AdditionalData`: [ListShippingOptionsForCartWithPricingWorkflowInput](/resources/references/types/types/typesListShippingOptionsForCartWithPricingWorkflowInput) & [AdditionalData](/resources/references/types/HttpTypes/types/typesHttpTypesAdditionalData)
+  - `ListShippingOptionsForCartWithPricingWorkflowInput`: [ListShippingOptionsForCartWithPricingWorkflowInput](/resources/references/types/types/typesListShippingOptionsForCartWithPricingWorkflowInput) — The context for retrieving the shipping options.
+    - `cart_id`: `string` — The cart's ID.
+    - `options`: `object`\[] (optional) — Specify the shipping options to retrieve their details and prices. If not provided, all applicable shipping options are retrieved.
+      - `id`: `string` — The shipping option's ID.
+      - `data`: `Record<string, unknown>` (optional) — Custom data relevant for the fulfillment provider that processes this shipping option. It can be data relevant to calculate the shipping option's price. Learn more in [this documentation](/resources/commerce-modules/fulfillment/shipping-option#data-property).
+    - `is_return`: `boolean` (optional, default: false) — Whether to retrieve return shipping options. By default, non-return shipping options are retrieved.
+    - `enabled_in_store`: `boolean` (optional, default: true) — Whether to retrieve the shipping option's enabled in the store, which is the default.
+  - `AdditionalData`: [AdditionalData](/resources/references/types/HttpTypes/types/typesHttpTypesAdditionalData)
+    - `additional_data`: `Record<string, unknown>` (optional) — Additional data that can be passed through the `additional_data` property in HTTP requests. Learn more in [this documentation](/learn/fundamentals/api-routes/additional-data).
+
+<a id="listshippingoptionsforcartwithpricingworkflow-output" />
+
+## Output
+
+**listShippingOptionsForCartWithPricingWorkflow**
+
+- `any[]`: `any`\[]
+  - `any`: `any`
+
+## Hooks
+
+Hooks allow you to inject custom functionalities into the workflow. You'll receive data from the workflow, as well as additional data sent through an HTTP request.
+
+Learn more about [Hooks](/learn/fundamentals/workflows/workflow-hooks) and [Additional Data](/learn/fundamentals/api-routes/additional-data).
+
+### setShippingOptionsContext
+
+This hook is executed after the cart is retrieved and before the shipping options are queried. You can consume this hook to return any custom context useful for the shipping options retrieval.
+
+For example, you can consume the hook to add the customer Id to the context:
+
+```ts
+import { listShippingOptionsForCartWithPricingWorkflow } from "@medusajs/medusa/core-flows"
+import { StepResponse } from "@medusajs/workflows-sdk"
+
+listShippingOptionsForCartWithPricingWorkflow.hooks.setShippingOptionsContext(
+  async ({ cart }, { container }) => {
+
+    if (cart.customer_id) {
+      return new StepResponse({
+        customer_id: cart.customer_id,
+      })
+    }
+
+    const query = container.resolve("query")
+
+    const { data: carts } = await query.graph({
+      entity: "cart",
+      filters: {
+        id: cart.id,
+      },
+      fields: ["customer_id"],
+    })
+
+    return new StepResponse({
+      customer_id: carts[0].customer_id,
+    })
+  }
+)
+```
+
+The `customer_id` property will be added to the context along with other properties such as `is_return` and `enabled_in_store`.
+
+> **Note**
+>
+> You should also consume the `setShippingOptionsContext` hook in the [listShippingOptionsForCartWorkflow](/resources/references/medusa-workflows/listShippingOptionsForCartWorkflow) workflow to ensure that the context is consistent when listing shipping options across workflows.
+
+#### Example
+
+```ts
+import { listShippingOptionsForCartWithPricingWorkflow } from "@medusajs/medusa/core-flows"
+
+listShippingOptionsForCartWithPricingWorkflow.hooks.setShippingOptionsContext(
+  (async ({ cart, fulfillmentSetIds, additional_data }, { container }) => {
+    //TODO
+  })
+)
+```
+
+<a id="input" />
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+**setShippingOptionsContext**
+
+- `input`: object — The input data for the hook.
+  - `cart`: `any`
+  - `fulfillmentSetIds`: `string`\[]
+  - `additional_data`: `Record<string, unknown> | undefined` — Additional data that can be passed through the `additional_data` property in HTTP requests. Learn more in [this documentation](/learn/fundamentals/api-routes/additional-data).
+
+### setCalculatedShippingPricingContext
+
+This hook is executed after the cart is retrieved and before the calculated shipping options' prices are calculated. You can consume this hook to return any
+custom context that is forwarded as-is to the fulfillment provider's `calculatePrice` method.
+
+For example, you can consume the hook to pass a negotiated carrier contract to the provider:
+
+```ts
+import { listShippingOptionsForCartWithPricingWorkflow } from "@medusajs/medusa/core-flows"
+import { StepResponse } from "@medusajs/workflows-sdk"
+
+listShippingOptionsForCartWithPricingWorkflow.hooks.setCalculatedShippingPricingContext(
+  async ({ input }, { container }) => {
+    const query = container.resolve("query")
+
+    const { data: [cart]} = await query.graph({
+      entity: "cart",
+      filters: { id: input.cart_id },
+      fields: ["customer_id"],
+    })
+
+    const { data: contracts } = await query.graph({
+      entity: "carrier_contract",
+      filters: { customer_id: cart.customer_id },
+      fields: ["account_number"],
+    })
+
+    return new StepResponse({
+      account_number: contracts[0]?.account_number,
+    })
+  }
+)
+```
+
+The returned object is merged into the `context` parameter of the fulfillment provider's `calculatePrice` method, with framework-provided properties taking precedence on a naming conflict.
+
+This hook only affects calculated shipping options; flat-rate options are priced by the Pricing Module.
+
+#### Example
+
+```ts
+import { listShippingOptionsForCartWithPricingWorkflow } from "@medusajs/medusa/core-flows"
+
+listShippingOptionsForCartWithPricingWorkflow.hooks
+  .setCalculatedShippingPricingContext(
+    (async ({ input }, { container }) => {
+      //TODO
+    })
+  )
+```
+
+<a id="input-1" />
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+**setCalculatedShippingPricingContext**
+
+- `input`: object — The input data for the hook.
+  - `input`: [ListShippingOptionsForCartWithPricingWorkflowInput](/resources/references/types/types/typesListShippingOptionsForCartWithPricingWorkflowInput) & [AdditionalData](/resources/references/types/HttpTypes/types/typesHttpTypesAdditionalData)
+    - `cart_id`: `string` — The cart's ID.
+    - `options`: `object`\[] (optional) — Specify the shipping options to retrieve their details and prices. If not provided, all applicable shipping options are retrieved.
+    - `is_return`: `boolean` (optional, default: false) — Whether to retrieve return shipping options. By default, non-return shipping options are retrieved.
+    - `enabled_in_store`: `boolean` (optional, default: true) — Whether to retrieve the shipping option's enabled in the store, which is the default.
+    - `additional_data`: `Record<string, unknown>` (optional) — Additional data that can be passed through the `additional_data` property in HTTP requests. Learn more in [this documentation](/learn/fundamentals/api-routes/additional-data).

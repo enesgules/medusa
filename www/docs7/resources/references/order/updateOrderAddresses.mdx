@@ -1,0 +1,129 @@
+---
+title: updateOrderAddresses - Order Module Reference
+sidebarTitle: updateOrderAddresses
+---
+
+This documentation provides a reference to the `updateOrderAddresses` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updateorderaddresses-data-sharedcontext-promiseorderaddressdto" />
+
+## updateOrderAddresses(data, sharedContext?): Promise\<[OrderAddressDTO](/resources/references/order/interfaces/orderOrderAddressDTO)\[]>
+
+This method updates existing addresses. The address ID is specified in each address object.
+
+### Example
+
+```typescript
+const addresses = await orderModuleService.updateOrderAddresses([{
+  id: "123",
+  first_name: "John",
+}])
+```
+
+<a id="updateorderaddresses-parameters" />
+
+### Parameters
+
+**updateOrderAddresses**
+
+- `data`: [UpdateOrderAddressDTO](/resources/references/order/interfaces/orderUpdateOrderAddressDTO)\[] — The attributes to update in the address.
+  - `customer_id`: `string` (optional) — The associated customer's ID.
+  - `company`: `null` | `string` (optional) — The company name.
+  - `first_name`: `null` | `string` (optional) — The first name of the customer.
+  - `last_name`: `null` | `string` (optional) — The last name of the customer.
+  - `address_1`: `null` | `string` (optional) — The address 1 of the address.
+  - `address_2`: `null` | `string` (optional) — The address 2 of the address.
+  - `city`: `null` | `string` (optional) — The city of the address.
+  - `country_code`: `null` | `string` (optional) — The country code of the address.
+  - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the address.
+  - `postal_code`: `null` | `string` (optional) — The postal code of the address.
+  - `phone`: `null` | `string` (optional) — The phone of the address.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `id`: `string` — The ID of the address.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorderaddresses-returns" />
+
+### Returns
+
+**updateOrderAddresses**
+
+- `Promise`: Promise\<[OrderAddressDTO](/resources/references/order/interfaces/orderOrderAddressDTO)\[]> — The updated addresses.
+  - `OrderAddressDTO[]`: [OrderAddressDTO](/resources/references/order/interfaces/orderOrderAddressDTO)\[]
+
+<a id="updateorderaddresses-data-sharedcontext-promiseorderaddressdto-1" />
+
+## updateOrderAddresses(data, sharedContext?): Promise\<[OrderAddressDTO](/resources/references/order/interfaces/orderOrderAddressDTO)>
+
+This method updates an existing address.
+
+### Example
+
+```typescript
+const address = await orderModuleService.updateOrderAddresses({
+  id: "123",
+  first_name: "John",
+})
+```
+
+<a id="updateorderaddresses-parameters-1" />
+
+### Parameters
+
+**updateOrderAddresses**
+
+- `data`: [UpdateOrderAddressDTO](/resources/references/order/interfaces/orderUpdateOrderAddressDTO) — The attributes to update in the address.
+  - `customer_id`: `string` (optional) — The associated customer's ID.
+  - `company`: `null` | `string` (optional) — The company name.
+  - `first_name`: `null` | `string` (optional) — The first name of the customer.
+  - `last_name`: `null` | `string` (optional) — The last name of the customer.
+  - `address_1`: `null` | `string` (optional) — The address 1 of the address.
+  - `address_2`: `null` | `string` (optional) — The address 2 of the address.
+  - `city`: `null` | `string` (optional) — The city of the address.
+  - `country_code`: `null` | `string` (optional) — The country code of the address.
+  - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the address.
+  - `postal_code`: `null` | `string` (optional) — The postal code of the address.
+  - `phone`: `null` | `string` (optional) — The phone of the address.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `id`: `string` — The ID of the address.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorderaddresses-returns-1" />
+
+### Returns
+
+**updateOrderAddresses**
+
+- `Promise`: Promise\<[OrderAddressDTO](/resources/references/order/interfaces/orderOrderAddressDTO)> — The updated address.

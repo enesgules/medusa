@@ -1,0 +1,561 @@
+---
+title: stockLocation - JS SDK Admin Reference
+sidebarTitle: stockLocation
+---
+
+This documentation provides a reference to the `sdk.admin.stockLocation` set of methods used to send requests to Medusa's Admin API routes.
+
+## create
+
+This method creates a new stock location. It sends a request to the
+[Create Stock Location](/api/admin/stock-locations/create-stock-location)
+API route.
+
+### Example
+
+```ts
+sdk.admin.stockLocation.create({
+  name: "Main Warehouse",
+  address_id: "addr_123",
+})
+.then(({ stock_location }) => {
+  console.log(stock_location)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [AdminCreateStockLocation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateStockLocation) — The details of the stock location to create.
+  - `name`: `string` — The name of the stock location.
+  - `address_id`: `null` | `string` (optional) — The ID of the address to associate with the stock location. If you provide an `address`, you don't need to provide this property.
+  - `address`: [AdminUpsertStockLocationAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpsertStockLocationAddress) (optional) — The address to create or update for the stock location. If you provide an `address_id`, you don't need to provide this property.
+    - `country_code`: `string`
+    - `address_1`: `string`
+    - `metadata`: `null` | `Record<string, unknown>` (optional)
+    - `address_2`: `null` | `string` (optional)
+    - `company`: `null` | `string` (optional)
+    - `city`: `null` | `string` (optional)
+    - `phone`: `null` | `string` (optional)
+    - `postal_code`: `null` | `string` (optional)
+    - `province`: `null` | `string` (optional)
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the stock location.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the stock location.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminStockLocationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationResponse)> — The stock location's details.
+  - `stock_location`: [AdminStockLocation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocation) — The stock location's details.
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata associated with the stock location.
+    - `address_id`: `string` — The ID of the address associated with the stock location.
+    - `address`: [AdminStockLocationAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationAddress) (optional) — The address associated with the stock location.
+    - `sales_channels`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels associated with the stock location.
+    - `fulfillment_providers`: [AdminFulfillmentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentProvider)\[] (optional) — The fulfillment providers associated with the stock location.
+    - `fulfillment_sets`: [AdminFulfillmentSet](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentSet)\[] (optional) — The fulfillment sets associated with the stock location.
+
+## update
+
+This method updates a stock location. It sends a request to the
+[Update Stock Location](/api/admin/stock-locations/update-a-stock-location)
+API route.
+
+### Example
+
+```ts
+sdk.admin.stockLocation.update("sloc_123", {
+  name: "European Warehouse",
+})
+.then(({ stock_location }) => {
+  console.log(stock_location)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `id`: `string` — The ID of the stock location to update.
+- `body`: [AdminUpdateStockLocation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateStockLocation) — The details of the stock location to update.
+  - `name`: `string` (optional) — The name of the stock location.
+  - `address_id`: `null` | `string` (optional) — The ID of the address to associate with the stock location. If you provide an `address`, you don't need to provide this property.
+  - `address`: [AdminUpsertStockLocationAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpsertStockLocationAddress) (optional) — The address to create or update for the stock location. If you provide an `address_id`, you don't need to provide this property.
+    - `country_code`: `string`
+    - `address_1`: `string`
+    - `metadata`: `null` | `Record<string, unknown>` (optional)
+    - `address_2`: `null` | `string` (optional)
+    - `company`: `null` | `string` (optional)
+    - `city`: `null` | `string` (optional)
+    - `phone`: `null` | `string` (optional)
+    - `postal_code`: `null` | `string` (optional)
+    - `province`: `null` | `string` (optional)
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the stock location.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the stock location.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminStockLocationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationResponse)> — The stock location's details.
+  - `stock_location`: [AdminStockLocation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocation) — The stock location's details.
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata associated with the stock location.
+    - `address_id`: `string` — The ID of the address associated with the stock location.
+    - `address`: [AdminStockLocationAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationAddress) (optional) — The address associated with the stock location.
+    - `sales_channels`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels associated with the stock location.
+    - `fulfillment_providers`: [AdminFulfillmentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentProvider)\[] (optional) — The fulfillment providers associated with the stock location.
+    - `fulfillment_sets`: [AdminFulfillmentSet](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentSet)\[] (optional) — The fulfillment sets associated with the stock location.
+
+## delete
+
+This method deletes a stock location. It sends a request to the
+[Delete Stock Location](/api/admin/stock-locations/delete-a-stock-location)
+API route.
+
+### Example
+
+```ts
+sdk.admin.stockLocation.delete("sloc_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The ID of the stock location to delete.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminStockLocationDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: `"stock_location"` — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## retrieve
+
+This method retrieves a stock location. It sends a request to the
+[Get Stock Location](/api/admin/stock-locations/get-a-stock-location)
+API route.
+
+### Example
+
+To retrieve a stock location by its ID:
+
+```ts
+sdk.admin.stockLocation.retrieve("sloc_123")
+.then(({ stock_location }) => {
+  console.log(stock_location)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.stockLocation.retrieve("sloc_123", {
+  fields: "id,*sales_channels"
+})
+.then(({ stock_location }) => {
+  console.log(stock_location)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The ID of the stock location to retrieve.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the stock location.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminStockLocationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationResponse)> — The stock location's details.
+  - `stock_location`: [AdminStockLocation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocation) — The stock location's details.
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata associated with the stock location.
+    - `address_id`: `string` — The ID of the address associated with the stock location.
+    - `address`: [AdminStockLocationAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationAddress) (optional) — The address associated with the stock location.
+    - `sales_channels`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels associated with the stock location.
+    - `fulfillment_providers`: [AdminFulfillmentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentProvider)\[] (optional) — The fulfillment providers associated with the stock location.
+    - `fulfillment_sets`: [AdminFulfillmentSet](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentSet)\[] (optional) — The fulfillment sets associated with the stock location.
+
+## list
+
+This method retrieves a list of stock locations. It sends a request to the
+[List Stock Locations](/api/admin/stock-locations/list-stock-locations)
+API route.
+
+### Example
+
+To retrieve the list of stock locations:
+
+```ts
+sdk.admin.stockLocation.list()
+.then(({ stock_locations, count, limit, offset }) => {
+  console.log(stock_locations)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.stockLocation.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ stock_locations, count, limit, offset }) => {
+  console.log(stock_locations)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each stock location:
+
+```ts
+sdk.admin.stockLocation.list({
+  fields: "id,*sales_channels"
+})
+.then(({ stock_locations, count, limit, offset }) => {
+  console.log(stock_locations)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [AdminStockLocationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationListParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminStockLocationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminStockLocationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminStockLocationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminStockLocationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminStockLocationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminStockLocationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by stock location ID(s).
+    - `q`: `string` (optional) — Query or keywords to search the stock location's searchable fields.
+    - `name`: `string` | `string`\[] (optional) — Filter by stock location name.
+    - `address_id`: `string` | `string`\[] (optional) — Filter by stock location address ID(s).
+    - `sales_channel_id`: `string` | `string`\[] (optional) — Filter by sales channel ID(s) to retrieve the stock locations for.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the stock location was created.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the stock location was updated.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the stock location was deleted.
+  - `$or`: ([AdminStockLocationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminStockLocationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminStockLocationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminStockLocationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminStockLocationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminStockLocationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by stock location ID(s).
+    - `q`: `string` (optional) — Query or keywords to search the stock location's searchable fields.
+    - `name`: `string` | `string`\[] (optional) — Filter by stock location name.
+    - `address_id`: `string` | `string`\[] (optional) — Filter by stock location address ID(s).
+    - `sales_channel_id`: `string` | `string`\[] (optional) — Filter by sales channel ID(s) to retrieve the stock locations for.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the stock location was created.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the stock location was updated.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the stock location was deleted.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `id`: `string` | `string`\[] (optional) — Filter by stock location ID(s).
+  - `q`: `string` (optional) — Query or keywords to search the stock location's searchable fields.
+  - `name`: `string` | `string`\[] (optional) — Filter by stock location name.
+  - `address_id`: `string` | `string`\[] (optional) — Filter by stock location address ID(s).
+  - `sales_channel_id`: `string` | `string`\[] (optional) — Filter by sales channel ID(s) to retrieve the stock locations for.
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the stock location was created.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the stock location was updated.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the stock location was deleted.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminStockLocationListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationListResponse)> — The list of stock locations.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `stock_locations`: [AdminStockLocation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocation)\[] — The list of stock locations.
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata associated with the stock location.
+    - `address_id`: `string` — The ID of the address associated with the stock location.
+    - `address`: [AdminStockLocationAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationAddress) (optional) — The address associated with the stock location.
+    - `sales_channels`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels associated with the stock location.
+    - `fulfillment_providers`: [AdminFulfillmentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentProvider)\[] (optional) — The fulfillment providers associated with the stock location.
+    - `fulfillment_sets`: [AdminFulfillmentSet](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentSet)\[] (optional) — The fulfillment sets associated with the stock location.
+
+## updateSalesChannels
+
+This method manages the sales channels of a stock location by adding or removing them. It sends a request to the
+[Manage Stock Location Sales Channels](/api/admin/stock-locations/manage-sales-channels)
+API route.
+
+### Example
+
+```ts
+sdk.admin.stockLocation.updateSalesChannels("sloc_123", {
+  add: ["sc_123"],
+  remove: ["sc_456"],
+})
+.then(({ stock_location }) => {
+  console.log(stock_location)
+})
+```
+
+<a id="updatesaleschannels-parameters" />
+
+### Parameters
+
+**updateSalesChannels**
+
+- `id`: `string` — The ID of the stock location to update the sales channels for.
+- `body`: [AdminUpdateStockLocationSalesChannels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateStockLocationSalesChannels) — The details of the sales channels to update.
+  - `add`: `string`\[] (optional) — The IDs of the sales channels to add to the stock location.
+  - `remove`: `string`\[] (optional) — The IDs of the sales channels to remove from the stock location.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updatesaleschannels-returns" />
+
+### Returns
+
+**updateSalesChannels**
+
+- `Promise`: Promise\<[AdminStockLocationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationResponse)> — The stock location's details.
+  - `stock_location`: [AdminStockLocation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocation) — The stock location's details.
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata associated with the stock location.
+    - `address_id`: `string` — The ID of the address associated with the stock location.
+    - `address`: [AdminStockLocationAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationAddress) (optional) — The address associated with the stock location.
+    - `sales_channels`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels associated with the stock location.
+    - `fulfillment_providers`: [AdminFulfillmentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentProvider)\[] (optional) — The fulfillment providers associated with the stock location.
+    - `fulfillment_sets`: [AdminFulfillmentSet](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentSet)\[] (optional) — The fulfillment sets associated with the stock location.
+
+## createFulfillmentSet
+
+This method adds a new fulfillment set to a stock location. It sends a request to the
+[Add Fulfillment Set to Stock Location](/api/admin/stock-locations/add-fulfillment-set)
+API route.
+
+### Example
+
+```ts
+sdk.admin.stockLocation.createFulfillmentSet("sloc_123", {
+  name: "Shipping",
+  type: "shipping",
+})
+.then(({ stock_location }) => {
+  console.log(stock_location)
+})
+```
+
+<a id="createfulfillmentset-parameters" />
+
+### Parameters
+
+**createFulfillmentSet**
+
+- `id`: `string` — The ID of the stock location to add the fulfillment set to.
+- `body`: [AdminCreateStockLocationFulfillmentSet](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateStockLocationFulfillmentSet) — The details of the fulfillment set to add.
+  - `name`: `string` — The name of the fulfillment set.
+  - `type`: `string` — The type of the fulfillment set.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="createfulfillmentset-returns" />
+
+### Returns
+
+**createFulfillmentSet**
+
+- `Promise`: Promise\<[AdminStockLocationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationResponse)> — The stock location's details.
+  - `stock_location`: [AdminStockLocation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocation) — The stock location's details.
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata associated with the stock location.
+    - `address_id`: `string` — The ID of the address associated with the stock location.
+    - `address`: [AdminStockLocationAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationAddress) (optional) — The address associated with the stock location.
+    - `sales_channels`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels associated with the stock location.
+    - `fulfillment_providers`: [AdminFulfillmentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentProvider)\[] (optional) — The fulfillment providers associated with the stock location.
+    - `fulfillment_sets`: [AdminFulfillmentSet](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentSet)\[] (optional) — The fulfillment sets associated with the stock location.
+
+## updateFulfillmentProviders
+
+This method manages the fulfillment providers of a stock location by adding or removing them. It sends a request to the
+[Manage Fulfillment Providers of Stock Location](/api/admin/stock-locations/manage-fulfillment-providers)
+API route.
+
+### Example
+
+```ts
+sdk.admin.stockLocation.updateFulfillmentProviders("sloc_123", {
+  add: ["fp_manual_manual"],
+  remove: ["fp_shipstation_shipstation"],
+})
+.then(({ stock_location }) => {
+  console.log(stock_location)
+})
+```
+
+<a id="updatefulfillmentproviders-parameters" />
+
+### Parameters
+
+**updateFulfillmentProviders**
+
+- `id`: `string` — The ID of the stock location to manage the fulfillment providers for.
+- `body`: [AdminBatchLink](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchLink) — The details of the fulfillment providers to manage.
+  - `add`: `string`\[] (optional) — The IDs of the items to create an association to.
+  - `remove`: `string`\[] (optional) — The IDs of the items to remove the association from.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updatefulfillmentproviders-returns" />
+
+### Returns
+
+**updateFulfillmentProviders**
+
+- `Promise`: Promise\<[AdminStockLocationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationResponse)> — The stock location's details.
+  - `stock_location`: [AdminStockLocation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocation) — The stock location's details.
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata associated with the stock location.
+    - `address_id`: `string` — The ID of the address associated with the stock location.
+    - `address`: [AdminStockLocationAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationAddress) (optional) — The address associated with the stock location.
+    - `sales_channels`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels associated with the stock location.
+    - `fulfillment_providers`: [AdminFulfillmentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentProvider)\[] (optional) — The fulfillment providers associated with the stock location.
+    - `fulfillment_sets`: [AdminFulfillmentSet](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentSet)\[] (optional) — The fulfillment sets associated with the stock location.

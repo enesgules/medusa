@@ -1,0 +1,223 @@
+---
+title: list
+---
+
+This method retrieves a paginated list of inventory items. It sends a request to the
+[List Inventory Items](/api/admin/inventory-items/list-inventory-items)
+API route.
+
+## Example
+
+To retrieve the list of inventory items:
+
+```ts
+sdk.admin.inventoryItem.list()
+.then(({ inventory_items, count, limit, offset }) => {
+  console.log(inventory_items)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.inventoryItem.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ inventory_items, count, limit, offset }) => {
+  console.log(inventory_items)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each inventory item:
+
+```ts
+sdk.admin.inventoryItem.list({
+  fields: "id,*location_levels"
+})
+.then(({ inventory_items, count, limit, offset }) => {
+  console.log(inventory_items)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+## Parameters
+
+**list**
+
+- `query`: [AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by inventory item ID(s).
+    - `q`: `string` (optional) — Query or keywords to search the inventory item's searchable fields.
+    - `sku`: `string` | `string`\[] (optional) — Filter by SKU(s).
+    - `origin_country`: `string` | `string`\[] (optional) — Filter by origin countries.
+    - `mid_code`: `string` | `string`\[] (optional) — Filter by MID code(s).
+    - `hs_code`: `string` | `string`\[] (optional) — Filter by HS code(s).
+    - `material`: `string` | `string`\[] (optional) — Filter by material(s).
+    - `requires_shipping`: `boolean` (optional) — Filter by whether the item requires shipping.
+    - `weight`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by weight(s).
+    - `length`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by length(s).
+    - `height`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by height(s).
+    - `width`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by width(s).
+    - `location_levels`: `object` (optional) — Filter by stock location IDs to retrieve inventory items that have inventory levels associated with the locations.
+  - `$or`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by inventory item ID(s).
+    - `q`: `string` (optional) — Query or keywords to search the inventory item's searchable fields.
+    - `sku`: `string` | `string`\[] (optional) — Filter by SKU(s).
+    - `origin_country`: `string` | `string`\[] (optional) — Filter by origin countries.
+    - `mid_code`: `string` | `string`\[] (optional) — Filter by MID code(s).
+    - `hs_code`: `string` | `string`\[] (optional) — Filter by HS code(s).
+    - `material`: `string` | `string`\[] (optional) — Filter by material(s).
+    - `requires_shipping`: `boolean` (optional) — Filter by whether the item requires shipping.
+    - `weight`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by weight(s).
+    - `length`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by length(s).
+    - `height`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by height(s).
+    - `width`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by width(s).
+    - `location_levels`: `object` (optional) — Filter by stock location IDs to retrieve inventory items that have inventory levels associated with the locations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `id`: `string` | `string`\[] (optional) — Filter by inventory item ID(s).
+  - `q`: `string` (optional) — Query or keywords to search the inventory item's searchable fields.
+  - `sku`: `string` | `string`\[] (optional) — Filter by SKU(s).
+  - `origin_country`: `string` | `string`\[] (optional) — Filter by origin countries.
+  - `mid_code`: `string` | `string`\[] (optional) — Filter by MID code(s).
+  - `hs_code`: `string` | `string`\[] (optional) — Filter by HS code(s).
+  - `material`: `string` | `string`\[] (optional) — Filter by material(s).
+  - `requires_shipping`: `boolean` (optional) — Filter by whether the item requires shipping.
+  - `weight`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by weight(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `length`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by length(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `height`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by height(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `width`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by width(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `location_levels`: `object` (optional) — Filter by stock location IDs to retrieve inventory items that have inventory levels associated with the locations.
+    - `location_id`: `string` | `string`\[] (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+## Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminInventoryItemListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminInventoryItemListResponse)> — The paginated list of inventory items.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.

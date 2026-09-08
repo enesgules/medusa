@@ -1,0 +1,74 @@
+---
+title: create
+---
+
+This method creates a new region. It sends a request to the
+[Create Region](/api/admin/regions/create-region)
+API route.
+
+## Example
+
+```ts
+sdk.admin.region.create({
+  name: "United States",
+  currency_code: "usd",
+})
+.then(({ region }) => {
+  console.log(region)
+})
+```
+
+<a id="create-parameters" />
+
+## Parameters
+
+**create**
+
+- `body`: [AdminCreateRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateRegion) — The details of the region to create.
+  - `name`: `string` — The name of the region.
+  - `currency_code`: `string` — The currency code of the region.
+
+    Example:
+
+    ```
+    "usd"
+    ```
+  - `countries`: `string`\[] (optional) — The 2 ISO code of the countries in the region.
+
+    Example:
+
+    ```
+    ["us", "ca"]
+    ```
+  - `automatic_taxes`: `boolean` (optional) — Whether taxes are automatically calculated during checkout for this region.
+  - `is_tax_inclusive`: `boolean` (optional) — Whether prices in this region include taxes by default. Learn more in the [tax-inclusive pricing](/resources/commerce-modules/pricing/tax-inclusive-pricing) documentation.
+  - `payment_providers`: `string`\[] (optional) — The IDs of the payment providers that are available in this region. The IDs are of the format `pp_{identifier}_{id}`.
+
+    Example:
+
+    ```
+    ["pp_stripe_stripe", "pp_system_default"]
+    ```
+  - `metadata`: `null` | `Record<string, any>` (optional) — Custom key-value pairs that can be added to the region.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the region.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+## Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminRegionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegionResponse)> — The created region's details.
+  - `region`: [AdminRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegion) — The region's details.
+    - `countries`: [AdminRegionCountry](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegionCountry)\[] (optional) — The countries in the region.
+    - `id`: `string` — The region's ID.
+    - `name`: `string` — The region's name.
+    - `currency_code`: `string` — The region's currency code.
+    - `automatic_taxes`: `boolean` (optional) — Whether taxes are calculated automatically in the region.
+    - `payment_providers`: [AdminPaymentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentProvider)\[] (optional) — The payment providers enabled in the region.
+    - `metadata`: `null` | `Record<string, any>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` (optional) — The date the region was created.
+    - `updated_at`: `string` (optional) — The date the region was updated.

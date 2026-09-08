@@ -1,0 +1,458 @@
+---
+title: AdminClaimPreviewResponse
+---
+
+## Properties
+
+**AdminClaimPreviewResponse**
+
+- `order_preview`: [AdminOrderPreview](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderPreview) — Preview of the order when the claim is applied.
+  - `payment_collections`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection)\[] — The order's payment collections.
+    - `payments`: [AdminPayment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPayment)\[] (optional) — The associated payments.
+    - `payment_sessions`: [AdminPaymentSession](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentSession)\[] (optional) — The associated payment sessions.
+    - `payment_providers`: [AdminPaymentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentProvider)\[] — The associated payment providers.
+    - `id`: `string` — The ID of the payment collection.
+    - `currency_code`: `string` — The ISO 3 character currency code of the payment sessions and payments associated with payment collection.
+    - `amount`: `number` — The total amount to be authorized and captured.
+    - `authorized_amount`: `number` (optional) — The amount authorized within the associated payment sessions.
+    - `captured_amount`: `number` (optional) — The amount captured within the associated payment sessions.
+    - `refunded_amount`: `number` (optional) — The amount refunded within the associated payments.
+    - `completed_at`: `string` | `Date` (optional) — When the payment collection was completed.
+    - `created_at`: `string` | `Date` (optional) — When the payment collection was created.
+    - `updated_at`: `string` | `Date` (optional) — When the payment collection was updated.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `status`: [BasePaymentCollectionStatus](/resources/references/types/types/typesBasePaymentCollectionStatus) — The status of the payment collection.
+  - `fulfillments`: [AdminOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `id`: `string` — The fulfillment's ID.
+    - `location_id`: `string` — The ID of the location the items are fulfilled from.
+    - `packed_at`: `null` | `Date` — The date the fulfillment was packed.
+    - `shipped_at`: `null` | `Date` — The date the fulfillment was shipped.
+    - `delivered_at`: `null` | `Date` — The date the fulfillment was delivered.
+    - `canceled_at`: `null` | `Date` — The date the fulfillment was canceled.
+    - `requires_shipping`: `boolean` — Whether the fulfillment requires shipping.
+    - `data`: `null` | `Record<string, unknown>` — Data necessary for the provider handling the fulfillment. Learn more in [this guide](/resources/commerce-modules/fulfillment/shipping-option#data-property).
+    - `provider_id`: `string` — The ID of the fulfillment provider handling this fulfillment.
+    - `shipping_option_id`: `null` | `string` — The ID of the associated shipping option.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `created_at`: `Date` — The date the fulfillment was created.
+    - `created_by`: `null` | `string` — The ID of the user that created the fulfillment.
+    - `marked_shipped_by`: `null` | `string` — The ID of the user that shipped the fulfillment.
+    - `updated_at`: `Date` — The date the fulfillment was updated.
+  - `sales_channel`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel) (optional) — The associated sales channel's details.
+    - `id`: `string` — The sales channel's ID.
+    - `name`: `string` — The sales channel's name.
+    - `description`: `null` | `string` — The sales channel's description.
+    - `is_disabled`: `boolean` — Whether the sales channel is disabled.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the sales channel.
+    - `created_at`: `string` — The sales channel's creation date.
+    - `updated_at`: `string` — The sales channel's last updated date.
+    - `deleted_at`: `null` | `string` — The sales channel's deletion date.
+  - `region`: [AdminRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegion) (optional) — The order's region.
+    - `countries`: [AdminRegionCountry](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegionCountry)\[] (optional) — The countries in the region.
+    - `id`: `string` — The region's ID.
+    - `name`: `string` — The region's name.
+    - `currency_code`: `string` — The region's currency code.
+    - `automatic_taxes`: `boolean` (optional) — Whether taxes are calculated automatically in the region.
+    - `payment_providers`: [AdminPaymentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentProvider)\[] (optional) — The payment providers enabled in the region.
+    - `metadata`: `null` | `Record<string, any>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` (optional) — The date the region was created.
+    - `updated_at`: `string` (optional) — The date the region was updated.
+  - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) (optional) — The details of the customer that placed the order.
+    - `has_account`: `boolean` — Whether the customer is a guest.
+    - `groups`: [AdminCustomerGroup](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerGroup)\[] (optional) — The groups the customer is in.
+    - `addresses`: [AdminCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerAddress)\[] — The customer's addresses.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_by`: `null` | `string` (optional) — The ID of the user that created the customer.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.
+  - `shipping_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's shipping address.
+    - `country`: [AdminRegionCountry](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegionCountry) (optional) — The address's country.
+    - `id`: `string` — The address's ID.
+    - `customer_id`: `string` (optional) — The ID of the customer this address belongs to.
+    - `first_name`: `string` (optional) — The address's first name.
+    - `last_name`: `string` (optional) — The address's last name.
+    - `phone`: `string` (optional) — The address's phone.
+    - `company`: `string` (optional) — The address's company.
+    - `address_1`: `string` (optional) — The address's first line.
+    - `address_2`: `string` (optional) — The address's second line.
+    - `city`: `string` (optional) — The address's city.
+    - `country_code`: `string` (optional) — The address's country code.
+
+      Example:
+
+      ```
+      us
+      ```
+    - `province`: `string` (optional) — The address's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province.
+    - `postal_code`: `string` (optional) — The address's postal code.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the address was created.
+    - `updated_at`: `string` | `Date` — The date the address was updated.
+  - `billing_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's billing address.
+    - `country`: [AdminRegionCountry](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegionCountry) (optional) — The address's country.
+    - `id`: `string` — The address's ID.
+    - `customer_id`: `string` (optional) — The ID of the customer this address belongs to.
+    - `first_name`: `string` (optional) — The address's first name.
+    - `last_name`: `string` (optional) — The address's last name.
+    - `phone`: `string` (optional) — The address's phone.
+    - `company`: `string` (optional) — The address's company.
+    - `address_1`: `string` (optional) — The address's first line.
+    - `address_2`: `string` (optional) — The address's second line.
+    - `city`: `string` (optional) — The address's city.
+    - `country_code`: `string` (optional) — The address's country code.
+
+      Example:
+
+      ```
+      us
+      ```
+    - `province`: `string` (optional) — The address's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province.
+    - `postal_code`: `string` (optional) — The address's postal code.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the address was created.
+    - `updated_at`: `string` | `Date` — The date the address was updated.
+  - `credit_lines`: [OrderCreditLineDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderCreditLineDTO)\[] (optional) — The order's credit lines.
+    - `id`: `string` — The ID of the order credit line.
+    - `order_id`: `string` — The ID of the order that the credit line belongs to.
+    - `order`: [OrderDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderDTO) — The associated order
+    - `amount`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The amount of the credit line.
+    - `reference`: `null` | `string` — The reference model name that the credit line is generated from
+    - `reference_id`: `null` | `string` — The reference model id that the credit line is generated from
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata of the order detail
+    - `created_at`: `Date` — The date when the order credit line was created.
+    - `updated_at`: `Date` — The date when the order credit line was last updated.
+  - `return_requested_total`: `number` — The total amount for the items requested to be returned.
+  - `order_change`: [AdminOrderChange](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderChange) — The details of the changes on the order.
+    - `order`: [AdminOrder](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrder) — The order's details.
+    - `claim`: [AdminClaim](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminClaim) — The claim's details.
+    - `return_order`: [AdminReturn](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturn) — The return's details.
+    - `exchange`: [AdminExchange](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminExchange) — The exchange's details.
+    - `actions`: [AdminOrderChangeAction](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderChangeAction)\[] — The order change action's details.
+    - `id`: `string` — The ID of the order change
+    - `version`: `number` — The version of the order change
+    - `change_type`: `"claim"` | `"exchange"` | `"return"` | `"edit"` | `"return_request"` | `"transfer"` | `"update_order"` (optional) — The type of the order change
+    - `order_id`: `string` — The ID of the associated order
+    - `return_id`: `string` — The ID of the associated return order
+    - `exchange_id`: `string` — The ID of the associated exchange order
+    - `claim_id`: `string` — The ID of the associated claim order
+    - `internal_note`: `null` | `string` — An internal note viewed by admin users only.
+    - `carry_over_promotions`: `null` | `boolean` (optional) — Whether to carry over promotions (apply promotions to outbound exchange items).
+    - `no_notification`: `null` | `boolean` (optional) — Whether the customer shouldn't be notified of the order change.
+    - `status`: [OrderChangeStatus](/resources/references/fulfillment/types/fulfillmentOrderChangeStatus) — The status of the order change
+    - `requested_by`: `null` | `string` — The requested by of the order change
+    - `requested_at`: `null` | `Date` — When the order change was requested
+    - `confirmed_by`: `null` | `string` — The confirmed by of the order change
+    - `confirmed_at`: `null` | `Date` — When the order change was confirmed
+    - `declined_by`: `null` | `string` — The declined by of the order change
+    - `declined_reason`: `null` | `string` — The declined reason of the order change
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata of the order change
+    - `declined_at`: `null` | `Date` — When the order change was declined
+    - `canceled_by`: `null` | `string` — The ID of the user that canceled the order change
+    - `canceled_at`: `null` | `Date` — When the order change was canceled
+    - `created_by`: `null` | `string` — The ID of the user that created the order change
+    - `created_at`: `string` | `Date` — When the order change was created
+    - `updated_at`: `string` | `Date` — When the order change was updated
+  - `items`: [AdminOrderLinePreview](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderLinePreview)\[] — The order's items.
+    - `variant`: [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant) (optional) — The associated variant's details.
+    - `product`: [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) (optional) — The associated product's details.
+    - `actions`: [AdminOrderChangeAction](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderChangeAction)\[] (optional)
+    - `return_requested_total`: `number`
+    - `id`: `string` — The item's ID.
+    - `title`: `string` — The item's title.
+    - `subtitle`: `null` | `string` — The item's subtitle.
+    - `thumbnail`: `null` | `string` — The URL of the item's thumbnail.
+    - `variant_id`: `null` | `string` — The ID of the associated variant.
+    - `product_id`: `null` | `string` — The ID of the associated product.
+    - `product_title`: `null` | `string` — The associated product's title.
+    - `product_description`: `null` | `string` — The associated product's description.
+    - `product_subtitle`: `null` | `string` — The associated product's subtitle.
+    - `product_type_id`: `null` | `string` — The ID of the associated product type.
+    - `product_type`: `null` | `string` — The associated product type.
+    - `product_collection`: `null` | `string` — The ID of the associated product's collection.
+    - `product_handle`: `null` | `string` — The associated product's handle.
+    - `variant_sku`: `null` | `string` — The associated variant's SKU.
+    - `variant_barcode`: `null` | `string` — The associated variant's barcode.
+    - `variant_title`: `null` | `string` — The associated variant's title.
+    - `variant_option_values`: `null` | `Record<string, unknown>` — The associated variant's values for the product's options.
+    - `requires_shipping`: `boolean` — Whether the item requires shipping.
+    - `is_discountable`: `boolean` — Whether discounts can be applied on the item.
+    - `is_tax_inclusive`: `boolean` — Whether the item's price includes taxes.
+    - `compare_at_unit_price`: `number` (optional) — The original price of the item before a promotion or sale.
+    - `unit_price`: `number` — The price of a single quantity of the item.
+    - `quantity`: `number` — The item's quantity.
+    - `tax_lines`: [BaseOrderLineItemTaxLine](/resources/references/types/interfaces/typesBaseOrderLineItemTaxLine)\[] (optional) — The item's tax lines.
+    - `adjustments`: [BaseOrderLineItemAdjustment](/resources/references/types/interfaces/typesBaseOrderLineItemAdjustment)\[] (optional) — The item's adjustments.
+    - `detail`: [BaseOrderItemDetail](/resources/references/types/interfaces/typesBaseOrderItemDetail) — The item's action details.
+    - `created_at`: `Date` — The date the item was created.
+    - `updated_at`: `Date` — The date the item was updated.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `original_total`: `number` — The line item's original total before discounts, including taxes.
+    - `original_subtotal`: `number` — The line item's original subtotal before discounts, excluding taxes.
+    - `original_tax_total`: `number` — The line item's original tax total before discounts.
+    - `item_total`: `number` — The line item's total after discounts, including taxes.
+    - `item_subtotal`: `number` — The line item's subtotal before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The line item's tax total after discounts.
+    - `total`: `number` — The line item's total after discounts, including taxes.
+    - `subtotal`: `number` — The line item's subtotal before discounts, excluding taxes.
+    - `tax_total`: `number` — The line item's tax total after discounts.
+    - `discount_total`: `number` — The total amount of discounts applied to the line item, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the line item's tax. Represents the tax portion of discounts.
+    - `refundable_total`: `number` — The total amount that can be refunded.
+    - `refundable_total_per_unit`: `number` — The total amount that can be refunded for a single quantity.
+  - `shipping_methods`: [AdminOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderShippingMethod) & `object`\[] — The order's shipping methods.
+    - `id`: `string` — The shipping method's ID.
+    - `order_id`: `string` — The ID of the order this shipping method belongs to.
+    - `name`: `string` — The shipping method's name.
+    - `description`: `string` (optional) — The shipping method's description.
+    - `amount`: `number` — The shipping method's amount.
+    - `is_tax_inclusive`: `boolean` — Whether the shipping method's amount includes taxes.
+    - `shipping_option_id`: `null` | `string` — The ID of the shipping option this method was created from.
+    - `data`: `null` | `Record<string, unknown>` — Data relevant for the fulfillment provider handling the shipping. Learn more in [this guide](/resources/commerce-modules/fulfillment/shipping-option#data-property).
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `tax_lines`: [BaseOrderShippingMethodTaxLine](/resources/references/types/interfaces/typesBaseOrderShippingMethodTaxLine)\[] (optional) — The shipping method's tax lines.
+    - `adjustments`: [BaseOrderShippingMethodAdjustment](/resources/references/types/interfaces/typesBaseOrderShippingMethodAdjustment)\[] (optional) — The shipping method's adjustments.
+    - `original_total`: `number` — The shipping method's original total before discounts, including taxes.
+    - `original_subtotal`: `number` — The shipping method's original subtotal before discounts, excluding taxes.
+    - `original_tax_total`: `number` — The shipping method's original tax total before discounts.
+    - `total`: `number` — The shipping method's total after discounts, including taxes.
+    - `detail`: [BaseOrderShippingDetail](/resources/references/types/interfaces/typesBaseOrderShippingDetail) (optional) — The shipping method's action details.
+    - `subtotal`: `number` — The shipping method's subtotal before discounts, excluding taxes.
+    - `tax_total`: `number` — The shipping method's tax total after discounts.
+    - `discount_total`: `number` — The total amount of discounts applied to the shipping method, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the shipping method's tax. Represents the tax portion of discounts.
+    - `created_at`: `string` | `Date` — The date the shipping method was created.
+    - `updated_at`: `string` | `Date` — The date the shipping method was updated.
+    - `actions`: [AdminOrderChangeAction](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderChangeAction)\[] (optional)
+  - `id`: `string` — The order's ID.
+  - `version`: `number` — The order's version.
+  - `region_id`: `null` | `string` — The ID of the associated region.
+  - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+  - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+  - `email`: `null` | `string` — The email of the customer that placed the order.
+  - `currency_code`: `string` — The order's currency code.
+
+    Example:
+
+    ```
+    usd
+    ```
+  - `display_id`: `number` (optional) — The order's display ID.
+  - `custom_display_id`: `string` (optional) — The order's custom display ID.
+  - `status`: `string` — The order's status.
+  - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+  - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+  - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `id`: `string` — The transaction's ID.
+    - `order_id`: `string` — The ID of the order this transaction belongs to.
+    - `amount`: `number` — The transaction's amount.
+    - `currency_code`: `string` — The transaction's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `reference`: `"refund"` | `"capture"` — Whether the transaction references a capture or refund.
+    - `reference_id`: `string` — The ID of the capture or refund, depending on the value of [reference](/resources/references/types/interfaces/typesBaseOrderTransaction#reference).
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the transaction was created.
+    - `updated_at`: `string` | `Date` — The date the transaction was updated.
+  - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `pending_difference`: `number`
+    - `current_order_total`: `number`
+    - `original_order_total`: `number`
+    - `transaction_total`: `number`
+    - `paid_total`: `number`
+    - `refunded_total`: `number`
+    - `accounting_total`: `number`
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `created_at`: `string` | `Date` — The date the order was created.
+  - `updated_at`: `string` | `Date` — The date the order was updated.
+  - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+  - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+  - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+  - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+  - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+  - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+  - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+  - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+  - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+  - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+  - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+  - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+  - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+  - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+  - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+  - `gift_card_total`: `number` — The total gift card amount.
+  - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+  - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+  - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+  - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+  - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+  - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+  - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+  - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+  - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+- `claim`: [AdminClaim](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminClaim) — The claim's details.
+  - `order`: [AdminOrder](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrder) — The order this claim is created for.
+    - `payment_collections`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection)\[] — The order's payment collections.
+    - `fulfillments`: [AdminOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `sales_channel`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel) (optional) — The associated sales channel's details.
+    - `region`: [AdminRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegion) (optional) — The order's region.
+    - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) (optional) — The details of the customer that placed the order.
+    - `shipping_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's shipping address.
+    - `billing_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's billing address.
+    - `items`: [AdminOrderLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderLineItem)\[] — The order's items.
+    - `shipping_methods`: [AdminOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderShippingMethod)\[] — The order's shipping methods.
+    - `credit_lines`: [OrderCreditLineDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderCreditLineDTO)\[] (optional) — The order's credit lines.
+    - `id`: `string` — The order's ID.
+    - `version`: `number` — The order's version.
+    - `region_id`: `null` | `string` — The ID of the associated region.
+    - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+    - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+    - `email`: `null` | `string` — The email of the customer that placed the order.
+    - `currency_code`: `string` — The order's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `display_id`: `number` (optional) — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `status`: `string` — The order's status.
+    - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+    - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the order was created.
+    - `updated_at`: `string` | `Date` — The date the order was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+    - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The total gift card amount.
+    - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+  - `return`: [AdminReturn](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturn) — The associated return.
+    - `items`: [AdminReturnItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturnItem)\[] — The return's items.
+    - `id`: `string` — The return's ID.
+    - `order_id`: `string` — The ID of the order that the return belongs to.
+    - `status`: [ReturnStatus](/resources/references/order/types/orderReturnStatus) (optional) — The return's status.
+    - `exchange_id`: `string` (optional) — The ID of the exchange that the return belongs to, if available.
+    - `location_id`: `string` (optional) — The ID of the stock location that the items are returned to.
+    - `claim_id`: `string` (optional) — The ID of the claim that the return belongs to, if available.
+    - `order_version`: `number` — The order's version once the return is applied.
+    - `display_id`: `number` — The display ID of the return.
+    - `no_notification`: `boolean` (optional) — Whether to send the customers notifications about return updates.
+    - `refund_amount`: `number` (optional) — The amount that is to be refunded to the customer.
+    - `received_at`: `string` — The date when the return was received.
+    - `created_at`: `string` — The date when the return was created.
+    - `created_by`: `string` — The ID of the user that created the return.
+    - `canceled_at`: `string` — The date when the return was canceled.
+    - `requested_at`: `string`
+  - `shipping_methods`: [AdminOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderShippingMethod)\[] (optional) — The shipping methods of the claim's additional items.
+    - `id`: `string` — The shipping method's ID.
+    - `order_id`: `string` — The ID of the order this shipping method belongs to.
+    - `name`: `string` — The shipping method's name.
+    - `description`: `string` (optional) — The shipping method's description.
+    - `amount`: `number` — The shipping method's amount.
+    - `is_tax_inclusive`: `boolean` — Whether the shipping method's amount includes taxes.
+    - `shipping_option_id`: `null` | `string` — The ID of the shipping option this method was created from.
+    - `data`: `null` | `Record<string, unknown>` — Data relevant for the fulfillment provider handling the shipping. Learn more in [this guide](/resources/commerce-modules/fulfillment/shipping-option#data-property).
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `tax_lines`: [BaseOrderShippingMethodTaxLine](/resources/references/types/interfaces/typesBaseOrderShippingMethodTaxLine)\[] (optional) — The shipping method's tax lines.
+    - `adjustments`: [BaseOrderShippingMethodAdjustment](/resources/references/types/interfaces/typesBaseOrderShippingMethodAdjustment)\[] (optional) — The shipping method's adjustments.
+    - `original_total`: `number` — The shipping method's original total before discounts, including taxes.
+    - `original_subtotal`: `number` — The shipping method's original subtotal before discounts, excluding taxes.
+    - `original_tax_total`: `number` — The shipping method's original tax total before discounts.
+    - `total`: `number` — The shipping method's total after discounts, including taxes.
+    - `detail`: [BaseOrderShippingDetail](/resources/references/types/interfaces/typesBaseOrderShippingDetail) (optional) — The shipping method's action details.
+    - `subtotal`: `number` — The shipping method's subtotal before discounts, excluding taxes.
+    - `tax_total`: `number` — The shipping method's tax total after discounts.
+    - `discount_total`: `number` — The total amount of discounts applied to the shipping method, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the shipping method's tax. Represents the tax portion of discounts.
+    - `created_at`: `string` | `Date` — The date the shipping method was created.
+    - `updated_at`: `string` | `Date` — The date the shipping method was updated.
+  - `id`: `string` — The claim's ID.
+  - `type`: [OrderClaimType](/resources/references/fulfillment/types/fulfillmentOrderClaimType) — The claim's type.
+  - `order_id`: `string` — The ID of the order this claim was created for.
+  - `return_id`: `string` (optional) — The ID of the associated return.
+  - `display_id`: `number` — The claim's display ID.
+  - `order_version`: `string` — The version of the order when the claim is applied.
+  - `refund_amount`: `number` (optional) — The amount to be refunded due to this claim.
+  - `created_by`: `string` (optional) — The ID of the user that created this claim.
+  - `created_at`: `string` | `Date` — The date the claim was created.
+  - `updated_at`: `string` | `Date` — The date the claim was updated.
+  - `canceled_at`: `string` | `Date` — The date the claim was canceled.
+  - `deleted_at`: `string` | `Date` (optional) — The date the claim was deleted.
+  - `additional_items`: [BaseClaimItem](/resources/references/types/interfaces/typesBaseClaimItem)\[] — The claim's additional items if its `type` is `replace`.
+    - `id`: `string` — The claim item's ID.
+    - `claim_id`: `string` — The ID of the claim this item belongs to.
+    - `order_id`: `string` — The ID of the order this claim item belongs to.
+    - `item_id`: `string` — The ID of the associated order item.
+    - `quantity`: `number` — The quantity of this item to be claimed.
+    - `reason`: [ClaimReason](/resources/references/order/types/orderClaimReason) — The reason for claiming this item.
+    - `raw_quantity`: [BigNumberRawValue](/resources/references/types/types/typesBigNumberRawValue) — The raw quantity value.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` (optional) — The date the claim item was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the claim item was updated.
+    - `item`: [AdminOrderLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderLineItem) (optional) — The associated order line item.
+  - `claim_items`: [BaseClaimItem](/resources/references/types/interfaces/typesBaseClaimItem)\[] — The claim's items.
+    - `id`: `string` — The claim item's ID.
+    - `claim_id`: `string` — The ID of the claim this item belongs to.
+    - `order_id`: `string` — The ID of the order this claim item belongs to.
+    - `item_id`: `string` — The ID of the associated order item.
+    - `quantity`: `number` — The quantity of this item to be claimed.
+    - `reason`: [ClaimReason](/resources/references/order/types/orderClaimReason) — The reason for claiming this item.
+    - `raw_quantity`: [BigNumberRawValue](/resources/references/types/types/typesBigNumberRawValue) — The raw quantity value.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` (optional) — The date the claim item was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the claim item was updated.
+    - `item`: [AdminOrderLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderLineItem) (optional) — The associated order line item.
+  - `no_notification`: `boolean` (optional) — Whether to notify the customer about changes in the claim.
+  - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The claim's transactions.
+    - `id`: `string` — The transaction's ID.
+    - `order_id`: `string` — The ID of the order this transaction belongs to.
+    - `amount`: `number` — The transaction's amount.
+    - `currency_code`: `string` — The transaction's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `reference`: `"refund"` | `"capture"` — Whether the transaction references a capture or refund.
+    - `reference_id`: `string` — The ID of the capture or refund, depending on the value of [reference](/resources/references/types/interfaces/typesBaseOrderTransaction#reference).
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the transaction was created.
+    - `updated_at`: `string` | `Date` — The date the transaction was updated.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.

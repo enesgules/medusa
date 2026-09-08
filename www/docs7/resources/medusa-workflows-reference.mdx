@@ -1,0 +1,525 @@
+---
+title: Medusa Core Workflows Reference
+---
+
+This section of the documentation provides a reference to the core workflows created by Medusa. Medusa uses these workflows in the Store and Admin API routes.
+
+You can use these workflows and steps in your customizations. For example, you can [execute these workflows](/learn/fundamentals/workflows#3-execute-the-workflow):
+
+- In an [API route](/learn/fundamentals/api-routes) when a request is received;
+- In a [subscriber](/learn/fundamentals/events-and-subscribers) when an event is emitted;
+- In a [scheduled jobs](/learn/fundamentals/scheduled-jobs) at a specified interval during the application's runtime;
+- In a [custom CLI scripts](/learn/fundamentals/custom-cli-scripts) that you can execute from the terminal;
+- Or in a custom workflow that wraps the existing workflows and steps in a custom flow. You can then execute your custom workflow in the same way as the core workflows.
+
+Through this reference, you'll learn about the available workflows and steps in Medusa out-of-the-box. For each workflow, you'll explore its steps, expected input and output, an example of executing that workflow, and how to inject custom functionalities into the workflow, if applicable.
+
+All workflows and steps in this reference are exported by the `@medusajs/medusa/core-flows` package.
+
+## Api Key
+
+- [createApiKeysWorkflow](/resources/references/medusa-workflows/createApiKeysWorkflow): Create secret or publishable API keys.
+- [deleteApiKeysWorkflow](/resources/references/medusa-workflows/deleteApiKeysWorkflow): Delete secret or publishable API keys.
+- [linkSalesChannelsToApiKeyWorkflow](/resources/references/medusa-workflows/linkSalesChannelsToApiKeyWorkflow): Manage the sales channels of a publishable API key.
+- [revokeApiKeysWorkflow](/resources/references/medusa-workflows/revokeApiKeysWorkflow): Revoke secret or publishable API keys.
+- [updateApiKeysWorkflow](/resources/references/medusa-workflows/updateApiKeysWorkflow): Update secret or publishable API keys.
+
+***
+
+## Auth
+
+- [generateResetPasswordTokenWorkflow](/resources/references/medusa-workflows/generateResetPasswordTokenWorkflow): Generate a reset password token for a user or customer.
+- [requestVerificationWorkflow](/resources/references/medusa-workflows/requestVerificationWorkflow)
+- [setAuthAppMetadataWorkflow](/resources/references/medusa-workflows/setAuthAppMetadataWorkflow)
+
+***
+
+## Cart
+
+- [addGiftCardToCartWorkflow](/resources/references/medusa-workflows/addGiftCardToCartWorkflow): Apply a gift card to a cart.
+- [addShippingMethodToCartWorkflow](/resources/references/medusa-workflows/addShippingMethodToCartWorkflow): Add a shipping method to a cart.
+- [addStoreCreditsToCartWorkflow](/resources/references/medusa-workflows/addStoreCreditsToCartWorkflow): Apply store credits to a cart.
+- [addToCartWorkflow](/resources/references/medusa-workflows/addToCartWorkflow): Add a line item to a cart.
+- [completeCartWorkflow](/resources/references/medusa-workflows/completeCartWorkflow): Complete a cart and place an order.
+- [confirmCartCreditLinesWorkflow](/resources/references/medusa-workflows/confirmCartCreditLinesWorkflow): Confirm and debit the credit lines on a cart.
+- [confirmVariantInventoryWorkflow](/resources/references/medusa-workflows/confirmVariantInventoryWorkflow): Validate that a variant is in-stock before adding to the cart.
+- [createCartCreditLinesWorkflow](/resources/references/medusa-workflows/createCartCreditLinesWorkflow)
+- [createCartWorkflow](/resources/references/medusa-workflows/createCartWorkflow): Create a cart specifying region, items, and more.
+- [createPaymentCollectionForCartWorkflow](/resources/references/medusa-workflows/createPaymentCollectionForCartWorkflow): Create payment collection for cart.
+- [deleteCartCreditLinesWorkflow](/resources/references/medusa-workflows/deleteCartCreditLinesWorkflow)
+- [listShippingOptionsForCartWithPricingWorkflow](/resources/references/medusa-workflows/listShippingOptionsForCartWithPricingWorkflow): List a cart's shipping options with prices.
+- [listShippingOptionsForCartWorkflow](/resources/references/medusa-workflows/listShippingOptionsForCartWorkflow): List a cart's shipping options.
+- [refreshCartGiftCardsWorkflow](/resources/references/medusa-workflows/refreshCartGiftCardsWorkflow): Refresh gift card credit lines on a cart.
+- [refreshCartItemsWorkflow](/resources/references/medusa-workflows/refreshCartItemsWorkflow): Refresh a cart's details after an update.
+- [refreshCartShippingMethodsWorkflow](/resources/references/medusa-workflows/refreshCartShippingMethodsWorkflow): Refresh a cart's shipping methods after an update.
+- [refreshPaymentCollectionForCartWorkflow](/resources/references/medusa-workflows/refreshPaymentCollectionForCartWorkflow): Refresh a cart's payment collection details.
+- [refundPaymentAndRecreatePaymentSessionWorkflow](/resources/references/medusa-workflows/refundPaymentAndRecreatePaymentSessionWorkflow): Refund a payment and create a new payment session.
+- [removeGiftCardFromCartWorkflow](/resources/references/medusa-workflows/removeGiftCardFromCartWorkflow): Remove a gift card from a cart.
+- [transferCartCustomerWorkflow](/resources/references/medusa-workflows/transferCartCustomerWorkflow): Refresh a cart's payment collection details.
+- [updateCartPromotionsWorkflow](/resources/references/medusa-workflows/updateCartPromotionsWorkflow): Update a cart's applied promotions to add, replace, or remove them.
+- [updateCartWorkflow](/resources/references/medusa-workflows/updateCartWorkflow): Update a cart's details, such as region, address, and more.
+- [updateLineItemInCartWorkflow](/resources/references/medusa-workflows/updateLineItemInCartWorkflow): Update a cart's line item.
+- [updateTaxLinesWorkflow](/resources/references/medusa-workflows/updateTaxLinesWorkflow): Update a cart's tax lines.
+- [upsertTaxLinesWorkflow](/resources/references/medusa-workflows/upsertTaxLinesWorkflow): Update a cart's tax lines.
+
+***
+
+## Common
+
+- [batchLinksWorkflow](/resources/references/medusa-workflows/batchLinksWorkflow): Manage links between two records of linked data models.
+- [createLinksWorkflow](/resources/references/medusa-workflows/createLinksWorkflow): Create links between two records of linked data models.
+- [dismissLinksWorkflow](/resources/references/medusa-workflows/dismissLinksWorkflow): Dismiss links between two records of linked data models.
+- [updateLinksWorkflow](/resources/references/medusa-workflows/updateLinksWorkflow): Update links between two records of linked data models.
+
+***
+
+## Customer
+
+- [createCustomerAccountWorkflow](/resources/references/medusa-workflows/createCustomerAccountWorkflow): Create or register a customer account.
+- [createCustomerAddressesWorkflow](/resources/references/medusa-workflows/createCustomerAddressesWorkflow): Create one or more customer addresses.
+- [createCustomersWorkflow](/resources/references/medusa-workflows/createCustomersWorkflow): Create one or more customers.
+- [deleteCustomerAddressesWorkflow](/resources/references/medusa-workflows/deleteCustomerAddressesWorkflow): Delete one or more customer addresses.
+- [deleteCustomersWorkflow](/resources/references/medusa-workflows/deleteCustomersWorkflow): Delete one or more customers.
+- [removeCustomerAccountWorkflow](/resources/references/medusa-workflows/removeCustomerAccountWorkflow): Delete a customer account and its auth identity association.
+- [updateCustomerAddressesWorkflow](/resources/references/medusa-workflows/updateCustomerAddressesWorkflow): Update one or more customer addresses.
+- [updateCustomersWorkflow](/resources/references/medusa-workflows/updateCustomersWorkflow): Update one or more customers.
+
+***
+
+## Customer Group
+
+- [createCustomerGroupsWorkflow](/resources/references/medusa-workflows/createCustomerGroupsWorkflow): Create one or more customer groups.
+- [deleteCustomerGroupsWorkflow](/resources/references/medusa-workflows/deleteCustomerGroupsWorkflow): Delete one or more customer groups.
+- [linkCustomerGroupsToCustomerWorkflow](/resources/references/medusa-workflows/linkCustomerGroupsToCustomerWorkflow): Manage groups of a customer.
+- [linkCustomersToCustomerGroupWorkflow](/resources/references/medusa-workflows/linkCustomersToCustomerGroupWorkflow): Manage the customers of a customer group.
+- [updateCustomerGroupsWorkflow](/resources/references/medusa-workflows/updateCustomerGroupsWorkflow): Update one or more customer groups.
+
+***
+
+## Default
+
+- [createDefaultsWorkflow](/resources/references/medusa-workflows/createDefaultsWorkflow): Create default data for a Medusa application.
+
+***
+
+## Draft Order
+
+- [addDraftOrderItemsWorkflow](/resources/references/medusa-workflows/addDraftOrderItemsWorkflow): Add items to a draft order.
+- [addDraftOrderPromotionWorkflow](/resources/references/medusa-workflows/addDraftOrderPromotionWorkflow): Add promotions to a draft order.
+- [addDraftOrderShippingMethodsWorkflow](/resources/references/medusa-workflows/addDraftOrderShippingMethodsWorkflow): Add shipping methods to a draft order.
+- [beginDraftOrderEditWorkflow](/resources/references/medusa-workflows/beginDraftOrderEditWorkflow): Create a draft order edit request.
+- [cancelDraftOrderEditWorkflow](/resources/references/medusa-workflows/cancelDraftOrderEditWorkflow): Cancel a draft order edit.
+- [computeDraftOrderAdjustmentsWorkflow](/resources/references/medusa-workflows/computeDraftOrderAdjustmentsWorkflow): Refresh the promotions in a draft order.
+- [confirmDraftOrderEditWorkflow](/resources/references/medusa-workflows/confirmDraftOrderEditWorkflow): Confirm a draft order edit.
+- [convertDraftOrderWorkflow](/resources/references/medusa-workflows/convertDraftOrderWorkflow): Convert a draft order to a pending order.
+- [deleteDraftOrdersWorkflow](/resources/references/medusa-workflows/deleteDraftOrdersWorkflow): Delete draft orders.
+- [fetchShippingOptionForDraftOrderWorkflow](/resources/references/medusa-workflows/fetchShippingOptionForDraftOrderWorkflow): Fetch a shipping option for a draft order edit.
+- [refreshConfirmedDraftOrderShippingMethodsWorkflow](/resources/references/medusa-workflows/refreshConfirmedDraftOrderShippingMethodsWorkflow): Refresh applied calculated shipping method prices on a draft order.
+- [refreshPendingDraftOrderShippingMethodsWorkflow](/resources/references/medusa-workflows/refreshPendingDraftOrderShippingMethodsWorkflow): Refresh pending calculated shipping method prices on a draft order edit.
+- [removeDraftOrderActionItemWorkflow](/resources/references/medusa-workflows/removeDraftOrderActionItemWorkflow): Remove an item from a draft order edit.
+- [removeDraftOrderActionShippingMethodWorkflow](/resources/references/medusa-workflows/removeDraftOrderActionShippingMethodWorkflow): Remove a shipping method from an edited draft order.
+- [removeDraftOrderPromotionsWorkflow](/resources/references/medusa-workflows/removeDraftOrderPromotionsWorkflow): Remove promotions from a draft order edit.
+- [removeDraftOrderShippingMethodWorkflow](/resources/references/medusa-workflows/removeDraftOrderShippingMethodWorkflow): Remove an existing shipping method from a draft order edit.
+- [requestDraftOrderEditWorkflow](/resources/references/medusa-workflows/requestDraftOrderEditWorkflow): Request a draft order edit.
+- [updateDraftOrderActionItemWorkflow](/resources/references/medusa-workflows/updateDraftOrderActionItemWorkflow): Update a new item in a draft order edit.
+- [updateDraftOrderActionShippingMethodWorkflow](/resources/references/medusa-workflows/updateDraftOrderActionShippingMethodWorkflow): Update a new shipping method in a draft order edit.
+- [updateDraftOrderItemWorkflow](/resources/references/medusa-workflows/updateDraftOrderItemWorkflow): Update an item in a draft order edit.
+- [updateDraftOrderShippingMethodWorkflow](/resources/references/medusa-workflows/updateDraftOrderShippingMethodWorkflow): Update an existing shipping method in a draft order edit.
+- [updateDraftOrderWorkflow](/resources/references/medusa-workflows/updateDraftOrderWorkflow): Update a draft order's details.
+
+***
+
+## File
+
+- [deleteFilesWorkflow](/resources/references/medusa-workflows/deleteFilesWorkflow): Delete files from the database and storage.
+- [uploadFilesWorkflow](/resources/references/medusa-workflows/uploadFilesWorkflow): Upload files using the installed File Module Provider.
+
+***
+
+## Fulfillment
+
+- [batchShippingOptionRulesWorkflow](/resources/references/medusa-workflows/batchShippingOptionRulesWorkflow): Manage shipping option rules.
+- [calculateShippingOptionsPricesWorkflow](/resources/references/medusa-workflows/calculateShippingOptionsPricesWorkflow): Calculate shipping option prices in a cart.
+- [cancelFulfillmentWorkflow](/resources/references/medusa-workflows/cancelFulfillmentWorkflow): Cancel a fulfillment.
+- [createFulfillmentWorkflow](/resources/references/medusa-workflows/createFulfillmentWorkflow): Create a fulfillment.
+- [createReturnFulfillmentWorkflow](/resources/references/medusa-workflows/createReturnFulfillmentWorkflow): Create a fulfillment for a return.
+- [createServiceZonesWorkflow](/resources/references/medusa-workflows/createServiceZonesWorkflow): Create one or more service zones.
+- [createShipmentWorkflow](/resources/references/medusa-workflows/createShipmentWorkflow): Create a shipment for a fulfillment.
+- [createShippingOptionsWorkflow](/resources/references/medusa-workflows/createShippingOptionsWorkflow): Create shipping options.
+- [createShippingProfilesWorkflow](/resources/references/medusa-workflows/createShippingProfilesWorkflow): Create one or more shipping profiles.
+- [deleteFulfillmentSetsWorkflow](/resources/references/medusa-workflows/deleteFulfillmentSetsWorkflow): Delete one or more fulfillment sets.
+- [deleteServiceZonesWorkflow](/resources/references/medusa-workflows/deleteServiceZonesWorkflow): Delete one or more service zones.
+- [deleteShippingOptionsWorkflow](/resources/references/medusa-workflows/deleteShippingOptionsWorkflow): Delete one or more shipping options.
+- [markFulfillmentAsDeliveredWorkflow](/resources/references/medusa-workflows/markFulfillmentAsDeliveredWorkflow): Mark a fulfillment as delivered.
+- [updateFulfillmentWorkflow](/resources/references/medusa-workflows/updateFulfillmentWorkflow): Update a fulfillment.
+- [updateServiceZonesWorkflow](/resources/references/medusa-workflows/updateServiceZonesWorkflow): Update one or more service zones.
+- [updateShippingOptionsWorkflow](/resources/references/medusa-workflows/updateShippingOptionsWorkflow): Update one or more shipping options.
+- [updateShippingProfilesWorkflow](/resources/references/medusa-workflows/updateShippingProfilesWorkflow): Update one or more shipping profiles.
+
+***
+
+## Gift Card
+
+- [claimGiftCardWorkflow](/resources/references/medusa-workflows/claimGiftCardWorkflow): Claim a gift card for a customer.
+- [createGiftCardsWorkflow](/resources/references/medusa-workflows/createGiftCardsWorkflow): Create gift cards with backing store credit accounts.
+- [deleteGiftCardWorkflow](/resources/references/medusa-workflows/deleteGiftCardWorkflow): Delete a gift card.
+- [redeemGiftCardWorkflow](/resources/references/medusa-workflows/redeemGiftCardWorkflow): Redeem a gift card and create a backing store credit account.
+- [updateGiftCardsWorkflow](/resources/references/medusa-workflows/updateGiftCardsWorkflow): Update gift cards.
+
+***
+
+## Inventory
+
+- [batchInventoryItemLevelsWorkflow](/resources/references/medusa-workflows/batchInventoryItemLevelsWorkflow): Manage inventory levels in bulk.
+- [bulkCreateDeleteLevelsWorkflow](/resources/references/medusa-workflows/bulkCreateDeleteLevelsWorkflow)
+- [createInventoryItemsWorkflow](/resources/references/medusa-workflows/createInventoryItemsWorkflow): Create one or more inventory items.
+- [createInventoryLevelsWorkflow](/resources/references/medusa-workflows/createInventoryLevelsWorkflow): Create one or more inventory levels.
+- [deleteInventoryItemWorkflow](/resources/references/medusa-workflows/deleteInventoryItemWorkflow): Delete one or more inventory items.
+- [deleteInventoryLevelsWorkflow](/resources/references/medusa-workflows/deleteInventoryLevelsWorkflow): Delete one or more inventory levels.
+- [exportInventoryItemsWorkflow](/resources/references/medusa-workflows/exportInventoryItemsWorkflow): Export inventory items with filtering capabilities.
+- [updateInventoryItemsWorkflow](/resources/references/medusa-workflows/updateInventoryItemsWorkflow): Update one or more inventory items.
+- [updateInventoryLevelsWorkflow](/resources/references/medusa-workflows/updateInventoryLevelsWorkflow): Update one or more inventory levels.
+
+***
+
+## Invite
+
+- [acceptInviteWorkflow](/resources/references/medusa-workflows/acceptInviteWorkflow): Accept invite and create user with roles.
+- [createInvitesWorkflow](/resources/references/medusa-workflows/createInvitesWorkflow): Create one or more user invites with optional role assignment.
+- [deleteInvitesWorkflow](/resources/references/medusa-workflows/deleteInvitesWorkflow): Delete one or more user invites.
+- [refreshInviteTokensWorkflow](/resources/references/medusa-workflows/refreshInviteTokensWorkflow): Refresh user invite tokens.
+
+***
+
+## Line Item
+
+- [deleteLineItemsWorkflow](/resources/references/medusa-workflows/deleteLineItemsWorkflow): Delete line items from a cart.
+
+***
+
+## Order
+
+- [acceptOrderTransferWorkflow](/resources/references/medusa-workflows/acceptOrderTransferWorkflow): Accept an order transfer request.
+- [addOrderLineItemsWorkflow](/resources/references/medusa-workflows/addOrderLineItemsWorkflow): Add line items to an order.
+- [archiveOrderWorkflow](/resources/references/medusa-workflows/archiveOrderWorkflow): Archive one or more orders.
+- [beginClaimOrderWorkflow](/resources/references/medusa-workflows/beginClaimOrderWorkflow): Create an order claim in requested state.
+- [beginExchangeOrderWorkflow](/resources/references/medusa-workflows/beginExchangeOrderWorkflow): Request an order exchange.
+- [beginOrderEditOrderWorkflow](/resources/references/medusa-workflows/beginOrderEditOrderWorkflow): Create an order edit request.
+- [beginReceiveReturnWorkflow](/resources/references/medusa-workflows/beginReceiveReturnWorkflow): Request a return receival.
+- [beginReturnOrderWorkflow](/resources/references/medusa-workflows/beginReturnOrderWorkflow): Create a return for an order.
+- [cancelBeginOrderClaimWorkflow](/resources/references/medusa-workflows/cancelBeginOrderClaimWorkflow): Cancel a requested order claim.
+- [cancelBeginOrderEditWorkflow](/resources/references/medusa-workflows/cancelBeginOrderEditWorkflow): Cancel a requested order edit.
+- [cancelBeginOrderExchangeWorkflow](/resources/references/medusa-workflows/cancelBeginOrderExchangeWorkflow): Cancel a requested order exchange.
+- [cancelOrderChangeWorkflow](/resources/references/medusa-workflows/cancelOrderChangeWorkflow): Cancel an order change.
+- [cancelOrderClaimWorkflow](/resources/references/medusa-workflows/cancelOrderClaimWorkflow): Cancel a confirmed order claim.
+- [cancelOrderExchangeWorkflow](/resources/references/medusa-workflows/cancelOrderExchangeWorkflow): Cancel an exchange for an order.
+- [cancelOrderFulfillmentWorkflow](/resources/references/medusa-workflows/cancelOrderFulfillmentWorkflow): Cancel an order's fulfillment.
+- [cancelOrderTransferRequestWorkflow](/resources/references/medusa-workflows/cancelOrderTransferRequestWorkflow): Cancel an order transfer request.
+- [cancelOrderWorkflow](/resources/references/medusa-workflows/cancelOrderWorkflow): Cancel an order.
+- [cancelReturnReceiveWorkflow](/resources/references/medusa-workflows/cancelReturnReceiveWorkflow): Cancel a return receival.
+- [cancelReturnRequestWorkflow](/resources/references/medusa-workflows/cancelReturnRequestWorkflow): Cancel a requested return.
+- [cancelReturnWorkflow](/resources/references/medusa-workflows/cancelReturnWorkflow): Cancel a return.
+- [completeOrderWorkflow](/resources/references/medusa-workflows/completeOrderWorkflow): Complete one or more orders.
+- [computeAdjustmentsForPreviewWorkflow](/resources/references/medusa-workflows/computeAdjustmentsForPreviewWorkflow): Compute adjustments for an order edit, exchange, claim, or return.
+- [confirmClaimRequestWorkflow](/resources/references/medusa-workflows/confirmClaimRequestWorkflow): Confirm a requested claim.
+- [confirmExchangeRequestWorkflow](/resources/references/medusa-workflows/confirmExchangeRequestWorkflow): Confirm an exchange request.
+- [confirmOrderEditRequestWorkflow](/resources/references/medusa-workflows/confirmOrderEditRequestWorkflow): Confirm an order edit request.
+- [confirmReturnReceiveWorkflow](/resources/references/medusa-workflows/confirmReturnReceiveWorkflow): Confirm a return receival request.
+- [confirmReturnRequestWorkflow](/resources/references/medusa-workflows/confirmReturnRequestWorkflow): Confirm a return request.
+- [createAndCompleteReturnOrderWorkflow](/resources/references/medusa-workflows/createAndCompleteReturnOrderWorkflow): Create and complete a return for an order.
+- [createClaimShippingMethodWorkflow](/resources/references/medusa-workflows/createClaimShippingMethodWorkflow): Create an inbound or outbound shipping method for a claim.
+- [createExchangeShippingMethodWorkflow](/resources/references/medusa-workflows/createExchangeShippingMethodWorkflow): Create an inbound or outbound shipping method for an exchange.
+- [createOrUpdateOrderPaymentCollectionWorkflow](/resources/references/medusa-workflows/createOrUpdateOrderPaymentCollectionWorkflow): Create or update payment collection for an order.
+- [createOrderChangeActionsWorkflow](/resources/references/medusa-workflows/createOrderChangeActionsWorkflow): Create an order change action.
+- [createOrderChangeWorkflow](/resources/references/medusa-workflows/createOrderChangeWorkflow): Create an order change.
+- [createOrderCreditLinesWorkflow](/resources/references/medusa-workflows/createOrderCreditLinesWorkflow)
+- [createOrderEditShippingMethodWorkflow](/resources/references/medusa-workflows/createOrderEditShippingMethodWorkflow): Create a shipping method for an order edit.
+- [createOrderFulfillmentWorkflow](/resources/references/medusa-workflows/createOrderFulfillmentWorkflow): Creates a fulfillment for an order.
+- [createOrderPaymentCollectionWorkflow](/resources/references/medusa-workflows/createOrderPaymentCollectionWorkflow): Create a payment collection for an order.
+- [createOrderShipmentWorkflow](/resources/references/medusa-workflows/createOrderShipmentWorkflow): Creates a shipment for an order.
+- [createOrderWorkflow](/resources/references/medusa-workflows/createOrderWorkflow): Create an order.
+- [createOrdersWorkflow](/resources/references/medusa-workflows/createOrdersWorkflow)
+- [createReturnShippingMethodWorkflow](/resources/references/medusa-workflows/createReturnShippingMethodWorkflow): Create a shipping method for a return.
+- [declineOrderChangeWorkflow](/resources/references/medusa-workflows/declineOrderChangeWorkflow): Decline an order change.
+- [declineOrderTransferRequestWorkflow](/resources/references/medusa-workflows/declineOrderTransferRequestWorkflow): Decline a requested order transfer.
+- [deleteOrderChangeActionsWorkflow](/resources/references/medusa-workflows/deleteOrderChangeActionsWorkflow): Delete one or more order change actions.
+- [deleteOrderChangeWorkflow](/resources/references/medusa-workflows/deleteOrderChangeWorkflow): Delete one or more order changes.
+- [dismissItemReturnRequestWorkflow](/resources/references/medusa-workflows/dismissItemReturnRequestWorkflow): Dismiss items from a return request.
+- [exportOrdersWorkflow](/resources/references/medusa-workflows/exportOrdersWorkflow): Export orders with filtering capabilities.
+- [fetchShippingOptionForOrderWorkflow](/resources/references/medusa-workflows/fetchShippingOptionForOrderWorkflow): Fetch a shipping option for an order.
+- [getOrderDetailWorkflow](/resources/references/medusa-workflows/getOrderDetailWorkflow): Retrieve an order's details.
+- [getOrdersListWorkflow](/resources/references/medusa-workflows/getOrdersListWorkflow): Retrieve a list of orders.
+- [listShippingOptionsForOrderWorkflow](/resources/references/medusa-workflows/listShippingOptionsForOrderWorkflow): List a order's shipping options.
+- [markOrderFulfillmentAsDeliveredWorkflow](/resources/references/medusa-workflows/markOrderFulfillmentAsDeliveredWorkflow): Mark a fulfillment in an order as delivered.
+- [maybeRefreshShippingMethodsWorkflow](/resources/references/medusa-workflows/maybeRefreshShippingMethodsWorkflow): Refreshes the shipping method prices of an order and its changes.
+- [orderClaimAddNewItemWorkflow](/resources/references/medusa-workflows/orderClaimAddNewItemWorkflow): Add outbound or new items to a claim.
+- [orderClaimItemWorkflow](/resources/references/medusa-workflows/orderClaimItemWorkflow): Add order items to a claim as claim items.
+- [orderClaimRequestItemReturnWorkflow](/resources/references/medusa-workflows/orderClaimRequestItemReturnWorkflow): Request one or more items to be returned as part of a claim.
+- [orderEditAddNewItemWorkflow](/resources/references/medusa-workflows/orderEditAddNewItemWorkflow): Add new items to an order edit.
+- [orderEditUpdateItemQuantityWorkflow](/resources/references/medusa-workflows/orderEditUpdateItemQuantityWorkflow): Update or remove an existing order item's quantity in the order's edit.
+- [orderExchangeAddNewItemWorkflow](/resources/references/medusa-workflows/orderExchangeAddNewItemWorkflow): Add new or outbound items to an exchange.
+- [orderExchangeRequestItemReturnWorkflow](/resources/references/medusa-workflows/orderExchangeRequestItemReturnWorkflow): Add inbound items to be returned as part of the exchange.
+- [receiveAndCompleteReturnOrderWorkflow](/resources/references/medusa-workflows/receiveAndCompleteReturnOrderWorkflow): Receive and complete a return.
+- [receiveItemReturnRequestWorkflow](/resources/references/medusa-workflows/receiveItemReturnRequestWorkflow): Mark return items as received.
+- [removeAddItemClaimActionWorkflow](/resources/references/medusa-workflows/removeAddItemClaimActionWorkflow): Remove outbound (new) items from a claim.
+- [removeClaimShippingMethodWorkflow](/resources/references/medusa-workflows/removeClaimShippingMethodWorkflow): Remove an inbound or outbound shipping method from a claim.
+- [removeExchangeShippingMethodWorkflow](/resources/references/medusa-workflows/removeExchangeShippingMethodWorkflow): Remove an inbound or outbound shipping method from an exchange.
+- [removeItemClaimActionWorkflow](/resources/references/medusa-workflows/removeItemClaimActionWorkflow): Remove order items from a claim.
+- [removeItemExchangeActionWorkflow](/resources/references/medusa-workflows/removeItemExchangeActionWorkflow): Remove an outbound or new item from an exchange.
+- [removeItemOrderEditActionWorkflow](/resources/references/medusa-workflows/removeItemOrderEditActionWorkflow): Remove an item that was added to an order edit.
+- [removeItemReceiveReturnActionWorkflow](/resources/references/medusa-workflows/removeItemReceiveReturnActionWorkflow): Remove an item from a return receival.
+- [removeItemReturnActionWorkflow](/resources/references/medusa-workflows/removeItemReturnActionWorkflow): Remove an item from a return.
+- [removeOrderEditShippingMethodWorkflow](/resources/references/medusa-workflows/removeOrderEditShippingMethodWorkflow): Remove a shipping method from an order edit.
+- [removeReturnShippingMethodWorkflow](/resources/references/medusa-workflows/removeReturnShippingMethodWorkflow): Remove a shipping method from a return.
+- [requestItemReturnWorkflow](/resources/references/medusa-workflows/requestItemReturnWorkflow): Add items to a return.
+- [requestOrderEditRequestWorkflow](/resources/references/medusa-workflows/requestOrderEditRequestWorkflow): Request an order edit.
+- [requestOrderTransferWorkflow](/resources/references/medusa-workflows/requestOrderTransferWorkflow): Request a transfer of an order to a customer.
+- [transferOrderToGuestWorkflow](/resources/references/medusa-workflows/transferOrderToGuestWorkflow): Transfer an order to a guest customer.
+- [updateClaimAddItemWorkflow](/resources/references/medusa-workflows/updateClaimAddItemWorkflow): Update a claim's new or outbound item.
+- [updateClaimItemWorkflow](/resources/references/medusa-workflows/updateClaimItemWorkflow): Update a claim item, added to the claim from an order item.
+- [updateClaimShippingMethodWorkflow](/resources/references/medusa-workflows/updateClaimShippingMethodWorkflow): Update an inbound or outbound shipping method of a claim.
+- [updateExchangeAddItemWorkflow](/resources/references/medusa-workflows/updateExchangeAddItemWorkflow): Update an outbound or new item in an exchange.
+- [updateExchangeShippingMethodWorkflow](/resources/references/medusa-workflows/updateExchangeShippingMethodWorkflow): Update an exchange's inbound or outbound shipping method.
+- [updateOrderChangeActionsWorkflow](/resources/references/medusa-workflows/updateOrderChangeActionsWorkflow): Update one or more order change actions.
+- [updateOrderChangeWorkflow](/resources/references/medusa-workflows/updateOrderChangeWorkflow): Update an order change.
+- [updateOrderChangesWorkflow](/resources/references/medusa-workflows/updateOrderChangesWorkflow): Update one or more order changes.
+- [updateOrderEditAddItemWorkflow](/resources/references/medusa-workflows/updateOrderEditAddItemWorkflow): Update a new item in an order edit.
+- [updateOrderEditItemQuantityWorkflow](/resources/references/medusa-workflows/updateOrderEditItemQuantityWorkflow): Update an existing order item previously added to an order edit.
+- [updateOrderEditShippingMethodWorkflow](/resources/references/medusa-workflows/updateOrderEditShippingMethodWorkflow): Update a shipping method of an order edit.
+- [updateOrderTaxLinesWorkflow](/resources/references/medusa-workflows/updateOrderTaxLinesWorkflow): Update the tax lines of items and shipping methods in an order.
+- [updateOrderWorkflow](/resources/references/medusa-workflows/updateOrderWorkflow): Update an order's details.
+- [updateReceiveItemReturnRequestWorkflow](/resources/references/medusa-workflows/updateReceiveItemReturnRequestWorkflow): Update an item in a return receival request.
+- [updateRequestItemReturnWorkflow](/resources/references/medusa-workflows/updateRequestItemReturnWorkflow): Update a requested item in a return.
+- [updateReturnShippingMethodWorkflow](/resources/references/medusa-workflows/updateReturnShippingMethodWorkflow): Update the shipping method of a return.
+- [updateReturnWorkflow](/resources/references/medusa-workflows/updateReturnWorkflow): Update a return's details.
+
+***
+
+## Payment
+
+- [authorizePaymentSessionForOrderWorkflow](/resources/references/medusa-workflows/authorizePaymentSessionForOrderWorkflow): Authorize a pending payment session for an existing order.
+- [capturePaymentWorkflow](/resources/references/medusa-workflows/capturePaymentWorkflow): Capture a payment.
+- [processPaymentWorkflow](/resources/references/medusa-workflows/processPaymentWorkflow): Process a payment based on a webhook event.
+- [refundPaymentWorkflow](/resources/references/medusa-workflows/refundPaymentWorkflow): Refund a payment.
+- [refundPaymentsWorkflow](/resources/references/medusa-workflows/refundPaymentsWorkflow): Refund one or more payments.
+
+***
+
+## Payment Collection
+
+- [createPaymentSessionsWorkflow](/resources/references/medusa-workflows/createPaymentSessionsWorkflow): Create payment sessions.
+- [createRefundReasonsWorkflow](/resources/references/medusa-workflows/createRefundReasonsWorkflow): Create refund reasons.
+- [deletePaymentSessionsWorkflow](/resources/references/medusa-workflows/deletePaymentSessionsWorkflow): Delete payment sessions.
+- [deleteRefundReasonsWorkflow](/resources/references/medusa-workflows/deleteRefundReasonsWorkflow): Delete refund reasons.
+- [updateRefundReasonsWorkflow](/resources/references/medusa-workflows/updateRefundReasonsWorkflow): Update refund reasons.
+
+***
+
+## Price List
+
+- [batchPriceListPricesWorkflow](/resources/references/medusa-workflows/batchPriceListPricesWorkflow): Manage a price list's prices.
+- [createPriceListPricesWorkflow](/resources/references/medusa-workflows/createPriceListPricesWorkflow): Create prices in price lists.
+- [createPriceListsWorkflow](/resources/references/medusa-workflows/createPriceListsWorkflow): Create one or more price lists.
+- [deletePriceListsWorkflow](/resources/references/medusa-workflows/deletePriceListsWorkflow): Delete one or more price lists.
+- [removePriceListPricesWorkflow](/resources/references/medusa-workflows/removePriceListPricesWorkflow): Remove prices.
+- [updatePriceListPricesWorkflow](/resources/references/medusa-workflows/updatePriceListPricesWorkflow): Update price lists' prices.
+- [updatePriceListsWorkflow](/resources/references/medusa-workflows/updatePriceListsWorkflow): Update one or more price lists.
+
+***
+
+## Pricing
+
+- [createPricePreferencesWorkflow](/resources/references/medusa-workflows/createPricePreferencesWorkflow): Create one or more price preferences.
+- [deletePricePreferencesWorkflow](/resources/references/medusa-workflows/deletePricePreferencesWorkflow): Delete one or more price preferences.
+- [updatePricePreferencesWorkflow](/resources/references/medusa-workflows/updatePricePreferencesWorkflow): Update one or more price preferences.
+
+***
+
+## Product
+
+- [batchImageVariantsWorkflow](/resources/references/medusa-workflows/batchImageVariantsWorkflow): Manage image-variant associations in bulk.
+- [batchLinkProductsToCategoryWorkflow](/resources/references/medusa-workflows/batchLinkProductsToCategoryWorkflow): Manage the links between a collection and products.
+- [batchLinkProductsToCollectionWorkflow](/resources/references/medusa-workflows/batchLinkProductsToCollectionWorkflow): Manage the links between a collection and products.
+- [batchProductVariantsWorkflow](/resources/references/medusa-workflows/batchProductVariantsWorkflow): Create, update, and delete product variants.
+- [batchProductsWorkflow](/resources/references/medusa-workflows/batchProductsWorkflow): Manage products in bulk.
+- [batchVariantImagesWorkflow](/resources/references/medusa-workflows/batchVariantImagesWorkflow): Manage variant-image associations in bulk.
+- [createAndLinkProductOptionsToProductWorkflow](/resources/references/medusa-workflows/createAndLinkProductOptionsToProductWorkflow): Manage options of a product.
+- [createCollectionsWorkflow](/resources/references/medusa-workflows/createCollectionsWorkflow): Create one or more product collections.
+- [createProductOptionsWorkflow](/resources/references/medusa-workflows/createProductOptionsWorkflow): Create one or more product options.
+- [createProductTagsWorkflow](/resources/references/medusa-workflows/createProductTagsWorkflow): Create one or more product tags.
+- [createProductTypesWorkflow](/resources/references/medusa-workflows/createProductTypesWorkflow): Create one or more product types.
+- [createProductVariantsWorkflow](/resources/references/medusa-workflows/createProductVariantsWorkflow): Create one or more product variants.
+- [createProductsWorkflow](/resources/references/medusa-workflows/createProductsWorkflow): Create one or more products with options and variants.
+- [deleteCollectionsWorkflow](/resources/references/medusa-workflows/deleteCollectionsWorkflow): Delete one or more product collection.
+- [deleteProductOptionValuesWorkflow](/resources/references/medusa-workflows/deleteProductOptionValuesWorkflow): Delete one or more product option values.
+- [deleteProductOptionsWorkflow](/resources/references/medusa-workflows/deleteProductOptionsWorkflow): Delete one or more product option.
+- [deleteProductTagsWorkflow](/resources/references/medusa-workflows/deleteProductTagsWorkflow): Delete one or more product tags.
+- [deleteProductTypesWorkflow](/resources/references/medusa-workflows/deleteProductTypesWorkflow): Delete one or more product types.
+- [deleteProductVariantsWorkflow](/resources/references/medusa-workflows/deleteProductVariantsWorkflow): Delete one or more product variants.
+- [deleteProductsWorkflow](/resources/references/medusa-workflows/deleteProductsWorkflow): Delete one or more products.
+- [exportProductsWorkflow](/resources/references/medusa-workflows/exportProductsWorkflow): Export products with filtering capabilities.
+- [importProductsAsChunksWorkflow](/resources/references/medusa-workflows/importProductsAsChunksWorkflow): Import products from a CSV file.
+- [importProductsWorkflow](/resources/references/medusa-workflows/importProductsWorkflow): Import products from a CSV file.
+- [setProductProductOptionsWorkflow](/resources/references/medusa-workflows/setProductProductOptionsWorkflow): Manage product options and their values for a product.
+- [updateCollectionsWorkflow](/resources/references/medusa-workflows/updateCollectionsWorkflow): Update one or more product collections.
+- [updateProductOptionValuesWorkflow](/resources/references/medusa-workflows/updateProductOptionValuesWorkflow): Update a product option value.
+- [updateProductOptionsWorkflow](/resources/references/medusa-workflows/updateProductOptionsWorkflow): Update one or more product options.
+- [updateProductTagsWorkflow](/resources/references/medusa-workflows/updateProductTagsWorkflow): Update one or more product tags.
+- [updateProductTypesWorkflow](/resources/references/medusa-workflows/updateProductTypesWorkflow): Update one or more product types.
+- [updateProductVariantsWorkflow](/resources/references/medusa-workflows/updateProductVariantsWorkflow): Update one or more product variants.
+- [updateProductsWorkflow](/resources/references/medusa-workflows/updateProductsWorkflow): Update one or more products with options and variants.
+- [upsertVariantPricesWorkflow](/resources/references/medusa-workflows/upsertVariantPricesWorkflow): Create, update, or remove variants' prices.
+
+***
+
+## Product Category
+
+- [createProductCategoriesWorkflow](/resources/references/medusa-workflows/createProductCategoriesWorkflow): Create product categories.
+- [deleteProductCategoriesWorkflow](/resources/references/medusa-workflows/deleteProductCategoriesWorkflow): Delete product categories.
+- [updateProductCategoriesWorkflow](/resources/references/medusa-workflows/updateProductCategoriesWorkflow): Update product categories.
+
+***
+
+## Promotion
+
+- [addOrRemoveCampaignPromotionsWorkflow](/resources/references/medusa-workflows/addOrRemoveCampaignPromotionsWorkflow): Manage the promotions of a campaign.
+- [batchPromotionRulesWorkflow](/resources/references/medusa-workflows/batchPromotionRulesWorkflow): Manage the rules of a promotion.
+- [createCampaignsWorkflow](/resources/references/medusa-workflows/createCampaignsWorkflow): Create one or more campaigns.
+- [createPromotionRulesWorkflow](/resources/references/medusa-workflows/createPromotionRulesWorkflow): Create one or more promotion rules.
+- [createPromotionsWorkflow](/resources/references/medusa-workflows/createPromotionsWorkflow): Create one or more promotions.
+- [deleteCampaignsWorkflow](/resources/references/medusa-workflows/deleteCampaignsWorkflow): Delete one or more campaigns.
+- [deletePromotionRulesWorkflow](/resources/references/medusa-workflows/deletePromotionRulesWorkflow): Delete one or more promotion rules.
+- [deletePromotionsWorkflow](/resources/references/medusa-workflows/deletePromotionsWorkflow): Delete one or more promotions.
+- [updateCampaignsWorkflow](/resources/references/medusa-workflows/updateCampaignsWorkflow): Update one or more campaigns.
+- [updatePromotionRulesWorkflow](/resources/references/medusa-workflows/updatePromotionRulesWorkflow): Update one or more promotion rules.
+- [updatePromotionsStatusWorkflow](/resources/references/medusa-workflows/updatePromotionsStatusWorkflow): Update the status of one or more promotions.
+- [updatePromotionsWorkflow](/resources/references/medusa-workflows/updatePromotionsWorkflow): Update one or more promotions.
+
+***
+
+## Region
+
+- [createRegionsWorkflow](/resources/references/medusa-workflows/createRegionsWorkflow): Create one or more regions.
+- [deleteRegionsWorkflow](/resources/references/medusa-workflows/deleteRegionsWorkflow): Delete one or more regions.
+- [updateRegionsWorkflow](/resources/references/medusa-workflows/updateRegionsWorkflow): Update regions.
+
+***
+
+## Reservation
+
+- [createReservationsWorkflow](/resources/references/medusa-workflows/createReservationsWorkflow): Create one or more reservations.
+- [deleteReservationsByLineItemsWorkflow](/resources/references/medusa-workflows/deleteReservationsByLineItemsWorkflow): Delete reservations by their associated line items.
+- [deleteReservationsWorkflow](/resources/references/medusa-workflows/deleteReservationsWorkflow): Delete one or more reservations.
+- [updateReservationsWorkflow](/resources/references/medusa-workflows/updateReservationsWorkflow): Update one or more reservations.
+
+***
+
+## Return Reason
+
+- [createReturnReasonsWorkflow](/resources/references/medusa-workflows/createReturnReasonsWorkflow): Create return reasons.
+- [deleteReturnReasonsWorkflow](/resources/references/medusa-workflows/deleteReturnReasonsWorkflow): Delete return reasons.
+- [updateReturnReasonsWorkflow](/resources/references/medusa-workflows/updateReturnReasonsWorkflow): Update return reasons.
+
+***
+
+## Sales Channel
+
+- [createSalesChannelsWorkflow](/resources/references/medusa-workflows/createSalesChannelsWorkflow): Create sales channels.
+- [deleteSalesChannelsWorkflow](/resources/references/medusa-workflows/deleteSalesChannelsWorkflow): Delete sales channels.
+- [linkProductsToSalesChannelWorkflow](/resources/references/medusa-workflows/linkProductsToSalesChannelWorkflow): Manage the products available in a sales channel.
+- [updateSalesChannelsWorkflow](/resources/references/medusa-workflows/updateSalesChannelsWorkflow): Update sales channels.
+
+***
+
+## Search
+
+- [reindexSearchIndexesWorkflow](/resources/references/medusa-workflows/reindexSearchIndexesWorkflow): Reindex one or more search indexes.
+
+***
+
+## Setting
+
+- [batchPropertyLabelsWorkflow](/resources/references/medusa-workflows/batchPropertyLabelsWorkflow)
+- [clearLayoutConfigurationWorkflow](/resources/references/medusa-workflows/clearLayoutConfigurationWorkflow): Clear a user's layout configuration for a zone.
+- [createPropertyLabelsWorkflow](/resources/references/medusa-workflows/createPropertyLabelsWorkflow)
+- [createViewConfigurationWorkflow](/resources/references/medusa-workflows/createViewConfigurationWorkflow): Create a view configuration.
+- [deletePropertyLabelsWorkflow](/resources/references/medusa-workflows/deletePropertyLabelsWorkflow)
+- [setLayoutConfigurationWorkflow](/resources/references/medusa-workflows/setLayoutConfigurationWorkflow): Set a layout configuration for a zone.
+- [updatePropertyLabelsWorkflow](/resources/references/medusa-workflows/updatePropertyLabelsWorkflow)
+- [updateViewConfigurationWorkflow](/resources/references/medusa-workflows/updateViewConfigurationWorkflow): Update a view configuration.
+
+***
+
+## Shipping Option
+
+- [createShippingOptionTypesWorkflow](/resources/references/medusa-workflows/createShippingOptionTypesWorkflow): Create one or more shipping option types.
+- [deleteShippingOptionTypesWorkflow](/resources/references/medusa-workflows/deleteShippingOptionTypesWorkflow): Delete one or more shipping option types.
+- [updateShippingOptionTypesWorkflow](/resources/references/medusa-workflows/updateShippingOptionTypesWorkflow): Update one or more shipping option types.
+
+***
+
+## Shipping Profile
+
+- [deleteShippingProfileWorkflow](/resources/references/medusa-workflows/deleteShippingProfileWorkflow): Delete shipping profiles.
+
+***
+
+## Stock Location
+
+- [createLocationFulfillmentSetWorkflow](/resources/references/medusa-workflows/createLocationFulfillmentSetWorkflow): Add fulfillment set to a stock location.
+- [createStockLocationsWorkflow](/resources/references/medusa-workflows/createStockLocationsWorkflow): Create one or more stock locations.
+- [deleteStockLocationsWorkflow](/resources/references/medusa-workflows/deleteStockLocationsWorkflow): Delete one or more stock locations.
+- [linkSalesChannelsToStockLocationWorkflow](/resources/references/medusa-workflows/linkSalesChannelsToStockLocationWorkflow): Manage the sales channels of a stock location.
+- [updateStockLocationsWorkflow](/resources/references/medusa-workflows/updateStockLocationsWorkflow): Update stock locations.
+
+***
+
+## Store
+
+- [createStoresWorkflow](/resources/references/medusa-workflows/createStoresWorkflow): Create one or more stores.
+- [deleteStoresWorkflow](/resources/references/medusa-workflows/deleteStoresWorkflow): Delete one or more stores.
+- [updateStoresWorkflow](/resources/references/medusa-workflows/updateStoresWorkflow): Update stores.
+
+***
+
+## Store Credit
+
+- [claimStoreCreditAccountWorkflow](/resources/references/medusa-workflows/claimStoreCreditAccountWorkflow): Claim an anonymous store credit account for a customer.
+- [createStoreCreditAccountsWorkflow](/resources/references/medusa-workflows/createStoreCreditAccountsWorkflow): Create store credit accounts.
+- [creditAccountsWorkflow](/resources/references/medusa-workflows/creditAccountsWorkflow): Credit one or more store credit accounts.
+- [creditStoreCreditAccountWorkflow](/resources/references/medusa-workflows/creditStoreCreditAccountWorkflow): Credit a store credit account.
+- [debitAccountsWorkflow](/resources/references/medusa-workflows/debitAccountsWorkflow): Debit one or more store credit accounts.
+
+***
+
+## Tax
+
+- [createTaxRateRulesWorkflow](/resources/references/medusa-workflows/createTaxRateRulesWorkflow): Create one or more tax rules for rates.
+- [createTaxRatesWorkflow](/resources/references/medusa-workflows/createTaxRatesWorkflow): Create one or more tax rates.
+- [createTaxRegionsWorkflow](/resources/references/medusa-workflows/createTaxRegionsWorkflow): Create one or more tax regions.
+- [deleteTaxRateRulesWorkflow](/resources/references/medusa-workflows/deleteTaxRateRulesWorkflow): Delete one or more tax rate rules.
+- [deleteTaxRatesWorkflow](/resources/references/medusa-workflows/deleteTaxRatesWorkflow): Delete one or more tax rates.
+- [deleteTaxRegionsWorkflow](/resources/references/medusa-workflows/deleteTaxRegionsWorkflow): Delete one or more tax regions.
+- [setTaxRateRulesWorkflow](/resources/references/medusa-workflows/setTaxRateRulesWorkflow): Set the rules of tax rates.
+- [updateTaxRatesWorkflow](/resources/references/medusa-workflows/updateTaxRatesWorkflow): Update tax rates.
+- [updateTaxRegionsWorkflow](/resources/references/medusa-workflows/updateTaxRegionsWorkflow): Update one or more tax regions.
+
+***
+
+## Translation
+
+- [batchTranslationSettingsWorkflow](/resources/references/medusa-workflows/batchTranslationSettingsWorkflow): Create, update, and delete translation settings.
+- [batchTranslationsWorkflow](/resources/references/medusa-workflows/batchTranslationsWorkflow): Create, update, and delete translations.
+- [createTranslationsWorkflow](/resources/references/medusa-workflows/createTranslationsWorkflow): Create one or more translations.
+- [deleteTranslationsWorkflow](/resources/references/medusa-workflows/deleteTranslationsWorkflow): Delete one or more translations.
+- [updateTranslationsWorkflow](/resources/references/medusa-workflows/updateTranslationsWorkflow): Update translations.
+
+***
+
+## User
+
+- [createUserAccountWorkflow](/resources/references/medusa-workflows/createUserAccountWorkflow): Create a user account and attach an auth identity.
+- [createUsersWorkflow](/resources/references/medusa-workflows/createUsersWorkflow): Create one or more users with optional role assignment.
+- [deleteUsersWorkflow](/resources/references/medusa-workflows/deleteUsersWorkflow): Delete one or more users.
+- [removeUserAccountWorkflow](/resources/references/medusa-workflows/removeUserAccountWorkflow): Delete a user and remove the association to its auth identity.
+- [updateUsersWorkflow](/resources/references/medusa-workflows/updateUsersWorkflow): Update one or more users.

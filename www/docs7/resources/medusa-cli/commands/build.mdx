@@ -1,0 +1,121 @@
+---
+title: build Command - Medusa CLI Reference
+sidebarTitle: build
+---
+
+Create a standalone build of the Medusa application that you can deploy to production.
+
+This creates a build that:
+
+- Doesn't rely on the source TypeScript files.
+- Can be copied to a production server reliably.
+
+The build is output to a new `.medusa/server` directory.
+
+```bash
+npx medusa build
+```
+
+Refer to the [Build Medusa Application](/learn/build) guide for next steps.
+
+## Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `--admin-only`
+      </td>
+
+      <td>
+        Whether to build only the admin to host it separately. If this option is not passed, the admin is built to the `.medusa/server/public/admin` directory. When this option is passed, the admin is built to the `.medusa/admin` directory instead.
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--lint` / `--no-lint` (v2.16.0+)
+      </td>
+
+      <td>
+        Run the Medusa linter before building. Pass `--no-lint` to skip linting. Enabled by default only when `@medusajs/eslint-plugin` is installed in the project. Linting is also skipped automatically when no `eslint.config.js` is found in the project root.
+      </td>
+
+      <td>
+        `true` when `@medusajs/eslint-plugin` is installed, `false` otherwise
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--fix` (v2.16.0+)
+      </td>
+
+      <td>
+        Auto-fix lint issues where possible before building.
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--quiet` (v2.16.0+)
+      </td>
+
+      <td>
+        Report lint errors only, suppressing warnings.
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## Build Medusa Admin
+
+By default, the Medusa Admin is built to the `.medusa/server/public/admin` directory.
+
+If you want a separate build to host the admin as a standalone application, such as on Vercel, pass the `--admin-only` option as explained in the [Options](/resources/medusa-cli/commands/build#options) section. This outputs the admin to the `.medusa/admin` directory instead.
+
+By default, the Medusa Admin dashboard is hosted at the `/app` path. You can change it with the `admin.path` configuration in `medusa-config.ts`.
+
+For example, to serve it from the root path `/` when hosting on a separate domain:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  admin: {
+    path: "/",
+    backendUrl: process.env.MEDUSA_BACKEND_URL,
+  },
+  // ...
+})
+```
+
+The admin will now run at `/` of your application. For example, at `acme.com`.

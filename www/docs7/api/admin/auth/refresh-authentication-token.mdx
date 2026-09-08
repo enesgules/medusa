@@ -1,0 +1,296 @@
+---
+title: Refresh Authentication Token
+---
+
+`POST /auth/token/refresh`
+
+Refresh the authentication token of a user. This is useful after authenticating a user with a third-party service to ensure the token holds the new user's details, or when you don't want users to re-login every day.
+
+[Learn about third-party authentication flow.](/resources/commerce-modules/auth/authentication-route#2-third-party-service-authenticate-flow)
+
+## Base URLs
+
+- `http://localhost:9000`
+
+- `https://api.medusajs.com`
+
+## Authentication
+
+Authentication is required.
+
+[Authentication guide](/api/admin/authentication)
+
+## Responses
+
+<Accordion title="200 — OK">
+  OK
+
+  ```json
+  {
+    "description": "OK",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/AuthResponse"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AuthResponse](/api/schemas/auth-response)
+</Accordion>
+
+<Accordion title="400 — Client Error">
+  Client Error
+
+  ```json
+  {
+    "description": "Client Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "not_allowed": {
+            "$ref": "#/components/examples/not_allowed_error"
+          },
+          "invalid_data": {
+            "$ref": "#/components/examples/invalid_data_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="401 — User is not authorized. Must log in first">
+  User is not authorized. Must log in first
+
+  ```json
+  {
+    "description": "User is not authorized. Must log in first",
+    "content": {
+      "text/plain": {
+        "schema": {
+          "type": "string",
+          "default": "Unauthorized",
+          "example": "Unauthorized"
+        }
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Not Found Error">
+  Not Found Error
+
+  ```json
+  {
+    "description": "Not Found Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "message": "Entity with id 1 was not found",
+          "type": "not_found"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="409 — Invalid State Error">
+  Invalid State Error
+
+  ```json
+  {
+    "description": "Invalid State Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "unknown_error",
+          "message": "The request conflicted with another request. You may retry the request with the provided Idempotency-Key.",
+          "type": "QueryRunnerAlreadyReleasedError"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="422 — Invalid Request Error">
+  Invalid Request Error
+
+  ```json
+  {
+    "description": "Invalid Request Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "invalid_request_error",
+          "message": "Discount with code TEST already exists.",
+          "type": "duplicate_error"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="500 — Server Error">
+  Server Error
+
+  ```json
+  {
+    "description": "Server Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "database": {
+            "$ref": "#/components/examples/database_error"
+          },
+          "unexpected_state": {
+            "$ref": "#/components/examples/unexpected_state_error"
+          },
+          "invalid_argument": {
+            "$ref": "#/components/examples/invalid_argument_error"
+          },
+          "default_error": {
+            "$ref": "#/components/examples/default_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+## Examples
+
+### JS SDK
+
+```js
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+  debug: import.meta.env.DEV,
+  auth: {
+    type: "session",
+  },
+})
+
+const token = await sdk.auth.refresh()
+
+// all subsequent requests will use the token in the header
+const { user } = await sdk.admin.user.me()
+```
+
+### cURL
+
+```bash
+curl -X POST '{backend_url}/auth/token/refresh' \
+-H 'Authorization: Bearer {token}'
+```
+
+<Accordion title="OpenAPI operation">
+  ```json
+  {
+    "operationId": "PostAdminAuthTokenRefresh",
+    "summary": "Refresh Authentication Token",
+    "description": "Refresh the authentication token of a user. This is useful after authenticating a user with a third-party service to ensure the token holds the new user's details, or when you don't want users to re-login every day.",
+    "externalDocs": {
+      "url": "https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route#2-third-party-service-authenticate-flow",
+      "description": "Learn about third-party authentication flow."
+    },
+    "x-authenticated": true,
+    "x-codeSamples": [
+      {
+        "lang": "JavaScript",
+        "label": "JS SDK",
+        "source": "import Medusa from \"@medusajs/js-sdk\"\n\nexport const sdk = new Medusa({\n  baseUrl: import.meta.env.VITE_BACKEND_URL || \"/\",\n  debug: import.meta.env.DEV,\n  auth: {\n    type: \"session\",\n  },\n})\n\nconst token = await sdk.auth.refresh()\n\n// all subsequent requests will use the token in the header\nconst { user } = await sdk.admin.user.me()"
+      },
+      {
+        "lang": "Shell",
+        "label": "cURL",
+        "source": "curl -X POST '{backend_url}/auth/token/refresh' \\\n-H 'Authorization: Bearer {token}'"
+      }
+    ],
+    "tags": [
+      "Auth"
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AuthResponse"
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/400_error"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "404": {
+        "$ref": "#/components/responses/not_found_error"
+      },
+      "409": {
+        "$ref": "#/components/responses/invalid_state_error"
+      },
+      "422": {
+        "$ref": "#/components/responses/invalid_request_error"
+      },
+      "500": {
+        "$ref": "#/components/responses/500_error"
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AuthResponse](/api/schemas/auth-response)
+</Accordion>

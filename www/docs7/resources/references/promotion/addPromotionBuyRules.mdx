@@ -1,0 +1,72 @@
+---
+title: addPromotionBuyRules - Promotion Module Reference
+sidebarTitle: addPromotionBuyRules
+---
+
+This documentation provides a reference to the `addPromotionBuyRules` method. This belongs to the Promotion Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method adds buy promotion rules to a promotion's application method.
+
+## Example
+
+```ts
+const buyPromotionRules =
+  await promotionModuleService.addPromotionBuyRules(
+    "promo_123",
+    [
+      {
+        attribute: "SKU",
+        operator: "eq",
+        values: "SHIRT",
+      },
+    ]
+  )
+```
+
+<a id="addpromotionbuyrules-parameters" />
+
+## Parameters
+
+**addPromotionBuyRules**
+
+- `promotionId`: `string` — The promotion's ID.
+- `rulesData`: [CreatePromotionRuleDTO](/resources/references/promotion/interfaces/promotionCreatePromotionRuleDTO)\[] — The promotion rules to be created and added as buy rules to the promotion's applicatio method.
+  - `description`: `null` | `string` (optional) — The description of the promotion rule.
+  - `attribute`: `string` — The attribute of the promotion rule.
+  - `operator`: [PromotionRuleOperatorValues](/resources/references/promotion/types/promotionPromotionRuleOperatorValues) — The operator of the promotion rule.
+  - `values`: `string` | `string`\[] — The values of the promotion rule. When provided, `PromotionRuleValue` records are created and associated with the promotion rule.
+- `sharedContext`: [Context](/resources/references/promotion/interfaces/promotionContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/promotion/interfaces/promotionIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="addpromotionbuyrules-returns" />
+
+## Returns
+
+**addPromotionBuyRules**
+
+- `Promise`: Promise\<[PromotionRuleDTO](/resources/references/promotion/interfaces/promotionPromotionRuleDTO)\[]> — The created promotion rules.
+  - `PromotionRuleDTO[]`: [PromotionRuleDTO](/resources/references/promotion/interfaces/promotionPromotionRuleDTO)\[]
+    - `id`: `string` — The ID of the promotion rule.
+    - `description`: `null` | `string` (optional) — The description of the promotion rule.
+    - `attribute`: `string` (optional) — The attribute of the promotion rule.
+    - `operator`: [PromotionRuleOperatorValues](/resources/references/promotion/types/promotionPromotionRuleOperatorValues) (optional) — The operator of the promotion rule.
+    - `values`: [PromotionRuleValueDTO](/resources/references/promotion/interfaces/promotionPromotionRuleValueDTO)\[] — The values of the promotion rule.
+      - `id`: `string` — The ID of the promotion rule value.
+      - `value`: `string` (optional) — The value of the promotion rule value.

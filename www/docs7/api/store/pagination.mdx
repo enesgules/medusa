@@ -1,0 +1,84 @@
+---
+title: Pagination
+---
+
+### Query Parameters
+
+In listing API Routes, such as list products, you can control the pagination using the query parameters `limit` and `offset`.
+
+`limit` is used to specify the maximum number of items to be returned in the response. `offset` is used to specify how many items to skip before returning the resulting records.
+
+Use the `offset` query parameter to change between pages. For example, if the limit is `50`, at page `1` the offset should be `0`; at page `2` the offset should be `50`, and so on.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Pagination query parameters"
+    sdk.store.product.list({
+      limit: 5,
+      offset: 0
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Pagination query parameters"
+    curl "http://localhost:9000/store/products?limit=5&offset=0"
+    ```
+  </Tab>
+</Tabs>
+
+### Response Fields
+
+In the response of listing API Routes, aside from the records retrieved,
+there are three pagination-related fields returned:
+
+- `limit`: the maximum number of items that can be returned in the response.
+- `offset`: the number of items that were skipped before the records in the result.
+- `count`: the total number of available items of this data model. It can be used to determine how many pages are there.
+
+For example, if the `count` is `100` and the `limit` is `50`, divide the
+`count` by the `limit` to get the number of pages: `100/50 = 2 pages`.
+
+### Sort Order
+
+The `order` field (available on API Routes that support pagination) allows you to
+sort the retrieved items by a field of that item.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Ascending sort by a field"
+    sdk.store.product.list({
+      order: "created_at"
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Ascending sort by a field"
+    curl "http://localhost:9000/store/products?order=created_at"
+    ```
+  </Tab>
+</Tabs>
+
+This sorts the products by their `created_at` field in the ascending order.
+
+By default, the sort direction is ascending. To change it to
+descending, pass a dash (`-`) before the field name.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Descending sort by a field"
+    sdk.store.product.list({
+      order: "-created_at"
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Descending sort by a field"
+    curl "http://localhost:9000/store/products?order=-created_at"
+    ```
+  </Tab>
+</Tabs>
+
+This sorts the products by their `created_at` field in the descending order.

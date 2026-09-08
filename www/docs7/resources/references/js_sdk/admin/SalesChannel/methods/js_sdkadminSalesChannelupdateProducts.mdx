@@ -1,0 +1,56 @@
+---
+title: updateProducts
+---
+
+This method manages the products in a sales channel to add or remove them. It sends a request to the
+[Manage Products in Sales Channel](/api/admin/sales-channels/manage-products)
+API route.
+
+## Example
+
+```ts
+sdk.admin.salesChannel.updateProducts("sc_123", {
+  add: ["prod_123", "prod_456"],
+  remove: ["prod_789"]
+})
+.then(({ sales_channel }) => {
+  console.log(sales_channel)
+})
+```
+
+<a id="updateproducts-parameters" />
+
+## Parameters
+
+**updateProducts**
+
+- `id`: `string` — The ID of the sales channel to manage the products for.
+- `body`: [AdminUpdateSalesChannelProducts](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateSalesChannelProducts) — The details of the products to add or remove from the sales channel.
+  - `add`: `string`\[] (optional) — The IDs of the products to add to the sales channel.
+  - `remove`: `string`\[] (optional) — The IDs of the products to remove from the sales channel.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updateproducts-returns" />
+
+## Returns
+
+**updateProducts**
+
+- `Promise`: Promise\<[AdminSalesChannelResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannelResponse)> (deprecated) — The sales channel's details.
+
+  Deprecated: Use batchProducts instead
+
+  - `sales_channel`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel) — The sales channel's details.
+    - `id`: `string` — The sales channel's ID.
+    - `name`: `string` — The sales channel's name.
+    - `description`: `null` | `string` — The sales channel's description.
+    - `is_disabled`: `boolean` — Whether the sales channel is disabled.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the sales channel.
+    - `created_at`: `string` — The sales channel's creation date.
+    - `updated_at`: `string` — The sales channel's last updated date.
+    - `deleted_at`: `null` | `string` — The sales channel's deletion date.
+
+> **Deprecated**
+>
+> Use [batchProducts](/resources/references/js_sdk/admin/SalesChannel/methods/js_sdkadminSalesChannelbatchProducts) instead

@@ -1,0 +1,254 @@
+---
+title: mfa
+---
+
+Methods for managing and completing multi-factor authentication (MFA).
+
+## list
+
+This method retrieves the MFA factors configured for the authenticated
+identity. It sends a request to the
+[List MFA Factors](/api/admin/multi-factor-authentication/list-mfa-factors)
+API route.
+
+### Example
+
+```ts
+const { mfa_factors } = await sdk.auth.mfa.list()
+```
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AuthMfaListResponse](/resources/references/js_sdk/auth/types/js_sdkauthAuthMfaListResponse)> — The configured MFA factors.
+  - `mfa_factors`: [AuthMfaDTO](/resources/references/auth/types/authAuthMfaDTO)\[] — The MFA factors configured for the authenticated identity.
+    - `id`: `string` — The multi-factor authentication (MFA) configuration's ID.
+    - `auth_identity_id`: `string` (optional) — The ID of the authentication identity this multi-factor authentication (MFA) belongs to.
+    - `auth_identity`: [AuthIdentityDTO](/resources/references/auth/interfaces/authAuthIdentityDTO) (optional) — The authentication identity this multi-factor authentication (MFA) belongs to.
+    - `provider`: [AuthMfaProviderMethod](/resources/references/auth/types/authAuthMfaProviderMethod) — The multi-factor authentication (MFA) provider used.
+    - `status`: [AuthMfaStatus](/resources/references/auth/types/authAuthMfaStatus) — The status of this multi-factor authentication (MFA) configuration.
+    - `metadata`: `Record<string, unknown>` | `null` (optional) — Additional metadata for the multi-factor authentication (MFA) configuration.
+
+## start
+
+This method starts MFA setup for the authenticated identity. It sends a
+request to the
+[Create MFA Factor](/api/admin/multi-factor-authentication/start-mfa-factor-enrollment)
+API route.
+
+### Example
+
+```ts
+const setup = await sdk.auth.mfa.start({
+  provider: "totp",
+  label: "Authenticator app"
+})
+
+// Render setup.otpauth_url as a QR code or show setup.secret manually.
+```
+
+<a id="start-parameters" />
+
+### Parameters
+
+**start**
+
+- `body`: [AuthMfaStartPayload](/resources/references/js_sdk/auth/types/js_sdkauthAuthMfaStartPayload) — The MFA setup details.
+  - `provider`: [AuthMfaProviderMethod](/resources/references/auth/types/authAuthMfaProviderMethod) — The MFA provider to set up.
+  - `label`: `string` | `null` (optional) — Optional label for the MFA factor.
+  - `issuer`: `string` (optional) — Optional issuer name. For TOTP, authenticator apps show this as the service name.
+  - `metadata`: `Record<string, unknown>` | `null` (optional) — Optional metadata to store with the MFA factor.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="start-returns" />
+
+### Returns
+
+**start**
+
+- `Promise`: Promise\<[AuthMfaSetupResponse](/resources/references/js_sdk/auth/types/js_sdkauthAuthMfaSetupResponse)> — The pending MFA factor and any setup details returned by the provider.
+  - `mfa_factor`: [AuthMfaDTO](/resources/references/auth/types/authAuthMfaDTO) — The pending MFA factor.
+    - `id`: `string` — The multi-factor authentication (MFA) configuration's ID.
+    - `auth_identity_id`: `string` (optional) — The ID of the authentication identity this multi-factor authentication (MFA) belongs to.
+    - `auth_identity`: [AuthIdentityDTO](/resources/references/auth/interfaces/authAuthIdentityDTO) (optional) — The authentication identity this multi-factor authentication (MFA) belongs to.
+    - `provider`: [AuthMfaProviderMethod](/resources/references/auth/types/authAuthMfaProviderMethod) — The multi-factor authentication (MFA) provider used.
+    - `status`: [AuthMfaStatus](/resources/references/auth/types/authAuthMfaStatus) — The status of this multi-factor authentication (MFA) configuration.
+    - `metadata`: `Record<string, unknown>` | `null` (optional) — Additional metadata for the multi-factor authentication (MFA) configuration.
+  - `secret`: `string` (optional) — The setup secret. For TOTP, this can be entered manually in an authenticator app.
+  - `otpauth_url`: `string` (optional) — The setup URI. For TOTP, this can be rendered as a QR code.
+
+## verify
+
+This method verifies a pending MFA factor setup. It sends a request to the
+[Verify MFA Factor](/api/admin/multi-factor-authentication/verify-and-enable-mfa-factor)
+API route.
+
+### Example
+
+```ts
+const { mfa_factor } = await sdk.auth.mfa.verify("authmfa_123", {
+  code: "123456"
+})
+```
+
+<a id="verify-parameters" />
+
+### Parameters
+
+**verify**
+
+- `id`: `string` — The ID of the MFA factor to verify.
+- `body`: [AuthMfaVerifyPayload](/resources/references/js_sdk/auth/types/js_sdkauthAuthMfaVerifyPayload) — The verification details.
+  - `code`: `string` — The verification code from the MFA provider.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="verify-returns" />
+
+### Returns
+
+**verify**
+
+- `Promise`: Promise\<[AuthMfaFactorResponse](/resources/references/js_sdk/auth/types/js_sdkauthAuthMfaFactorResponse)> — The verified MFA factor.
+  - `mfa_factor`: [AuthMfaDTO](/resources/references/auth/types/authAuthMfaDTO) — The MFA factor.
+    - `id`: `string` — The multi-factor authentication (MFA) configuration's ID.
+    - `auth_identity_id`: `string` (optional) — The ID of the authentication identity this multi-factor authentication (MFA) belongs to.
+    - `auth_identity`: [AuthIdentityDTO](/resources/references/auth/interfaces/authAuthIdentityDTO) (optional) — The authentication identity this multi-factor authentication (MFA) belongs to.
+    - `provider`: [AuthMfaProviderMethod](/resources/references/auth/types/authAuthMfaProviderMethod) — The multi-factor authentication (MFA) provider used.
+    - `status`: [AuthMfaStatus](/resources/references/auth/types/authAuthMfaStatus) — The status of this multi-factor authentication (MFA) configuration.
+    - `metadata`: `Record<string, unknown>` | `null` (optional) — Additional metadata for the multi-factor authentication (MFA) configuration.
+
+## disable
+
+This method disables an MFA factor for the authenticated identity. It
+sends a request to the
+[Delete MFA Factor](/api/admin/auth/disable-mfa-factor)
+API route.
+
+### Example
+
+```ts
+const { mfa_factor } = await sdk.auth.mfa.disable("authmfa_123")
+```
+
+<a id="disable-parameters" />
+
+### Parameters
+
+**disable**
+
+- `id`: `string` — The ID of the MFA factor to disable.
+- `body`: [AuthMfaDisablePayload](/resources/references/js_sdk/auth/types/js_sdkauthAuthMfaDisablePayload) (optional) — Optional verification details required by the server configuration.
+  - `method`: [AuthMfaChallengeMethod](/resources/references/auth/types/authAuthMfaChallengeMethod) (optional) — Optional challenge method used to authorize disabling MFA when configured.
+  - `code`: `string` (optional) — Optional verification code for the selected challenge method.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="disable-returns" />
+
+### Returns
+
+**disable**
+
+- `Promise`: Promise\<[AuthMfaFactorResponse](/resources/references/js_sdk/auth/types/js_sdkauthAuthMfaFactorResponse)> — The disabled MFA factor.
+  - `mfa_factor`: [AuthMfaDTO](/resources/references/auth/types/authAuthMfaDTO) — The MFA factor.
+    - `id`: `string` — The multi-factor authentication (MFA) configuration's ID.
+    - `auth_identity_id`: `string` (optional) — The ID of the authentication identity this multi-factor authentication (MFA) belongs to.
+    - `auth_identity`: [AuthIdentityDTO](/resources/references/auth/interfaces/authAuthIdentityDTO) (optional) — The authentication identity this multi-factor authentication (MFA) belongs to.
+    - `provider`: [AuthMfaProviderMethod](/resources/references/auth/types/authAuthMfaProviderMethod) — The multi-factor authentication (MFA) provider used.
+    - `status`: [AuthMfaStatus](/resources/references/auth/types/authAuthMfaStatus) — The status of this multi-factor authentication (MFA) configuration.
+    - `metadata`: `Record<string, unknown>` | `null` (optional) — Additional metadata for the multi-factor authentication (MFA) configuration.
+
+## generateRecoveryCodes
+
+This method generates new recovery codes for the authenticated identity.
+It sends a request to the
+[Generate MFA Recovery Codes](/api/admin/multi-factor-authentication/generate-mfa-recovery-codes)
+API route.
+
+### Example
+
+```ts
+const { recovery_codes } = await sdk.auth.mfa.generateRecoveryCodes()
+```
+
+<a id="generaterecoverycodes-parameters" />
+
+### Parameters
+
+**generateRecoveryCodes**
+
+- `body`: [AuthMfaGenerateRecoveryCodesPayload](/resources/references/js_sdk/auth/types/js_sdkauthAuthMfaGenerateRecoveryCodesPayload) (optional) — Optional recovery code generation details.
+  - `count`: `number` (optional) — Number of recovery codes to generate.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="generaterecoverycodes-returns" />
+
+### Returns
+
+**generateRecoveryCodes**
+
+- `Promise`: Promise\<[AuthMfaRecoveryCodesResponse](/resources/references/js_sdk/auth/types/js_sdkauthAuthMfaRecoveryCodesResponse)> — The generated recovery codes.
+  - `recovery_codes`: `string`\[] — The recovery codes. These are only returned once and should be stored by the user.
+
+## verifyChallenge
+
+This method verifies an MFA challenge returned from `sdk.auth.login` or
+`sdk.auth.callback`. It sends a request to the
+[Verify MFA Challenge](/api/admin/multi-factor-authentication/verify-mfa-challenge)
+API route.
+
+If verification succeeds, the returned token is stored based on the SDK's
+auth configuration, matching `sdk.auth.login`.
+
+### Example
+
+```ts
+const result = await sdk.auth.login("user", "emailpass", {
+  email: "user@example.com",
+  password: "secret"
+})
+
+if (typeof result === "object" && "mfa_challenge" in result) {
+  await sdk.auth.mfa.verifyChallenge(result.mfa_challenge.id, {
+    method: "totp",
+    code: "123456"
+  })
+}
+```
+
+<a id="verifychallenge-parameters" />
+
+### Parameters
+
+**verifyChallenge**
+
+- `id`: `string` — The ID of the MFA challenge to verify.
+- `body`: [AuthMfaVerifyChallengePayload](/resources/references/js_sdk/auth/types/js_sdkauthAuthMfaVerifyChallengePayload) — The challenge verification details.
+  - `method`: [AuthMfaChallengeMethod](/resources/references/auth/types/authAuthMfaChallengeMethod) — The MFA challenge method used for verification.
+  - `code`: `string` — The verification code for the selected challenge method.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="verifychallenge-returns" />
+
+### Returns
+
+**verifyChallenge**
+
+- `Promise`: Promise\<string> — The authentication JWT token.
+  - `string`: `string`

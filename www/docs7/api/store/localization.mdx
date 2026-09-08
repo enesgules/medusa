@@ -1,0 +1,48 @@
+---
+title: Localization
+---
+
+### Prerequisites
+
+- [Translation Module Configured](/resources/commerce-modules/translation#configure-translation-module)
+
+Medusa's Store APIs support localization of core and custom data models. Refer to the [Translation Module](/resources/commerce-modules/translation) guide to learn about supported core data models, and how to [configure translations for custom data models](/resources/commerce-modules/translation/custom-data-models).
+
+By default, the Store APIs returns the original data without localization.
+
+You can set the locale of a request using one of the following methods:
+
+- Use the JS SDK's `setLocale` method. The JS SDK will automatically include the locale in the `x-medusa-locale` header of subsequent requests.
+- Pass the `locale` query parameter to the relevant API route. By default, all `/store` API routes support the `locale` query parameter.
+- Set the `x-medusa-locale` header in the API request to the relevant API route. By default, all `/store` API routes support the `x-medusa-locale` header.
+
+Locales are in the [IETF BCP 47](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1) format, such as `en-US` for American English, or `fr-FR` for French.
+
+The returned data will be in the specified locale if a translation exists. Otherwise, it will fall back to the original data.
+
+Learn more in the [Storefront Localization guide](/resources/storefront-development/localization).
+
+<Tabs>
+  <Tab title="Using JS SDK">
+    ```js
+    sdk.setLocale("fr-FR")
+    // products content will be in French
+    const { products } = await sdk.store.product.list()
+    ```
+  </Tab>
+
+  <Tab title="Using Query Parameter">
+    ```bash
+    curl "http://localhost:9000/store/products?locale=fr-FR" \
+    -H 'x-publishable-api-key: {your_publishable_api_key}'
+    ```
+  </Tab>
+
+  <Tab title="Using Header">
+    ```bash
+    curl "http://localhost:9000/store/products" \
+    -H 'x-publishable-api-key: {your_publishable_api_key}' \
+    -H "x-medusa-locale: fr-FR"
+    ```
+  </Tab>
+</Tabs>

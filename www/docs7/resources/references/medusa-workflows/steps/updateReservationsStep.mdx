@@ -1,0 +1,63 @@
+---
+title: updateReservationsStep - Medusa Core Workflows Reference
+sidebarTitle: updateReservationsStep
+---
+
+This documentation provides a reference to the `updateReservationsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step updates one or more reservations.
+
+## Example
+
+```ts
+const data = updateReservationsStep([
+  {
+    id: "res_123",
+    quantity: 1,
+  }
+])
+```
+
+<a id="updatereservationsstep-input" />
+
+## Input
+
+**updateReservationsStep**
+
+- `UpdateReservationsStepInput`: [UpdateReservationsStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcUpdateReservationsStepInput)
+  - `id`: `string` — The ID of the reservation to update.
+  - `quantity`: [BigNumberInput](/resources/references/types/types/typesBigNumberInput) (optional) — The reserved quantity.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/types/types/typesBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `location_id`: `string` (optional) — The ID of the associated location.
+  - `description`: `null` | `string` (optional) — The description of the reservation item.
+  - `allow_backorder`: `boolean` (optional) — Allow backorder of the item. If true, it won't check inventory levels before reserving it.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+
+<a id="updatereservationsstep-output" />
+
+## Output
+
+**updateReservationsStep**
+
+- `ReservationItemDTO[]`: [ReservationItemDTO](/resources/references/types/InventoryTypes/interfaces/typesInventoryTypesReservationItemDTO)\[]
+  - `id`: `string` — The ID of the reservation item.
+  - `location_id`: `string` — The associated location's ID.
+  - `inventory_item_id`: `string` — The associated inventory item's ID.
+  - `quantity`: [BigNumberInput](/resources/references/types/types/typesBigNumberInput) — The quantity of the reservation item.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/types/types/typesBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `line_item_id`: `null` | `string` (optional) — The associated line item's ID.
+  - `description`: `null` | `string` (optional) — The description of the reservation item.
+  - `allow_backorder`: `boolean` (optional) — Allow backorder of the item. If true, it won't check inventory levels before reserving it.
+  - `created_by`: `null` | `string` (optional) — The created by of the reservation item.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `created_at`: `string` | `Date` — The creation date of the reservation item.
+  - `updated_at`: `string` | `Date` — The update date of the reservation item.
+  - `deleted_at`: `null` | `string` | `Date` — The deletion date of the reservation item.

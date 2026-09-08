@@ -1,0 +1,42 @@
+---
+title: CreateFulfillmentWorkflowInput
+---
+
+The details of a fulfillment to create.
+
+- `CreateFulfillmentWorkflowInput`: `object` — The details of a fulfillment to create.
+  - `location_id`: `string` — The associated location's ID.
+  - `packed_at`: `Date` | `null` (optional) — The date the fulfillment was packed.
+  - `shipped_at`: `Date` | `null` (optional) — The date the fulfillment was shipped.
+  - `created_by`: `string` | `null` (optional) — The id of the user that creates the fulfillment
+  - `delivered_at`: `Date` | `null` (optional) — The date the fulfillment was delivered.
+  - `canceled_at`: `Date` | `null` (optional) — The date the fulfillment was canceled.
+  - `data`: `Record<string, unknown>` | `null` (optional) — The data necessary for the associated fulfillment provider to process the fulfillment.
+  - `provider_id`: `string` — The associated fulfillment provider's ID.
+  - `shipping_option_id`: `string` | `null` (optional) — The associated shipping option's ID.
+  - `metadata`: `Record<string, unknown>` | `null` (optional) — Holds custom data in key-value pairs.
+  - `delivery_address`: [CreateFulfillmentAddressWorkflowDTO](/resources/references/types/WorkflowTypes/FulfillmentWorkflow/types/typesWorkflowTypesFulfillmentWorkflowCreateFulfillmentAddressWorkflowDTO) — The address associated with the fulfillment. It's used for delivery.
+    - `company`: `string` | `null` (optional) — The company of the fulfillment address.
+    - `first_name`: `string` | `null` (optional) — The first name of the fulfillment address.
+    - `last_name`: `string` | `null` (optional) — The last name of the fulfillment address.
+    - `address_1`: `string` | `null` (optional) — The first line of the fulfillment address.
+    - `address_2`: `string` | `null` (optional) — The second line of the fulfillment address.
+    - `city`: `string` | `null` (optional) — The city of the fulfillment address.
+    - `country_code`: `string` | `null` (optional) — The ISO 2 character country code of the fulfillment address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the fulfillment address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the fulfillment address.
+    - `phone`: `string` | `null` (optional) — The phone of the fulfillment address.
+    - `metadata`: `Record<string, unknown>` | `null` (optional) — Holds custom data in key-value pairs.
+  - `items`: [CreateFulfillmentItemWorkflowDTO](/resources/references/types/WorkflowTypes/FulfillmentWorkflow/types/typesWorkflowTypesFulfillmentWorkflowCreateFulfillmentItemWorkflowDTO)\[] — The items associated with the fulfillment.
+    - `title`: `string` — The title of the fulfillment item.
+    - `sku`: `string` — The SKU of the fulfillment item.
+    - `quantity`: `number` — The quantity of the fulfillment item.
+    - `barcode`: `string` — The barcode of the fulfillment item.
+    - `line_item_id`: `string` | `null` (optional) — The associated line item's ID.
+    - `inventory_item_id`: `string` | `null` (optional) — The associated inventory item's ID.
+  - `labels`: [CreateFulfillmentLabelWorkflowDTO](/resources/references/types/WorkflowTypes/FulfillmentWorkflow/types/typesWorkflowTypesFulfillmentWorkflowCreateFulfillmentLabelWorkflowDTO)\[] (optional) — The labels associated with the fulfillment.
+    - `tracking_number`: `string` — The tracking number of the fulfillment label.
+    - `tracking_url`: `string` — The tracking URL of the fulfillment label.
+    - `label_url`: `string` — The URL of the label.
+  - `order`: [CreateFulfillmentOrderWorkflowDTO](/resources/references/types/WorkflowTypes/FulfillmentWorkflow/types/typesWorkflowTypesFulfillmentWorkflowCreateFulfillmentOrderWorkflowDTO) (optional) — The associated fulfillment order to be sent to the provider.
+  - `additional_data`: `Record<string, unknown>` (optional) — Custom key-value pairs to pass to the fulfillment provider's `createFulfillment` method. Unlike `data`, this isn't persisted on the fulfillment; it's only forwarded to the provider at creation time.

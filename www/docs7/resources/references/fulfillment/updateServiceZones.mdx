@@ -1,0 +1,296 @@
+---
+title: updateServiceZones - Fulfillment Module Reference
+sidebarTitle: updateServiceZones
+---
+
+This documentation provides a reference to the `updateServiceZones` method. This belongs to the Fulfillment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updateservicezones-id-data-sharedcontext-promiseservicezonedto" />
+
+## updateServiceZones(id, data, sharedContext?): Promise\<[ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)>
+
+This method updates an existing service zone.
+
+### Example
+
+```ts
+const serviceZone =
+  await fulfillmentModuleService.updateServiceZones(
+    "serzo_123",
+    {
+      name: "US",
+    }
+  )
+```
+
+<a id="updateservicezones-parameters" />
+
+### Parameters
+
+**updateServiceZones**
+
+- `id`: `string` — The ID of the service zone.
+- `data`: [UpdateServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentUpdateServiceZoneDTO) — The attributes to update in the service zone.
+  - `id`: `string` (optional) — The ID of the service zone.
+  - `name`: `null` | `string` (optional) — The name of the service zone.
+  - `geo_zones`: ([UpdateCountryGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentUpdateCountryGeoZoneDTO) | [UpdateProvinceGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentUpdateProvinceGeoZoneDTO) | [UpdateCityGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentUpdateCityGeoZoneDTO) | [UpdateZipGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentUpdateZipGeoZoneDTO) | Omit\<[CreateCountryGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateCountryGeoZoneDTO), "service\_zone\_id"> | Omit\<[CreateProvinceGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateProvinceGeoZoneDTO), "service\_zone\_id"> | Omit\<[CreateCityGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateCityGeoZoneDTO), "service\_zone\_id"> | Omit\<[CreateZipGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateZipGeoZoneDTO), "service\_zone\_id"> | `object`)\[] (optional) — The geo zones associated with the service zone.
+    - `service_zone_id`: `string` (optional) — The associated service zone's ID.
+    - `country_code`: `string` (optional) — The ISO 2 character country code of the geo zone.
+    - `metadata`: `null` | `Record<string, any>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` — The ID of the geo zone.
+    - `type`: `"country"` (default: `"country"`) — The type of the geo zone.
+    - `province_code`: `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province code of the geo zone.
+    - `city`: `string` (optional) — The city of the geo zone.
+    - `postal_expression`: `Record<string, any>` (optional) — The postal expression of the geo zone.
+- `sharedContext`: [Context](/resources/references/fulfillment/interfaces/fulfillmentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/fulfillment/interfaces/fulfillmentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateservicezones-returns" />
+
+### Returns
+
+**updateServiceZones**
+
+- `Promise`: Promise\<[ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)> — The updated service zone.
+  - `id`: `string` — The ID of the service zone.
+  - `name`: `string` — The name of the service zone.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `fulfillment_set`: [FulfillmentSetDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentSetDTO) — The fulfillment set assoiated with the service zone.
+    - `id`: `string` — The ID of the fulfillment set.
+    - `name`: `string` — The name of the fulfillment set.
+    - `type`: `string` — The type of the fulfillment set.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `service_zones`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[] — The service zones associated with the fulfillment set.
+    - `created_at`: `Date` — The creation date of the fulfillment set.
+    - `updated_at`: `Date` — The update date of the fulfillment set.
+    - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment set.
+  - `fulfillment_set_id`: `string` — The fulfillment set id of the service zone.
+  - `geo_zones`: [GeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentGeoZoneDTO)\[] — The geo zones assoiated with the service zone.
+    - `id`: `string` — The ID of the geo zone.
+    - `type`: [GeoZoneType](/resources/references/fulfillment/types/fulfillmentGeoZoneType) — The type of the geo zone.
+    - `country_code`: `string` — The country code of the geo zone.
+    - `province_code`: `null` | `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province code of the geo zone.
+    - `city`: `null` | `string` — The city of the geo zone.
+    - `postal_expression`: `null` | `Record<string, unknown>` — The postal expression of the geo zone.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_at`: `Date` — The creation date of the geo zone.
+    - `updated_at`: `Date` — The update date of the geo zone.
+    - `deleted_at`: `null` | `Date` — The deletion date of the geo zone.
+  - `shipping_options`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[] — The shipping options assoiated with the service zone.
+    - `id`: `string` — The ID of the shipping option.
+    - `name`: `string` — The name of the shipping option.
+    - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The type of the shipping option's price.
+    - `service_zone_id`: `string` — The associated service zone's ID.
+    - `shipping_profile_id`: `string` — The associated shipping profile's ID.
+    - `provider_id`: `string` — The associated fulfillment provider's ID.
+    - `shipping_option_type_id`: `null` | `string` — The associated shipping option type's ID.
+    - `data`: `null` | `Record<string, unknown>` — The data necessary for the associated fulfillment provider to process the shipping option and, later, its associated fulfillments.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `service_zone`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO) — The associated service zone.
+    - `shipping_profile`: [ShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingProfileDTO) — The associated shipping profile.
+    - `fulfillment_provider`: [FulfillmentProviderDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentProviderDTO) — The associated fulfillment provider.
+    - `type`: [ShippingOptionTypeDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionTypeDTO) — The associated shipping option type.
+    - `rules`: [ShippingOptionRuleDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionRuleDTO)\[] — The rules associated with the shipping option.
+    - `fulfillments`: [FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO)\[] — The fulfillments associated with the shipping option.
+    - `created_at`: `Date` — The creation date of the shipping option.
+    - `updated_at`: `Date` — The update date of the shipping option.
+    - `deleted_at`: `null` | `Date` — The deletion date of the shipping option.
+  - `created_at`: `Date` — The creation date of the service zone.
+  - `updated_at`: `Date` — The update date of the service zone.
+  - `deleted_at`: `null` | `Date` — The deletion date of the service zone.
+
+<a id="updateservicezones-selector-data-sharedcontext-promiseservicezonedto" />
+
+## updateServiceZones(selector, data, sharedContext?): Promise\<[ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[]>
+
+This method updates existing service zones matching the specified filters.
+
+### Example
+
+```ts
+const serviceZones =
+  await fulfillmentModuleService.updateServiceZones(
+    {
+      id: ["serzo_123", "serzo_321"],
+    },
+    {
+      name: "US",
+    }
+  )
+```
+
+<a id="updateservicezones-parameters-1" />
+
+### Parameters
+
+**updateServiceZones**
+
+- `selector`: [FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) — The filters specifying which service zones to update.
+  - `$and`: ([FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the service zones by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the service zones by their name.
+    - `geo_zones`: [FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps) (optional) — The filters to apply on the associated geo zones.
+    - `fulfillment_set`: [FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps) (optional) — The filters to apply on the associated fulfillment sets.
+  - `$or`: ([FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the service zones by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the service zones by their name.
+    - `geo_zones`: [FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps) (optional) — The filters to apply on the associated geo zones.
+    - `fulfillment_set`: [FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps) (optional) — The filters to apply on the associated fulfillment sets.
+  - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the service zones by.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the service zones by their name.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `geo_zones`: [FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps) (optional) — The filters to apply on the associated geo zones.
+    - `$and`: ([FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the geo zones by.
+    - `type`: [GeoZoneType](/resources/references/fulfillment/types/fulfillmentGeoZoneType) | [GeoZoneType](/resources/references/fulfillment/types/fulfillmentGeoZoneType)\[] (optional) — Filter the geo zones by their type.
+    - `country_code`: `string` | `string`\[] (optional) — Filter the geo zones by their country code.
+    - `province_code`: `string` | `string`\[] (optional) — Filter the geo zones by their lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province code.
+    - `city`: `string` | `string`\[] (optional) — Filter the geo zones by their city.
+  - `fulfillment_set`: [FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps) (optional) — The filters to apply on the associated fulfillment sets.
+    - `$and`: ([FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the fulfillment sets by.
+    - `name`: `string` | `string`\[] (optional) — Filter the fulfillment sets by their name.
+    - `type`: `string` | `string`\[] (optional) — Filter the fulfillment sets by their type.
+    - `service_zones`: [FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) (optional) — The filters to apply on the retrieved service zones.
+- `data`: [UpdateServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentUpdateServiceZoneDTO) — The attributes to update in the service zone.
+  - `id`: `string` (optional) — The ID of the service zone.
+  - `name`: `null` | `string` (optional) — The name of the service zone.
+  - `geo_zones`: ([UpdateCountryGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentUpdateCountryGeoZoneDTO) | [UpdateProvinceGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentUpdateProvinceGeoZoneDTO) | [UpdateCityGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentUpdateCityGeoZoneDTO) | [UpdateZipGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentUpdateZipGeoZoneDTO) | Omit\<[CreateCountryGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateCountryGeoZoneDTO), "service\_zone\_id"> | Omit\<[CreateProvinceGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateProvinceGeoZoneDTO), "service\_zone\_id"> | Omit\<[CreateCityGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateCityGeoZoneDTO), "service\_zone\_id"> | Omit\<[CreateZipGeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateZipGeoZoneDTO), "service\_zone\_id"> | `object`)\[] (optional) — The geo zones associated with the service zone.
+    - `service_zone_id`: `string` (optional) — The associated service zone's ID.
+    - `country_code`: `string` (optional) — The ISO 2 character country code of the geo zone.
+    - `metadata`: `null` | `Record<string, any>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` — The ID of the geo zone.
+    - `type`: `"country"` (default: `"country"`) — The type of the geo zone.
+    - `province_code`: `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province code of the geo zone.
+    - `city`: `string` (optional) — The city of the geo zone.
+    - `postal_expression`: `Record<string, any>` (optional) — The postal expression of the geo zone.
+- `sharedContext`: [Context](/resources/references/fulfillment/interfaces/fulfillmentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/fulfillment/interfaces/fulfillmentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateservicezones-returns-1" />
+
+### Returns
+
+**updateServiceZones**
+
+- `Promise`: Promise\<[ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[]> — The updated service zones.
+  - `ServiceZoneDTO[]`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[]
+    - `id`: `string` — The ID of the service zone.
+    - `name`: `string` — The name of the service zone.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `fulfillment_set`: [FulfillmentSetDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentSetDTO) — The fulfillment set assoiated with the service zone.
+      - `id`: `string` — The ID of the fulfillment set.
+      - `name`: `string` — The name of the fulfillment set.
+      - `type`: `string` — The type of the fulfillment set.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `service_zones`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[] — The service zones associated with the fulfillment set.
+      - `created_at`: `Date` — The creation date of the fulfillment set.
+      - `updated_at`: `Date` — The update date of the fulfillment set.
+      - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment set.
+    - `fulfillment_set_id`: `string` — The fulfillment set id of the service zone.
+    - `geo_zones`: [GeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentGeoZoneDTO)\[] — The geo zones assoiated with the service zone.
+      - `id`: `string` — The ID of the geo zone.
+      - `type`: [GeoZoneType](/resources/references/fulfillment/types/fulfillmentGeoZoneType) — The type of the geo zone.
+      - `country_code`: `string` — The country code of the geo zone.
+      - `province_code`: `null` | `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province code of the geo zone.
+      - `city`: `null` | `string` — The city of the geo zone.
+      - `postal_expression`: `null` | `Record<string, unknown>` — The postal expression of the geo zone.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `created_at`: `Date` — The creation date of the geo zone.
+      - `updated_at`: `Date` — The update date of the geo zone.
+      - `deleted_at`: `null` | `Date` — The deletion date of the geo zone.
+    - `shipping_options`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[] — The shipping options assoiated with the service zone.
+      - `id`: `string` — The ID of the shipping option.
+      - `name`: `string` — The name of the shipping option.
+      - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The type of the shipping option's price.
+      - `service_zone_id`: `string` — The associated service zone's ID.
+      - `shipping_profile_id`: `string` — The associated shipping profile's ID.
+      - `provider_id`: `string` — The associated fulfillment provider's ID.
+      - `shipping_option_type_id`: `null` | `string` — The associated shipping option type's ID.
+      - `data`: `null` | `Record<string, unknown>` — The data necessary for the associated fulfillment provider to process the shipping option and, later, its associated fulfillments.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `service_zone`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO) — The associated service zone.
+      - `shipping_profile`: [ShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingProfileDTO) — The associated shipping profile.
+      - `fulfillment_provider`: [FulfillmentProviderDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentProviderDTO) — The associated fulfillment provider.
+      - `type`: [ShippingOptionTypeDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionTypeDTO) — The associated shipping option type.
+      - `rules`: [ShippingOptionRuleDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionRuleDTO)\[] — The rules associated with the shipping option.
+      - `fulfillments`: [FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO)\[] — The fulfillments associated with the shipping option.
+      - `created_at`: `Date` — The creation date of the shipping option.
+      - `updated_at`: `Date` — The update date of the shipping option.
+      - `deleted_at`: `null` | `Date` — The deletion date of the shipping option.
+    - `created_at`: `Date` — The creation date of the service zone.
+    - `updated_at`: `Date` — The update date of the service zone.
+    - `deleted_at`: `null` | `Date` — The deletion date of the service zone.

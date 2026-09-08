@@ -1,0 +1,26 @@
+---
+title: SearchIndexSettings
+---
+
+The settings applied to a search index when it's created or migrated. A
+provider that can't honour a setting rejects it from `upsertIndex`.
+
+## Properties
+
+**SearchIndexSettings**
+
+- `synonyms`: `Record<string, string[]>` (optional) — Terms treated as equivalent when matching, keyed by the term they expand to.
+- `stop_words`: `string`\[] (optional) — Terms ignored when matching, such as `the` or `a`.
+- `typo_tolerance`: `object` (optional) — How misspelled terms are matched.
+  - `enabled`: `boolean` (optional) — Whether typo tolerance is enabled at all.
+  - `min_word_size_for_one_typo`: `number` (optional) — The shortest term length that tolerates a single typo.
+  - `min_word_size_for_two_typos`: `number` (optional) — The shortest term length that tolerates two typos.
+  - `disabled_on_attributes`: `string`\[] (optional) — The dotted paths of the fields that must always match exactly.
+- `faceting`: `object` (optional) — The defaults applied to the facets computed on this index.
+  - `max_values_per_facet`: `number` (optional) — The maximum number of values returned for a facet.
+  - `sort_by`: `"count"` | `"alpha"` (optional) — Whether facet values are ordered by their count or alphabetically.
+- `pagination`: `object` (optional) — The limits applied when paginating this index.
+  - `max_total_hits`: `number` (optional) — The maximum number of hits a query can page through.
+- `distinct_attribute`: `string` (optional) — The dotted path of a field that hits are deduplicated by, returning at most one hit per distinct value.
+- `locales`: `string`\[] (optional) — The languages the index's text is analyzed for, such as `["en"]`.
+- `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Index settings specific to a search engine, keyed by provider identifier.

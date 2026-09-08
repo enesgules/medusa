@@ -1,0 +1,73 @@
+---
+title: update
+---
+
+This method updates a store. It sends a request to the
+[Update Store](/api/admin/stores/update-a-store)
+API route.
+
+## Example
+
+```ts
+sdk.admin.store.update("store_123", {
+  name: "My Store",
+})
+.then(({ store }) => {
+  console.log(store)
+})
+```
+
+<a id="update-parameters" />
+
+## Parameters
+
+**update**
+
+- `id`: `string` — The ID of the store to update.
+- `body`: [AdminUpdateStore](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateStore) — The details of the store to update.
+  - `name`: `string` (optional) — The name of the store.
+  - `supported_currencies`: [AdminUpdateStoreSupportedCurrency](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateStoreSupportedCurrency)\[] (optional) — The supported currencies of the store.
+    - `currency_code`: `string` — The currency's ISO 3 code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `is_default`: `boolean` (optional) — Whether this currency is the default currency in the store.
+    - `is_tax_inclusive`: `boolean` (optional) — Whether prices in this currency are tax inclusive. Learn more in [this documentation](/resources/commerce-modules/pricing/tax-inclusive-pricing).
+  - `supported_locales`: [AdminUpdateStoreSupportedLocale](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateStoreSupportedLocale)\[] (optional) — The supported locales of the store.
+    - `locale_code`: `string` — The locale's BCP 47 language tag.
+
+      Example:
+
+      ```
+      "en-US"
+      ```
+  - `default_sales_channel_id`: `null` | `string` (optional) — The ID of the default sales channel of the store.
+  - `default_region_id`: `null` | `string` (optional) — The ID of the default region of the store.
+  - `default_location_id`: `null` | `string` (optional) — The ID of the default stock location of the store.
+  - `metadata`: `null` | `Record<string, any>` (optional) — Custom key-value pairs to store custom data in the store.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the store.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+## Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminStoreResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreResponse)> — The store's details.
+  - `store`: [AdminStore](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStore) — The store's details.
+    - `id`: `string` — The store's ID.
+    - `name`: `string` — The store's name.
+    - `supported_currencies`: [AdminStoreCurrency](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreCurrency)\[] — The store's supported currencies.
+    - `supported_locales`: [AdminStoreLocale](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreLocale)\[] — The store's supported locales.
+    - `default_sales_channel_id`: `null` | `string` — The store's default sales channel ID.
+    - `default_region_id`: `null` | `string` — The store's default region ID.
+    - `default_location_id`: `null` | `string` — The store's default location ID.
+    - `metadata`: `null` | `Record<string, any>` — Custom key-value pairs that can be added to the store.
+    - `created_at`: `string` — The date the store was created.
+    - `updated_at`: `string` — The date the store was updated.

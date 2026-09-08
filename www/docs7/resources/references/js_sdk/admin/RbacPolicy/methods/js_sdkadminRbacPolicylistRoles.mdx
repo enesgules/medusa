@@ -1,0 +1,49 @@
+---
+title: listRoles
+---
+
+Lists the roles that include the given policy.
+
+<a id="listroles-parameters" />
+
+## Parameters
+
+**listRoles**
+
+- `id`: `string`
+- `queryParams`: [AdminRbacPolicyRoleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicyRoleListParams) (optional)
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional)
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listroles-returns" />
+
+## Returns
+
+**listRoles**
+
+- `Promise`: Promise\<[AdminRbacPolicyRolesListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicyRolesListResponse)> — Lists the roles that include the given policy.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `roles`: [AdminRbacRole](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRole)\[] — The roles that include this policy.
+    - `id`: `string` — The role's ID.
+    - `name`: `string` — The role's name.
+    - `description`: `null` | `string` — The role's description.
+    - `parent_id`: `null` | `string` — The ID of the parent role, if any.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the role.
+    - `policies`: [AdminRbacPolicy](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicy)\[] (optional) — The policies associated with the role.
+    - `created_at`: `string` — The date the role was created.
+    - `updated_at`: `string` — The date the role was updated.
+    - `deleted_at`: `null` | `string` — The date the role was deleted.

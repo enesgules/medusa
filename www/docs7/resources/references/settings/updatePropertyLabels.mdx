@@ -1,0 +1,136 @@
+---
+title: updatePropertyLabels - Settings Module Reference
+sidebarTitle: updatePropertyLabels
+---
+
+This documentation provides a reference to the `updatePropertyLabels` method. This belongs to the Settings Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updatepropertylabels-data-sharedcontext-promisepropertylabeldto" />
+
+## updatePropertyLabels(data, sharedContext?): Promise\<[PropertyLabelDTO](/resources/references/settings/interfaces/settingsPropertyLabelDTO)\[]>
+
+Update property labels.
+Pass data objects with 'id' field to update specific labels.
+
+### Example
+
+```ts
+const propertyLabels =
+  await settingsModuleService.updatePropertyLabels([
+    {
+      id: "prlbl_123",
+      label: "Product Name",
+    },
+  ])
+```
+
+<a id="updatepropertylabels-parameters" />
+
+### Parameters
+
+**updatePropertyLabels**
+
+- `data`: [UpdatePropertyLabelDTO](/resources/references/settings/interfaces/settingsUpdatePropertyLabelDTO)\[] — The property labels to update, each identified by its `id`.
+  - `id`: `string` (optional) — The ID of the property label to update.
+  - `label`: `string` (optional) — Custom display name for the property.
+  - `description`: `null` | `string` (optional) — Optional description providing context about the property.
+- `sharedContext`: [Context](/resources/references/settings/interfaces/settingsContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/settings/interfaces/settingsIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatepropertylabels-returns" />
+
+### Returns
+
+**updatePropertyLabels**
+
+- `Promise`: Promise\<[PropertyLabelDTO](/resources/references/settings/interfaces/settingsPropertyLabelDTO)\[]> — The updated property labels.
+  - `PropertyLabelDTO[]`: [PropertyLabelDTO](/resources/references/settings/interfaces/settingsPropertyLabelDTO)\[]
+    - `id`: `string` — The ID of the property label.
+    - `entity`: `string` — The entity this label applies to (e.g., "Order", "Product").
+    - `property`: `string` — The property path (e.g., "display\_id", "customer.email").
+    - `label`: `string` — Custom display name for the property.
+    - `description`: `null` | `string` — Optional description providing context about the property.
+    - `created_at`: `Date` — The date the label was created.
+    - `updated_at`: `Date` — The date the label was last updated.
+
+<a id="updatepropertylabels-options-sharedcontext-promisepropertylabeldto" />
+
+## updatePropertyLabels(options, sharedContext?): Promise\<[PropertyLabelDTO](/resources/references/settings/interfaces/settingsPropertyLabelDTO)\[]>
+
+Update property labels by selector.
+
+### Example
+
+```ts
+const propertyLabels =
+  await settingsModuleService.updatePropertyLabels({
+    selector: { entity: "Product" },
+    data: { description: "The product's title." },
+  })
+```
+
+<a id="updatepropertylabels-parameters-1" />
+
+### Parameters
+
+**updatePropertyLabels**
+
+- `options`: `object` — The update options.
+  - `selector`: [PropertyLabelFilterableFields](/resources/references/settings/interfaces/settingsPropertyLabelFilterableFields) — The filters specifying which property labels to update.
+    - `$and`: ([PropertyLabelFilterableFields](/resources/references/settings/interfaces/settingsPropertyLabelFilterableFields) | [BaseFilterable](/resources/references/settings/interfaces/settingsBaseFilterable)\<[PropertyLabelFilterableFields](/resources/references/settings/interfaces/settingsPropertyLabelFilterableFields)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([PropertyLabelFilterableFields](/resources/references/settings/interfaces/settingsPropertyLabelFilterableFields) | [BaseFilterable](/resources/references/settings/interfaces/settingsBaseFilterable)\<[PropertyLabelFilterableFields](/resources/references/settings/interfaces/settingsPropertyLabelFilterableFields)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/settings/types/settingsOperatorMap)\<string | string\[]> (optional) — The IDs to filter by.
+    - `entity`: `string` | `string`\[] | [OperatorMap](/resources/references/settings/types/settingsOperatorMap)\<string> (optional) — Filter by entity name.
+    - `property`: `string` | `string`\[] | [OperatorMap](/resources/references/settings/types/settingsOperatorMap)\<string> (optional) — Filter by property name.
+  - `data`: [UpdatePropertyLabelDTO](/resources/references/settings/interfaces/settingsUpdatePropertyLabelDTO) — The attributes to update in the matching property labels.
+    - `id`: `string` (optional) — The ID of the property label to update.
+    - `label`: `string` (optional) — Custom display name for the property.
+    - `description`: `null` | `string` (optional) — Optional description providing context about the property.
+- `sharedContext`: [Context](/resources/references/settings/interfaces/settingsContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/settings/interfaces/settingsIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatepropertylabels-returns-1" />
+
+### Returns
+
+**updatePropertyLabels**
+
+- `Promise`: Promise\<[PropertyLabelDTO](/resources/references/settings/interfaces/settingsPropertyLabelDTO)\[]> — The updated property labels.
+  - `PropertyLabelDTO[]`: [PropertyLabelDTO](/resources/references/settings/interfaces/settingsPropertyLabelDTO)\[]
+    - `id`: `string` — The ID of the property label.
+    - `entity`: `string` — The entity this label applies to (e.g., "Order", "Product").
+    - `property`: `string` — The property path (e.g., "display\_id", "customer.email").
+    - `label`: `string` — Custom display name for the property.
+    - `description`: `null` | `string` — Optional description providing context about the property.
+    - `created_at`: `Date` — The date the label was created.
+    - `updated_at`: `Date` — The date the label was last updated.

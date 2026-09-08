@@ -1,0 +1,118 @@
+---
+title: VectorProperty
+---
+
+The core of every search index field property. Only the modifiers that make
+sense for any field kind live here; the narrower ones (searchable, facet
+types, array) sit on the subclasses whose kinds support them, so an invalid
+combination is a compile error instead of a boot failure.
+
+## Type parameters
+
+**VectorProperty**
+
+- `T`: `object` (optional)
+
+## constructor
+
+<a id="constructor-type-parameters" />
+
+### Type Parameters
+
+**constructor**
+
+- `T`: `object` (optional)
+
+<a id="constructor-parameters" />
+
+### Parameters
+
+**constructor**
+
+- `dimensions`: `number`
+
+## Properties
+
+**VectorProperty**
+
+- `$dataType`: T — A type-only property to infer the JavaScript data-type of the schema property
+- `#retrievable`: `boolean` (optional)
+- `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+- `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `name`: `"vector"`
+  - `options`: `Record<string, any>` (optional)
+- `#dimensions`: `number`
+- `#embed`: `boolean` (default: false)
+
+## Methods
+
+### retrievable
+
+<a id="retrievable-parameters" />
+
+#### Parameters
+
+**retrievable**
+
+- `value`: `boolean` (default: true)
+
+<a id="retrievable-returns" />
+
+#### Returns
+
+**retrievable**
+
+- `VectorProperty`: [VectorProperty](/resources/references/utils/classes/utilsVectorProperty)\<T>
+
+### providerOptions
+
+<a id="provideroptions-parameters" />
+
+#### Parameters
+
+**providerOptions**
+
+- `options`: `Record<string, Record<string, unknown>>`
+
+<a id="provideroptions-returns" />
+
+#### Returns
+
+**providerOptions**
+
+- `VectorProperty`: [VectorProperty](/resources/references/utils/classes/utilsVectorProperty)\<T>
+
+### embed
+
+Ask the engine to embed this field's text at write time, and for
+`search_options.vector.query` at query time. Documents pass a string on
+this field; the engine applies its configured embedding model.
+
+<a id="embed-returns" />
+
+#### Returns
+
+**embed**
+
+- `VectorProperty`: [VectorProperty](/resources/references/utils/classes/utilsVectorProperty)\<string> — Ask the engine to embed this field's text at write time, and for `search_options.vector.query` at query time. Documents pass a string on this field; the engine applies its configured embedding model.
+  - `string`: `string`
+
+### parse
+
+Returns the serialized metadata
+
+<a id="parse-parameters" />
+
+#### Parameters
+
+**parse**
+
+- `fieldName`: `string`
+
+<a id="parse-returns" />
+
+#### Returns
+
+**parse**
+
+- `SearchPropertyMetadata`: [SearchPropertyMetadata](/resources/references/types/SearchTypes/types/typesSearchTypesSearchPropertyMetadata)\<T> — Returns the serialized metadata

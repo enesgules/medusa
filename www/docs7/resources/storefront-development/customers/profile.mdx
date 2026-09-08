@@ -1,0 +1,128 @@
+---
+title: Edit Customer Profile in Storefront
+---
+
+In this guide, you'll learn how to edit the customer's profile in the storefront, which is useful if you're adding a profile page to your storefront that allows the customer to view and edit their details.
+
+To edit the customer's profile in the storefront, send a request to the [Update Customer API route](/api/store/customers/update-customer).
+
+For example:
+
+<Note>
+  **Tip**
+
+  - Learn how to install and configure the JS SDK in the [JS SDK documentation](/resources/js-sdk).
+  - This example uses the `useCustomer` hook defined in the [Customer Context guide](/resources/storefront-development/customers/context).
+  - Since only authenticated customers can edit their profile, this example assumes that the JS SDK is already configured for authentication and the customer's authentication token was set as explained in the [Login in Storefront](/resources/storefront-development/customers/login) and [Third-Party Login](/resources/storefront-development/customers/third-party-login) guides.
+</Note>
+
+<Tabs>
+  <Tab title="React">
+    ```tsx
+    "use client" // include with Next.js 13+
+
+    import { useState } from "react"
+    import { useCustomer } from "@/providers/customer"
+    import { sdk } from "@/lib/sdk"
+
+    export default function EditProfile() {
+      const { customer, setCustomer } = useCustomer()
+      console.log(customer)
+      const [firstName, setFirstName] = useState(
+        customer?.first_name || ""
+      )
+      const [lastName, setLastName] = useState(
+        customer?.last_name || ""
+      )
+      const [company, setCompany] = useState(
+        customer?.company_name || ""
+      )
+      const [phone, setPhone] = useState(
+        customer?.phone || ""
+      )
+      const [loading, setLoading] = useState(false)
+
+      const handleEdit = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+      ) => {
+        e.preventDefault()
+
+        if (!customer) {
+          return
+        }
+
+        setLoading(true)
+
+        sdk.store.customer.update({
+          first_name: firstName,
+          last_name: lastName,
+          company_name: company,
+          phone,
+        })
+        .then(({ customer: updatedCustomer }) => {
+          setCustomer(updatedCustomer)
+        })
+        .finally(() => setLoading(false))
+      }
+
+      return (
+        <form>
+          <input 
+            type="text" 
+            name="first_name"
+            value={firstName}
+            placeholder="First Name"
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <input 
+            type="text" 
+            name="last_name"
+            value={lastName}
+            placeholder="Last Name"
+            onChange={(e) => setLastName(e.target.value)}
+          />
+          <input 
+            type="text" 
+            name="company"
+            value={company}
+            placeholder="Company"
+            onChange={(e) => setCompany(e.target.value)}
+          />
+          <input 
+            type="text" 
+            name="phone"
+            value={phone}
+            placeholder="Phone Number"
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          <button
+            disabled={loading}
+            onClick={handleEdit}
+          >
+            Edit
+          </button>
+        </form>
+      )
+    }
+    ```
+  </Tab>
+
+  <Tab title="JS SDK">
+    ```ts
+    sdk.store.customer.update({
+      first_name: firstName,
+      last_name: lastName,
+      company_name: company,
+      phone,
+    })
+    .then(({ customer }) => {
+      // use customer...
+      console.log(customer)
+    })
+    ```
+  </Tab>
+</Tabs>
+
+In the example above, you send a request to the [Update Customer API route](/api/store/customers/update-customer) to update the customer's details.
+
+The response of the request has a `customer` field which is a [customer object](/api/store/customers/schema).

@@ -1,0 +1,47 @@
+---
+title: SearchSeedContext
+---
+
+The context passed to an index definition's `seed` function.
+
+## Properties
+
+**SearchSeedContext**
+
+- `container`: [SearchContainer](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchContainer) — The resources available while turning an event into documents.
+  - `query`: [RemoteQueryFunction](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesRemoteQueryFunction) — Query, used to retrieve the data the documents are built from.
+    - `graph`: [QueryGraphFunction](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesQueryGraphFunction) — Graph function uses the remoteQuery under the hood and returns a result set
+    - `index`: [QueryIndexFunction](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesQueryIndexFunction) — Index function uses the index module to query and remoteQuery to hydrate the data returns a result set
+    - `search`: [QuerySearchFunction](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesQuerySearchFunction) — Search function uses the search module and hydrates the results through graph
+    - `gql`: (`query`: `string`, `variables?`: `Record<string, unknown>`, `options?`: [RemoteJoinerOptions](/resources/references/types/interfaces/typesRemoteJoinerOptions)) => Promise\<any> — Query wrapper to provide specific GraphQL like API around remoteQuery.query
+- `index`: [SearchIndexDefinition](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIndexDefinition) — The definition of the index the documents are written to.
+  - `name`: `string` — The index's unique name, which is what `query.search({ entity })` resolves against.
+  - `entity`: `string` — The `query.graph` entrypoint used to hydrate non-indexed fields.
+  - `primary_key`: `string` (optional) — The field whose value keys the index's documents, which is what a hit's `id` holds.
+  - `provider`: `string` (optional) — The identifier of the provider backing this index. Defaults to the module's configured default provider.
+  - `fields`: `Record<string, [SearchFieldDefinition](/references/types/SearchTypes/interfaces/types.SearchTypes.SearchFieldDefinition)>` — The fields the index holds, keyed by their path in the document.
+    - `type`: [SearchFieldKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFieldKind) — The field's type.
+    - `array`: `boolean` (optional) — Whether the field holds an array of the declared `type`.
+    - `searchable`: `boolean` | `object` (optional) — Whether the field is matched against a free-text query, optionally with a `weight` boosting its relevance. The weight is applied at build time on some engines, such as Meilisearch and Algolia, and at query time on others, such as Typesense and Elasticsearch.
+    - `filterable`: `boolean` (optional) — Whether the field can be used in a query's filters.
+    - `sortable`: `boolean` (optional) — Whether results can be sorted by the field.
+    - `facetable`: `boolean` | `object` (optional) — Whether the field can be faceted, and which facet types it supports. Defaults to `["value"]`, or `["range"]` for numeric and date fields. `"stats"` is opt-in, since implying it would make numeric fields unusable on providers without aggregations.
+    - `retrievable`: `boolean` (optional) — Whether the field comes back on hits. `false` for index-only fields, such as a blob used purely for matching. `query.search` reads this to decide which requested fields the engine can serve and which need `query.graph`. Vector fields default to not retrievable — embeddings are not useful on hits. Set `retrievable: true`, or `.retrievable()` in the DSL, to return them.
+    - `fields`: `Record<string, [SearchFieldDefinition](/references/types/SearchTypes/interfaces/types.SearchTypes.SearchFieldDefinition)>` (optional) — The fields of a nested object, only used when `type` is `object`.
+    - `dimensions`: `number` (optional) — The dimensionality of the embedding stored in a `type: "vector"` field. Required for vector fields; meaningless on any other type. When `embed` is omitted, every vector written to the field must have exactly this many components.
+    - `embed`: `boolean` (optional) — When `true` on a vector field, documents pass a string and the engine embeds it at write time, and for `search_options.vector.query` at query time. Omit `embed` to supply embeddings yourself as a `number[]`.
+    - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Field options specific to a search engine, keyed by provider identifier, such as `{ meilisearch: { ... } }`.
+  - `settings`: [SearchIndexSettings](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIndexSettings) (optional) — The settings applied to the index when it's created or migrated.
+    - `synonyms`: `Record<string, string[]>` (optional) — Terms treated as equivalent when matching, keyed by the term they expand to.
+    - `stop_words`: `string`\[] (optional) — Terms ignored when matching, such as `the` or `a`.
+    - `typo_tolerance`: `object` (optional) — How misspelled terms are matched.
+    - `faceting`: `object` (optional) — The defaults applied to the facets computed on this index.
+    - `pagination`: `object` (optional) — The limits applied when paginating this index.
+    - `distinct_attribute`: `string` (optional) — The dotted path of a field that hits are deduplicated by, returning at most one hit per distinct value.
+    - `locales`: `string`\[] (optional) — The languages the index's text is analyzed for, such as `["en"]`.
+    - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Index settings specific to a search engine, keyed by provider identifier.
+  - `events`: `string`\[] (optional) — Events related and that can affect the data for this index.
+  - `consume`: (`event`: [Event](/resources/references/types/EventBusTypes/types/typesEventBusTypesEvent)\<any>, `context`: [SearchIngestionContext](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIngestionContext)) => Promise\<[SearchMutation](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMutation)\[]> (optional) — Executed on event ingestion to determine the action that needs to be performed on the index.
+  - `seed`: (`context`: [SearchSeedContext](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchSeedContext)) => AsyncIterable\<[SearchDocument](/resources/references/types/SearchTypes/types/typesSearchTypesSearchDocument)\[]> — Yields the index's documents in batches. Ran when there is no data in the index or on reindex.
+- `filters`: `Record<string, unknown>` (optional) — Restricts a partial reindex to a subset of the entity, as passed to the Search Module's `reindex` method.
+- `last_key`: `string` (optional) — The `last_key` of an interrupted run, when resuming one.

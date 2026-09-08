@@ -1,0 +1,428 @@
+---
+title: updateTaxRates - Tax Module Reference
+sidebarTitle: updateTaxRates
+---
+
+This documentation provides a reference to the `updateTaxRates` method. This belongs to the Tax Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updatetaxrates-taxrateid-data-sharedcontext-promisetaxratedto" />
+
+## updateTaxRates(taxRateId, data, sharedContext?): Promise\<[TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)>
+
+This method updates an existing tax rate.
+
+### Example
+
+```ts
+const taxRate = await taxModuleService.updateTaxRates("txr_123", {
+  rate: 10,
+})
+```
+
+<a id="updatetaxrates-parameters" />
+
+### Parameters
+
+**updateTaxRates**
+
+- `taxRateId`: `string` — The tax rate's ID.
+- `data`: [UpdateTaxRateDTO](/resources/references/tax/interfaces/taxUpdateTaxRateDTO) — The attributes to update in the tax rate.
+  - `rate`: `null` | `number` (optional) — The rate to charge.
+
+    Example:
+
+    ```
+    10
+    ```
+  - `code`: `null` | `string` (optional) — The code of the tax rate.
+  - `name`: `string` (optional) — The name of the tax rate.
+  - `rules`: Omit\<[CreateTaxRateRuleDTO](/resources/references/tax/interfaces/taxCreateTaxRateRuleDTO), "tax\_rate\_id">\[] (optional) — The rules of the tax rate.
+    - `reference`: `string` — The snake-case name of the data model that the tax rule references. For example, `product`. Learn more in [this guide](/resources/commerce-modules/tax/tax-rates-and-rules#override-tax-rates-with-rules).
+    - `reference_id`: `string` — The ID of the record of the data model that the tax rule references. For example, `prod_123`. Learn more in [this guide](/resources/commerce-modules/tax/tax-rates-and-rules#override-tax-rates-with-rules).
+    - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_by`: `null` | `string` (optional) — Who created the tax rate rule. For example, the ID of the user that created it.
+  - `is_default`: `boolean` (optional) — Whether the tax rate is default.
+  - `is_combinable`: `boolean` (optional) — Whether the tax rate is combinable. Learn more [here](/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+  - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/tax/interfaces/taxContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/tax/interfaces/taxIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatetaxrates-returns" />
+
+### Returns
+
+**updateTaxRates**
+
+- `Promise`: Promise\<[TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)> — The updated tax rate.
+  - `id`: `string` — The ID of the tax rate.
+  - `rate`: `null` | `number` — The rate to charge.
+
+    Example:
+
+    ```
+    10
+    ```
+  - `code`: `null` | `string` — The code the tax rate is identified by.
+  - `name`: `string` — The name of the Tax Rate.
+
+    Example:
+
+    ```
+    VAT
+    ```
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `tax_region_id`: `string` — The ID of the associated tax region.
+  - `is_combinable`: `boolean` — Whether the tax rate should be combined with parent rates. Learn more [here](/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+  - `is_default`: `boolean` — Whether the tax rate is the default rate for the region.
+  - `created_at`: `string` | `Date` — The creation date of the tax rate.
+  - `updated_at`: `string` | `Date` — The update date of the tax rate.
+  - `deleted_at`: `null` | `Date` — The deletion date of the tax rate.
+  - `created_by`: `null` | `string` — Who created the tax rate. For example, the ID of the user that created the tax rate.
+
+<a id="updatetaxrates-taxrateids-data-sharedcontext-promisetaxratedto" />
+
+## updateTaxRates(taxRateIds, data, sharedContext?): Promise\<[TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[]>
+
+This method updates existing tax rates.
+
+### Example
+
+```ts
+const taxRates = await taxModuleService.updateTaxRates(
+  ["txr_123", "txr_321"],
+  {
+    rate: 10,
+  }
+)
+```
+
+<a id="updatetaxrates-parameters-1" />
+
+### Parameters
+
+**updateTaxRates**
+
+- `taxRateIds`: `string`\[] — The IDs of tax rates to update.
+- `data`: [UpdateTaxRateDTO](/resources/references/tax/interfaces/taxUpdateTaxRateDTO) — The attributes to update in the tax rate.
+  - `rate`: `null` | `number` (optional) — The rate to charge.
+
+    Example:
+
+    ```
+    10
+    ```
+  - `code`: `null` | `string` (optional) — The code of the tax rate.
+  - `name`: `string` (optional) — The name of the tax rate.
+  - `rules`: Omit\<[CreateTaxRateRuleDTO](/resources/references/tax/interfaces/taxCreateTaxRateRuleDTO), "tax\_rate\_id">\[] (optional) — The rules of the tax rate.
+    - `reference`: `string` — The snake-case name of the data model that the tax rule references. For example, `product`. Learn more in [this guide](/resources/commerce-modules/tax/tax-rates-and-rules#override-tax-rates-with-rules).
+    - `reference_id`: `string` — The ID of the record of the data model that the tax rule references. For example, `prod_123`. Learn more in [this guide](/resources/commerce-modules/tax/tax-rates-and-rules#override-tax-rates-with-rules).
+    - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_by`: `null` | `string` (optional) — Who created the tax rate rule. For example, the ID of the user that created it.
+  - `is_default`: `boolean` (optional) — Whether the tax rate is default.
+  - `is_combinable`: `boolean` (optional) — Whether the tax rate is combinable. Learn more [here](/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+  - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/tax/interfaces/taxContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/tax/interfaces/taxIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatetaxrates-returns-1" />
+
+### Returns
+
+**updateTaxRates**
+
+- `Promise`: Promise\<[TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[]> — The updated tax rates.
+  - `TaxRateDTO[]`: [TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[]
+    - `id`: `string` — The ID of the tax rate.
+    - `rate`: `null` | `number` — The rate to charge.
+
+      Example:
+
+      ```
+      10
+      ```
+    - `code`: `null` | `string` — The code the tax rate is identified by.
+    - `name`: `string` — The name of the Tax Rate.
+
+      Example:
+
+      ```
+      VAT
+      ```
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `tax_region_id`: `string` — The ID of the associated tax region.
+    - `is_combinable`: `boolean` — Whether the tax rate should be combined with parent rates. Learn more [here](/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+    - `is_default`: `boolean` — Whether the tax rate is the default rate for the region.
+    - `created_at`: `string` | `Date` — The creation date of the tax rate.
+    - `updated_at`: `string` | `Date` — The update date of the tax rate.
+    - `deleted_at`: `null` | `Date` — The deletion date of the tax rate.
+    - `created_by`: `null` | `string` — Who created the tax rate. For example, the ID of the user that created the tax rate.
+
+<a id="updatetaxrates-selector-data-sharedcontext-promisetaxratedto" />
+
+## updateTaxRates(selector, data, sharedContext?): Promise\<[TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[]>
+
+This method updates existing tax rates matching the specified filters.
+
+### Example
+
+```ts
+const taxRates = await taxModuleService.updateTaxRates(
+  {
+    id: ["txr_123", "txr_321"],
+  },
+  {
+    rate: 10,
+  }
+)
+```
+
+<a id="updatetaxrates-parameters-2" />
+
+### Parameters
+
+**updateTaxRates**
+
+- `selector`: [FilterableTaxRateProps](/resources/references/tax/interfaces/taxFilterableTaxRateProps) — The filters specifying which tax rates to update.
+  - `$and`: ([FilterableTaxRateProps](/resources/references/tax/interfaces/taxFilterableTaxRateProps) | [BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<[FilterableTaxRateProps](/resources/references/tax/interfaces/taxFilterableTaxRateProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableTaxRateProps](/resources/references/tax/interfaces/taxFilterableTaxRateProps) | [BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<[FilterableTaxRateProps](/resources/references/tax/interfaces/taxFilterableTaxRateProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableTaxRateProps](/resources/references/tax/interfaces/taxFilterableTaxRateProps) | [BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<[FilterableTaxRateProps](/resources/references/tax/interfaces/taxFilterableTaxRateProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Find tax rates based on name and code properties through this search term.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the tax rates by.
+    - `tax_region_id`: `string` | `string`\[] (optional) — Filter the tax rates by their associated tax regions.
+    - `rate`: `number` | `number`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<number> (optional) — Filter the tax rates by their rate.
+    - `code`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by their code.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by their name.
+    - `created_at`: [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by their creation date.
+    - `updated_at`: [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by their update date.
+    - `created_by`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by who created it.
+  - `$or`: ([FilterableTaxRateProps](/resources/references/tax/interfaces/taxFilterableTaxRateProps) | [BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<[FilterableTaxRateProps](/resources/references/tax/interfaces/taxFilterableTaxRateProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableTaxRateProps](/resources/references/tax/interfaces/taxFilterableTaxRateProps) | [BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<[FilterableTaxRateProps](/resources/references/tax/interfaces/taxFilterableTaxRateProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableTaxRateProps](/resources/references/tax/interfaces/taxFilterableTaxRateProps) | [BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<[FilterableTaxRateProps](/resources/references/tax/interfaces/taxFilterableTaxRateProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Find tax rates based on name and code properties through this search term.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the tax rates by.
+    - `tax_region_id`: `string` | `string`\[] (optional) — Filter the tax rates by their associated tax regions.
+    - `rate`: `number` | `number`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<number> (optional) — Filter the tax rates by their rate.
+    - `code`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by their code.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by their name.
+    - `created_at`: [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by their creation date.
+    - `updated_at`: [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by their update date.
+    - `created_by`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by who created it.
+  - `q`: `string` (optional) — Find tax rates based on name and code properties through this search term.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the tax rates by.
+  - `tax_region_id`: `string` | `string`\[] (optional) — Filter the tax rates by their associated tax regions.
+  - `rate`: `number` | `number`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<number> (optional) — Filter the tax rates by their rate.
+    - `$and`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> | [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/tax/types/taxQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `code`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by their code.
+    - `$and`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> | [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/tax/types/taxQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by their name.
+    - `$and`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> | [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/tax/types/taxQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_at`: [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by their creation date.
+    - `$and`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> | [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/tax/types/taxQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by their update date.
+    - `$and`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> | [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/tax/types/taxQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_by`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax rates by who created it.
+    - `$and`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> | [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/tax/types/taxQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `data`: [UpdateTaxRateDTO](/resources/references/tax/interfaces/taxUpdateTaxRateDTO) — The attributes to update in the tax rate.
+  - `rate`: `null` | `number` (optional) — The rate to charge.
+
+    Example:
+
+    ```
+    10
+    ```
+  - `code`: `null` | `string` (optional) — The code of the tax rate.
+  - `name`: `string` (optional) — The name of the tax rate.
+  - `rules`: Omit\<[CreateTaxRateRuleDTO](/resources/references/tax/interfaces/taxCreateTaxRateRuleDTO), "tax\_rate\_id">\[] (optional) — The rules of the tax rate.
+    - `reference`: `string` — The snake-case name of the data model that the tax rule references. For example, `product`. Learn more in [this guide](/resources/commerce-modules/tax/tax-rates-and-rules#override-tax-rates-with-rules).
+    - `reference_id`: `string` — The ID of the record of the data model that the tax rule references. For example, `prod_123`. Learn more in [this guide](/resources/commerce-modules/tax/tax-rates-and-rules#override-tax-rates-with-rules).
+    - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_by`: `null` | `string` (optional) — Who created the tax rate rule. For example, the ID of the user that created it.
+  - `is_default`: `boolean` (optional) — Whether the tax rate is default.
+  - `is_combinable`: `boolean` (optional) — Whether the tax rate is combinable. Learn more [here](/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+  - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/tax/interfaces/taxContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/tax/interfaces/taxIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatetaxrates-returns-2" />
+
+### Returns
+
+**updateTaxRates**
+
+- `Promise`: Promise\<[TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[]> — The updated tax rates.
+  - `TaxRateDTO[]`: [TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[]
+    - `id`: `string` — The ID of the tax rate.
+    - `rate`: `null` | `number` — The rate to charge.
+
+      Example:
+
+      ```
+      10
+      ```
+    - `code`: `null` | `string` — The code the tax rate is identified by.
+    - `name`: `string` — The name of the Tax Rate.
+
+      Example:
+
+      ```
+      VAT
+      ```
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `tax_region_id`: `string` — The ID of the associated tax region.
+    - `is_combinable`: `boolean` — Whether the tax rate should be combined with parent rates. Learn more [here](/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+    - `is_default`: `boolean` — Whether the tax rate is the default rate for the region.
+    - `created_at`: `string` | `Date` — The creation date of the tax rate.
+    - `updated_at`: `string` | `Date` — The update date of the tax rate.
+    - `deleted_at`: `null` | `Date` — The deletion date of the tax rate.
+    - `created_by`: `null` | `string` — Who created the tax rate. For example, the ID of the user that created the tax rate.

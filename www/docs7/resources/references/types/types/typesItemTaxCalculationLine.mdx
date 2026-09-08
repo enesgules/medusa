@@ -1,0 +1,40 @@
+---
+title: ItemTaxCalculationLine
+---
+
+A line item and the tax rates configured to apply to the
+product contained in the line item.
+
+- `ItemTaxCalculationLine`: `object` — A line item and the tax rates configured to apply to the product contained in the line item.
+  - `line_item`: [TaxableItemDTO](/resources/references/tax/interfaces/taxTaxableItemDTO) — The line item to calculate taxes for.
+    - `id`: `string` — The ID of the taxable item.
+    - `product_id`: `string` — The associated product's ID.
+    - `product_type_id`: `string` (optional) — The ID of the type of the item's product.
+    - `quantity`: [BigNumberInput](/resources/references/tax/types/taxBigNumberInput) (optional) — The quantity of the taxable item.
+    - `unit_price`: [BigNumberInput](/resources/references/tax/types/taxBigNumberInput) (optional) — The unit price of the taxable item.
+    - `currency_code`: `string` (optional) — The ISO 3 character currency code of the taxable item.
+  - `rates`: [TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[] — The rates applicable on the item.
+    - `id`: `string` — The ID of the tax rate.
+    - `rate`: `null` | `number` — The rate to charge.
+
+      Example:
+
+      ```
+      10
+      ```
+    - `code`: `null` | `string` — The code the tax rate is identified by.
+    - `name`: `string` — The name of the Tax Rate.
+
+      Example:
+
+      ```
+      VAT
+      ```
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `tax_region_id`: `string` — The ID of the associated tax region.
+    - `is_combinable`: `boolean` — Whether the tax rate should be combined with parent rates. Learn more [here](/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+    - `is_default`: `boolean` — Whether the tax rate is the default rate for the region.
+    - `created_at`: `string` | `Date` — The creation date of the tax rate.
+    - `updated_at`: `string` | `Date` — The update date of the tax rate.
+    - `deleted_at`: `null` | `Date` — The deletion date of the tax rate.
+    - `created_by`: `null` | `string` — Who created the tax rate. For example, the ID of the user that created the tax rate.

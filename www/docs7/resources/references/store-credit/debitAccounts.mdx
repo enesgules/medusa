@@ -1,0 +1,95 @@
+---
+title: debitAccounts - Store Credit Module Reference
+sidebarTitle: debitAccounts
+---
+
+This documentation provides a reference to the `debitAccounts` method. This belongs to the Store Credit Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method debits one or more store credit accounts by creating debit transactions.
+
+## Example
+
+```ts
+const transactions = await storeCreditModuleService.debitAccounts([
+  {
+    account_id: "sca_123",
+    amount: 50,
+    reference: "cart",
+    reference_id: "cart_123",
+  },
+])
+```
+
+<a id="debitaccounts-parameters" />
+
+## Parameters
+
+**debitAccounts**
+
+- `data`: [ModuleDebitAccount](/resources/references/store_credit/types/store_creditModuleDebitAccount)\[] — The debit transactions to create.
+  - `account_id`: `string` — The ID of the store credit account to debit.
+  - `amount`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The amount to debit.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `note`: `string` (optional) — An optional note describing the debit.
+  - `reference`: `string` — The resource type this debit references (for example, "cart", "order").
+  - `reference_id`: `string` — The ID of the referenced resource.
+- `sharedContext`: [Context](/resources/references/store_credit/interfaces/store_creditContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/store_credit/interfaces/store_creditIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="debitaccounts-returns" />
+
+## Returns
+
+**debitAccounts**
+
+- `Promise`: Promise\<[ModuleAccountTransaction](/resources/references/store_credit/types/store_creditModuleAccountTransaction)\[]> — The created debit transactions.
+  - `ModuleAccountTransaction[]`: [ModuleAccountTransaction](/resources/references/store_credit/types/store_creditModuleAccountTransaction)\[]
+    - `id`: `string` — The transaction's ID.
+    - `account_id`: `string` — The ID of the store credit account this transaction belongs to.
+    - `type`: [TransactionTypeValues](/resources/references/store_credit/types/store_creditTransactionTypeValues) — Whether this is a credit or debit transaction.
+    - `amount`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The transaction amount.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `account`: [ModuleStoreCreditAccount](/resources/references/store_credit/types/store_creditModuleStoreCreditAccount) — The store credit account this transaction belongs to.
+      - `id`: `string` — The store credit account's ID.
+      - `customer_id`: `string` (optional) — The ID of the customer who owns this account, if any.
+      - `code`: `string` (optional) — The unique code that identifies this account, used for anonymous or gift card accounts.
+      - `currency_code`: `string` — The three-letter ISO currency code of the account's balance.
+
+        Example:
+
+        ```
+        usd
+        ```
+      - `credits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount credited to this account.
+      - `debits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount debited from this account.
+      - `balance`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The current balance of this account (credits minus debits).
+      - `metadata`: `Record<string, unknown>` — Custom key-value pairs attached to this account.
+      - `created_at`: `string` — The date the account was created.
+      - `updated_at`: `string` — The date the account was last updated.
+    - `note`: `string` (optional) — An optional note describing the transaction.
+    - `reference`: `string` (optional) — The resource type this transaction references (for example, "order", "cart").
+    - `reference_id`: `string` (optional) — The ID of the referenced resource.
+    - `metadata`: `Record<string, unknown>` — Custom key-value pairs attached to this transaction.
+    - `created_at`: `string` — The date the transaction was created.
+    - `updated_at`: `string` — The date the transaction was last updated.

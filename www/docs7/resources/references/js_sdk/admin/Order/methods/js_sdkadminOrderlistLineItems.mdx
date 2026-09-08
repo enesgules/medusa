@@ -1,0 +1,56 @@
+---
+title: listLineItems
+---
+
+This method retrieves the order's line items. It sends a request to the
+[List Line Items](/api/admin/orders/list-line-items)
+API routes.
+
+## Example
+
+```ts
+sdk.admin.order.listLineItems("order_123")
+.then(({ order_items }) => {
+  console.log(order_items)
+})
+```
+
+<a id="listlineitems-parameters" />
+
+## Parameters
+
+**listLineItems**
+
+- `id`: `string` — The order's ID.
+- `queryParams`: [FindParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesFindParams) & [AdminOrderItemsFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderItemsFilters) (optional) — Configure the fields to retrieve in each line item.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `id`: `string` | `string`\[] (optional) — Filter by order item ID(s).
+  - `item_id`: `string` | `string`\[] (optional) — Filter by the associated line item ID(s).
+  - `version`: `number` | `number`\[] (optional) — Filter by order version(s).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listlineitems-returns" />
+
+## Returns
+
+**listLineItems**
+
+- `Promise`: Promise\<[AdminOrderLineItemsListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminOrderLineItemsListResponse)> — The list of line items.
+  - `order_items`: [AdminOrderItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderItem)\[] — The list of order items.
+    - `order_id`: `string` — The ID of the order that the item belongs to.
+    - `item_id`: `string` — The ID of the associated line item.
+    - `version`: `number` — The order version that the item belongs to.
+    - `history`: `object` — The item's history details.
+    - `item`: [AdminOrderLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderLineItem) — The associated line item's details.

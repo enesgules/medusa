@@ -1,0 +1,94 @@
+---
+title: useQueryGraphStep - Helper Steps API Reference
+sidebarTitle: useQueryGraphStep
+---
+
+This documentation provides a reference to the `useQueryGraphStep` step. It belongs to the `@medusajs/medusa/core-flows` package.
+
+## Example
+
+To retrieve a list of records of a data model:
+
+```ts
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: [
+    "*",
+    "variants.*"
+  ]
+})
+```
+
+To retrieve a single item instead of a an array:
+
+```ts
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: [
+    "*",
+    "variants.*"
+  ],
+  filters: {
+    id: "123"
+  }
+})
+```
+
+To throw an error if a record isn't found matching the specified ID:
+
+```ts
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: [
+    "*",
+    "variants.*"
+  ],
+  filters: {
+    id: "123"
+  },
+  options: {
+    throwIfKeyNotFound: true
+  }
+})
+```
+
+To set pagination configurations:
+
+```ts
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: [
+    "*",
+    "variants.*"
+  ],
+  filters: {
+    id: "123"
+  },
+  pagination: {
+    take: 10,
+    skip: 10,
+    order: {
+      created_at: "DESC"
+    }
+  }
+})
+```
+
+<a id="usequerygraphstep-input" />
+
+## Input
+
+**useQueryGraphStep**
+
+- `UseQueryGraphStepInput`: [UseQueryGraphStepInput](/resources/references/helper_steps/types/helper_stepsUseQueryGraphStepInput)\<TEntry, TIsList>
+  - `TEntry`: TEntry
+  - `TIsList`: TIsList
+
+<a id="usequerygraphstep-output" />
+
+## Output
+
+**useQueryGraphStep**
+
+- `true extends TIsList ? GraphResultSet<TEntry> : Omit<GraphResultSet<TEntry>, "data"> & object extends Item[] ? Item[] : true extends TIsList ? GraphResultSet<TEntry> : Omit<GraphResultSet<TEntry>, "data"> & object`: `true` extends TIsList ? [GraphResultSet](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesGraphResultSet)\<TEntry> : Omit\<[GraphResultSet](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesGraphResultSet)\<TEntry>, "data"> & `object` extends `Item`\[] ? `Item`\[] : `true` extends TIsList ? [GraphResultSet](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesGraphResultSet)\<TEntry> : Omit\<[GraphResultSet](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesGraphResultSet)\<TEntry>, "data"> & `object`
+  - `true extends TIsList ? GraphResultSet<TEntry> : Omit<GraphResultSet<TEntry>, "data"> & object extends Item[] ? Item[] : true extends TIsList ? GraphResultSet<TEntry> : Omit<GraphResultSet<TEntry>, "data"> & object`: `true` extends TIsList ? [GraphResultSet](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesGraphResultSet)\<TEntry> : Omit\<[GraphResultSet](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesGraphResultSet)\<TEntry>, "data"> & `object` extends `Item`\[] ? `Item`\[] : `true` extends TIsList ? [GraphResultSet](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesGraphResultSet)\<TEntry> : Omit\<[GraphResultSet](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesGraphResultSet)\<TEntry>, "data"> & `object`

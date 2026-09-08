@@ -1,0 +1,388 @@
+---
+title: Authenticate User
+---
+
+`POST /auth/user/{auth_provider}`
+
+Authenticate a user and receive the JWT token to be used in the header of subsequent requests.
+
+When used with a third-party provider, such as Google, the request returns a `location` property. You redirect to the specified URL in your frontend to continue authentication with the third-party service.
+
+[Learn about different authentication flows.](/resources/commerce-modules/auth/authentication-route#types-of-authentication-flows)
+
+## Base URLs
+
+- `http://localhost:9000`
+
+- `https://api.medusajs.com`
+
+## Authentication
+
+This operation does not require authentication.
+
+[Authentication guide](/api/admin/authentication)
+
+## Parameters
+
+<Accordion title="auth_provider (path, required)">
+  The provider used for authentication.
+
+  ```json
+  {
+    "name": "auth_provider",
+    "in": "path",
+    "description": "The provider used for authentication.",
+    "required": true,
+    "schema": {
+      "type": "string",
+      "example": "emailpass"
+    }
+  }
+  ```
+</Accordion>
+
+## Request body
+
+Optional.
+
+### application/json
+
+```json
+{
+  "schema": {
+    "type": "object",
+    "title": "input",
+    "description": "The input data necessary for authentication. \nFor example, for email-pass authentication, pass `email` and `password` properties. \nFor the Google and GitHub authentication providers, you can pass `callback_url` to indicate the URL in the frontend that the user should be redirected to after completing their authentication. This will override the provider's `callbackUrl` configurations in `medusa-config.ts`.\n"
+  }
+}
+```
+
+## Responses
+
+<Accordion title="200 — OK">
+  OK
+
+  ```json
+  {
+    "description": "OK",
+    "content": {
+      "application/json": {
+        "schema": {
+          "oneOf": [
+            {
+              "$ref": "#/components/schemas/AuthResponse"
+            },
+            {
+              "$ref": "#/components/schemas/AuthCallbackResponse"
+            }
+          ]
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AuthCallbackResponse](/api/schemas/auth-callback-response)
+
+  - [AuthResponse](/api/schemas/auth-response)
+</Accordion>
+
+<Accordion title="400 — Client Error">
+  Client Error
+
+  ```json
+  {
+    "description": "Client Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "not_allowed": {
+            "$ref": "#/components/examples/not_allowed_error"
+          },
+          "invalid_data": {
+            "$ref": "#/components/examples/invalid_data_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="401 — User is not authorized. Must log in first">
+  User is not authorized. Must log in first
+
+  ```json
+  {
+    "description": "User is not authorized. Must log in first",
+    "content": {
+      "text/plain": {
+        "schema": {
+          "type": "string",
+          "default": "Unauthorized",
+          "example": "Unauthorized"
+        }
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Not Found Error">
+  Not Found Error
+
+  ```json
+  {
+    "description": "Not Found Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "message": "Entity with id 1 was not found",
+          "type": "not_found"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="409 — Invalid State Error">
+  Invalid State Error
+
+  ```json
+  {
+    "description": "Invalid State Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "unknown_error",
+          "message": "The request conflicted with another request. You may retry the request with the provided Idempotency-Key.",
+          "type": "QueryRunnerAlreadyReleasedError"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="422 — Invalid Request Error">
+  Invalid Request Error
+
+  ```json
+  {
+    "description": "Invalid Request Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "invalid_request_error",
+          "message": "Discount with code TEST already exists.",
+          "type": "duplicate_error"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="500 — Server Error">
+  Server Error
+
+  ```json
+  {
+    "description": "Server Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "database": {
+            "$ref": "#/components/examples/database_error"
+          },
+          "unexpected_state": {
+            "$ref": "#/components/examples/unexpected_state_error"
+          },
+          "invalid_argument": {
+            "$ref": "#/components/examples/invalid_argument_error"
+          },
+          "default_error": {
+            "$ref": "#/components/examples/default_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+## Examples
+
+### JS SDK
+
+```js
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+  debug: import.meta.env.DEV,
+  auth: {
+    type: "session",
+  },
+})
+
+const result = await sdk.auth.login(
+  "user",
+  "emailpass",
+  {
+    email: "user@gmail.com",
+    password: "supersecret"
+  }
+)
+
+if (typeof result !== "string") {
+  alert("Authentication requires additional steps")
+  // replace with the redirect logic of your application
+  window.location.href = result.location
+  return
+}
+
+// user is now authenticated
+// all subsequent requests will use the token in the header
+const { user } = await sdk.admin.user.me()
+```
+
+### Google Provider
+
+```bash
+curl -X POST '{backend_url}/auth/user/google'
+```
+
+<Accordion title="OpenAPI operation">
+  ```json
+  {
+    "operationId": "PostActor_typeAuth_provider",
+    "summary": "Authenticate User",
+    "description": "Authenticate a user and receive the JWT token to be used in the header of subsequent requests.\n\nWhen used with a third-party provider, such as Google, the request returns a `location` property. You redirect to the specified URL in your frontend to continue authentication with the third-party service.\n",
+    "externalDocs": {
+      "url": "https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route#types-of-authentication-flows",
+      "description": "Learn about different authentication flows."
+    },
+    "x-authenticated": false,
+    "parameters": [
+      {
+        "name": "auth_provider",
+        "in": "path",
+        "description": "The provider used for authentication.",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "emailpass"
+        }
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "title": "input",
+            "description": "The input data necessary for authentication. \nFor example, for email-pass authentication, pass `email` and `password` properties. \nFor the Google and GitHub authentication providers, you can pass `callback_url` to indicate the URL in the frontend that the user should be redirected to after completing their authentication. This will override the provider's `callbackUrl` configurations in `medusa-config.ts`.\n"
+          }
+        }
+      }
+    },
+    "x-codeSamples": [
+      {
+        "lang": "JavaScript",
+        "label": "JS SDK",
+        "source": "import Medusa from \"@medusajs/js-sdk\"\n\nexport const sdk = new Medusa({\n  baseUrl: import.meta.env.VITE_BACKEND_URL || \"/\",\n  debug: import.meta.env.DEV,\n  auth: {\n    type: \"session\",\n  },\n})\n\nconst result = await sdk.auth.login(\n  \"user\",\n  \"emailpass\",\n  {\n    email: \"user@gmail.com\",\n    password: \"supersecret\"\n  }\n)\n\nif (typeof result !== \"string\") {\n  alert(\"Authentication requires additional steps\")\n  // replace with the redirect logic of your application\n  window.location.href = result.location\n  return\n}\n\n// user is now authenticated\n// all subsequent requests will use the token in the header\nconst { user } = await sdk.admin.user.me()"
+      },
+      {
+        "lang": "Bash",
+        "label": "Google Provider",
+        "source": "curl -X POST '{backend_url}/auth/user/google'"
+      }
+    ],
+    "tags": [
+      "Auth"
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AuthResponse"
+                },
+                {
+                  "$ref": "#/components/schemas/AuthCallbackResponse"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/400_error"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "404": {
+        "$ref": "#/components/responses/not_found_error"
+      },
+      "409": {
+        "$ref": "#/components/responses/invalid_state_error"
+      },
+      "422": {
+        "$ref": "#/components/responses/invalid_request_error"
+      },
+      "500": {
+        "$ref": "#/components/responses/500_error"
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AuthCallbackResponse](/api/schemas/auth-callback-response)
+
+  - [AuthResponse](/api/schemas/auth-response)
+</Accordion>

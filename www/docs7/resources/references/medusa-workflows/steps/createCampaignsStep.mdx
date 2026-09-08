@@ -1,0 +1,118 @@
+---
+title: createCampaignsStep - Medusa Core Workflows Reference
+sidebarTitle: createCampaignsStep
+---
+
+This documentation provides a reference to the `createCampaignsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step cancels one or more campaigns.
+
+## Example
+
+```ts
+const data = createCampaignsStep([
+  {
+    name: "Sale Campaign",
+    campaign_identifier: "GA-123456"
+  }
+])
+```
+
+<a id="createcampaignsstep-input" />
+
+## Input
+
+**createCampaignsStep**
+
+- `CreateCampaignDTO[]`: [CreateCampaignDTO](/resources/references/promotion/interfaces/promotionCreateCampaignDTO)\[]
+  - `name`: `string` — The name of the campaign.
+  - `description`: `null` | `string` (optional) — The description of the campaign.
+  - `campaign_identifier`: `string` — The campaign identifier of the campaign.
+  - `starts_at`: `null` | `Date` (optional) — The start date of the campaign.
+  - `ends_at`: `null` | `Date` (optional) — The end date of the campaign.
+  - `budget`: `null` | [CreateCampaignBudgetDTO](/resources/references/promotion/interfaces/promotionCreateCampaignBudgetDTO) (optional) — The associated campaign budget.
+    - `type`: [CampaignBudgetTypeValues](/resources/references/promotion/types/promotionCampaignBudgetTypeValues) (optional) — The type of the campaign budget.
+    - `limit`: `null` | `number` (optional) — The limit of the campaign budget.
+    - `used`: `number` (optional) — How much is used of the campaign budget.
+    - `currency_code`: `null` | `string` (optional) — The currency of the campaign.
+    - `attribute`: `null` | `string` (optional) — The attribute that the budget limit is applied to. By default, the budget is applied globally. If the type is `use_by_attribute`, this field indicates the attribute the budget is tracked by. For example, `customer_id` means the budget is tracked per customer.
+
+      Example:
+
+      ```
+      customer_id
+      ```
+
+<a id="createcampaignsstep-output" />
+
+## Output
+
+**createCampaignsStep**
+
+- `CampaignDTO[]`: [CampaignDTO](/resources/references/promotion/interfaces/promotionCampaignDTO)\[]
+  - `id`: `string` — The ID of the campaign.
+  - `name`: `string` (optional) — The name of the campaign.
+  - `description`: `string` (optional) — The description of the campaign.
+  - `campaign_identifier`: `string` (optional) — The campaign identifier of the campaign.
+  - `starts_at`: `Date` (optional) — The start date of the campaign.
+  - `ends_at`: `Date` (optional) — The end date of the campaign.
+  - `budget`: [CampaignBudgetDTO](/resources/references/promotion/interfaces/promotionCampaignBudgetDTO) (optional) — The associated campaign budget.
+    - `id`: `string` — The ID of the campaign budget.
+    - `type`: [CampaignBudgetTypeValues](/resources/references/promotion/types/promotionCampaignBudgetTypeValues) (optional) — The type of the campaign budget: - `spend` indicates that the budget is limited by the amount discounted by the promotions in the associated campaign. - `usage` indicates that the budget is limited by the number of times the promotions of the associated campaign have been used. - `use_by_attribute` indicates that the budget is limited by the number of times the promotions of the associated campaign have been used by a specific attribute value (for example, per customer) - `spend_by_attribute` indicates that the budget is limited by the amount discounted by the promotions in the associated campaign by a specific attribute value (for example, per customer)
+    - `limit`: `null` | `number` (optional) — The limit of the campaign budget.
+    - `used`: `number` (optional) — The usage from the campaign budget's limit: - If the budget's type is `spend`, the value of this attribute is the amount discounted so far by the promotions in the associated campaign. - If the budget's type is `usage`, the value of this attribute is the number of times the promotions of the associated campaign have been used so far.
+    - `currency_code`: `string` (optional) — The currency of the campaign.
+    - `attribute`: `string` (optional) — The attribute that the budget limit is applied to. By default, the budget is applied globally. If the type is `use_by_attribute`, this field indicates the attribute the budget is tracked by. For example, `customer_id` means the budget is tracked per customer.
+
+      Example:
+
+      ```
+      customer_id
+      ```
+    - `usages`: [CampaignBudgetUsageDTO](/resources/references/promotion/interfaces/promotionCampaignBudgetUsageDTO)\[] (optional) — The usages of the campaign budget. This is only set if the budget's type is `use_by_attribute` or `spend_by_attribute`. Each usage tracks the budget usage for a specific attribute value.
+      - `id`: `string` — The ID of the campaign budget usage.
+      - `attribute_value`: `string` — The value of the attribute that the promotion was used by. For example, if the budget campaign's attribute is `customer_id`,', this value will be the ID of the customer that used the promotion.
+      - `used`: `number` — The amount of times the promotion was used or the amount of money discounted by the promotion, depending on the campaign budget's type.
+      - `budget_id`: `string` — The ID of the campaign budget.
+      - `raw_used`: `Record<string, any>` — The raw used value.
+      - `created_at`: `string` — The date and time the campaign budget usage was created.
+      - `updated_at`: `string` — The date and time the campaign budget usage was updated.
+      - `deleted_at`: `string` — The date and time the campaign budget usage was deleted.
+  - `promotions`: [PromotionDTO](/resources/references/promotion/interfaces/promotionPromotionDTO)\[] (optional) — The associated promotions.
+    - `id`: `string` — The ID of the promotion.
+    - `code`: `string` (optional) — The code of the promotion.
+    - `type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues) (optional) — The type of the promotion: - `standard` indicates that a promotion is a standard one applied with conditions. - `buyget` indicates that a promotion is a "Buy X get Y" promotion.
+    - `status`: [PromotionStatusValues](/resources/references/promotion/types/promotionPromotionStatusValues) (optional) — The status of the promotion: - `active` promotion is available for user to consume - `inactive` promotion is no longer available to the user - `draft` promotion is currently being prepared
+    - `is_automatic`: `boolean` (optional) — Whether the promotion is applied automatically.
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the promotion is tax inclusive.
+    - `limit`: `null` | `number` (optional) — The maximum number of times this promotion can be used across all orders.
+    - `used`: `number` (optional) — The number of times this promotion has been used in completed orders.
+    - `application_method`: [ApplicationMethodDTO](/resources/references/promotion/interfaces/promotionApplicationMethodDTO) (optional) — The associated application method.
+      - `id`: `string` — The ID of the application method.
+      - `type`: [ApplicationMethodTypeValues](/resources/references/promotion/types/promotionApplicationMethodTypeValues) (optional) — The type of the application method indicating how the associated promotion is applied.
+      - `target_type`: [ApplicationMethodTargetTypeValues](/resources/references/promotion/types/promotionApplicationMethodTargetTypeValues) (optional) — The target type of the application method indicating whether the associated promotion is applied to the cart's items, shipping methods, or the whole order.
+      - `allocation`: [ApplicationMethodAllocationValues](/resources/references/promotion/types/promotionApplicationMethodAllocationValues) (optional) — The allocation value that indicates whether the associated promotion is applied on each item in a cart or split between the items in the cart.
+      - `value`: `number` (optional) — The discounted amount applied by the associated promotion based on the `type`.
+      - `currency_code`: `string` (optional) — The currency code of the application method
+      - `max_quantity`: `null` | `number` (optional) — The max quantity allowed in the cart for the associated promotion to be applied.
+      - `buy_rules_min_quantity`: `null` | `number` (optional) — The minimum quantity required for a `buyget` promotion to be applied. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `2`.
+      - `apply_to_quantity`: `null` | `number` (optional) — The quantity that results from matching the `buyget` promotion's condition. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `1`.
+      - `promotion`: `string` | [PromotionDTO](/resources/references/promotion/interfaces/promotionPromotionDTO) (optional) — The promotion of the application method.
+      - `target_rules`: [PromotionRuleDTO](/resources/references/promotion/interfaces/promotionPromotionRuleDTO)\[] (optional) — The target rules of the application method.
+      - `buy_rules`: [PromotionRuleDTO](/resources/references/promotion/interfaces/promotionPromotionRuleDTO)\[] (optional) — The buy rules of the application method.
+    - `rules`: [PromotionRuleDTO](/resources/references/promotion/interfaces/promotionPromotionRuleDTO)\[] (optional) — The rules of the promotion.
+      - `id`: `string` — The ID of the promotion rule.
+      - `description`: `null` | `string` (optional) — The description of the promotion rule.
+      - `attribute`: `string` (optional) — The attribute of the promotion rule.
+      - `operator`: [PromotionRuleOperatorValues](/resources/references/promotion/types/promotionPromotionRuleOperatorValues) (optional) — The operator of the promotion rule.
+      - `values`: [PromotionRuleValueDTO](/resources/references/promotion/interfaces/promotionPromotionRuleValueDTO)\[] — The values of the promotion rule.
+    - `campaign_id`: `null` | `string` (optional) — The associated campaign.
+    - `campaign`: [CampaignDTO](/resources/references/promotion/interfaces/promotionCampaignDTO) (optional) — The associated campaign.
+      - `id`: `string` — The ID of the campaign.
+      - `name`: `string` (optional) — The name of the campaign.
+      - `description`: `string` (optional) — The description of the campaign.
+      - `campaign_identifier`: `string` (optional) — The campaign identifier of the campaign.
+      - `starts_at`: `Date` (optional) — The start date of the campaign.
+      - `ends_at`: `Date` (optional) — The end date of the campaign.
+      - `budget`: [CampaignBudgetDTO](/resources/references/promotion/interfaces/promotionCampaignBudgetDTO) (optional) — The associated campaign budget.
+      - `promotions`: [PromotionDTO](/resources/references/promotion/interfaces/promotionPromotionDTO)\[] (optional) — The associated promotions.

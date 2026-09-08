@@ -1,0 +1,41 @@
+---
+title: listFulfillmentOptions
+---
+
+This method retrieves a list of fulfillment options for a given fulfillment provider. It sends a request to the
+[List Fulfillment Options](/api/admin/fulfillment-providers/list-fulfillment-options)
+API route.
+
+## Example
+
+```ts
+sdk.admin.fulfillmentProvider.listFulfillmentOptions("fp_123")
+.then(({ fulfillment_options }) => {
+  console.log(fulfillment_options)
+})
+```
+
+<a id="listfulfillmentoptions-parameters" />
+
+## Parameters
+
+**listFulfillmentOptions**
+
+- `id`: `string` — The ID of the fulfillment provider.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listfulfillmentoptions-returns" />
+
+## Returns
+
+**listFulfillmentOptions**
+
+- `Promise`: Promise\<[AdminFulfillmentProviderOptionsListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentProviderOptionsListResponse)> — The list of fulfillment options.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `fulfillment_options`: [AdminFulfillmentProviderOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentProviderOption)\[] — The list of fulfillment options.
+    - `id`: `string` — The fulfillment provider option's ID.
+    - `is_return`: `boolean` — Whether the fulfillment provider option can be used for returns.

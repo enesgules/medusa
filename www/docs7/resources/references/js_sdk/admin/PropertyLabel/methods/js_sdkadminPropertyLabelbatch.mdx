@@ -1,0 +1,53 @@
+---
+title: batch
+---
+
+Batch create, update, or delete property labels
+
+<a id="batch-parameters" />
+
+## Parameters
+
+**batch**
+
+- `body`: [AdminBatchPropertyLabels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchPropertyLabels)
+  - `create`: `object`\[] (optional)
+    - `entity`: `string`
+    - `property`: `string`
+    - `label`: `string`
+    - `description`: `null` | `string` (optional)
+  - `update`: `object`\[] (optional)
+    - `id`: `string`
+    - `label`: `string` (optional)
+    - `description`: `null` | `string` (optional)
+  - `delete`: `string`\[] (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional)
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batch-returns" />
+
+## Returns
+
+**batch**
+
+- `Promise`: Promise\<[AdminBatchPropertyLabelResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchPropertyLabelResponse)> — Batch create, update, or delete property labels
+  - `created`: [AdminPropertyLabel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPropertyLabel)\[] — Created property labels.
+    - `id`: `string` — The ID of the property label.
+    - `entity`: `string` — The entity this label applies to (e.g., "Order", "Product").
+    - `property`: `string` — The property path (e.g., "display\_id", "customer.email").
+    - `label`: `string` — Custom display name for the property.
+    - `description`: `string` (optional) — Optional description providing context about the property.
+    - `created_at`: `Date` — The date the label was created.
+    - `updated_at`: `Date` — The date the label was last updated.
+  - `updated`: [AdminPropertyLabel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPropertyLabel)\[] — Updated property labels.
+    - `id`: `string` — The ID of the property label.
+    - `entity`: `string` — The entity this label applies to (e.g., "Order", "Product").
+    - `property`: `string` — The property path (e.g., "display\_id", "customer.email").
+    - `label`: `string` — Custom display name for the property.
+    - `description`: `string` (optional) — Optional description providing context about the property.
+    - `created_at`: `Date` — The date the label was created.
+    - `updated_at`: `Date` — The date the label was last updated.
+  - `deleted`: `object`\[] — Deleted property label results.
+    - `id`: `string`
+    - `object`: `"property_label"`
+    - `deleted`: `boolean`

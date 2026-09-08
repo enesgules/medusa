@@ -1,0 +1,48 @@
+---
+title: throwUnlessPaymentCollectionNotPaid - Medusa Core Workflows Reference
+sidebarTitle: throwUnlessPaymentCollectionNotPaid
+---
+
+This documentation provides a reference to the `throwUnlessPaymentCollectionNotPaid`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that the payment collection is not paid. If not valid,
+the step will throw an error.
+
+> **Note**
+>
+> You can retrieve a payment collection's details using [Query](/learn/fundamentals/module-links/query),
+> or [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep).
+
+## Example
+
+```ts
+const data = throwUnlessPaymentCollectionNotPaid({
+  paymentCollection: {
+    id: "paycol_123",
+    // other payment details...
+  }
+})
+```
+
+<a id="throwunlesspaymentcollectionnotpaid-input" />
+
+## Input
+
+**throwUnlessPaymentCollectionNotPaid**
+
+- `ThrowUnlessPaymentCollectionNotePaidInput`: [ThrowUnlessPaymentCollectionNotePaidInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcThrowUnlessPaymentCollectionNotePaidInput)
+  - `paymentCollection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) — The payment collection to validate.
+    - `id`: `string` — The ID of the payment collection.
+    - `currency_code`: `string` — The ISO 3 character currency code of the payment sessions and payments associated with payment collection.
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The total amount to be authorized and captured.
+    - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount authorized within the associated payment sessions.
+    - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount refunded within the associated payments.
+    - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount captured within the associated payments.
+    - `completed_at`: `string` | `Date` (optional) — When the payment collection was completed.
+    - `created_at`: `string` | `Date` (optional) — When the payment collection was created.
+    - `updated_at`: `string` | `Date` (optional) — When the payment collection was updated.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `status`: [PaymentCollectionStatus](/resources/references/payment/types/paymentPaymentCollectionStatus) — The status of the payment collection.
+    - `payment_providers`: [PaymentProviderDTO](/resources/references/payment/interfaces/paymentPaymentProviderDTO)\[] — The payment provider used to process the associated payment sessions and payments.
+    - `payment_sessions`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO)\[] (optional) — The associated payment sessions.
+    - `payments`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO)\[] (optional) — The associated payments.

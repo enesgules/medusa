@@ -1,0 +1,51 @@
+---
+title: moduleIntegrationTestRunner Reference
+---
+
+This is a reference to the `moduleIntegrationTestRunner` function provided by the `@medusajs/test-utils` package.
+
+## Example
+
+```ts
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { BLOG_MODULE } from ".."
+import BlogModuleService from "../service"
+import Post from "../models/post"
+
+moduleIntegrationTestRunner<BlogModuleService>({
+  moduleName: BLOG_MODULE,
+  moduleModels: [Post],
+  resolve: "./src/modules/blog",
+  testSuite: ({ service }) => {
+    // TODO write tests
+  },
+})
+```
+
+## Parameters
+
+- `Input`: `object` — Object parameter of test options.
+  - `moduleName`: `string` — The module's name.
+  - `resolve`: string — The path to the module relative to the `src` directory.
+  - `testSuite`: `() => void` — The Jest tests to run.
+  - `moduleModels`: DmlEntity\[] (optional) — The module's data models.
+  - `moduleOptions`: `Record<string, any>` (optional) — Options to pass to the module.
+  - `injectedDependencies`: `Record<string, any>` (optional) — Dependencies to inject into the module's container. The key is the registration name, and the value is the instance of the dependency.
+  - `schema`: `string` (optional) — The PostgreSQL schema that the database is created in.
+  - `debug`: `boolean` (optional, default: false) — Whether to show database log messages.
+  - `cwd`: `string` (optional) — The current working directory. If not set, the directory that you run the test command from is considered the current working directory.
+
+## Test Suite Parameters
+
+The function passed to `testSuite` accepts the following parameters:
+
+- `Input`: `object` — Object parameter of test utilities.
+  - `service`: any — An instance of the module's main service. Its type is the type argument passed to the `moduleIntegrationTestRunner` function.
+  - `dbConfig`: `Record<string, string>` — The created database's configurations
+    - `schema`: `string` — The PostgreSQL schema the database is created in.
+    - `clientUrl`: `string` — The connection URL to the database.
+  - `MikroOrmWrapper`: `TestDatabase` — Utility functions to query and manage the database.
+    - `manager`: [SqlEntityManager](https://mikro-orm.io/api/knex/class/EntityManager) — An instance of MikroORM's entity manager, which can be used to run queries and perform other database tasks.
+    - `setupDatabase`: `() => Promise<void>` — Creates the database for the test.
+    - `clearDatabase`: `() => Promise<void>` — Removes all data in the database's tables.
+    - `forkManager`: `() => SqlEntityManager` — Returns a new entity manager.

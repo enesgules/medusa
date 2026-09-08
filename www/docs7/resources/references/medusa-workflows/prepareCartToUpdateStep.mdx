@@ -1,0 +1,81 @@
+---
+title: prepareCartToUpdateStep - Medusa Core Workflows Reference
+sidebarTitle: prepareCartToUpdateStep
+---
+
+This documentation provides a reference to the `prepareCartToUpdateStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step builds the cart update payload: it resolves the currency and region
+from the (possibly new) region, reconciles the shipping address against the
+region's countries, and applies customer and sales channel changes. It throws
+an error if the shipping address country isn't within the region.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { prepareCartToUpdateStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = prepareCartToUpdateStep("{value}")
+  }
+)
+```
+
+<a id="preparecarttoupdatestep-input" />
+
+## Input
+
+**prepareCartToUpdateStep**
+
+- `PrepareCartToUpdateStepInput`: `PrepareCartToUpdateStepInput`
+
+<a id="preparecarttoupdatestep-output" />
+
+## Output
+
+**prepareCartToUpdateStep**
+
+- `WorkflowDataProperties`: [WorkflowDataProperties](/resources/references/workflows/types/workflowsWorkflowDataProperties)\<object>
+  - `currency_code`: `any` (default: data.region.currency\_code)
+  - `region_id`: `any` (default: data.region.id)
+  - `id`: `string` — The ID of the cart to update.
+  - `customer_id`: `null` | `string` (optional) — The ID of the cart's customer.
+  - `sales_channel_id`: `null` | `string` (optional) — The ID of the cart's sales channel.
+  - `email`: `null` | `string` (optional) — The email address of the cart's customer.
+  - `locale`: `null` | `string` (optional) — The locale code for the cart in BCP 47 format.
+
+    Example:
+
+    ```
+    "en-US"
+    ```
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs of data related to the cart.
+  - `shipping_address`: `null` | [CreateAddressDTO](/resources/references/cart/interfaces/cartCreateAddressDTO) | [UpdateAddressDTO](/resources/references/cart/interfaces/cartUpdateAddressDTO) (optional) — The cart's shipping address. You can either update the cart's existing shipping address, or create a new one.
+    - `customer_id`: `string` (optional) — The associated customer's ID.
+    - `company`: `string` (optional) — The company of the address.
+    - `first_name`: `string` (optional) — The first name of the address.
+    - `last_name`: `string` (optional) — The last name of the address.
+    - `address_1`: `string` (optional) — The first line of the address.
+    - `address_2`: `string` (optional) — The second line of the address.
+    - `city`: `string` (optional) — The city of the address.
+    - `country_code`: `string` (optional) — The ISO two country code of the address.
+    - `province`: `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
+    - `postal_code`: `string` (optional) — The postal code of the address.
+    - `phone`: `string` (optional) — The phone of the address.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` — The ID of the address.
+  - `billing_address`: `null` | [CreateAddressDTO](/resources/references/cart/interfaces/cartCreateAddressDTO) | [UpdateAddressDTO](/resources/references/cart/interfaces/cartUpdateAddressDTO) (optional) — The cart's billing address. You can either update the cart's existing billing address, or create a new one.
+    - `customer_id`: `string` (optional) — The associated customer's ID.
+    - `company`: `string` (optional) — The company of the address.
+    - `first_name`: `string` (optional) — The first name of the address.
+    - `last_name`: `string` (optional) — The last name of the address.
+    - `address_1`: `string` (optional) — The first line of the address.
+    - `address_2`: `string` (optional) — The second line of the address.
+    - `city`: `string` (optional) — The city of the address.
+    - `country_code`: `string` (optional) — The ISO two country code of the address.
+    - `province`: `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
+    - `postal_code`: `string` (optional) — The postal code of the address.
+    - `phone`: `string` (optional) — The phone of the address.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` — The ID of the address.

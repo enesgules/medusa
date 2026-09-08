@@ -1,0 +1,40 @@
+---
+title: removeUsers
+---
+
+This method removes users from an RBAC role. It sends a request to the
+Remove Role Users API route.
+
+## Example
+
+```ts
+sdk.admin.rbacRole.removeUsers("role_123", {
+  users: ["user_123"]
+})
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="removeusers-parameters" />
+
+## Parameters
+
+**removeUsers**
+
+- `roleId`: `string` — The role's ID.
+- `body`: [AdminRemoveRoleUsers](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRemoveRoleUsers) — The users to remove from the role.
+  - `users`: `string`\[] — The IDs of the users to remove from the role.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="removeusers-returns" />
+
+## Returns
+
+**removeUsers**
+
+- `Promise`: Promise\<[AdminRbacRoleUsersDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleUsersDeleteResponse)> — The removal's details.
+  - `ids`: `string`\[] — The IDs of the users that were removed.
+  - `object`: `"role_user"` — The type of the removed items.
+  - `deleted`: `boolean` — Whether the users were removed successfully.

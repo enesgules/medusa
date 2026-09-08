@@ -1,0 +1,36 @@
+---
+title: reindex
+---
+
+This method triggers rebuilding a search index from its seed. The rebuild runs in
+the background - check the index's `status` through [listIndexes](/resources/references/js_sdk/admin/Search/methods/js_sdkadminSearchlistIndexes) to know
+when it's done.
+
+## Example
+
+```ts
+sdk.admin.search.reindex("product")
+.then(({ job_id, indexes }) => {
+  console.log(job_id, indexes)
+})
+```
+
+<a id="reindex-parameters" />
+
+## Parameters
+
+**reindex**
+
+- `id`: `string` — The name of the index to reindex.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="reindex-returns" />
+
+## Returns
+
+**reindex**
+
+- `Promise`: Promise\<[AdminSearchIndexReindexResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSearchIndexReindexResponse)> — The triggered reindex job.
+  - `job_id`: `string` — Identifier of the triggered reindex job.
+  - `indexes`: `string`\[] — Names of the indexes being reindexed.

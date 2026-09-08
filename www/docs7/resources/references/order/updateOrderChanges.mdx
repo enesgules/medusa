@@ -1,0 +1,198 @@
+---
+title: updateOrderChanges - Order Module Reference
+sidebarTitle: updateOrderChanges
+---
+
+This documentation provides a reference to the `updateOrderChanges` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updateorderchanges-data-sharedcontext-promiseorderchangedto" />
+
+## updateOrderChanges(data, sharedContext?): Promise\<[OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)>
+
+This method updates an existing order change.
+
+### Example
+
+```ts
+const orderChange = await orderModuleService.updateOrderChanges({
+  id: "123"
+})
+```
+
+<a id="updateorderchanges-parameters" />
+
+### Parameters
+
+**updateOrderChanges**
+
+- `data`: [UpdateOrderChangeDTO](/resources/references/order/interfaces/orderUpdateOrderChangeDTO) — The attributes to update in the order change.
+  - `id`: `string` — The ID of the order change.
+  - `status`: `string` (optional) — The status of the order change.
+  - `description`: `string` (optional) — The description of the order change.
+  - `return_id`: `null` | `string` (optional) — The associated return's ID.
+  - `internal_note`: `null` | `string` (optional) — The internal note of the order change.
+  - `requested_by`: `null` | `string` (optional) — The user or customer that requested the order change.
+  - `requested_at`: `null` | `Date` (optional) — The date the order change was requested.
+  - `confirmed_by`: `null` | `string` (optional) — The user or customer that confirmed the order change.
+  - `confirmed_at`: `null` | `Date` (optional) — The date the order change was confirmed.
+  - `declined_by`: `null` | `string` (optional) — The user or customer that declined the order change.
+  - `declined_reason`: `null` | `string` (optional) — The reason that the order change was declined.
+  - `declined_at`: `null` | `Date` (optional) — The date that the order change was declined.
+  - `canceled_by`: `null` | `string` (optional) — The user or customer that canceled the order change.
+  - `canceled_at`: `null` | `Date` (optional) — The date that the order change was canceled.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `carry_over_promotions`: `null` | `boolean` (optional) — Whether to carry over promotions to outbound exchange items.
+  - `no_notification`: `null` | `boolean` (optional) — Whether the customer shouldn't be notified of the order change.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorderchanges-returns" />
+
+### Returns
+
+**updateOrderChanges**
+
+- `Promise`: Promise\<[OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)> — The updated order change.
+
+<a id="updateorderchanges-data-sharedcontext-promiseorderchangedto-1" />
+
+## updateOrderChanges(data, sharedContext?): Promise\<[OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)\[]>
+
+This method updates order changes. The order changes are identified by the `id` property of each order change object.
+
+### Example
+
+```ts
+const orderChanges = await orderModuleService.updateOrderChanges([{
+  id: "123"
+}])
+```
+
+<a id="updateorderchanges-parameters-1" />
+
+### Parameters
+
+**updateOrderChanges**
+
+- `data`: [UpdateOrderChangeDTO](/resources/references/order/interfaces/orderUpdateOrderChangeDTO)\[] — The order changes to be updated.
+  - `id`: `string` — The ID of the order change.
+  - `status`: `string` (optional) — The status of the order change.
+  - `description`: `string` (optional) — The description of the order change.
+  - `return_id`: `null` | `string` (optional) — The associated return's ID.
+  - `internal_note`: `null` | `string` (optional) — The internal note of the order change.
+  - `requested_by`: `null` | `string` (optional) — The user or customer that requested the order change.
+  - `requested_at`: `null` | `Date` (optional) — The date the order change was requested.
+  - `confirmed_by`: `null` | `string` (optional) — The user or customer that confirmed the order change.
+  - `confirmed_at`: `null` | `Date` (optional) — The date the order change was confirmed.
+  - `declined_by`: `null` | `string` (optional) — The user or customer that declined the order change.
+  - `declined_reason`: `null` | `string` (optional) — The reason that the order change was declined.
+  - `declined_at`: `null` | `Date` (optional) — The date that the order change was declined.
+  - `canceled_by`: `null` | `string` (optional) — The user or customer that canceled the order change.
+  - `canceled_at`: `null` | `Date` (optional) — The date that the order change was canceled.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `carry_over_promotions`: `null` | `boolean` (optional) — Whether to carry over promotions to outbound exchange items.
+  - `no_notification`: `null` | `boolean` (optional) — Whether the customer shouldn't be notified of the order change.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorderchanges-returns-1" />
+
+### Returns
+
+**updateOrderChanges**
+
+- `Promise`: Promise\<[OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)\[]> — The updated order changes.
+  - `OrderChangeDTO[]`: [OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)\[]
+
+<a id="updateorderchanges-data-sharedcontext-promiseorderchangedto-orderchangedto" />
+
+## updateOrderChanges(data, sharedContext?): Promise\<[OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO) | [OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)\[]>
+
+This method updates order changes. The order changes are identified by the `id` property of each order change object.
+
+### Example
+
+```ts
+const orderChanges = await orderModuleService.updateOrderChanges([{
+  id: "123"
+}])
+```
+
+<a id="updateorderchanges-parameters-2" />
+
+### Parameters
+
+**updateOrderChanges**
+
+- `data`: [UpdateOrderChangeDTO](/resources/references/order/interfaces/orderUpdateOrderChangeDTO) | [UpdateOrderChangeDTO](/resources/references/order/interfaces/orderUpdateOrderChangeDTO)\[] — The data to update in each order change.
+  - `id`: `string` — The ID of the order change.
+  - `status`: `string` (optional) — The status of the order change.
+  - `description`: `string` (optional) — The description of the order change.
+  - `return_id`: `null` | `string` (optional) — The associated return's ID.
+  - `internal_note`: `null` | `string` (optional) — The internal note of the order change.
+  - `requested_by`: `null` | `string` (optional) — The user or customer that requested the order change.
+  - `requested_at`: `null` | `Date` (optional) — The date the order change was requested.
+  - `confirmed_by`: `null` | `string` (optional) — The user or customer that confirmed the order change.
+  - `confirmed_at`: `null` | `Date` (optional) — The date the order change was confirmed.
+  - `declined_by`: `null` | `string` (optional) — The user or customer that declined the order change.
+  - `declined_reason`: `null` | `string` (optional) — The reason that the order change was declined.
+  - `declined_at`: `null` | `Date` (optional) — The date that the order change was declined.
+  - `canceled_by`: `null` | `string` (optional) — The user or customer that canceled the order change.
+  - `canceled_at`: `null` | `Date` (optional) — The date that the order change was canceled.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `carry_over_promotions`: `null` | `boolean` (optional) — Whether to carry over promotions to outbound exchange items.
+  - `no_notification`: `null` | `boolean` (optional) — Whether the customer shouldn't be notified of the order change.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorderchanges-returns-2" />
+
+### Returns
+
+**updateOrderChanges**
+
+- `Promise`: Promise\<[OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO) | [OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)\[]> — The updated order changes.
+  - `OrderChangeDTO \| OrderChangeDTO[]`: [OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO) | [OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)\[]

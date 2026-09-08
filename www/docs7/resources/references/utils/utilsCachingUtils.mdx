@@ -1,0 +1,84 @@
+---
+title: CachingUtils
+---
+
+## Functions
+
+- [Cached](/resources/references/utils/utilsCachingUtils#cached)
+- [useCache](/resources/references/utils/utilsCachingUtils#usecache)
+
+## Functions
+
+### Cached
+
+This function is used to cache the result of a method call.
+
+<a id="cached-type-parameters" />
+
+#### Type Parameters
+
+**Cached**
+
+- `Target`: `object` (optional)
+- `PropertyKey`: `string` | `number` | `symbol` (optional)
+
+<a id="cached-parameters" />
+
+#### Parameters
+
+**Cached**
+
+- `options`: `object` — The options for the cache.
+  - `key`: `string` | (`args`: [TargetMethodArgs](/resources/references/utils/types/utilsTargetMethodArgs)\<Target, PropertyKey>, `cachingModule`: [ICachingModuleService](/resources/references/types/CachingTypes/interfaces/typesCachingTypesICachingModuleService)) => `string` | `any`\[] | Promise\<string> | Promise\<any\[]> (optional) — The key to use for the cache. If a function is provided, it will be called with the arguments as the first argument and the container as the second argument.
+  - `enable`: `boolean` | (`args`: [TargetMethodArgs](/resources/references/utils/types/utilsTargetMethodArgs)\<Target, PropertyKey>) => `undefined` | `boolean` (optional) — Whether to enable the cache. This is only useful if you want to enable without providing any other options.
+  - `tags`: `string`\[] | (`args`: [TargetMethodArgs](/resources/references/utils/types/utilsTargetMethodArgs)\<Target, PropertyKey>) => `undefined` | `string`\[] (optional) — The tags to use for the cache.
+  - `computeAutomaticTags`: `boolean` | (`args`: [TargetMethodArgs](/resources/references/utils/types/utilsTargetMethodArgs)\<Target, PropertyKey>) => `undefined` | `boolean` (optional) — Whether the automatically computed tags should be applied along with the ones given in `tags`, rather than `tags` being used on its own. No effect when `tags` is omitted. The function form exists so the option can be resolved from the decorated method's arguments, the same way `tags` is.
+  - `ttl`: `number` | (`args`: [TargetMethodArgs](/resources/references/utils/types/utilsTargetMethodArgs)\<Target, PropertyKey>) => `undefined` | `number` (optional) — The time-to-live (TTL) value in seconds.
+  - `autoInvalidate`: `boolean` | (`args`: [TargetMethodArgs](/resources/references/utils/types/utilsTargetMethodArgs)\<Target, PropertyKey>) => `undefined` | `boolean` (optional) — Whether to auto invalidate the cache whenever it is possible.
+  - `providers`: `string`\[] | (`args`: [TargetMethodArgs](/resources/references/utils/types/utilsTargetMethodArgs)\<Target, PropertyKey>) => `undefined` | `string`\[] (optional) — The providers to use for the cache.
+  - `container`: [MedusaContainer](/resources/references/medusa/types/medusaMedusaContainer) | (`this`: Target) => [MedusaContainer](/resources/references/medusa/types/medusaMedusaContainer)
+
+<a id="cached-returns" />
+
+#### Returns
+
+**Cached**
+
+- `(target: Target, propertyKey: PropertyKey, descriptor: PropertyDescriptor) => PropertyDescriptor`: (`target`: Target, `propertyKey`: PropertyKey, `descriptor`: `PropertyDescriptor`) => `PropertyDescriptor` — The original method with the cache applied.
+
+### useCache
+
+This function is used to cache the result of a function call.
+
+<a id="usecache-type-parameters" />
+
+#### Type Parameters
+
+**useCache**
+
+- `T`: `object` (optional)
+
+<a id="usecache-parameters" />
+
+#### Parameters
+
+**useCache**
+
+- `cb`: (...`args`: `any`\[]) => Promise\<T> — The callback to execute.
+- `options`: `object` — The options for the cache.
+  - `enable`: `boolean` (optional)
+  - `key`: `string` | `any`\[]
+  - `tags`: `string`\[] (optional)
+  - `computeAutomaticTags`: `boolean` (optional) — Whether the automatically computed tags should be applied along with the ones given in `tags`, rather than `tags` being used on its own. No effect when `tags` is omitted.
+  - `ttl`: `number` (optional)
+  - `autoInvalidate`: `boolean` (optional) — Whethere the default strategy should auto invalidate the cache whenever it is possible.
+  - `providers`: `string`\[] (optional)
+  - `container`: [MedusaContainer](/resources/references/medusa/types/medusaMedusaContainer)
+
+<a id="usecache-returns" />
+
+#### Returns
+
+**useCache**
+
+- `Promise`: Promise\<T> — The result of the callback.

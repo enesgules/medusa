@@ -1,0 +1,30 @@
+---
+title: TaxCalculationContext
+---
+
+The context provided when tax lines are calculated and retrieved. This
+context is later passed to the underlying tax provider.
+
+**TaxCalculationContext**
+
+- `locale`: `string` (optional) — The locale of the tax calculation.
+- `address`: `object` — The customer's address
+  - `country_code`: `string` — The ISO 2 character currency code.
+  - `province_code`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code.
+  - `address_1`: `string` (optional) — The first line of the address.
+  - `address_2`: `null` | `string` (optional) — The second line of the address
+  - `city`: `string` (optional) — The city.
+  - `postal_code`: `string` (optional) — The postal code.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Address metadata.
+- `customer`: `object` (optional) — The customer's details.
+  - `id`: `string` — The ID of the customer.
+  - `email`: `string` — The email of the customer.
+  - `customer_groups`: `string`\[] — The groups that the customer belongs to.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Customer metadata.
+- `is_return`: `boolean` (optional) — Whether the tax lines are calculated for an order return.
+- `shipping_methods`: `object`\[] (optional) — The shipping method details.
+  - `id`: `string` — The associated shipping method's ID.
+  - `name`: `string` — The name of the shipping method.
+  - `shipping_option_id`: `string` — The associated shipping options's ID.
+  - `amount`: `number` — The amount of the shipping method.
+- `additional_context`: `Record<string, unknown>` (optional) — Additional context to pass to the underlying tax provider. Use this to forward custom data that isn't part of the framework-provided fields but that your tax provider needs to calculate tax lines accurately. In cart and order tax workflows, this is populated by the `setTaxLineContext` hook.

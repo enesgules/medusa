@@ -1,0 +1,130 @@
+---
+title: Payment Module Options
+sidebarTitle: Module Options
+---
+
+In this document, you'll learn about the options you can pass to the Payment Module.
+
+## All Module Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `webhook_delay`
+      </td>
+
+      <td>
+        A number indicating the delay in milliseconds before processing a webhook event.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `5000`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `webhook_retries`
+      </td>
+
+      <td>
+        The number of times to retry the webhook event processing in case of an error.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `3`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `providers`
+      </td>
+
+      <td>
+        An array of payment providers to install and register. Learn more [in this section](/resources/commerce-modules/payment/module-options).
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        \-
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## providers Option
+
+The `providers` option is an array of payment module providers to be registered in your Medusa application.
+
+When the Medusa application starts, these providers are registered and can be used to process payments.
+
+For example:
+
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/payment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/payment-stripe",
+            id: "stripe",
+            options: {
+              // ...
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+The `providers` option is an array of objects that accept the following properties:
+
+- `resolve`: A string indicating the package name of the module provider or the path to it.
+- `id`: A string indicating the provider's unique name or ID.
+- `options`: An optional object of the module provider's options.
+
+Refer to the [Payment Module Providers](/resources/commerce-modules/payment/payment-provider) documentation to learn more.

@@ -1,0 +1,776 @@
+---
+title: apiKey - JS SDK Admin Reference
+sidebarTitle: apiKey
+---
+
+This documentation provides a reference to the `sdk.admin.apiKey` set of methods used to send requests to Medusa's Admin API routes.
+
+## list
+
+This methods retrieves a paginated list of API keys. It sends a request to the
+[List API Keys](/api/admin/api-keys/list-api-keys) API route.
+
+### Example
+
+To retrieve the list of API keys:
+
+```ts
+sdk.admin.apiKey.list()
+.then(({ api_keys, count, limit, offset }) => {
+  console.log(api_keys)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.apiKey.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ api_keys, count, limit, offset }) => {
+  console.log(api_keys)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each API key:
+
+```ts
+sdk.admin.apiKey.list({
+  fields: "id,*sales_channels"
+})
+.then(({ api_keys, count, limit, offset }) => {
+  console.log(api_keys)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `queryParams`: [AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Query or keywords to search the API key's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by API key ID(s).
+    - `title`: `string` | `string`\[] (optional) — Filter by title(s).
+    - `token`: `string` | `string`\[] (optional) — Filter by token(s).
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) (optional) — Filter by type.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's deletion date.
+    - `revoked_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's revocation date.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `$or`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Query or keywords to search the API key's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by API key ID(s).
+    - `title`: `string` | `string`\[] (optional) — Filter by title(s).
+    - `token`: `string` | `string`\[] (optional) — Filter by token(s).
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) (optional) — Filter by type.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's deletion date.
+    - `revoked_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's revocation date.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keywords to search the API key's searchable fields.
+  - `id`: `string` | `string`\[] (optional) — Filter by API key ID(s).
+  - `title`: `string` | `string`\[] (optional) — Filter by title(s).
+  - `token`: `string` | `string`\[] (optional) — Filter by token(s).
+  - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) (optional) — Filter by type.
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's creation date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's update date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's deletion date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `revoked_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's revocation date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminApiKeyListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminApiKeyListResponse)> — The paginated list of API keys.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## create
+
+This method creates an API key. It sends a request to the [Create API Key](/api/admin/api-keys/create-api-key)
+API route.
+
+### Example
+
+```ts
+sdk.admin.apiKey.create({
+  title: "Development",
+  type: "publishable"
+})
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [AdminCreateApiKey](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateApiKey) — The API key's details.
+  - `title`: `string` — The API key's title.
+  - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The API key's type.
+- `query`: [AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) (optional) — Configure the fields to retrieve in the created API key.
+  - `$and`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Query or keywords to search the API key's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by API key ID(s).
+    - `title`: `string` | `string`\[] (optional) — Filter by title(s).
+    - `token`: `string` | `string`\[] (optional) — Filter by token(s).
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) (optional) — Filter by type.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's deletion date.
+    - `revoked_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's revocation date.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `$or`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Query or keywords to search the API key's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by API key ID(s).
+    - `title`: `string` | `string`\[] (optional) — Filter by title(s).
+    - `token`: `string` | `string`\[] (optional) — Filter by token(s).
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) (optional) — Filter by type.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's deletion date.
+    - `revoked_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's revocation date.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keywords to search the API key's searchable fields.
+  - `id`: `string` | `string`\[] (optional) — Filter by API key ID(s).
+  - `title`: `string` | `string`\[] (optional) — Filter by title(s).
+  - `token`: `string` | `string`\[] (optional) — Filter by token(s).
+  - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) (optional) — Filter by type.
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's creation date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's update date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's deletion date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `revoked_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's revocation date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminApiKeyResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminApiKeyResponse)> — The created API key
+  - `api_key`: [AdminApiKey](/resources/references/types/interfaces/typesAdminApiKey) — The API key's details.
+    - `id`: `string` — The API key's ID.
+    - `token`: `string` — The API key's token.
+    - `redacted`: `string` — The redacted form of the token, useful for displaying the API key.
+    - `title`: `string` — The API key's title.
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The API key's type.
+    - `last_used_at`: `null` | `Date` — The date the API key was last used.
+    - `created_by`: `string` — The ID of the user that created the API key.
+    - `created_at`: `Date` — The date the API key was created.
+    - `updated_at`: `Date` — The date the API key was updated.
+    - `revoked_by`: `null` | `string` — The ID of the user that revoked the API key.
+    - `revoked_at`: `null` | `Date` — The date the API key was revoked.
+    - `deleted_at`: `null` | `Date` — The date the API key was deleted.
+
+## revoke
+
+This method revokes an API key. It sends a request to the
+[Revoke API Key](/api/admin/api-keys/revoke-api-key) API route.
+
+### Example
+
+```ts
+sdk.admin.apiKey.revoke("apk_123")
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+<a id="revoke-parameters" />
+
+### Parameters
+
+**revoke**
+
+- `id`: `string` — The API key's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="revoke-returns" />
+
+### Returns
+
+**revoke**
+
+- `Promise`: Promise\<[AdminApiKeyResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminApiKeyResponse)> — The API key's details.
+  - `api_key`: [AdminApiKey](/resources/references/types/interfaces/typesAdminApiKey) — The API key's details.
+    - `id`: `string` — The API key's ID.
+    - `token`: `string` — The API key's token.
+    - `redacted`: `string` — The redacted form of the token, useful for displaying the API key.
+    - `title`: `string` — The API key's title.
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The API key's type.
+    - `last_used_at`: `null` | `Date` — The date the API key was last used.
+    - `created_by`: `string` — The ID of the user that created the API key.
+    - `created_at`: `Date` — The date the API key was created.
+    - `updated_at`: `Date` — The date the API key was updated.
+    - `revoked_by`: `null` | `string` — The ID of the user that revoked the API key.
+    - `revoked_at`: `null` | `Date` — The date the API key was revoked.
+    - `deleted_at`: `null` | `Date` — The date the API key was deleted.
+
+## retrieve
+
+This method retrieves an API key's details. It sends a request to the
+[Get API key](/api/admin/api-keys/get-api-key) API route.
+
+### Example
+
+```ts
+sdk.admin.apiKey.retrieve("apk_123")
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The API key's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminApiKeyResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminApiKeyResponse)> — The API key's details.
+  - `api_key`: [AdminApiKey](/resources/references/types/interfaces/typesAdminApiKey) — The API key's details.
+    - `id`: `string` — The API key's ID.
+    - `token`: `string` — The API key's token.
+    - `redacted`: `string` — The redacted form of the token, useful for displaying the API key.
+    - `title`: `string` — The API key's title.
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The API key's type.
+    - `last_used_at`: `null` | `Date` — The date the API key was last used.
+    - `created_by`: `string` — The ID of the user that created the API key.
+    - `created_at`: `Date` — The date the API key was created.
+    - `updated_at`: `Date` — The date the API key was updated.
+    - `revoked_by`: `null` | `string` — The ID of the user that revoked the API key.
+    - `revoked_at`: `null` | `Date` — The date the API key was revoked.
+    - `deleted_at`: `null` | `Date` — The date the API key was deleted.
+
+## update
+
+This method updates an API key's details. It sends a request to the
+[Update API Key](/api/admin/api-keys/update-an-api-key) API route.
+
+### Example
+
+```ts
+sdk.admin.apiKey.update("apk_123", {
+  title: "Development"
+})
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `id`: `string` — The API key's ID.
+- `body`: [AdminUpdateApiKey](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateApiKey) — The data to update in the API key.
+  - `title`: `string` — The API key's title.
+- `query`: [AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) (optional) — Configure the fields to retrieve in the API key.
+  - `$and`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Query or keywords to search the API key's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by API key ID(s).
+    - `title`: `string` | `string`\[] (optional) — Filter by title(s).
+    - `token`: `string` | `string`\[] (optional) — Filter by token(s).
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) (optional) — Filter by type.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's deletion date.
+    - `revoked_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's revocation date.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `$or`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetApiKeysParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetApiKeysParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Query or keywords to search the API key's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by API key ID(s).
+    - `title`: `string` | `string`\[] (optional) — Filter by title(s).
+    - `token`: `string` | `string`\[] (optional) — Filter by token(s).
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) (optional) — Filter by type.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's deletion date.
+    - `revoked_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's revocation date.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keywords to search the API key's searchable fields.
+  - `id`: `string` | `string`\[] (optional) — Filter by API key ID(s).
+  - `title`: `string` | `string`\[] (optional) — Filter by title(s).
+  - `token`: `string` | `string`\[] (optional) — Filter by token(s).
+  - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) (optional) — Filter by type.
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's creation date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's update date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's deletion date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `revoked_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the API key's revocation date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminApiKeyResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminApiKeyResponse)> — The API key's details.
+  - `api_key`: [AdminApiKey](/resources/references/types/interfaces/typesAdminApiKey) — The API key's details.
+    - `id`: `string` — The API key's ID.
+    - `token`: `string` — The API key's token.
+    - `redacted`: `string` — The redacted form of the token, useful for displaying the API key.
+    - `title`: `string` — The API key's title.
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The API key's type.
+    - `last_used_at`: `null` | `Date` — The date the API key was last used.
+    - `created_by`: `string` — The ID of the user that created the API key.
+    - `created_at`: `Date` — The date the API key was created.
+    - `updated_at`: `Date` — The date the API key was updated.
+    - `revoked_by`: `null` | `string` — The ID of the user that revoked the API key.
+    - `revoked_at`: `null` | `Date` — The date the API key was revoked.
+    - `deleted_at`: `null` | `Date` — The date the API key was deleted.
+
+## delete
+
+This method deletes an API key by its ID. It sends a request to the
+[Delete API Key](/api/admin/api-keys/delete-an-api-key) API route.
+
+### Example
+
+```ts
+sdk.admin.apiKey.delete("apk_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The API key's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminApiKeyDeleteResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminApiKeyDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: TObject — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## batchSalesChannels
+
+This method manages the sales channels associated with a publishable API key to either add
+or remove associations. It sends a request to the [Manage Sales Channels](/api/admin/api-keys/manage-sales-channels)
+API route.
+
+### Example
+
+```ts
+sdk.admin.apiKey.batchSalesChannels("apk_123", {
+  add: ["sc_123"],
+  remove: ["sc_321"]
+})
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+<a id="batchsaleschannels-parameters" />
+
+### Parameters
+
+**batchSalesChannels**
+
+- `id`: `string` — The API key's ID.
+- `body`: [AdminBatchLink](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchLink) — The sales channels to add or remove from the API key.
+  - `add`: `string`\[] (optional) — The IDs of the items to create an association to.
+  - `remove`: `string`\[] (optional) — The IDs of the items to remove the association from.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchsaleschannels-returns" />
+
+### Returns
+
+**batchSalesChannels**
+
+- `Promise`: Promise\<[AdminApiKeyResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminApiKeyResponse)> — The API key's details.
+  - `api_key`: [AdminApiKey](/resources/references/types/interfaces/typesAdminApiKey) — The API key's details.
+    - `id`: `string` — The API key's ID.
+    - `token`: `string` — The API key's token.
+    - `redacted`: `string` — The redacted form of the token, useful for displaying the API key.
+    - `title`: `string` — The API key's title.
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The API key's type.
+    - `last_used_at`: `null` | `Date` — The date the API key was last used.
+    - `created_by`: `string` — The ID of the user that created the API key.
+    - `created_at`: `Date` — The date the API key was created.
+    - `updated_at`: `Date` — The date the API key was updated.
+    - `revoked_by`: `null` | `string` — The ID of the user that revoked the API key.
+    - `revoked_at`: `null` | `Date` — The date the API key was revoked.
+    - `deleted_at`: `null` | `Date` — The date the API key was deleted.

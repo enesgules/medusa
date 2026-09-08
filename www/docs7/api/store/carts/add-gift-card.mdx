@@ -1,0 +1,437 @@
+---
+title: Add Gift Card
+---
+
+`POST /store/carts/{id}/gift-cards`
+
+Add a Gift Card to a cart
+
+## Base URLs
+
+- `http://localhost:9000`
+
+- `https://api.medusajs.com`
+
+## Authentication
+
+This operation does not require authentication.
+
+[Authentication guide](/api/store/authentication)
+
+## Parameters
+
+<Accordion title="id (path, required)">
+  The cart's ID.
+
+  ```json
+  {
+    "name": "id",
+    "in": "path",
+    "description": "The cart's ID.",
+    "required": true,
+    "schema": {
+      "type": "string"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="x-publishable-api-key (header, required)">
+  Publishable API Key created in the Medusa Admin.
+
+  ```json
+  {
+    "name": "x-publishable-api-key",
+    "in": "header",
+    "description": "Publishable API Key created in the Medusa Admin.",
+    "required": true,
+    "schema": {
+      "type": "string",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/api/store#publishable-api-key"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="x-medusa-locale (header, optional)">
+  The locale in BCP 47 format to retrieve localized content.
+
+  ```json
+  {
+    "name": "x-medusa-locale",
+    "in": "header",
+    "description": "The locale in BCP 47 format to retrieve localized content.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "example": "en-US",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/resources/commerce-modules/translation/storefront",
+        "description": "Learn more in the Serve Translations in Storefront guide."
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="locale (query, optional)">
+  The locale in BCP 47 format to retrieve localized content.
+
+  ```json
+  {
+    "name": "locale",
+    "in": "query",
+    "description": "The locale in BCP 47 format to retrieve localized content.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "example": "en-US",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/resources/commerce-modules/translation/storefront",
+        "description": "Learn more in the Serve Translations in Storefront guide."
+      }
+    }
+  }
+  ```
+</Accordion>
+
+## Request body
+
+Optional.
+
+### application/json
+
+```json
+{
+  "schema": {
+    "$ref": "#/components/schemas/StoreAddGiftCardToCart"
+  }
+}
+```
+
+Related schemas:
+
+- [StoreAddGiftCardToCart](/api/schemas/store-add-gift-card-to-cart)
+
+## Responses
+
+<Accordion title="200 — OK">
+  OK
+
+  ```json
+  {
+    "description": "OK",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/StoreCartResponse"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [StoreCartResponse](/api/schemas/store-cart-response)
+</Accordion>
+
+<Accordion title="400 — Client Error">
+  Client Error
+
+  ```json
+  {
+    "description": "Client Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "not_allowed": {
+            "$ref": "#/components/examples/not_allowed_error"
+          },
+          "invalid_data": {
+            "$ref": "#/components/examples/invalid_data_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="401 — User is not authorized. Must log in first">
+  User is not authorized. Must log in first
+
+  ```json
+  {
+    "description": "User is not authorized. Must log in first",
+    "content": {
+      "text/plain": {
+        "schema": {
+          "type": "string",
+          "default": "Unauthorized",
+          "example": "Unauthorized"
+        }
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Not Found Error">
+  Not Found Error
+
+  ```json
+  {
+    "description": "Not Found Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "message": "Entity with id 1 was not found",
+          "type": "not_found"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="409 — Invalid State Error">
+  Invalid State Error
+
+  ```json
+  {
+    "description": "Invalid State Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "unknown_error",
+          "message": "The request conflicted with another request. You may retry the request with the provided Idempotency-Key.",
+          "type": "QueryRunnerAlreadyReleasedError"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="422 — Invalid Request Error">
+  Invalid Request Error
+
+  ```json
+  {
+    "description": "Invalid Request Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "invalid_request_error",
+          "message": "Discount with code TEST already exists.",
+          "type": "duplicate_error"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="500 — Server Error">
+  Server Error
+
+  ```json
+  {
+    "description": "Server Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "database": {
+            "$ref": "#/components/examples/database_error"
+          },
+          "unexpected_state": {
+            "$ref": "#/components/examples/unexpected_state_error"
+          },
+          "invalid_argument": {
+            "$ref": "#/components/examples/invalid_argument_error"
+          },
+          "default_error": {
+            "$ref": "#/components/examples/default_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+## Examples
+
+### cURL
+
+```bash
+curl -X POST '{backend_url}/store/carts/{id}/gift-cards' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "code": "{value}"
+}'
+```
+
+<Accordion title="OpenAPI operation">
+  ```json
+  {
+    "operationId": "PostCartsIdGiftCards",
+    "summary": "Add Gift Card to Cart",
+    "x-sidebar-summary": "Add Gift Card",
+    "description": "Add a Gift Card to a cart",
+    "x-authenticated": false,
+    "x-ignoreCleanup": true,
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "description": "The cart's ID.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-publishable-api-key",
+        "in": "header",
+        "description": "Publishable API Key created in the Medusa Admin.",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "externalDocs": {
+            "url": "https://docs.medusajs.com/api/store#publishable-api-key"
+          }
+        }
+      },
+      {
+        "name": "x-medusa-locale",
+        "in": "header",
+        "description": "The locale in BCP 47 format to retrieve localized content.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "example": "en-US",
+          "externalDocs": {
+            "url": "https://docs.medusajs.com/resources/commerce-modules/translation/storefront",
+            "description": "Learn more in the Serve Translations in Storefront guide."
+          }
+        }
+      },
+      {
+        "name": "locale",
+        "in": "query",
+        "description": "The locale in BCP 47 format to retrieve localized content.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "example": "en-US",
+          "externalDocs": {
+            "url": "https://docs.medusajs.com/resources/commerce-modules/translation/storefront",
+            "description": "Learn more in the Serve Translations in Storefront guide."
+          }
+        }
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/StoreAddGiftCardToCart"
+          }
+        }
+      }
+    },
+    "x-codeSamples": [
+      {
+        "lang": "Shell",
+        "label": "cURL",
+        "source": "curl -X POST '{backend_url}/store/carts/{id}/gift-cards' \\\n-H 'x-publishable-api-key: {your_publishable_api_key}' \\\n-H 'Content-Type: application/json' \\\n--data-raw '{\n  \"code\": \"{value}\"\n}'"
+      }
+    ],
+    "tags": [
+      "Carts"
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/StoreCartResponse"
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/400_error"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "404": {
+        "$ref": "#/components/responses/not_found_error"
+      },
+      "409": {
+        "$ref": "#/components/responses/invalid_state_error"
+      },
+      "422": {
+        "$ref": "#/components/responses/invalid_request_error"
+      },
+      "500": {
+        "$ref": "#/components/responses/500_error"
+      }
+    },
+    "x-badges": [
+      {
+        "text": "Plugin",
+        "description": "This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).\n"
+      }
+    ]
+  }
+  ```
+
+  Related schemas:
+
+  - [StoreAddGiftCardToCart](/api/schemas/store-add-gift-card-to-cart)
+
+  - [StoreCartResponse](/api/schemas/store-cart-response)
+</Accordion>

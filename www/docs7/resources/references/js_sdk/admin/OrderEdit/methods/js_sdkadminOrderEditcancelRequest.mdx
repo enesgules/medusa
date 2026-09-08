@@ -1,0 +1,39 @@
+---
+title: cancelRequest
+---
+
+This method cancels a requested order edit. It sends a request to the
+[Cancel Order Edit](/api/admin/order-edits/cancel-order-edit)
+API route.
+
+## Example
+
+```ts
+sdk.admin.orderEdit.cancelRequest("order_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="cancelrequest-parameters" />
+
+## Parameters
+
+**cancelRequest**
+
+- `id`: `string` — The ID of the order that is being edited.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Query parameters
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="cancelrequest-returns" />
+
+## Returns
+
+**cancelRequest**
+
+- `Promise`: Promise\<[AdminOrderEditDeleteResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminOrderEditDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: TObject — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.

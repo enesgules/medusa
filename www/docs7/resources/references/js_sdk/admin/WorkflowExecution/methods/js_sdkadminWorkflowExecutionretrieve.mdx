@@ -1,0 +1,44 @@
+---
+title: retrieve
+---
+
+This method retrieves a workflow execution by its ID. It sends a request to the
+[Get Workflow Execution](/api/admin/workflows-executions/get-exection)
+API route.
+
+## Example
+
+```ts
+sdk.admin.workflowExecution.retrieve("wrk_123")
+.then(({ workflow_execution }) => {
+  console.log(workflow_execution)
+})
+```
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The ID of the workflow execution to retrieve.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminWorkflowExecutionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminWorkflowExecutionResponse)> — The workflow execution's details.
+  - `workflow_execution`: [AdminWorkflowExecution](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminWorkflowExecution) — The workflow execution's details.
+    - `id`: `string` — The ID of the workflow execution.
+    - `workflow_id`: `string` — The ID of the workflow.
+    - `transaction_id`: `string` — The ID of the transaction.
+    - `execution`: [AdminWorkflowExecutionExecution](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminWorkflowExecutionExecution) — The execution details of the workflow.
+    - `context`: [WorkflowExecutionContext](/resources/references/types/HttpTypes/interfaces/typesHttpTypesWorkflowExecutionContext) — The context of the workflow execution. This includes the data, errors and the output of the step and compensation functions of the workflow execution.
+    - `state`: [TransactionState](/resources/references/types/HttpTypes/types/typesHttpTypesTransactionState) — The state of the workflow execution.
+    - `created_at`: `Date` — The date the workflow execution was created.
+    - `updated_at`: `Date` — The date the workflow execution was updated.
+    - `deleted_at`: `null` | `Date` (optional) — The date the workflow execution was deleted.

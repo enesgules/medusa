@@ -1,0 +1,36 @@
+---
+title: EntityDescriptor
+---
+
+Describes an entity that can be used for view configurations.
+
+## Properties
+
+**EntityDescriptor**
+
+- `name`: `string` — Entity name in PascalCase (e.g., "Order").
+- `pluralName`: `string` — Plural/route key (e.g., "orders").
+- `module`: `string` — Module this entity belongs to.
+- `graphqlType`: `string` — GraphQL type name.
+- `properties`: [PropertyDescriptor](/resources/references/types/HttpTypes/interfaces/typesHttpTypesPropertyDescriptor)\[] — Properties available on this entity.
+  - `name`: `string` — Property name/path (e.g., "display\_id", "customer.email").
+  - `displayName`: `string` — Human-readable display name.
+  - `dataType`: [PropertyDataType](/resources/references/types/HttpTypes/types/typesHttpTypesPropertyDataType) — The data type of the property.
+  - `renderMode`: `string` — How the property should be rendered in the UI.
+  - `nullable`: `boolean` — Whether the property can be null.
+  - `computed`: `boolean` — Whether this is a computed/derived property.
+  - `filter`: [PropertyFilterConfig](/resources/references/types/HttpTypes/interfaces/typesHttpTypesPropertyFilterConfig) — Filter configuration for this property.
+    - `filterable`: `boolean` — Whether the property can be filtered.
+    - `operators`: `string`\[] (optional) — Available filter operators for this property.
+    - `enumValues`: `string`\[] (optional) — Enum values if the property is an enum type.
+  - `sortable`: `boolean` — Whether the property can be sorted.
+  - `semanticType`: `string` (optional) — Optional semantic type for additional context.
+  - `relationship`: `object` (optional) — Relationship information if this is a relationship field.
+    - `type`: `string`
+    - `entity`: `string`
+    - `foreignKey`: `string` (optional)
+  - `source`: `object` — Source information about where this property comes from.
+    - `module`: `string`
+    - `entity`: `string`
+- `primaryKeys`: `string`\[] — Primary key field(s).
+- `linkableKeys`: `Record<string, string>` — Linkable keys for joining with other entities.

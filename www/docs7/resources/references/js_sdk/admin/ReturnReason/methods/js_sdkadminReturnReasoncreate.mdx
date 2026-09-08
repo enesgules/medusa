@@ -1,0 +1,76 @@
+---
+title: create
+---
+
+This method creates a return reason. It sends a request to the
+[Create Return Reason](/api/admin/return-reasons/create-return-reason)
+API route.
+
+## Example
+
+```ts
+sdk.admin.returnReason.create({
+  value: "refund",
+  label: "Refund",
+})
+.then(({ return_reason }) => {
+  console.log(return_reason)
+})
+```
+
+<a id="create-parameters" />
+
+## Parameters
+
+**create**
+
+- `body`: [AdminCreateReturnReason](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateReturnReason) — The details of the return reason to create.
+  - `value`: `string` — The return reason's value.
+
+    Example:
+
+    ```
+    "refund"
+    ```
+  - `label`: `string` — The return reason's label.
+
+    Example:
+
+    ```
+    "Refund"
+    ```
+  - `description`: `string` (optional) — The return reason's description.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the return reason.
+  - `parent_return_reason_id`: `null` | `string` (optional) — The ID of the return reason's parent.
+- `query`: [AdminReturnReasonParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturnReasonParams) (optional) — Configure the fields and relations to retrieve in the return reason.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+## Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminReturnReasonResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturnReasonResponse)> — The return reason's details.
+  - `return_reason`: [AdminReturnReason](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturnReason) — The return reason's details.
+    - `id`: `string` — The return reason's ID.
+    - `value`: `string` — The return reason's value.
+
+      Example:
+
+      ```
+      "refund"
+      ```
+    - `label`: `string` — The return reason's label.
+
+      Example:
+
+      ```
+      "Refund"
+      ```
+    - `description`: `null` | `string` (optional) — The return reason's description.
+    - `metadata`: `null` | `Record<string, any>` (optional) — Custom key-value pairs that can be added to the return reason.
+    - `created_at`: `string` — The date that the return reason was created.
+    - `updated_at`: `string` — The date that the return reason was updated.

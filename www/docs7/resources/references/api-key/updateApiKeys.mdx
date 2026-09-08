@@ -1,0 +1,177 @@
+---
+title: updateApiKeys - API Key Module Reference
+sidebarTitle: updateApiKeys
+---
+
+This documentation provides a reference to the `updateApiKeys` method. This belongs to the API Key Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updateapikeys-id-data-sharedcontext-promiseapikeydto" />
+
+## updateApiKeys(id, data, sharedContext?): Promise\<[ApiKeyDTO](/resources/references/api_key/interfaces/api_keyApiKeyDTO)>
+
+This method updates an existing API key.
+
+### Example
+
+```ts
+const apiKey = await apiKeyModuleService.updateApiKeys("apk_123", {
+  title: "My development key"
+})
+```
+
+<a id="updateapikeys-parameters" />
+
+### Parameters
+
+**updateApiKeys**
+
+- `id`: `string` — The ID of the API key.
+- `data`: [UpdateApiKeyDTO](/resources/references/api_key/interfaces/api_keyUpdateApiKeyDTO) — The attributes to update in the API key.
+  - `title`: `string` (optional) — The title of the API key.
+- `sharedContext`: [Context](/resources/references/api_key/interfaces/api_keyContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/api_key/interfaces/api_keyIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateapikeys-returns" />
+
+### Returns
+
+**updateApiKeys**
+
+- `Promise`: Promise\<[ApiKeyDTO](/resources/references/api_key/interfaces/api_keyApiKeyDTO)> — The updated API key.
+  - `id`: `string` — The ID of the API key.
+  - `token`: `string` — The token of the API key.
+  - `redacted`: `string` — The redacted form of the API key's token. This is useful when showing portion of the token. For example `sk_...123`.
+  - `title`: `string` — The title of the API key.
+  - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The type of the API key.
+  - `last_used_at`: `null` | `Date` — The date the API key was last used.
+  - `created_by`: `string` — Who created the API key.
+  - `created_at`: `Date` — The date the API key was created.
+  - `updated_at`: `Date` — The date the API key was updated.
+  - `deleted_at`: `null` | `Date` — The date the API key was deleted.
+  - `revoked_by`: `null` | `string` — Who revoked the API key. For example, the ID of the user that revoked it.
+  - `revoked_at`: `null` | `Date` — The date the API key was revoked.
+
+<a id="updateapikeys-selector-data-sharedcontext-promiseapikeydto" />
+
+## updateApiKeys(selector, data, sharedContext?): Promise\<[ApiKeyDTO](/resources/references/api_key/interfaces/api_keyApiKeyDTO)\[]>
+
+This method updates existing API keys.
+
+### Example
+
+```ts
+const apiKey = await apiKeyModuleService.updateApiKeys(
+  {
+    title: "Development key",
+  },
+  {
+    title: "My development key",
+  }
+)
+```
+
+<a id="updateapikeys-parameters-1" />
+
+### Parameters
+
+**updateApiKeys**
+
+- `selector`: [FilterableApiKeyProps](/resources/references/api_key/interfaces/api_keyFilterableApiKeyProps) — The filters that specify which API keys should be updated.
+  - `q`: `string` (optional) — Search through the api key names and redacted keys using this search term.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the API keys by.
+  - `token`: `string` | `string`\[] (optional) — The tokens to filter the API keys by.
+  - `title`: `string` | `string`\[] (optional) — The titles to filter the API keys by.
+  - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) (optional) — Filter the API keys by their type.
+  - `revoked_at`: [OperatorMap](/resources/references/api_key/types/api_keyOperatorMap)\<null | Date> (optional)
+    - `$and`: [Query](/resources/references/api_key/types/api_keyQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/api_key/types/api_keyQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/api_key/types/api_keyExpandScalar)\<T> | [ExpandScalar](/resources/references/api_key/types/api_keyExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/api_key/types/api_keyExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/api_key/types/api_keyExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/api_key/types/api_keyExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/api_key/types/api_keyQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/api_key/types/api_keyExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/api_key/types/api_keyExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/api_key/types/api_keyExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/api_key/types/api_keyExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `$and`: ([FilterableApiKeyProps](/resources/references/api_key/interfaces/api_keyFilterableApiKeyProps) | [BaseFilterable](/resources/references/api_key/interfaces/api_keyBaseFilterable)\<[FilterableApiKeyProps](/resources/references/api_key/interfaces/api_keyFilterableApiKeyProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `q`: `string` (optional) — Search through the api key names and redacted keys using this search term.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the API keys by.
+    - `token`: `string` | `string`\[] (optional) — The tokens to filter the API keys by.
+    - `title`: `string` | `string`\[] (optional) — The titles to filter the API keys by.
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) (optional) — Filter the API keys by their type.
+    - `revoked_at`: [OperatorMap](/resources/references/api_key/types/api_keyOperatorMap)\<null | Date> (optional)
+    - `$and`: ([FilterableApiKeyProps](/resources/references/api_key/interfaces/api_keyFilterableApiKeyProps) | [BaseFilterable](/resources/references/api_key/interfaces/api_keyBaseFilterable)\<[FilterableApiKeyProps](/resources/references/api_key/interfaces/api_keyFilterableApiKeyProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableApiKeyProps](/resources/references/api_key/interfaces/api_keyFilterableApiKeyProps) | [BaseFilterable](/resources/references/api_key/interfaces/api_keyBaseFilterable)\<[FilterableApiKeyProps](/resources/references/api_key/interfaces/api_keyFilterableApiKeyProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `$or`: ([FilterableApiKeyProps](/resources/references/api_key/interfaces/api_keyFilterableApiKeyProps) | [BaseFilterable](/resources/references/api_key/interfaces/api_keyBaseFilterable)\<[FilterableApiKeyProps](/resources/references/api_key/interfaces/api_keyFilterableApiKeyProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search through the api key names and redacted keys using this search term.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the API keys by.
+    - `token`: `string` | `string`\[] (optional) — The tokens to filter the API keys by.
+    - `title`: `string` | `string`\[] (optional) — The titles to filter the API keys by.
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) (optional) — Filter the API keys by their type.
+    - `revoked_at`: [OperatorMap](/resources/references/api_key/types/api_keyOperatorMap)\<null | Date> (optional)
+    - `$and`: ([FilterableApiKeyProps](/resources/references/api_key/interfaces/api_keyFilterableApiKeyProps) | [BaseFilterable](/resources/references/api_key/interfaces/api_keyBaseFilterable)\<[FilterableApiKeyProps](/resources/references/api_key/interfaces/api_keyFilterableApiKeyProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableApiKeyProps](/resources/references/api_key/interfaces/api_keyFilterableApiKeyProps) | [BaseFilterable](/resources/references/api_key/interfaces/api_keyBaseFilterable)\<[FilterableApiKeyProps](/resources/references/api_key/interfaces/api_keyFilterableApiKeyProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+- `data`: [UpdateApiKeyDTO](/resources/references/api_key/interfaces/api_keyUpdateApiKeyDTO) — The attributes to update in the API keys.
+  - `title`: `string` (optional) — The title of the API key.
+- `sharedContext`: [Context](/resources/references/api_key/interfaces/api_keyContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/api_key/interfaces/api_keyIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateapikeys-returns-1" />
+
+### Returns
+
+**updateApiKeys**
+
+- `Promise`: Promise\<[ApiKeyDTO](/resources/references/api_key/interfaces/api_keyApiKeyDTO)\[]> — The updated API keys.
+  - `ApiKeyDTO[]`: [ApiKeyDTO](/resources/references/api_key/interfaces/api_keyApiKeyDTO)\[]
+    - `id`: `string` — The ID of the API key.
+    - `token`: `string` — The token of the API key.
+    - `redacted`: `string` — The redacted form of the API key's token. This is useful when showing portion of the token. For example `sk_...123`.
+    - `title`: `string` — The title of the API key.
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The type of the API key.
+    - `last_used_at`: `null` | `Date` — The date the API key was last used.
+    - `created_by`: `string` — Who created the API key.
+    - `created_at`: `Date` — The date the API key was created.
+    - `updated_at`: `Date` — The date the API key was updated.
+    - `deleted_at`: `null` | `Date` — The date the API key was deleted.
+    - `revoked_by`: `null` | `string` — Who revoked the API key. For example, the ID of the user that revoked it.
+    - `revoked_at`: `null` | `Date` — The date the API key was revoked.

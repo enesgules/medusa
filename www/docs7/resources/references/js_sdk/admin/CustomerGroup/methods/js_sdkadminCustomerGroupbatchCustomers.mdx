@@ -1,0 +1,47 @@
+---
+title: batchCustomers
+---
+
+This method manages customers of a group to add or remove them from the group.
+It sends a request to the [Manage Customers](/api/admin/customer-groups/manage-customers)
+API route.
+
+## Example
+
+```ts
+sdk.admin.customerGroup.batchCustomers("cusgroup_123", {
+  add: ["cus_123"],
+  remove: ["cus_321"]
+})
+.then(({ customer_group }) => {
+  console.log(customer_group)
+})
+```
+
+<a id="batchcustomers-parameters" />
+
+## Parameters
+
+**batchCustomers**
+
+- `id`: `string` — The group's ID.
+- `body`: [AdminBatchLink](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchLink) — The customers to add or remove from the group.
+  - `add`: `string`\[] (optional) — The IDs of the items to create an association to.
+  - `remove`: `string`\[] (optional) — The IDs of the items to remove the association from.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchcustomers-returns" />
+
+## Returns
+
+**batchCustomers**
+
+- `Promise`: Promise\<[AdminCustomerGroupResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerGroupResponse)> — The customer group's details.
+  - `customer_group`: [AdminCustomerGroup](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerGroup) — The customer group's details.
+    - `customers`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer)\[] — The customers in the group.
+    - `id`: `string` — The customer group's ID.
+    - `name`: `null` | `string` — The customer group's name.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `created_at`: `string` — The date the customer group was created.
+    - `updated_at`: `string` — The date the customer group was updated.

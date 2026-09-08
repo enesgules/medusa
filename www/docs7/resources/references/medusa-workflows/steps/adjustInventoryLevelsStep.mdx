@@ -1,0 +1,57 @@
+---
+title: adjustInventoryLevelsStep - Medusa Core Workflows Reference
+sidebarTitle: adjustInventoryLevelsStep
+---
+
+This documentation provides a reference to the `adjustInventoryLevelsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step adjusts the stocked quantity of one or more inventory levels. You can
+pass a positive value in `adjustment` to add to the stocked quantity, or a negative value to
+subtract from the stocked quantity.
+
+## Example
+
+```ts
+const data = adjustInventoryLevelsStep([
+  {
+    inventory_item_id: "iitem_123",
+    location_id: "sloc_123",
+    adjustment: 10,
+  }
+])
+```
+
+<a id="adjustinventorylevelsstep-input" />
+
+## Input
+
+**adjustInventoryLevelsStep**
+
+- `AdjustInventoryLevelsStepInput`: [AdjustInventoryLevelsStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcAdjustInventoryLevelsStepInput)
+  - `inventory_item_id`: `string` — The ID of the associated inventory level.
+  - `location_id`: `string` — The ID of the associated location.
+  - `adjustment`: [BigNumberInput](/resources/references/types/types/typesBigNumberInput) — The quantity to adjust the inventory level by. If positive, the quantity will be added to the stocked quantity. If negative, the quantity will be subtracted from the stocked quantity.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/types/types/typesBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+
+<a id="adjustinventorylevelsstep-output" />
+
+## Output
+
+**adjustInventoryLevelsStep**
+
+- `InventoryLevelDTO[]`: [InventoryLevelDTO](/resources/references/types/InventoryTypes/interfaces/typesInventoryTypesInventoryLevelDTO)\[]
+  - `id`: `string` — The ID of the inventory level.
+  - `inventory_item_id`: `string` — The associated inventory item's ID.
+  - `location_id`: `string` — The associated location's ID.
+  - `stocked_quantity`: `number` — The stocked quantity of the inventory level.
+  - `reserved_quantity`: `number` — The reserved quantity of the inventory level.
+  - `incoming_quantity`: `number` — The incoming quantity of the inventory level.
+  - `available_quantity`: `number` — The available quantity of the inventory level.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `created_at`: `string` | `Date` — The creation date of the inventory level.
+  - `updated_at`: `string` | `Date` — The update date of the inventory level.
+  - `deleted_at`: `null` | `string` | `Date` — The deletion date of the inventory level.

@@ -1,0 +1,344 @@
+---
+title: getAllProductsStep - Medusa Core Workflows Reference
+sidebarTitle: getAllProductsStep
+---
+
+This documentation provides a reference to the `getAllProductsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step retrieves all products matching a set of filters.
+
+## Example
+
+To retrieve all products:
+
+```ts
+const data = getAllProductsStep({
+  select: ["*"],
+})
+```
+
+To retrieve all products matching a filter:
+
+```ts
+const data = getAllProductsStep({
+  select: ["*"],
+  filter: {
+    collection_id: "collection_123"
+  }
+})
+
+## Input
+
+**getAllProductsStep**
+
+- `GetAllProductsStepInput`: [GetAllProductsStepInput](/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAllProductsStepInput)
+  - `select`: `string`[] — The fields to select. These fields will be passed to [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query), so you can pass product properties or any relation names, including custom links.
+  - `filter`: [FilterableProductProps](/references/product/interfaces/product.FilterableProductProps) & `object` (optional) — The filters to select which products to retrieve.
+    - `$and`: ([FilterableProductProps](/references/product/interfaces/product.FilterableProductProps) \| [BaseFilterable](/references/product/interfaces/product.BaseFilterable)<[FilterableProductProps](/references/product/interfaces/product.FilterableProductProps)>)[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$and`: ([FilterableProductProps](/references/product/interfaces/product.FilterableProductProps) \| [BaseFilterable](/references/product/interfaces/product.BaseFilterable)<[FilterableProductProps](/references/product/interfaces/product.FilterableProductProps)>)[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$or`: ([FilterableProductProps](/references/product/interfaces/product.FilterableProductProps) \| [BaseFilterable](/references/product/interfaces/product.BaseFilterable)<[FilterableProductProps](/references/product/interfaces/product.FilterableProductProps)>)[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `q`: `string` (optional) — Search through the products' attributes, such as titles and descriptions, using this search term.
+      - `status`: [ProductStatus](/references/product/types/product.ProductStatus) \| [ProductStatus](/references/product/types/product.ProductStatus)[] \| [OperatorMap](/references/product/types/product.OperatorMap)<ProductStatus | ProductStatus[]> (optional) — The status to filter products by
+      - `title`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The titles to filter products by.
+      - `handle`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The handles to filter products by.
+      - `sku`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The skus to filter products by.
+      - `id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The IDs to filter products by.
+      - `external_id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The external IDs to filter products by.
+      - `is_giftcard`: `boolean` (optional) — Filters only or excluding gift card products
+      - `tags`: `object` (optional) — Filters on a product's tags.
+      - `options`: `object` (optional) — Filters on a product's options.
+      - `variants`: `object` (optional) — Filters on a product's variant properties.
+      - `type_id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — Filter a product by the ID of the associated type
+      - `option_id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — Filter a product by the ID of the associated option
+      - `option_value_id`: `string` \| `string`[] (optional) — Filter a product by the IDs of the associated option values.
+      - `categories`: `object` (optional) — Filter a product by the IDs of their associated categories.
+      - `collection_id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — Filters a product by its associated collections.
+      - `created_at`: `string` \| [OperatorMap](/references/product/types/product.OperatorMap)<string> (optional) — Filters a product based on when it was created
+      - `updated_at`: `string` \| [OperatorMap](/references/product/types/product.OperatorMap)<string> (optional) — Filters a product based on when it was updated
+      - `deleted_at`: `string` \| [OperatorMap](/references/product/types/product.OperatorMap)<string> (optional) — Filters soft-deleted products based on the date they were deleted at.
+    - `$or`: ([FilterableProductProps](/references/product/interfaces/product.FilterableProductProps) \| [BaseFilterable](/references/product/interfaces/product.BaseFilterable)<[FilterableProductProps](/references/product/interfaces/product.FilterableProductProps)>)[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `$and`: ([FilterableProductProps](/references/product/interfaces/product.FilterableProductProps) \| [BaseFilterable](/references/product/interfaces/product.BaseFilterable)<[FilterableProductProps](/references/product/interfaces/product.FilterableProductProps)>)[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$or`: ([FilterableProductProps](/references/product/interfaces/product.FilterableProductProps) \| [BaseFilterable](/references/product/interfaces/product.BaseFilterable)<[FilterableProductProps](/references/product/interfaces/product.FilterableProductProps)>)[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `q`: `string` (optional) — Search through the products' attributes, such as titles and descriptions, using this search term.
+      - `status`: [ProductStatus](/references/product/types/product.ProductStatus) \| [ProductStatus](/references/product/types/product.ProductStatus)[] \| [OperatorMap](/references/product/types/product.OperatorMap)<ProductStatus | ProductStatus[]> (optional) — The status to filter products by
+      - `title`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The titles to filter products by.
+      - `handle`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The handles to filter products by.
+      - `sku`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The skus to filter products by.
+      - `id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The IDs to filter products by.
+      - `external_id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The external IDs to filter products by.
+      - `is_giftcard`: `boolean` (optional) — Filters only or excluding gift card products
+      - `tags`: `object` (optional) — Filters on a product's tags.
+      - `options`: `object` (optional) — Filters on a product's options.
+      - `variants`: `object` (optional) — Filters on a product's variant properties.
+      - `type_id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — Filter a product by the ID of the associated type
+      - `option_id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — Filter a product by the ID of the associated option
+      - `option_value_id`: `string` \| `string`[] (optional) — Filter a product by the IDs of the associated option values.
+      - `categories`: `object` (optional) — Filter a product by the IDs of their associated categories.
+      - `collection_id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — Filters a product by its associated collections.
+      - `created_at`: `string` \| [OperatorMap](/references/product/types/product.OperatorMap)<string> (optional) — Filters a product based on when it was created
+      - `updated_at`: `string` \| [OperatorMap](/references/product/types/product.OperatorMap)<string> (optional) — Filters a product based on when it was updated
+      - `deleted_at`: `string` \| [OperatorMap](/references/product/types/product.OperatorMap)<string> (optional) — Filters soft-deleted products based on the date they were deleted at.
+    - `q`: `string` (optional) — Search through the products' attributes, such as titles and descriptions, using this search term.
+    - `status`: [ProductStatus](/references/product/types/product.ProductStatus) \| [ProductStatus](/references/product/types/product.ProductStatus)[] \| [OperatorMap](/references/product/types/product.OperatorMap)<ProductStatus | ProductStatus[]> (optional) — The status to filter products by
+      - `$and`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$or`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$eq`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> \| [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$ne`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$in`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$nin`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$not`: [Query](/references/product/types/product.Query)<T> (optional)
+      - `$gt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$gte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`[] (optional)
+      - `$contains`: `string`[] (optional)
+      - `$contained`: `string`[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `title`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The titles to filter products by.
+      - `$and`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$or`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$eq`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> \| [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$ne`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$in`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$nin`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$not`: [Query](/references/product/types/product.Query)<T> (optional)
+      - `$gt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$gte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`[] (optional)
+      - `$contains`: `string`[] (optional)
+      - `$contained`: `string`[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `handle`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The handles to filter products by.
+      - `$and`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$or`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$eq`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> \| [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$ne`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$in`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$nin`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$not`: [Query](/references/product/types/product.Query)<T> (optional)
+      - `$gt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$gte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`[] (optional)
+      - `$contains`: `string`[] (optional)
+      - `$contained`: `string`[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `sku`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The skus to filter products by.
+      - `$and`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$or`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$eq`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> \| [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$ne`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$in`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$nin`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$not`: [Query](/references/product/types/product.Query)<T> (optional)
+      - `$gt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$gte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`[] (optional)
+      - `$contains`: `string`[] (optional)
+      - `$contained`: `string`[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The IDs to filter products by.
+      - `$and`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$or`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$eq`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> \| [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$ne`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$in`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$nin`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$not`: [Query](/references/product/types/product.Query)<T> (optional)
+      - `$gt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$gte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`[] (optional)
+      - `$contains`: `string`[] (optional)
+      - `$contained`: `string`[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `external_id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — The external IDs to filter products by.
+      - `$and`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$or`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$eq`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> \| [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$ne`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$in`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$nin`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$not`: [Query](/references/product/types/product.Query)<T> (optional)
+      - `$gt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$gte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`[] (optional)
+      - `$contains`: `string`[] (optional)
+      - `$contained`: `string`[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `is_giftcard`: `boolean` (optional) — Filters only or excluding gift card products
+    - `tags`: `object` (optional) — Filters on a product's tags.
+      - `id`: `string`[] (optional) — Filter a product by the IDs of their associated tags.
+    - `options`: `object` (optional) — Filters on a product's options.
+      - `id`: `string`[] (optional) — Filter a product by the IDs of their associated options.
+    - `variants`: `object` (optional) — Filters on a product's variant properties.
+      - `sku`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional)
+      - `ean`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional)
+      - `upc`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional)
+      - `barcode`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional)
+      - `options`: `object` (optional)
+    - `type_id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — Filter a product by the ID of the associated type
+      - `$and`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$or`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$eq`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> \| [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$ne`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$in`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$nin`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$not`: [Query](/references/product/types/product.Query)<T> (optional)
+      - `$gt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$gte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`[] (optional)
+      - `$contains`: `string`[] (optional)
+      - `$contained`: `string`[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `option_id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — Filter a product by the ID of the associated option
+      - `$and`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$or`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$eq`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> \| [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$ne`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$in`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$nin`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$not`: [Query](/references/product/types/product.Query)<T> (optional)
+      - `$gt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$gte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`[] (optional)
+      - `$contains`: `string`[] (optional)
+      - `$contained`: `string`[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `option_value_id`: `string` \| `string`[] (optional) — Filter a product by the IDs of the associated option values.
+    - `categories`: `object` (optional) — Filter a product by the IDs of their associated categories.
+      - `id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]>
+    - `collection_id`: `string` \| `string`[] \| [OperatorMap](/references/product/types/product.OperatorMap)<string \| string[]> (optional) — Filters a product by its associated collections.
+      - `$and`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$or`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$eq`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> \| [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$ne`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$in`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$nin`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$not`: [Query](/references/product/types/product.Query)<T> (optional)
+      - `$gt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$gte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`[] (optional)
+      - `$contains`: `string`[] (optional)
+      - `$contained`: `string`[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `created_at`: `string` \| [OperatorMap](/references/product/types/product.OperatorMap)<string> (optional) — Filters a product based on when it was created
+      - `$and`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$or`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$eq`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> \| [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$ne`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$in`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$nin`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$not`: [Query](/references/product/types/product.Query)<T> (optional)
+      - `$gt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$gte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`[] (optional)
+      - `$contains`: `string`[] (optional)
+      - `$contained`: `string`[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `updated_at`: `string` \| [OperatorMap](/references/product/types/product.OperatorMap)<string> (optional) — Filters a product based on when it was updated
+      - `$and`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$or`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$eq`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> \| [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$ne`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$in`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$nin`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$not`: [Query](/references/product/types/product.Query)<T> (optional)
+      - `$gt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$gte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`[] (optional)
+      - `$contains`: `string`[] (optional)
+      - `$contained`: `string`[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `deleted_at`: `string` \| [OperatorMap](/references/product/types/product.OperatorMap)<string> (optional) — Filters soft-deleted products based on the date they were deleted at.
+      - `$and`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$or`: [Query](/references/product/types/product.Query)<T>[] (optional)
+      - `$eq`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> \| [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$ne`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$in`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$nin`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T>[] (optional)
+      - `$not`: [Query](/references/product/types/product.Query)<T> (optional)
+      - `$gt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$gte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lt`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$lte`: [ExpandScalar](/references/product/types/product.ExpandScalar)<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`[] (optional)
+      - `$contains`: `string`[] (optional)
+      - `$contained`: `string`[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `sales_channel_id`: `string` \| `string`[] (optional)
+
+## Output
+
+**getAllProductsStep**
+
+- `any[]`: `any`[]
+  - `any`: `any`
+```

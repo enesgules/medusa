@@ -1,0 +1,81 @@
+---
+title: updateAccountHolder - Payment Module Reference
+sidebarTitle: updateAccountHolder
+---
+
+This documentation provides a reference to the `updateAccountHolder` method. This belongs to the Payment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method updates an account holder in the payment provider, if the provider supports account holders.
+
+## Example
+
+```ts
+const accountHolder =
+  await paymentModuleService.updateAccountHolder(
+    {
+      provider_id: "stripe",
+      context: {
+        account_holder: {
+          data: {
+            id: "acc_holder_123",
+          },
+        },
+        customer: {
+          id: "cus_123",
+          company_name: "new_name",
+        },
+      },
+    }
+  )
+```
+
+<a id="updateaccountholder-parameters" />
+
+## Parameters
+
+**updateAccountHolder**
+
+- `input`: [UpdateAccountHolderDTO](/resources/references/payment/interfaces/paymentUpdateAccountHolderDTO) — The details of the account holder to update.
+  - `id`: `string` — The ID of the account holder.
+  - `provider_id`: `string` — The provider's ID.
+  - `context`: [PaymentProviderContext](/resources/references/payment/interfaces/paymentPaymentProviderContext) & `object` — Necessary context data for the associated payment provider.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/payment/types/paymentPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/payment/types/paymentPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/payment/types/paymentPaymentAccountHolderDTO) — The account holder information from Medusa.
+  - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/payment/interfaces/paymentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/payment/interfaces/paymentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateaccountholder-returns" />
+
+## Returns
+
+**updateAccountHolder**
+
+- `Promise`: Promise\<[AccountHolderDTO](/resources/references/payment/interfaces/paymentAccountHolderDTO)> — The updated account holder's details.
+  - `id`: `string` — The ID of the account holder.
+  - `provider_id`: `string` — The ID of the associated payment provider.
+  - `external_id`: `string` — The external ID of the account holder in the payment provider system.
+  - `email`: `null` | `string` — The email of the account holder.
+  - `data`: `Record<string, unknown>` — The data of the account holder, as returned by the payment provider.
+  - `created_at`: `null` | `string` | `Date` (optional) — When the account holder was created.
+  - `updated_at`: `null` | `string` | `Date` (optional) — When the account holder was updated.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.

@@ -1,0 +1,84 @@
+---
+title: batchSettings
+---
+
+This method allows bulk operations on translation settings. It sends a request to the
+[Batch Translation Settings](/api/admin/translations/manage-translation-settings)
+API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.12.6](https://github.com/medusajs/medusa/releases/tag/v2.12.6).
+
+## Example
+
+```ts
+sdk.admin.translation.batchSettings({
+  create: [
+    {
+      entity_type: "product",
+      fields: ["title", "description"],
+      is_active: true
+    }
+  ],
+  update: [
+    {
+      id: "trset_123",
+      fields: ["title", "description", "subtitle"],
+      is_active: true
+    }
+  ],
+  delete: ["trset_456"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+<a id="batchsettings-parameters" />
+
+## Parameters
+
+**batchSettings**
+
+- `body`: [AdminBatchTranslationSettings](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchTranslationSettings) — The translation settings to create, update, or delete.
+  - `create`: [AdminCreateTranslationSettings](/resources/references/types/interfaces/typesAdminCreateTranslationSettings)\[] (optional) — The translation settings to create.
+    - `entity_type`: `string` — The entity type (e.g., "product", "product\_variant").
+    - `fields`: `string`\[] — The translatable fields for this entity type.
+    - `is_active`: `boolean` (optional) — Whether the entity translatable status is enabled.
+  - `update`: [AdminUpdateTranslationSettings](/resources/references/types/interfaces/typesAdminUpdateTranslationSettings)\[] (optional) — The translation settings to update.
+    - `id`: `string` — The ID of the settings.
+    - `entity_type`: `string` (optional) — The entity type (e.g., "product", "product\_variant").
+    - `fields`: `string`\[] (optional) — The translatable fields for this entity type.
+    - `is_active`: `boolean` (optional) — Whether the entity translatable status is enabled.
+  - `delete`: `string`\[] (optional) — The translation settings to delete (IDs).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchsettings-returns" />
+
+## Returns
+
+**batchSettings**
+
+- `Promise`: Promise\<[AdminBatchTranslationSettingsResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchTranslationSettingsResponse)> — The translation settings' details.
+  - `created`: [AdminTranslationSettings](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationSettings)\[] — The created settings.
+    - `id`: `string` — The ID of the settings.
+    - `created_at`: `string` | `Date` — The date and time the settings were created.
+    - `updated_at`: `string` | `Date` — The date and time the settings were last updated.
+    - `deleted_at`: `null` | `string` | `Date` — The date and time the settings were deleted.
+    - `entity_type`: `string` — The entity type.
+    - `fields`: `string`\[] — The translatable fields.
+    - `is_active`: `boolean` — Whether the entity translatable status is enabled.
+  - `updated`: [AdminTranslationSettings](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationSettings)\[] — The updated settings.
+    - `id`: `string` — The ID of the settings.
+    - `created_at`: `string` | `Date` — The date and time the settings were created.
+    - `updated_at`: `string` | `Date` — The date and time the settings were last updated.
+    - `deleted_at`: `null` | `string` | `Date` — The date and time the settings were deleted.
+    - `entity_type`: `string` — The entity type.
+    - `fields`: `string`\[] — The translatable fields.
+    - `is_active`: `boolean` — Whether the entity translatable status is enabled.
+  - `deleted`: `object` — The deleted settings.
+    - `ids`: `string`\[]
+    - `object`: `"translation_settings"`
+    - `deleted`: `boolean`

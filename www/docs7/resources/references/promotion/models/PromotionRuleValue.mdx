@@ -1,0 +1,117 @@
+---
+title: PromotionRuleValue - Promotion Module Data Models Reference
+sidebarTitle: PromotionRuleValue
+---
+
+This documentation provides a reference to the PromotionRuleValue data model. It belongs to the Promotion Module.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/promotion/src/models/promotion-rule-value.ts#L4)
+
+**PromotionRuleValue**
+
+- `id`: PrimaryKeyModifier\<IdProperty> — The ID of the promotion rule value.
+- `value`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The value of the promotion rule.
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `promotion_rule`: BelongsTo\<[PromotionRule](/resources/references/promotion/models/PromotionRule)> — The associated promotion rule.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the promotion rule.
+  - `description`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The description of the promotion rule
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `attribute`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The attribute of the promotion rule.
+
+    Example:
+
+    ```
+    customer_group_id
+    ```
+
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `operator`: EnumProperty\<typeof [PromotionRuleOperator](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsPromotionRuleOperator)> — The operator of the promotion rule.
+
+    Example:
+
+    ```
+    in
+    ```
+  - `values`: HasMany\<[PromotionRuleValue](/resources/references/promotion/models/PromotionRuleValue)> — The associated values.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the promotion rule value.
+    - `value`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The value of the promotion rule.
+    - `promotion_rule`: BelongsTo\<[PromotionRule](/resources/references/promotion/models/PromotionRule)> — The associated promotion rule.
+  - `promotions`: ManyToMany\<[Promotion](/resources/references/promotion/models/Promotion)> — The associated promotions.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the promotion.
+    - `code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The code of the promotion
+    - `is_automatic`: [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) — Whether the promotion is applied automatic. If disabled, the customer must enter the code during checkout.
+    - `is_tax_inclusive`: [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) — Whether the promotion is tax inclusive.
+    - `limit`: `NumberProperty` (optional) — The limit of the promotion @since v2.12.0
+    - `used`: `NumberProperty` — How much of the limit has been used. @since v2.12.0
+    - `type`: EnumProperty\<typeof [PromotionType](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsPromotionType)> — The type of the promotion
+    - `status`: EnumProperty\<typeof [PromotionStatus](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsPromotionStatus)> — The status of the promotion
+    - `campaign`: BelongsTo\<[Campaign](/resources/references/promotion/models/Campaign)> (optional) — The associated campaign.
+    - `application_method`: HasOne\<[ApplicationMethod](/resources/references/promotion/models/ApplicationMethod)> (optional) — The associated application method.
+    - `rules`: ManyToMany\<[PromotionRule](/resources/references/promotion/models/PromotionRule)> — The associated rules.
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs. @since v2.12.0
+  - `method_target_rules`: ManyToMany\<[ApplicationMethod](/resources/references/promotion/models/ApplicationMethod)> — The associated method target rules.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the application method.
+    - `value`: `BigNumberProperty` (optional) — The value of the application method
+    - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The currency code of the application method.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `max_quantity`: `NumberProperty` (optional) — The max quantity allowed in the cart for the associated promotion to be applied.
+    - `apply_to_quantity`: `NumberProperty` (optional) — The quantity that results from matching the `buyget` promotion's condition. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `1`.
+    - `buy_rules_min_quantity`: `NumberProperty` (optional) — The minimum quantity required for a `buyget` promotion to be applied. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `2`.
+    - `type`: EnumProperty\<typeof [ApplicationMethodType](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsApplicationMethodType)> — The application method's type. If it's `fixed`, the promotion discounts a fixed amount. If it's `percentage`, the promotion discounts a percentage.
+    - `target_type`: EnumProperty\<typeof [ApplicationMethodTargetType](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsApplicationMethodTargetType)> — Which item does the promotion apply to. `items` mean the promotion applies to the cart's items; `shipping_methods` means the promotion applies to the cart's shipping methods; `order` means the promotion applies on the entire order.
+    - `allocation`: EnumProperty\<typeof [ApplicationMethodAllocation](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsApplicationMethodAllocation)> (optional) — How is the promotion amount discounted. `each` means the discounted amount is applied on each applicable item; `across` means the discounted amount is split accross the applicable items.
+    - `promotion`: BelongsTo\<[Promotion](/resources/references/promotion/models/Promotion)> — The associated promotion.
+    - `target_rules`: ManyToMany\<[PromotionRule](/resources/references/promotion/models/PromotionRule)> — The associated target rules.
+    - `buy_rules`: ManyToMany\<[PromotionRule](/resources/references/promotion/models/PromotionRule)> — The associated buy rules.
+  - `method_buy_rules`: ManyToMany\<[ApplicationMethod](/resources/references/promotion/models/ApplicationMethod)> — The associated method buy rules.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the application method.
+    - `value`: `BigNumberProperty` (optional) — The value of the application method
+    - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The currency code of the application method.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `max_quantity`: `NumberProperty` (optional) — The max quantity allowed in the cart for the associated promotion to be applied.
+    - `apply_to_quantity`: `NumberProperty` (optional) — The quantity that results from matching the `buyget` promotion's condition. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `1`.
+    - `buy_rules_min_quantity`: `NumberProperty` (optional) — The minimum quantity required for a `buyget` promotion to be applied. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `2`.
+    - `type`: EnumProperty\<typeof [ApplicationMethodType](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsApplicationMethodType)> — The application method's type. If it's `fixed`, the promotion discounts a fixed amount. If it's `percentage`, the promotion discounts a percentage.
+    - `target_type`: EnumProperty\<typeof [ApplicationMethodTargetType](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsApplicationMethodTargetType)> — Which item does the promotion apply to. `items` mean the promotion applies to the cart's items; `shipping_methods` means the promotion applies to the cart's shipping methods; `order` means the promotion applies on the entire order.
+    - `allocation`: EnumProperty\<typeof [ApplicationMethodAllocation](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsApplicationMethodAllocation)> (optional) — How is the promotion amount discounted. `each` means the discounted amount is applied on each applicable item; `across` means the discounted amount is split accross the applicable items.
+    - `promotion`: BelongsTo\<[Promotion](/resources/references/promotion/models/Promotion)> — The associated promotion.
+    - `target_rules`: ManyToMany\<[PromotionRule](/resources/references/promotion/models/PromotionRule)> — The associated target rules.
+    - `buy_rules`: ManyToMany\<[PromotionRule](/resources/references/promotion/models/PromotionRule)> — The associated buy rules.

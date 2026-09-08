@@ -1,0 +1,36 @@
+---
+title: ModuleBootstrapOptions
+---
+
+- `ModuleBootstrapOptions`: `object`
+  - `moduleKey`: `string`
+  - `defaultPath`: `string`
+  - `declaration`: [ModuleBootstrapDeclaration](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesModuleBootstrapDeclaration) (optional)
+    - `scope`: `"internal"`
+    - `dependencies`: `string`\[] (optional)
+    - `definition`: [CustomModuleDefinition](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesCustomModuleDefinition) (optional)
+    - `resolve`: `string` | [ModuleExports](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesModuleExports) (optional)
+    - `options`: `Record<string, unknown>` (optional)
+    - `alias`: `string` (optional) — If multiple modules are registered with the same key, the alias can be used to differentiate them
+    - `main`: `boolean` (optional) — If the module is the main module for the key when multiple ones are registered
+    - `worker_mode`: `"shared"` | `"worker"` | `"server"` (optional)
+    - `server`: `object` (optional)
+  - `moduleExports`: [ModuleExports](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesModuleExports) (optional)
+    - `service`: T
+    - `loaders`: [ModuleLoaderFunction](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesModuleLoaderFunction)\[] (optional)
+    - `discoveryPath`: `string` (optional) — Explicitly set the true location of the module resources. Can be used to re-export the module from a different location and specify its original location.
+  - `sharedContainer`: [MedusaContainer](/resources/references/medusa/types/medusaMedusaContainer) (optional)
+  - `moduleDefinition`: [ModuleDefinition](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesModuleDefinition) (optional)
+    - `key`: `string`
+    - `defaultPackage`: `string` | `false`
+    - `label`: `string`
+    - `resolvePath`: `string` (optional)
+    - `isRequired`: `boolean` (optional)
+    - `isQueryable`: `boolean` (optional)
+    - `dependencies`: `string`\[] (optional)
+    - `defaultModuleDeclaration`: [InternalModuleDeclaration](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesInternalModuleDeclaration) | [ExternalModuleDeclaration](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesExternalModuleDeclaration)
+  - `injectedDependencies`: `Record<string, any>` (optional)
+  - `migrationOnly`: `boolean` (optional) — In this mode, all instances are partially loaded, meaning that the module will not be fully loaded and the services will not be available. Don't forget to clear the instances (MedusaModule.clearInstances()) after the migration are done.
+  - `loaderOnly`: `boolean` (optional) — Forces the modules bootstrapper to only run the modules loaders and return prematurely. This is meant for modules that have data loader. In a test env, in order to clear all data and load them back, we need to run those loader again
+  - `workerMode`: `"shared"` | `"worker"` | `"server"` (optional)
+  - `cwd`: `string` (optional)

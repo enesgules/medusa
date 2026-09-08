@@ -1,0 +1,115 @@
+---
+title: retrieveCustomer - Customer Module Reference
+sidebarTitle: retrieveCustomer
+---
+
+This documentation provides a reference to the `retrieveCustomer` method. This belongs to the Customer Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a customer by its ID.
+
+## Example
+
+A simple example that retrieves a customer by its ID:
+
+```ts
+const customer =
+  await customerModuleService.retrieveCustomer("cus_123")
+```
+
+To specify relations that should be retrieved:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const customer = await customerModuleService.retrieveCustomer(
+  "cus_123",
+  {
+    relations: ["groups"],
+  }
+)
+```
+
+<a id="retrievecustomer-parameters" />
+
+## Parameters
+
+**retrieveCustomer**
+
+- `customerId`: `string` — The customer's ID.
+- `config`: [FindConfig](/resources/references/customer/interfaces/customerFindConfig)\<[CustomerDTO](/resources/references/customer/interfaces/customerCustomerDTO)> (optional) — The configurations determining how the customer is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a customer.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/customer/types/customerFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/customer/types/customerInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/customer/types/customerCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/customer/interfaces/customerContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/customer/interfaces/customerIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="retrievecustomer-returns" />
+
+## Returns
+
+**retrieveCustomer**
+
+- `Promise`: Promise\<[CustomerDTO](/resources/references/customer/interfaces/customerCustomerDTO)> — The retrieved customer.
+  - `id`: `string` — The ID of the customer.
+  - `email`: `string` — The email of the customer.
+  - `has_account`: `boolean` — A flag indicating if customer has an account or not.
+  - `default_billing_address_id`: `null` | `string` — The associated default billing address's ID.
+  - `default_shipping_address_id`: `null` | `string` — The associated default shipping address's ID.
+  - `company_name`: `null` | `string` — The company name of the customer.
+  - `first_name`: `null` | `string` — The first name of the customer.
+  - `last_name`: `null` | `string` — The last name of the customer.
+  - `addresses`: [CustomerAddressDTO](/resources/references/customer/interfaces/customerCustomerAddressDTO)\[] — The addresses of the customer.
+    - `id`: `string` — The ID of the customer address.
+    - `address_name`: `string` (optional) — The address name of the customer address.
+    - `is_default_shipping`: `boolean` — Whether the customer address is default shipping.
+    - `is_default_billing`: `boolean` — Whether the customer address is default billing.
+    - `customer_id`: `string` — The associated customer's ID.
+    - `company`: `string` (optional) — The company of the customer address.
+    - `first_name`: `string` (optional) — The first name of the customer address.
+    - `last_name`: `string` (optional) — The last name of the customer address.
+    - `address_1`: `string` (optional) — The address 1 of the customer address.
+    - `address_2`: `string` (optional) — The address 2 of the customer address.
+    - `city`: `string` (optional) — The city of the customer address.
+    - `country_code`: `string` (optional) — The country code of the customer address.
+    - `province`: `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the customer address.
+    - `postal_code`: `string` (optional) — The postal code of the customer address.
+    - `phone`: `string` (optional) — The phone of the customer address.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` — The created at of the customer address.
+    - `updated_at`: `string` — The updated at of the customer address.
+  - `phone`: `null` | `string` — The phone of the customer.
+  - `groups`: `object`\[] — The groups of the customer.
+    - `id`: `string` — The ID of the group.
+    - `name`: `string` — The name of the group.
+  - `metadata`: `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `created_by`: `null` | `string` — Who created the customer.
+  - `deleted_at`: `null` | `string` | `Date` — The deletion date of the customer.
+  - `created_at`: `string` | `Date` — The creation date of the customer.
+  - `updated_at`: `string` | `Date` — The update date of the customer.

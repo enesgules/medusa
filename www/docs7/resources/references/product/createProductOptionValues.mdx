@@ -1,0 +1,146 @@
+---
+title: createProductOptionValues - Product Module Reference
+sidebarTitle: createProductOptionValues
+---
+
+This documentation provides a reference to the `createProductOptionValues` method. This belongs to the Product Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createproductoptionvalues-data-sharedcontext-promiseproductoptionvaluedto" />
+
+## createProductOptionValues(data, sharedContext?): Promise\<[ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[]>
+
+This method is used to create product option values.
+
+### Example
+
+```ts
+const options = await productModuleService.createProductOptionValues([
+  {
+    value: "Blue",
+  },
+  {
+    value: "Green",
+  },
+])
+```
+
+<a id="createproductoptionvalues-parameters" />
+
+### Parameters
+
+**createProductOptionValues**
+
+- `data`: [CreateProductOptionValueDTO](/resources/references/product/interfaces/productCreateProductOptionValueDTO)\[] — The product option values to be created.
+  - `value`: `string` — The value of the product option value.
+  - `rank`: `number` (optional) — The rank of the product option value among other option values.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — The metadata of the product option value.
+- `sharedContext`: [Context](/resources/references/product/interfaces/productContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/product/interfaces/productIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createproductoptionvalues-returns" />
+
+### Returns
+
+**createProductOptionValues**
+
+- `Promise`: Promise\<[ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[]> — The list of created product option values.
+  - `ProductOptionValueDTO[]`: [ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[]
+    - `id`: `string` — The ID of the product option value.
+    - `value`: `string` — The value of the product option value.
+    - `option`: `null` | [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO) (optional) — The associated product option. It may only be available if the `option` relation is expanded.
+      - `id`: `string` — The ID of the product option.
+      - `title`: `string` — The title of the product option.
+      - `is_exclusive`: `boolean` — Whether the product option is exclusive to a product or shared across products.
+      - `products`: `null` | [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+      - `values`: [ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[] — The associated product option values.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — When the product option was created.
+      - `updated_at`: `string` | `Date` — When the product option was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product option was deleted.
+    - `option_id`: `null` | `string` (optional) — The associated product option id.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product option value was created.
+    - `updated_at`: `string` | `Date` — When the product option value was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product option value was deleted.
+
+<a id="createproductoptionvalues-data-sharedcontext-promiseproductoptionvaluedto-1" />
+
+## createProductOptionValues(data, sharedContext?): Promise\<[ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)>
+
+This method is used to create a product option.
+
+### Example
+
+```ts
+const option = await productModuleService.createProductOptionValues({
+  value: "Blue",
+})
+```
+
+<a id="createproductoptionvalues-parameters-1" />
+
+### Parameters
+
+**createProductOptionValues**
+
+- `data`: [CreateProductOptionValueDTO](/resources/references/product/interfaces/productCreateProductOptionValueDTO) — The product option to be created.
+  - `value`: `string` — The value of the product option value.
+  - `rank`: `number` (optional) — The rank of the product option value among other option values.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — The metadata of the product option value.
+- `sharedContext`: [Context](/resources/references/product/interfaces/productContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/product/interfaces/productIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createproductoptionvalues-returns-1" />
+
+### Returns
+
+**createProductOptionValues**
+
+- `Promise`: Promise\<[ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)> — The created product option.
+  - `id`: `string` — The ID of the product option value.
+  - `value`: `string` — The value of the product option value.
+  - `option`: `null` | [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO) (optional) — The associated product option. It may only be available if the `option` relation is expanded.
+    - `id`: `string` — The ID of the product option.
+    - `title`: `string` — The title of the product option.
+    - `is_exclusive`: `boolean` — Whether the product option is exclusive to a product or shared across products.
+    - `products`: `null` | [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+    - `values`: [ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[] — The associated product option values.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product option was created.
+    - `updated_at`: `string` | `Date` — When the product option was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product option was deleted.
+  - `option_id`: `null` | `string` (optional) — The associated product option id.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `created_at`: `string` | `Date` — When the product option value was created.
+  - `updated_at`: `string` | `Date` — When the product option value was updated.
+  - `deleted_at`: `string` | `Date` (optional) — When the product option value was deleted.

@@ -1,0 +1,230 @@
+---
+title: layouts - JS SDK Admin Reference
+sidebarTitle: layouts
+---
+
+This documentation provides a reference to the `sdk.admin.layouts` set of methods used to send requests to Medusa's Admin API routes.
+
+## constructor
+
+<a id="constructor-parameters" />
+
+### Parameters
+
+**constructor**
+
+- `client`: [Client](/resources/references/js_sdk/admin/classes/js_sdkadminClient)
+  - `fetch_`: [ClientFetch](/resources/references/js_sdk/admin/types/js_sdkadminClientFetch)
+  - `config`: [Config](/resources/references/js_sdk/admin/types/js_sdkadminConfig)
+    - `baseUrl`: `string` — The base URL of the Medusa server.
+    - `globalHeaders`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Default headers to include with every request.
+    - `publishableKey`: `string` (optional) — The publishable API key for storefront authentication.
+    - `apiKey`: `string` (optional) — The secret API key for admin authentication.
+    - `auth`: `object` (optional) — Authentication configuration.
+    - `logger`: [Logger](/resources/references/js_sdk/admin/types/js_sdkadminLogger) (optional) — Custom logger instance.
+    - `debug`: `boolean` (optional) — Whether to enable debug logging.
+  - `logger`: [Logger](/resources/references/js_sdk/admin/types/js_sdkadminLogger)
+    - `error`: (...`messages`: `string`\[]) => `void` — Log error messages.
+    - `warn`: (...`messages`: `string`\[]) => `void` — Log warning messages.
+    - `info`: (...`messages`: `string`\[]) => `void` — Log info messages.
+    - `debug`: (...`messages`: `string`\[]) => `void` — Log debug messages.
+  - `DEFAULT_JWT_STORAGE_KEY`: `string` (default: "medusa\_auth\_token")
+  - `token`: `string` (default: "")
+  - `locale_`: `string` (default: "")
+
+## retrieveConfiguration
+
+Retrieve the layout configuration that applies to the current user for a
+zone, falling back to the zone's system default.
+
+<a id="retrieveconfiguration-parameters" />
+
+### Parameters
+
+**retrieveConfiguration**
+
+- `zone`: `string`
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional)
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieveconfiguration-returns" />
+
+### Returns
+
+**retrieveConfiguration**
+
+- `Promise`: Promise\<[AdminLayoutConfigurationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLayoutConfigurationResponse)> — Retrieve the layout configuration that applies to the current user for a zone, falling back to the zone's system default.
+  - `personal_configuration`: `null` | [AdminLayoutConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLayoutConfiguration) — The current user's personal layout configuration for the zone, or null if they have not saved one.
+    - `id`: `string` — The layout configuration's ID.
+    - `zone`: `string` — The zone (page) this configuration is for, e.g. "product.details".
+    - `user_id`: `null` | `string` — The ID of the user who owns this configuration, or null for the system default.
+    - `is_system_default`: `boolean` — Whether this is the system default configuration for the zone.
+    - `configuration`: `object` — The layout configuration settings.
+    - `created_at`: `Date` — The date the layout configuration was created.
+    - `updated_at`: `Date` — The date the layout configuration was updated.
+  - `default_configuration`: `null` | [AdminLayoutConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLayoutConfiguration) — The zone's system default layout configuration (applies to all users), or null if none has been saved.
+    - `id`: `string` — The layout configuration's ID.
+    - `zone`: `string` — The zone (page) this configuration is for, e.g. "product.details".
+    - `user_id`: `null` | `string` — The ID of the user who owns this configuration, or null for the system default.
+    - `is_system_default`: `boolean` — Whether this is the system default configuration for the zone.
+    - `configuration`: `object` — The layout configuration settings.
+    - `created_at`: `Date` — The date the layout configuration was created.
+    - `updated_at`: `Date` — The date the layout configuration was updated.
+  - `active_scope`: [AdminLayoutScope](/resources/references/types/HttpTypes/types/typesHttpTypesAdminLayoutScope) — The scope the current user is actively viewing for this zone — their persisted choice, falling back to "personal" when they have a personal configuration and "default" otherwise.
+
+## setConfiguration
+
+Create or replace a layout configuration for a zone. Set `is_default` to
+update the zone's system default (applies to all users) instead of the
+current user's personal configuration.
+
+<a id="setconfiguration-parameters" />
+
+### Parameters
+
+**setConfiguration**
+
+- `zone`: `string`
+- `body`: [AdminSetLayoutConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSetLayoutConfiguration)
+  - `is_default`: `boolean` (optional) — Whether to set the zone's system default configuration (applies to all users) instead of the current user's personal configuration.
+  - `configuration`: `object` — The layout configuration settings.
+    - `widgets`: `Record<string, [AdminLayoutWidgetPreference](/references/types/HttpTypes/interfaces/types.HttpTypes.AdminLayoutWidgetPreference)>` — Per-widget placement and visibility preferences, keyed by widget ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional)
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="setconfiguration-returns" />
+
+### Returns
+
+**setConfiguration**
+
+- `Promise`: Promise\<[AdminLayoutConfigurationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLayoutConfigurationResponse)> — Create or replace a layout configuration for a zone. Set `is_default` to update the zone's system default (applies to all users) instead of the current user's personal configuration.
+  - `personal_configuration`: `null` | [AdminLayoutConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLayoutConfiguration) — The current user's personal layout configuration for the zone, or null if they have not saved one.
+    - `id`: `string` — The layout configuration's ID.
+    - `zone`: `string` — The zone (page) this configuration is for, e.g. "product.details".
+    - `user_id`: `null` | `string` — The ID of the user who owns this configuration, or null for the system default.
+    - `is_system_default`: `boolean` — Whether this is the system default configuration for the zone.
+    - `configuration`: `object` — The layout configuration settings.
+    - `created_at`: `Date` — The date the layout configuration was created.
+    - `updated_at`: `Date` — The date the layout configuration was updated.
+  - `default_configuration`: `null` | [AdminLayoutConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLayoutConfiguration) — The zone's system default layout configuration (applies to all users), or null if none has been saved.
+    - `id`: `string` — The layout configuration's ID.
+    - `zone`: `string` — The zone (page) this configuration is for, e.g. "product.details".
+    - `user_id`: `null` | `string` — The ID of the user who owns this configuration, or null for the system default.
+    - `is_system_default`: `boolean` — Whether this is the system default configuration for the zone.
+    - `configuration`: `object` — The layout configuration settings.
+    - `created_at`: `Date` — The date the layout configuration was created.
+    - `updated_at`: `Date` — The date the layout configuration was updated.
+  - `active_scope`: [AdminLayoutScope](/resources/references/types/HttpTypes/types/typesHttpTypesAdminLayoutScope) — The scope the current user is actively viewing for this zone — their persisted choice, falling back to "personal" when they have a personal configuration and "default" otherwise.
+
+## listConfigurations
+
+This method retrieves a list of layout configurations for the current user,
+including their personal configurations and system defaults.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.17.2](https://github.com/medusajs/medusa/releases/tag/v2.17.2).
+
+### Example
+
+```ts
+const { layout_configurations } = await sdk.admin.layouts.listConfigurations()
+```
+
+<a id="listconfigurations-parameters" />
+
+### Parameters
+
+**listConfigurations**
+
+- `query`: [AdminGetLayoutConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetLayoutConfigurationsParams) (optional) — Filters and pagination parameters.
+  - `$and`: ([AdminGetLayoutConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetLayoutConfigurationsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetLayoutConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetLayoutConfigurationsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminGetLayoutConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetLayoutConfigurationsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetLayoutConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetLayoutConfigurationsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminGetLayoutConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetLayoutConfigurationsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetLayoutConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetLayoutConfigurationsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — IDs to filter layout configurations by.
+    - `zone`: `string` | `string`\[] (optional) — Zone(s) to filter by, e.g. "product.details".
+    - `user_id`: `null` | `string` | `string`\[] (optional) — User ID to filter by.
+    - `is_system_default`: `boolean` (optional) — Filter by system default status.
+  - `$or`: ([AdminGetLayoutConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetLayoutConfigurationsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetLayoutConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetLayoutConfigurationsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminGetLayoutConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetLayoutConfigurationsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetLayoutConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetLayoutConfigurationsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminGetLayoutConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetLayoutConfigurationsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetLayoutConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetLayoutConfigurationsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — IDs to filter layout configurations by.
+    - `zone`: `string` | `string`\[] (optional) — Zone(s) to filter by, e.g. "product.details".
+    - `user_id`: `null` | `string` | `string`\[] (optional) — User ID to filter by.
+    - `is_system_default`: `boolean` (optional) — Filter by system default status.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `id`: `string` | `string`\[] (optional) — IDs to filter layout configurations by.
+  - `zone`: `string` | `string`\[] (optional) — Zone(s) to filter by, e.g. "product.details".
+  - `user_id`: `null` | `string` | `string`\[] (optional) — User ID to filter by.
+  - `is_system_default`: `boolean` (optional) — Filter by system default status.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listconfigurations-returns" />
+
+### Returns
+
+**listConfigurations**
+
+- `Promise`: Promise\<[AdminLayoutConfigurationListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminLayoutConfigurationListResponse)> — The list of layout configurations.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## deleteConfiguration
+
+Remove the current user's personal layout configuration for a zone,
+falling back to the zone's system default.
+
+<a id="deleteconfiguration-parameters" />
+
+### Parameters
+
+**deleteConfiguration**
+
+- `zone`: `string`
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional)
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="deleteconfiguration-returns" />
+
+### Returns
+
+**deleteConfiguration**
+
+- `Promise`: Promise\<object> — Remove the current user's personal layout configuration for a zone, falling back to the zone's system default.
+  - `success`: `boolean`

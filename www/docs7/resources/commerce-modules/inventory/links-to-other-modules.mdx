@@ -1,0 +1,210 @@
+---
+title: Links between Inventory Module and Other Modules
+---
+
+This document showcases the module links defined between the Inventory Module and other Commerce Modules.
+
+## Summary
+
+The Inventory Module has the following links to other modules:
+
+<Note>
+  **Tip**
+
+  Read-only links are used to query data across modules, but the relations aren't stored in a pivot table in the database.
+</Note>
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        First Data Model
+      </th>
+
+      <th>
+        Second Data Model
+      </th>
+
+      <th>
+        Type
+      </th>
+
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        [ProductVariant](/resources/references/product/models/ProductVariant) in [Product Module](/resources/commerce-modules/product)
+      </td>
+
+      <td>
+        [InventoryItem](/resources/references/inventory-next/models/InventoryItem)
+      </td>
+
+      <td>
+        Stored - many-to-many
+      </td>
+
+      <td>
+        [Learn more](/resources/commerce-modules/inventory/links-to-other-modules#product-module)
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        [InventoryLevel](/resources/references/inventory-next/models/InventoryLevel)
+      </td>
+
+      <td>
+        [StockLocation](/resources/references/stock-location-next/models/StockLocation) in [Stock Location Module](/resources/commerce-modules/stock-location)
+      </td>
+
+      <td>
+        Read-only - has many
+      </td>
+
+      <td>
+        [Learn more](/resources/commerce-modules/inventory/links-to-other-modules#stock-location-module)
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## Product Module
+
+Each product variant has different inventory details. Medusa defines a link between the `ProductVariant` and `InventoryItem` data models.
+
+![A diagram showcasing an example of how data models from the Inventory and Product Module are linked.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709658720/Medusa%20Resources/inventory-product_ejnray.jpg)
+
+A product variant whose `manage_inventory` property is enabled has an associated inventory item. Through that inventory's items relations in the Inventory Module, you can manage and check the variant's inventory quantity.
+
+<Note>
+  **Tip**
+
+  Learn more about product variant's inventory management in [this guide](/resources/commerce-modules/product/variant-inventory).
+</Note>
+
+### Retrieve with Query
+
+To retrieve the product variants of an inventory item with [Query](/learn/fundamentals/module-links/query), pass `variants.*` in `fields`:
+
+<Tabs>
+  <Tab title="query.graph">
+    ```ts
+    const { data: inventoryItems } = await query.graph({
+      entity: "inventory_item",
+      fields: [
+        "variants.*",
+      ],
+    })
+
+    // inventoryItems[0].variants
+    ```
+  </Tab>
+
+  <Tab title="useQueryGraphStep">
+    ```ts
+    import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+    // ...
+
+    const { data: inventoryItems } = useQueryGraphStep({
+      entity: "inventory_item",
+      fields: [
+        "variants.*",
+      ],
+    })
+
+    // inventoryItems[0].variants
+    ```
+  </Tab>
+</Tabs>
+
+### Manage with Link
+
+To manage the variants of an inventory item, use [Link](/learn/fundamentals/module-links/link):
+
+<Tabs>
+  <Tab title="link.create">
+    ```ts
+    import { Modules } from "@medusajs/framework/utils"
+
+    // ...
+
+    await link.create({
+      [Modules.PRODUCT]: {
+        variant_id: "variant_123",
+      },
+      [Modules.INVENTORY]: {
+        inventory_item_id: "iitem_123",
+      },
+    })
+    ```
+  </Tab>
+
+  <Tab title="createRemoteLinkStep">
+    ```ts
+    import { Modules } from "@medusajs/framework/utils"
+    import { createRemoteLinkStep } from "@medusajs/medusa/core-flows"
+
+    // ...
+
+    createRemoteLinkStep({
+      [Modules.PRODUCT]: {
+        variant_id: "variant_123",
+      },
+      [Modules.INVENTORY]: {
+        inventory_item_id: "iitem_123",
+      },
+    })
+    ```
+  </Tab>
+</Tabs>
+
+***
+
+## Stock Location Module
+
+Medusa defines a read-only link between the `InventoryLevel` data model and the [Stock Location Module](/resources/commerce-modules/stock-location)'s `StockLocation` data model. This means you can retrieve the details of an inventory level's stock locations, but you don't manage the links in a pivot table in the database. The stock location of an inventory level is determined by the `location_id` property of the `InventoryLevel` data model.
+
+### Retrieve with Query
+
+To retrieve the stock locations of an inventory level with [Query](/learn/fundamentals/module-links/query), pass `stock_locations.*` in `fields`:
+
+<Tabs>
+  <Tab title="query.graph">
+    ```ts
+    const { data: inventoryLevels } = await query.graph({
+      entity: "inventory_level",
+      fields: [
+        "stock_locations.*",
+      ],
+    })
+
+    // inventoryLevels[0].stock_locations
+    ```
+  </Tab>
+
+  <Tab title="useQueryGraphStep">
+    ```ts
+    import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+    // ...
+
+    const { data: inventoryLevels } = useQueryGraphStep({
+      entity: "inventory_level",
+      fields: [
+        "stock_locations.*",
+      ],
+    })
+
+    // inventoryLevels[0].stock_locations
+    ```
+  </Tab>
+</Tabs>

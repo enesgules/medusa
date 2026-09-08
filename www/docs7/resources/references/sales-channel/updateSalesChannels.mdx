@@ -1,0 +1,155 @@
+---
+title: updateSalesChannels - Sales Channel Module Reference
+sidebarTitle: updateSalesChannels
+---
+
+This documentation provides a reference to the `updateSalesChannels` method. This belongs to the Sales Channel Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updatesaleschannels-channelid-data-sharedcontext-promisesaleschanneldto" />
+
+## updateSalesChannels(channelId, data, sharedContext?): Promise\<[SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO)>
+
+This method updates an existing sales channel.
+
+### Example
+
+```ts
+const salesChannel = await salesChannelModuleService.updateSalesChannels(
+  "sc_123",
+  {
+    description: "Sales channel for B2B customers",
+  }
+)
+```
+
+<a id="updatesaleschannels-parameters" />
+
+### Parameters
+
+**updateSalesChannels**
+
+- `channelId`: `string` — The sales channel's ID.
+- `data`: [UpdateSalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelUpdateSalesChannelDTO) — The attributes to update in the sales channel.
+  - `name`: `string` (optional) — The name of the sales channel.
+  - `description`: `null` | `string` (optional) — The description of the sales channel.
+  - `is_disabled`: `boolean` (optional) — Whether the sales channel is disabled.
+  - `metadata`: [MetadataType](/resources/references/sales_channel/types/sales_channelMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/sales_channel/interfaces/sales_channelContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/sales_channel/interfaces/sales_channelIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatesaleschannels-returns" />
+
+### Returns
+
+**updateSalesChannels**
+
+- `Promise`: Promise\<[SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO)> — The updated sales channel.
+  - `id`: `string` — The ID of the sales channel.
+  - `name`: `string` — The name of the sales channel.
+  - `description`: `null` | `string` — The description of the sales channel.
+  - `is_disabled`: `boolean` — Whether the sales channel is disabled.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `locations`: [SalesChannelLocationDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelLocationDTO)\[] (optional) — The locations of the sales channel.
+    - `sales_channel_id`: `string` — The associated sales channel's ID.
+    - `location_id`: `string` — The associated location's ID.
+    - `sales_channel`: [SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO) — The associated sales channel.
+
+<a id="updatesaleschannels-selector-data-sharedcontext-promisesaleschanneldto" />
+
+## updateSalesChannels(selector, data, sharedContext?): Promise\<[SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO)\[]>
+
+This method updates existing sales channels matching the specified filters
+
+### Example
+
+```ts
+const salesChannels = await salesChannelModuleService.updateSalesChannels(
+  {
+    name: "B2B",
+  },
+  {
+    description: "Sales channel for B2B customers",
+  }
+)
+```
+
+<a id="updatesaleschannels-parameters-1" />
+
+### Parameters
+
+**updateSalesChannels**
+
+- `selector`: [FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps) — The filters specifying which sales channels to update.
+  - `$and`: ([FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps) | [BaseFilterable](/resources/references/sales_channel/interfaces/sales_channelBaseFilterable)\<[FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps) | [BaseFilterable](/resources/references/sales_channel/interfaces/sales_channelBaseFilterable)\<[FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps) | [BaseFilterable](/resources/references/sales_channel/interfaces/sales_channelBaseFilterable)\<[FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Find sales channels by their name or description through this search term.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the sales channel by.
+    - `name`: `string` | `string`\[] (optional) — Filter sales channels by their names.
+    - `is_disabled`: `boolean` (optional) — Filter sales channels by whether they're disabled.
+  - `$or`: ([FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps) | [BaseFilterable](/resources/references/sales_channel/interfaces/sales_channelBaseFilterable)\<[FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps) | [BaseFilterable](/resources/references/sales_channel/interfaces/sales_channelBaseFilterable)\<[FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps) | [BaseFilterable](/resources/references/sales_channel/interfaces/sales_channelBaseFilterable)\<[FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Find sales channels by their name or description through this search term.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the sales channel by.
+    - `name`: `string` | `string`\[] (optional) — Filter sales channels by their names.
+    - `is_disabled`: `boolean` (optional) — Filter sales channels by whether they're disabled.
+  - `q`: `string` (optional) — Find sales channels by their name or description through this search term.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the sales channel by.
+  - `name`: `string` | `string`\[] (optional) — Filter sales channels by their names.
+  - `is_disabled`: `boolean` (optional) — Filter sales channels by whether they're disabled.
+- `data`: [UpdateSalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelUpdateSalesChannelDTO) — The attributes to update in the sales channel.
+  - `name`: `string` (optional) — The name of the sales channel.
+  - `description`: `null` | `string` (optional) — The description of the sales channel.
+  - `is_disabled`: `boolean` (optional) — Whether the sales channel is disabled.
+  - `metadata`: [MetadataType](/resources/references/sales_channel/types/sales_channelMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/sales_channel/interfaces/sales_channelContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/sales_channel/interfaces/sales_channelIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatesaleschannels-returns-1" />
+
+### Returns
+
+**updateSalesChannels**
+
+- `Promise`: Promise\<[SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO)\[]> — The updated sales channels.
+  - `SalesChannelDTO[]`: [SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO)\[]
+    - `id`: `string` — The ID of the sales channel.
+    - `name`: `string` — The name of the sales channel.
+    - `description`: `null` | `string` — The description of the sales channel.
+    - `is_disabled`: `boolean` — Whether the sales channel is disabled.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `locations`: [SalesChannelLocationDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelLocationDTO)\[] (optional) — The locations of the sales channel.
+      - `sales_channel_id`: `string` — The associated sales channel's ID.
+      - `location_id`: `string` — The associated location's ID.
+      - `sales_channel`: [SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO) — The associated sales channel.

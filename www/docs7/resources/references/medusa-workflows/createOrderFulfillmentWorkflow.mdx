@@ -1,0 +1,409 @@
+---
+title: createOrderFulfillmentWorkflow - Medusa Core Workflows Reference
+sidebarTitle: createOrderFulfillmentWorkflow
+---
+
+This documentation provides a reference to the `createOrderFulfillmentWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow creates a fulfillment for an order. It's used by the [Create Order Fulfillment Admin API Route](/api/admin/orders/create-fulfillment).
+
+This workflow has a hook that allows you to perform custom actions on the created fulfillment. For example, you can pass under `additional_data` custom data that
+allows you to create custom data models linked to the fulfillment.
+
+You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around creating a fulfillment.
+
+> **Note**
+>
+> Each fulfilled item whose variant has `manage_inventory` enabled must have an associated inventory reservation, otherwise the workflow throws an error.
+> Reservations are created automatically when an order is placed through the [completeCartWorkflow](/resources/references/medusa-workflows/completeCartWorkflow).
+> However, if you create an order with a workflow that doesn't create reservations, such as [createOrderWorkflow](/resources/references/medusa-workflows/createOrderWorkflow), you must create the reservations
+> using the [createReservationsWorkflow](/resources/references/medusa-workflows/createReservationsWorkflow) before creating the fulfillment,
+> passing each reservation the `line_item_id` of the order's item so that this workflow can find it.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/order/workflows/create-fulfillment.ts#L416)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { createOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await createOrderFulfillmentWorkflow(req.scope)
+    .run({
+      input: {
+        order_id: "order_123",
+        items: [{
+          id: "orli_123",
+          quantity: 1,
+        }],
+        additional_data: {
+          send_oms: true
+        }
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { createOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await createOrderFulfillmentWorkflow(container)
+    .run({
+      input: {
+        order_id: "order_123",
+        items: [{
+          id: "orli_123",
+          quantity: 1,
+        }],
+        additional_data: {
+          send_oms: true
+        }
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { createOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await createOrderFulfillmentWorkflow(container)
+    .run({
+      input: {
+        order_id: "order_123",
+        items: [{
+          id: "orli_123",
+          quantity: 1,
+        }],
+        additional_data: {
+          send_oms: true
+        }
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { createOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = createOrderFulfillmentWorkflow
+      .runAsStep({
+        input: {
+          order_id: "order_123",
+          items: [{
+            id: "orli_123",
+            quantity: 1,
+          }],
+          additional_data: {
+            send_oms: true
+          }
+        }
+      })
+  }
+)
+```
+
+<a id="createorderfulfillmentworkflow-steps" />
+
+## Steps
+
+- [createFulfillmentValidateOrder](/resources/references/medusa-workflows/createFulfillmentValidateOrder): This step validates that a fulfillment can be created for an order. If the order is canceled, the items don't exist in the order, or the items aren't grouped by shipping requirement, the step throws an error. :::note You can retrieve an order's details using [Query](/learn/fundamentals/module-links/query), or [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep). :::
+  - [createFulfillmentWorkflow](/resources/references/medusa-workflows/createFulfillmentWorkflow): Create a fulfillment.
+    - [adjustInventoryLevelsStep](/resources/references/medusa-workflows/steps/adjustInventoryLevelsStep): This step adjusts the stocked quantity of one or more inventory levels. You can pass a positive value in `adjustment` to add to the stocked quantity, or a negative value to subtract from the stocked quantity.
+      - [registerOrderFulfillmentStep](/resources/references/medusa-workflows/steps/registerOrderFulfillmentStep): This step registers a fulfillment for an order.
+      - [createRemoteLinkStep](/resources/references/medusa-workflows/steps/createRemoteLinkStep): This step creates links between two records of linked data models. Learn more in the [Link documentation.](/learn/fundamentals/module-links/link#create-link).
+      - [updateReservationsStep](/resources/references/medusa-workflows/steps/updateReservationsStep): This step updates one or more reservations.
+      - [deleteReservationsStep](/resources/references/medusa-workflows/steps/deleteReservationsStep): This step deletes one or more reservations.
+      - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+        - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+        - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+        - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+          - [fulfillmentCreated](/resources/references/medusa-workflows/createOrderFulfillmentWorkflow#fulfillmentcreated): This hook is executed after the fulfillment is created. You can consume this hook to perform custom actions on the created fulfillment.
+
+<a id="createorderfulfillmentworkflow-input" />
+
+## Input
+
+**createOrderFulfillmentWorkflow**
+
+- `CreateOrderFulfillmentWorkflowInput`: [CreateOrderFulfillmentWorkflowInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcCreateOrderFulfillmentWorkflowInput)
+  - `order_id`: `string` — The ID of the order to create the fulfillment for.
+  - `items_list`: [OrderLineItemDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderLineItemDTO)\[] (optional) — The list of items in the order. If not provided, the order's items are used.
+    - `original_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original total of the order line item.
+    - `original_subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original subtotal of the order line item.
+    - `original_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original tax total of the order line item.
+    - `item_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The item total of the order line item.
+    - `item_subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The item subtotal of the order line item.
+    - `item_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The item tax total of the order line item.
+    - `total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The total of the order line item.
+    - `subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The subtotal of the order line item.
+    - `tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The tax total of the order line item.
+    - `discount_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The discount total of the order line item.
+    - `discount_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The discount tax total of the order line item.
+    - `refundable_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The refundable total of the order line item.
+    - `refundable_total_per_unit`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The refundable total per unit of the order line item.
+    - `id`: `string` — The ID of the line item.
+    - `title`: `string` — The title of the line item.
+    - `subtitle`: `null` | `string` (optional) — The subtitle of the line item.
+    - `thumbnail`: `null` | `string` (optional) — The thumbnail of the line item.
+    - `variant_id`: `null` | `string` (optional) — The ID of the variant associated with the line item.
+    - `product_id`: `null` | `string` (optional) — The ID of the product associated with the line item.
+    - `product_title`: `null` | `string` (optional) — The title of the product associated with the line item.
+    - `product_description`: `null` | `string` (optional) — The description of the product associated with the line item.
+    - `product_subtitle`: `null` | `string` (optional) — The subtitle of the product associated with the line item.
+    - `product_type_id`: `null` | `string` (optional) — The ID of the type of the product associated with the line item.
+    - `product_type`: `null` | `string` (optional) — The type of the product associated with the line item.
+    - `product_collection`: `null` | `string` (optional) — The collection of the product associated with the line item.
+    - `product_handle`: `null` | `string` (optional) — The handle of the product associated with the line item.
+    - `variant_sku`: `null` | `string` (optional) — The SKU (stock keeping unit) of the variant associated with the line item.
+    - `variant_barcode`: `null` | `string` (optional) — The barcode of the variant associated with the line item.
+    - `variant_title`: `null` | `string` (optional) — The title of the variant associated with the line item.
+    - `variant_option_values`: `null` | `Record<string, unknown>` (optional) — The option values of the variant associated with the line item.
+    - `requires_shipping`: `boolean` — Indicates whether the line item requires shipping.
+    - `is_discountable`: `boolean` — Indicates whether the line item is discountable.
+    - `is_giftcard`: `boolean` — Indicates whether the line item is a gift card.
+    - `is_tax_inclusive`: `boolean` — Indicates whether the line item price is tax inclusive.
+    - `compare_at_unit_price`: `number` (optional) — The compare at unit price of the line item.
+    - `unit_price`: `number` — The unit price of the line item.
+    - `quantity`: `number` — The quantity of the line item.
+    - `tax_lines`: [OrderLineItemTaxLineDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderLineItemTaxLineDTO)\[] (optional) — The associated tax lines.
+    - `adjustments`: [OrderLineItemAdjustmentDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderLineItemAdjustmentDTO)\[] (optional) — The associated adjustments.
+    - `detail`: [OrderItemDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderItemDTO) — The details of the item
+    - `created_at`: `Date` — The date when the line item was created.
+    - `updated_at`: `Date` — The date when the line item was last updated.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — The versioned order item metadata. Holds custom data in key-value pairs.
+    - `line_item_metadata`: `null` | `Record<string, unknown>` (optional) — The metadata of the line item. Holds custom data in key-value pairs.
+  - `created_by`: `string` (optional) — The ID of the user who created the fulfillment.
+  - `items`: [CreateOrderFulfillmentItem](/resources/references/types/interfaces/typesCreateOrderFulfillmentItem)\[] — A list of items to be fulfilled.
+    - `id`: `string` — The ID of the order's item to fulfill.
+    - `quantity`: [BigNumberInput](/resources/references/types/types/typesBigNumberInput) — The quantity of the item to fulfill.
+  - `labels`: [CreateFulfillmentLabelWorkflowDTO](/resources/references/types/WorkflowTypes/FulfillmentWorkflow/types/typesWorkflowTypesFulfillmentWorkflowCreateFulfillmentLabelWorkflowDTO)\[] (optional) — The labels to associate with the order.
+    - `tracking_number`: `string` — The tracking number of the fulfillment label.
+    - `tracking_url`: `string` — The tracking URL of the fulfillment label.
+    - `label_url`: `string` — The URL of the label.
+  - `no_notification`: `boolean` (optional) — Whether the notify the customer about the fulfillment.
+  - `location_id`: `null` | `string` (optional) — The ID of the stock location to fulfill items from. If not provided, the workflow uses the ID of the location associated with the shipping option used by the order's shipping method.
+  - `metadata`: `null` | `Record<string, any>` (optional) — Custom k-value pairs related to the fulfillment.
+  - `shipping_option_id`: `string` (optional) — Shipping option to be used for the fulfillment.
+  - `delivery_address`: [CreateFulfillmentAddressWorkflowDTO](/resources/references/types/WorkflowTypes/FulfillmentWorkflow/types/typesWorkflowTypesFulfillmentWorkflowCreateFulfillmentAddressWorkflowDTO) (optional) — The recipient address to use for the fulfillment. It's merged over the order's shipping address, allowing you to override recipient details (such as the first and last name) sent to the fulfillment provider.
+    - `company`: `string` | `null` (optional) — The company of the fulfillment address.
+    - `first_name`: `string` | `null` (optional) — The first name of the fulfillment address.
+    - `last_name`: `string` | `null` (optional) — The last name of the fulfillment address.
+    - `address_1`: `string` | `null` (optional) — The first line of the fulfillment address.
+    - `address_2`: `string` | `null` (optional) — The second line of the fulfillment address.
+    - `city`: `string` | `null` (optional) — The city of the fulfillment address.
+    - `country_code`: `string` | `null` (optional) — The ISO 2 character country code of the fulfillment address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the fulfillment address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the fulfillment address.
+    - `phone`: `string` | `null` (optional) — The phone of the fulfillment address.
+    - `metadata`: `Record<string, unknown>` | `null` (optional) — Holds custom data in key-value pairs.
+  - `requires_shipping`: `boolean` (optional) — Whether the fulfillment should be shipped.
+  - `additional_data`: `Record<string, unknown>` (optional) — Additional data that can be passed through the `additional_data` property in HTTP requests. Learn more in [this documentation](/learn/fundamentals/api-routes/additional-data).
+
+<a id="createorderfulfillmentworkflow-output" />
+
+## Output
+
+**createOrderFulfillmentWorkflow**
+
+- `FulfillmentDTO`: [FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO) — The fulfillment details.
+  - `id`: `string` — The ID of the fulfillment.
+  - `location_id`: `string` — The associated location's ID.
+  - `packed_at`: `null` | `Date` — The date the fulfillment was packed.
+  - `shipped_at`: `null` | `Date` — The date the fulfillment was shipped.
+  - `delivered_at`: `null` | `Date` — The date the fulfillment was delivered.
+  - `canceled_at`: `null` | `Date` — The date the fulfillment was canceled.
+  - `marked_shipped_by`: `null` | `string` (optional) — The id of the user that marked fulfillment as shipped
+  - `created_by`: `null` | `string` (optional) — The id of the user that created the fulfillment
+  - `data`: `null` | `Record<string, unknown>` — The data necessary for the fulfillment provider to process the fulfillment.
+  - `provider_id`: `string` — The associated fulfillment provider's ID.
+  - `shipping_option_id`: `null` | `string` — The associated shipping option's ID.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `shipping_option`: `null` | [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO) — The associated shipping option.
+    - `id`: `string` — The ID of the shipping option.
+    - `name`: `string` — The name of the shipping option.
+    - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The type of the shipping option's price.
+    - `service_zone_id`: `string` — The associated service zone's ID.
+    - `shipping_profile_id`: `string` — The associated shipping profile's ID.
+    - `provider_id`: `string` — The associated fulfillment provider's ID.
+    - `shipping_option_type_id`: `null` | `string` — The associated shipping option type's ID.
+    - `data`: `null` | `Record<string, unknown>` — The data necessary for the associated fulfillment provider to process the shipping option and, later, its associated fulfillments.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `service_zone`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO) — The associated service zone.
+    - `shipping_profile`: [ShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingProfileDTO) — The associated shipping profile.
+    - `fulfillment_provider`: [FulfillmentProviderDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentProviderDTO) — The associated fulfillment provider.
+    - `type`: [ShippingOptionTypeDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionTypeDTO) — The associated shipping option type.
+    - `rules`: [ShippingOptionRuleDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionRuleDTO)\[] — The rules associated with the shipping option.
+    - `fulfillments`: [FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO)\[] — The fulfillments associated with the shipping option.
+    - `created_at`: `Date` — The creation date of the shipping option.
+    - `updated_at`: `Date` — The update date of the shipping option.
+    - `deleted_at`: `null` | `Date` — The deletion date of the shipping option.
+  - `requires_shipping`: `boolean` — Flag to indidcate whether shipping is required
+  - `provider`: [FulfillmentProviderDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentProviderDTO) — The associated fulfillment provider.
+    - `id`: `string` — The ID of the fulfillment provider.
+    - `name`: `string` — The name of the fulfillment provider.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `shipping_options`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[] — The shipping options associated with the fulfillment provider.
+    - `created_at`: `Date` — The creation date of the fulfillment provider.
+    - `updated_at`: `Date` — The update date of the fulfillment provider.
+    - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment provider.
+  - `delivery_address`: [FulfillmentAddressDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentAddressDTO) — The associated fulfillment address used for delivery.
+    - `id`: `string` — The ID of the address.
+    - `fulfillment_id`: `null` | `string` — The associated fulfillment's ID.
+    - `company`: `null` | `string` — The company of the address.
+    - `first_name`: `null` | `string` — The first name of the address.
+    - `last_name`: `null` | `string` — The last name of the address.
+    - `address_1`: `null` | `string` — The first line of the address.
+    - `address_2`: `null` | `string` — The second line of the address.
+    - `city`: `null` | `string` — The city of the address.
+    - `country_code`: `null` | `string` — The ISO 2 character country code of the address.
+    - `province`: `null` | `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the address.
+    - `postal_code`: `null` | `string` — The postal code of the address.
+    - `phone`: `null` | `string` — The phone of the address.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_at`: `Date` — The creation date of the address.
+    - `updated_at`: `Date` — The update date of the address.
+    - `deleted_at`: `null` | `Date` — The deletion date of the address.
+  - `items`: [FulfillmentItemDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentItemDTO)\[] — The items of the fulfillment.
+    - `id`: `string` — The ID of the fulfillment item.
+    - `title`: `string` — The title of the fulfillment item.
+    - `quantity`: `number` — The quantity of the fulfillment item.
+    - `sku`: `string` — The sku of the fulfillment item.
+    - `barcode`: `string` — The barcode of the fulfillment item.
+    - `line_item_id`: `null` | `string` — The associated line item's ID.
+    - `inventory_item_id`: `null` | `string` — The associated inventory item's ID.
+    - `fulfillment_id`: `string` — The associated fulfillment's ID.
+    - `fulfillment`: [FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO) — The associated fulfillment.
+    - `created_at`: `Date` — The creation date of the fulfillment item.
+    - `updated_at`: `Date` — The update date of the fulfillment item.
+    - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment item.
+  - `labels`: [FulfillmentLabelDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentLabelDTO)\[] — The labels of the fulfillment.
+    - `id`: `string` — The ID of the fulfillment label.
+    - `tracking_number`: `string` — The tracking number of the fulfillment label.
+    - `tracking_url`: `string` — The tracking URL of the fulfillment label.
+    - `label_url`: `string` — The label's URL.
+    - `fulfillment_id`: `string` — The associated fulfillment's ID.
+    - `fulfillment`: [FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO) — The associated fulfillment.
+    - `created_at`: `Date` — The creation date of the fulfillment label.
+    - `updated_at`: `Date` — The update date of the fulfillment label.
+    - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment label.
+  - `created_at`: `Date` — The creation date of the fulfillment.
+  - `updated_at`: `Date` — The update date of the fulfillment.
+  - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment.
+
+## Hooks
+
+Hooks allow you to inject custom functionalities into the workflow. You'll receive data from the workflow, as well as additional data sent through an HTTP request.
+
+Learn more about [Hooks](/learn/fundamentals/workflows/workflow-hooks) and [Additional Data](/learn/fundamentals/api-routes/additional-data).
+
+### fulfillmentCreated
+
+This hook is executed after the fulfillment is created. You can consume this hook to perform custom actions on the created fulfillment.
+
+#### Example
+
+```ts
+import { createOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
+
+createOrderFulfillmentWorkflow.hooks.fulfillmentCreated(
+  (async ({ fulfillment, additional_data }, { container }) => {
+    //TODO
+  })
+)
+```
+
+<a id="input" />
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+**fulfillmentCreated**
+
+- `input`: object — The input data for the hook.
+  - `fulfillment`: [WorkflowDataProperties](/resources/references/workflows/types/workflowsWorkflowDataProperties)\<[FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO)>
+  - `additional_data`: `Record<string, unknown> | undefined` — Additional data that can be passed through the `additional_data` property in HTTP requests. Learn more in [this documentation](/learn/fundamentals/api-routes/additional-data).
+
+<a id="createorderfulfillmentworkflow-emitted-events" />
+
+## Emitted Events
+
+- `order.fulfillment_created`: Emitted when a fulfillment is created for an order.
+
+  ```ts
+  {
+    order_id, // The ID of the order
+    fulfillment_id, // The ID of the fulfillment
+    no_notification, // (boolean) Whether to notify the customer
+  }
+  ```
+- `inventory-level.updated` (since v2.18.0): Emitted when inventory levels are updated. This includes adjustments to the stocked or reserved quantity, such as during order fulfillment.
+
+  ```ts
+  {
+    id, // The ID of the inventory level
+    order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+  }
+  ```
+- `reservation-item.updated` (since v2.18.0): Emitted when reservations are updated.
+
+  ```ts
+  {
+    id, // The ID of the reservation
+    order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+  }
+  ```
+- `reservation-item.deleted` (since v2.18.0): Emitted when reservations are deleted.
+
+  ```ts
+  {
+    id, // The ID of the reservation
+    order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+  }
+  ```

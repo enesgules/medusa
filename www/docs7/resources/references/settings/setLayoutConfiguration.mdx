@@ -1,0 +1,69 @@
+---
+title: setLayoutConfiguration - Settings Module Reference
+sidebarTitle: setLayoutConfiguration
+---
+
+This documentation provides a reference to the `setLayoutConfiguration` method. This belongs to the Settings Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+Create or replace the single layout configuration for a `(zone, user)`
+pair. The configuration JSON is replaced, not merged.
+
+## Example
+
+```ts
+const layoutConfiguration =
+  await settingsModuleService.setLayoutConfiguration(
+    "product.details",
+    "user_123",
+    { widgets: {} }
+  )
+```
+
+<a id="setlayoutconfiguration-parameters" />
+
+## Parameters
+
+**setLayoutConfiguration**
+
+- `zone`: `string` — The zone to set the layout configuration for.
+- `userId`: `string` — The ID of the user the layout configuration belongs to.
+- `data`: [LayoutConfigurationData](/resources/references/settings/interfaces/settingsLayoutConfigurationData) — The layout configuration data. It replaces the existing configuration rather than being merged into it.
+  - `widgets`: `Record<string, [LayoutWidgetPreference](/references/settings/interfaces/settings.LayoutWidgetPreference)>` — Per-widget placement and visibility preferences, keyed by widget ID.
+    - `hidden`: `boolean` (optional) — Whether the widget is hidden.
+    - `section`: `string` (optional) — Override which section this widget appears in.
+    - `order`: `number` (optional) — Override the sort order of the widget within its section.
+- `sharedContext`: [Context](/resources/references/settings/interfaces/settingsContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/settings/interfaces/settingsIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="setlayoutconfiguration-returns" />
+
+## Returns
+
+**setLayoutConfiguration**
+
+- `Promise`: Promise\<[LayoutConfigurationDTO](/resources/references/settings/interfaces/settingsLayoutConfigurationDTO)> — The created or updated layout configuration.
+  - `id`: `string` — The ID of the configuration.
+  - `zone`: `string` — The zone (page) this configuration is for, e.g. "product.details".
+  - `user_id`: `null` | `string` — The user ID this configuration belongs to, or null for the system default.
+  - `is_system_default`: `boolean` — Whether this is the system default configuration for the zone.
+  - `configuration`: [LayoutConfigurationData](/resources/references/settings/interfaces/settingsLayoutConfigurationData) — The layout configuration data.
+    - `widgets`: `Record<string, [LayoutWidgetPreference](/references/settings/interfaces/settings.LayoutWidgetPreference)>` — Per-widget placement and visibility preferences, keyed by widget ID.
+  - `created_at`: `Date` — The date the configuration was created.
+  - `updated_at`: `Date` — The date the configuration was last updated.

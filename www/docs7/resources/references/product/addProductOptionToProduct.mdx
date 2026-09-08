@@ -1,0 +1,123 @@
+---
+title: addProductOptionToProduct - Product Module Reference
+sidebarTitle: addProductOptionToProduct
+---
+
+This documentation provides a reference to the `addProductOptionToProduct` method. This belongs to the Product Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="addproductoptiontoproduct-productoptionproductpair-sharedcontext-promise-id-string" />
+
+## addProductOptionToProduct(productOptionProductPair, sharedContext?): Promise\<\{ id: string  }>
+
+This method adds a product option to a product.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+### Example
+
+```ts
+const productOptionProductId =
+  await productModuleService.addProductOptionToProduct({
+    product_id: "prod_123",
+    product_option_id: "opt_123",
+  })
+```
+
+<a id="addproductoptiontoproduct-parameters" />
+
+### Parameters
+
+**addProductOptionToProduct**
+
+- `productOptionProductPair`: [ProductOptionProductPair](/resources/references/product/interfaces/productProductOptionProductPair) — The details of the product option and the product it should be added to.
+  - `product_option_id`: `string` — The product option's ID.
+  - `product_id`: `string` — The product's ID.
+  - `product_option_value_ids`: `string`\[] (optional) — The IDs of specific option values to link. If not provided, all values will be linked.
+- `sharedContext`: [Context](/resources/references/product/interfaces/productContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/product/interfaces/productIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="addproductoptiontoproduct-returns" />
+
+### Returns
+
+**addProductOptionToProduct**
+
+- `Promise`: Promise\<object> — The ID of the relation between the product option and the product.
+  - `id`: `string` — The ID of the relation between the product option and the product.
+
+<a id="addproductoptiontoproduct-productoptionproductpairs-sharedcontext-promise-id-string" />
+
+## addProductOptionToProduct(productOptionProductPairs, sharedContext?): Promise\<\{ id: string  }\[]>
+
+This method adds product options to a product.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+### Example
+
+```ts
+const productOptionProductIds =
+  await productModuleService.addProductOptionToProduct([
+    {
+      product_id: "prod_123",
+      product_option_id: "opt_123",
+    },
+  ])
+```
+
+<a id="addproductoptiontoproduct-parameters-1" />
+
+### Parameters
+
+**addProductOptionToProduct**
+
+- `productOptionProductPairs`: [ProductOptionProductPair](/resources/references/product/interfaces/productProductOptionProductPair)\[] — A list of items, each being the details of a product option and the product it should be added to.
+  - `product_option_id`: `string` — The product option's ID.
+  - `product_id`: `string` — The product's ID.
+  - `product_option_value_ids`: `string`\[] (optional) — The IDs of specific option values to link. If not provided, all values will be linked.
+- `sharedContext`: [Context](/resources/references/product/interfaces/productContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/product/interfaces/productIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="addproductoptiontoproduct-returns-1" />
+
+### Returns
+
+**addProductOptionToProduct**
+
+- `Promise`: Promise\<object\[]> — The IDs of the relations between each of the product option and product pairs.
+  - `object[]`: `object`\[]
+    - `id`: `string` — The ID of the relation between the product option and the product.

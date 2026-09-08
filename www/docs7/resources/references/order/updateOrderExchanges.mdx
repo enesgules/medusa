@@ -1,0 +1,227 @@
+---
+title: updateOrderExchanges - Order Module Reference
+sidebarTitle: updateOrderExchanges
+---
+
+This documentation provides a reference to the `updateOrderExchanges` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updateorderexchanges-data-sharedcontext-promiseorderexchangedto" />
+
+## updateOrderExchanges(data, sharedContext?): Promise\<[OrderExchangeDTO](/resources/references/order/interfaces/orderOrderExchangeDTO)\[]>
+
+This method updates existing order exchanges.
+
+### Example
+
+```ts
+const exchanges = await orderModuleService.updateOrderExchanges([
+  {
+    selector: {
+      id: "123"
+    },
+    data: {
+      return_id: "123"
+    }
+  }
+])
+```
+
+<a id="updateorderexchanges-parameters" />
+
+### Parameters
+
+**updateOrderExchanges**
+
+- `data`: [UpdateOrderExchangeWithSelectorDTO](/resources/references/order/interfaces/orderUpdateOrderExchangeWithSelectorDTO)\[] — The filters specifying which exchanges to update, and the data to update in them.
+  - `selector`: Partial\<[OrderExchangeDTO](/resources/references/order/interfaces/orderOrderExchangeDTO)> — The filters specifying which exchanges to update.
+    - `id`: `string` — The exchange's ID.
+    - `order_id`: `string` — The associated order's ID.
+    - `order`: [OrderDTO](/resources/references/order/interfaces/orderOrderDTO) (optional) — The associated order.
+    - `order_version`: `number` — The version of the order when the exchange is applied.
+    - `display_id`: `number` — The exchange's display ID.
+    - `additional_items`: `any`\[] — The items to be sent to the customer.
+    - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications related to updates on the exchange.
+    - `difference_due`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) (optional) — The difference due of the order exchange. - If less than `0`, the merchant owes the customer this amount. - If greater than `0`, the customer owes the merchange this amount. - If equal to `0`, no payment is required by either sides.
+    - `raw_difference_due`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) (optional) — The raw difference due of the order exchange. - If less than `0`, the merchant owes the customer this amount. - If greater than `0`, the customer owes the merchange this amount. - If equal to `0`, no payment is required by either sides.
+    - `allow_backorder`: `boolean` (optional) — Whether the variants that are out of stock can be added to the exchange.
+    - `return`: [ReturnDTO](/resources/references/order/interfaces/orderReturnDTO) (optional) — The associated return.
+    - `return_id`: `string` (optional) — The associated return's ID.
+    - `created_by`: `null` | `string` (optional) — The id of the user that created the order exchange
+    - `shipping_methods`: [OrderShippingMethodDTO](/resources/references/order/interfaces/orderOrderShippingMethodDTO)\[] (optional) — The shipping methods used to send the additional items.
+    - `transactions`: [OrderTransactionDTO](/resources/references/order/interfaces/orderOrderTransactionDTO)\[] (optional) — The exchange's transactions if additional payment is required.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — The creation date of the exchange.
+    - `updated_at`: `string` | `Date` (optional) — The update date of the exchange.
+    - `deleted_at`: `string` | `Date` (optional) — The deletion date of the exchange.
+    - `canceled_at`: `string` | `Date` (optional) — The cancelation date of the exchange.
+  - `data`: Partial\<[UpdateOrderExchangeDTO](/resources/references/order/interfaces/orderUpdateOrderExchangeDTO)> — The data of the exchange to update.
+    - `id`: `string` — The ID of the exchange.
+    - `difference_due`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The difference due of the exchange. - If less than `0`, the merchant owes the customer this amount. - If greater than `0`, the customer owes the merchange this amount. - If equal to `0`, no payment is required by either sides.
+    - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications related to updates on the exchange.
+    - `return`: `string` (optional) — The associated return's ID.
+    - `allow_backorder`: `boolean` (optional) — Whether backorders are allowed on the exchange's items.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorderexchanges-returns" />
+
+### Returns
+
+**updateOrderExchanges**
+
+- `Promise`: Promise\<[OrderExchangeDTO](/resources/references/order/interfaces/orderOrderExchangeDTO)\[]> — The updated order exchanges.
+  - `OrderExchangeDTO[]`: [OrderExchangeDTO](/resources/references/order/interfaces/orderOrderExchangeDTO)\[]
+
+<a id="updateorderexchanges-selector-data-sharedcontext-promiseorderexchangedto" />
+
+## updateOrderExchanges(selector, data, sharedContext?): Promise\<[OrderExchangeDTO](/resources/references/order/interfaces/orderOrderExchangeDTO)\[]>
+
+This method updates existing order exchanges matching the specified filters.
+
+### Example
+
+```ts
+const exchanges = await orderModuleService.updateOrderExchanges({
+  id: "123"
+}, {
+  return_id: "123"
+})
+```
+
+<a id="updateorderexchanges-parameters-1" />
+
+### Parameters
+
+**updateOrderExchanges**
+
+- `selector`: Partial\<[FilterableOrderExchangeProps](/resources/references/order/interfaces/orderFilterableOrderExchangeProps)> — The filters specifying which order exchanges to update.
+  - `$and`: ([FilterableOrderExchangeProps](/resources/references/order/interfaces/orderFilterableOrderExchangeProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderExchangeProps](/resources/references/order/interfaces/orderFilterableOrderExchangeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableOrderExchangeProps](/resources/references/order/interfaces/orderFilterableOrderExchangeProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderExchangeProps](/resources/references/order/interfaces/orderFilterableOrderExchangeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableOrderExchangeProps](/resources/references/order/interfaces/orderFilterableOrderExchangeProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderExchangeProps](/resources/references/order/interfaces/orderFilterableOrderExchangeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the exchanges by.
+    - `order_id`: `string` | `string`\[] (optional) — Filter the exchanges by their associated order's ID.
+    - `return_id`: `string` | `string`\[] (optional) — Filter the exchanges by their associated return's ID.
+    - `allow_backorder`: `boolean` (optional) — Filter the exchanges by whether backorders are allowed.
+  - `$or`: ([FilterableOrderExchangeProps](/resources/references/order/interfaces/orderFilterableOrderExchangeProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderExchangeProps](/resources/references/order/interfaces/orderFilterableOrderExchangeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableOrderExchangeProps](/resources/references/order/interfaces/orderFilterableOrderExchangeProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderExchangeProps](/resources/references/order/interfaces/orderFilterableOrderExchangeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableOrderExchangeProps](/resources/references/order/interfaces/orderFilterableOrderExchangeProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderExchangeProps](/resources/references/order/interfaces/orderFilterableOrderExchangeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the exchanges by.
+    - `order_id`: `string` | `string`\[] (optional) — Filter the exchanges by their associated order's ID.
+    - `return_id`: `string` | `string`\[] (optional) — Filter the exchanges by their associated return's ID.
+    - `allow_backorder`: `boolean` (optional) — Filter the exchanges by whether backorders are allowed.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the exchanges by.
+  - `order_id`: `string` | `string`\[] (optional) — Filter the exchanges by their associated order's ID.
+  - `return_id`: `string` | `string`\[] (optional) — Filter the exchanges by their associated return's ID.
+  - `allow_backorder`: `boolean` (optional) — Filter the exchanges by whether backorders are allowed.
+- `data`: Partial\<[UpdateOrderExchangeDTO](/resources/references/order/interfaces/orderUpdateOrderExchangeDTO)> — The data to update in the order exchanges.
+  - `id`: `string` — The ID of the exchange.
+  - `difference_due`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The difference due of the exchange. - If less than `0`, the merchant owes the customer this amount. - If greater than `0`, the customer owes the merchange this amount. - If equal to `0`, no payment is required by either sides.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications related to updates on the exchange.
+  - `return`: `string` (optional) — The associated return's ID.
+  - `allow_backorder`: `boolean` (optional) — Whether backorders are allowed on the exchange's items.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorderexchanges-returns-1" />
+
+### Returns
+
+**updateOrderExchanges**
+
+- `Promise`: Promise\<[OrderExchangeDTO](/resources/references/order/interfaces/orderOrderExchangeDTO)\[]> — The updated order exchanges.
+  - `OrderExchangeDTO[]`: [OrderExchangeDTO](/resources/references/order/interfaces/orderOrderExchangeDTO)\[]
+
+<a id="updateorderexchanges-id-data-sharedcontext-promiseorderexchangedto" />
+
+## updateOrderExchanges(id, data, sharedContext?): Promise\<[OrderExchangeDTO](/resources/references/order/interfaces/orderOrderExchangeDTO)>
+
+This method updates an existing order exchange.
+
+### Example
+
+```ts
+const exchange = await orderModuleService.updateOrderExchanges(
+  "123",
+  {
+    return_id: "123"
+  }
+)
+```
+
+<a id="updateorderexchanges-parameters-2" />
+
+### Parameters
+
+**updateOrderExchanges**
+
+- `id`: `string` — The ID of the order exchange.
+- `data`: Partial\<[UpdateOrderExchangeDTO](/resources/references/order/interfaces/orderUpdateOrderExchangeDTO)> — The data to update in the order exchange.
+  - `id`: `string` — The ID of the exchange.
+  - `difference_due`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The difference due of the exchange. - If less than `0`, the merchant owes the customer this amount. - If greater than `0`, the customer owes the merchange this amount. - If equal to `0`, no payment is required by either sides.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications related to updates on the exchange.
+  - `return`: `string` (optional) — The associated return's ID.
+  - `allow_backorder`: `boolean` (optional) — Whether backorders are allowed on the exchange's items.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorderexchanges-returns-2" />
+
+### Returns
+
+**updateOrderExchanges**
+
+- `Promise`: Promise\<[OrderExchangeDTO](/resources/references/order/interfaces/orderOrderExchangeDTO)> — The updated order exchange.

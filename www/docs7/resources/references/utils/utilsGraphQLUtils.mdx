@@ -1,0 +1,190 @@
+---
+title: GraphQLUtils
+---
+
+## Classes
+
+- [GraphQLParser](/resources/references/utils/GraphQLUtils/classes/utilsGraphQLUtilsGraphQLParser)
+
+## Functions
+
+- [cleanGraphQLSchema](/resources/references/utils/utilsGraphQLUtils#cleangraphqlschema)
+- [extractRelationsFromGQL](/resources/references/utils/utilsGraphQLUtils#extractrelationsfromgql)
+- [gqlGetFieldsAndRelations](/resources/references/utils/utilsGraphQLUtils#gqlgetfieldsandrelations)
+- [gqlSchemaToTypes](/resources/references/utils/utilsGraphQLUtils#gqlschematotypes)
+- [graphqlSchemaToFields](/resources/references/utils/utilsGraphQLUtils#graphqlschematofields)
+
+## Functions
+
+### cleanGraphQLSchema
+
+<a id="cleangraphqlschema-parameters" />
+
+#### Parameters
+
+**cleanGraphQLSchema**
+
+- `schema`: `string`
+
+<a id="cleangraphqlschema-returns" />
+
+#### Returns
+
+**cleanGraphQLSchema**
+
+- `schema`: `string`
+- `notFound`: `Record<string, Record<string, string>>`
+
+### extractRelationsFromGQL
+
+Extracts only the relation fields from the GraphQL type map.
+
+<a id="extractrelationsfromgql-parameters" />
+
+#### Parameters
+
+**extractRelationsFromGQL**
+
+- `typeMap`: Map\<string, any> — The GraphQL schema TypeMap.
+
+<a id="extractrelationsfromgql-returns" />
+
+#### Returns
+
+**extractRelationsFromGQL**
+
+- `Map`: Map\<string, Map\<string, string>> — A map where each key is an entity name, and the values are a map of relation fields and their corresponding entity type.
+  - `string`: `string`
+  - `Map`: Map\<string, string>
+    - `string`: `string`
+    - `string`: `string`
+
+### gqlGetFieldsAndRelations
+
+Generate a list of fields and fields relations for a given type with the requested relations
+
+<a id="gqlgetfieldsandrelations-parameters" />
+
+#### Parameters
+
+**gqlGetFieldsAndRelations**
+
+- `schemaTypeMap`: `object`
+- `typeName`: `string`
+- `relations`: `string`\[] (default: \[])
+
+<a id="gqlgetfieldsandrelations-returns" />
+
+#### Returns
+
+**gqlGetFieldsAndRelations**
+
+- `string[]`: `string`\[] — Generate a list of fields and fields relations for a given type with the requested relations
+  - `string`: `string`
+
+### gqlSchemaToTypes
+
+<a id="gqlschematotypes-parameters" />
+
+#### Parameters
+
+**gqlSchemaToTypes**
+
+- `__namedParameters`: `object`
+  - `schema`: `GraphQLSchema`
+  - `outputDir`: `string`
+  - `filename`: `string`
+  - `joinerConfigs`: [ModuleJoinerConfig](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesModuleJoinerConfig)\[]
+    - `schema`: `string` (optional) — GraphQL schema for the all module's available entities and fields
+    - `idPrefixToEntityName`: `Record<string, string>` (optional)
+    - `relationships`: [ModuleJoinerRelationship](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesModuleJoinerRelationship)\[] (optional)
+    - `extends`: `object`\[] (optional)
+    - `serviceName`: `string` (optional)
+    - `primaryKeys`: `string`\[] (optional)
+    - `isLink`: `boolean` (optional) — If the module is a link module
+    - `linkableKeys`: `Record<string, string>` (optional) — Keys that can be used to link to other modules. e.g \{ product\_id: "Product" } "Product" being the entity it refers to
+    - `isReadOnlyLink`: `boolean` (optional) — If true it expands a RemoteQuery property but doesn't create a pivot table
+    - `extraDataFields`: `string`\[] (optional) — Fields that will be part of the link record aside from the primary keys that can be updated If not explicitly defined, this array will be populated by databaseConfig.extraFields
+    - `databaseConfig`: `object` (optional)
+  - `interfaceName`: `string`
+
+<a id="gqlschematotypes-returns" />
+
+#### Returns
+
+**gqlSchemaToTypes**
+
+- `Promise`: Promise\<void>
+
+### graphqlSchemaToFields
+
+From graphql schema get all the fields for the requested type and relations
+
+#### Example
+
+```ts
+const userModule = `
+type User {
+  id: ID!
+  name: String!
+  blabla: WHATEVER
+}
+
+type Post {
+  author: User!
+}
+`
+
+const postModule = `
+type Post {
+  id: ID!
+  title: String!
+  date: String
+}
+
+type User {
+  posts: [Post!]!
+}
+
+type WHATEVER {
+  random_field: String
+  post: Post
+}
+`
+
+const mergedSchema = mergeTypeDefs([userModule, postModule])
+const schema = makeExecutableSchema({
+  typeDefs: mergedSchema,
+})
+
+const fields = graphqlSchemaToFields(types, "User", ["posts"])
+
+console.log(fields)
+
+// [
+//   "id",
+//   "name",
+//   "posts.id",
+//   "posts.title",
+//   "posts.date",
+// ]
+```
+
+<a id="graphqlschematofields-parameters" />
+
+#### Parameters
+
+**graphqlSchemaToFields**
+
+- `schemaTypeMap`: `object`
+- `typeName`: `string`
+- `relations`: `string`\[] (default: \[])
+
+<a id="graphqlschematofields-returns" />
+
+#### Returns
+
+**graphqlSchemaToFields**
+
+- `string[]`: `string`\[] — From graphql schema get all the fields for the requested type and relations
+  - `string`: `string`

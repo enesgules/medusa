@@ -1,0 +1,227 @@
+---
+title: Inventory Module Events Reference
+sidebarTitle: Events Reference
+---
+
+This reference shows all the events emitted by the Medusa application related to the Inventory Module. If you use the module outside the Medusa application, these events aren't emitted.
+
+## Inventory Item Events
+
+### Summary
+
+| Event                                                                                    | Description                               |
+| ---------------------------------------------------------------------------------------- | ----------------------------------------- |
+| [`inventory-item.created`](/resources/references/inventory/events#inventory-itemcreated) | Emitted when inventory items are created. |
+| [`inventory-item.updated`](/resources/references/inventory/events#inventory-itemupdated) | Emitted when inventory items are updated. |
+| [`inventory-item.deleted`](/resources/references/inventory/events#inventory-itemdeleted) | Emitted when inventory items are deleted. |
+
+### inventory-item.created
+
+Emitted when inventory items are created.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the inventory item
+}
+```
+
+#### Workflows Emitting this Event
+
+- [createInventoryItemsWorkflow](/resources/references/medusa-workflows/createInventoryItemsWorkflow)
+- [createProductVariantsWorkflow](/resources/references/medusa-workflows/createProductVariantsWorkflow)
+- [createProductsWorkflow](/resources/references/medusa-workflows/createProductsWorkflow)
+- [batchProductVariantsWorkflow](/resources/references/medusa-workflows/batchProductVariantsWorkflow)
+- [batchProductsWorkflow](/resources/references/medusa-workflows/batchProductsWorkflow)
+- [importProductsWorkflow](/resources/references/medusa-workflows/importProductsWorkflow)
+
+### inventory-item.updated
+
+Emitted when inventory items are updated.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the inventory item
+}
+```
+
+#### Workflows Emitting this Event
+
+- [updateInventoryItemsWorkflow](/resources/references/medusa-workflows/updateInventoryItemsWorkflow)
+
+### inventory-item.deleted
+
+Emitted when inventory items are deleted.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the inventory item
+}
+```
+
+#### Workflows Emitting this Event
+
+- [deleteInventoryItemWorkflow](/resources/references/medusa-workflows/deleteInventoryItemWorkflow)
+- [deleteProductsWorkflow](/resources/references/medusa-workflows/deleteProductsWorkflow)
+- [deleteProductVariantsWorkflow](/resources/references/medusa-workflows/deleteProductVariantsWorkflow)
+- [batchProductsWorkflow](/resources/references/medusa-workflows/batchProductsWorkflow)
+- [batchProductVariantsWorkflow](/resources/references/medusa-workflows/batchProductVariantsWorkflow)
+- [importProductsWorkflow](/resources/references/medusa-workflows/importProductsWorkflow)
+
+***
+
+## Inventory Level Events
+
+### Summary
+
+| Event                                                                                      | Description                                                                                                                                 |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`inventory-level.created`](/resources/references/inventory/events#inventory-levelcreated) | Emitted when inventory levels are created.                                                                                                  |
+| [`inventory-level.updated`](/resources/references/inventory/events#inventory-levelupdated) | Emitted when inventory levels are updated. This includes adjustments to the stocked or reserved quantity, such as during order fulfillment. |
+| [`inventory-level.deleted`](/resources/references/inventory/events#inventory-leveldeleted) | Emitted when inventory levels are deleted.                                                                                                  |
+
+### inventory-level.created
+
+Emitted when inventory levels are created.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the inventory level
+}
+```
+
+#### Workflows Emitting this Event
+
+- [createInventoryLevelsWorkflow](/resources/references/medusa-workflows/createInventoryLevelsWorkflow)
+- [bulkCreateDeleteLevelsWorkflow](/resources/references/medusa-workflows/bulkCreateDeleteLevelsWorkflow)
+- [batchInventoryItemLevelsWorkflow](/resources/references/medusa-workflows/batchInventoryItemLevelsWorkflow)
+- [createInventoryItemsWorkflow](/resources/references/medusa-workflows/createInventoryItemsWorkflow)
+- [createProductVariantsWorkflow](/resources/references/medusa-workflows/createProductVariantsWorkflow)
+- [createProductsWorkflow](/resources/references/medusa-workflows/createProductsWorkflow)
+- [batchProductVariantsWorkflow](/resources/references/medusa-workflows/batchProductVariantsWorkflow)
+- [batchProductsWorkflow](/resources/references/medusa-workflows/batchProductsWorkflow)
+- [importProductsWorkflow](/resources/references/medusa-workflows/importProductsWorkflow)
+
+### inventory-level.updated
+
+Emitted when inventory levels are updated. This includes adjustments to
+the stocked or reserved quantity, such as during order fulfillment.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the inventory level
+  order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+}
+```
+
+#### Workflows Emitting this Event
+
+- [createOrderFulfillmentWorkflow](/resources/references/medusa-workflows/createOrderFulfillmentWorkflow)
+- [cancelOrderFulfillmentWorkflow](/resources/references/medusa-workflows/cancelOrderFulfillmentWorkflow)
+- [updateInventoryLevelsWorkflow](/resources/references/medusa-workflows/updateInventoryLevelsWorkflow)
+- [batchInventoryItemLevelsWorkflow](/resources/references/medusa-workflows/batchInventoryItemLevelsWorkflow)
+- [confirmReturnReceiveWorkflow](/resources/references/medusa-workflows/confirmReturnReceiveWorkflow)
+
+### inventory-level.deleted
+
+Emitted when inventory levels are deleted.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the inventory level
+}
+```
+
+#### Workflows Emitting this Event
+
+- [deleteInventoryLevelsWorkflow](/resources/references/medusa-workflows/deleteInventoryLevelsWorkflow)
+- [bulkCreateDeleteLevelsWorkflow](/resources/references/medusa-workflows/bulkCreateDeleteLevelsWorkflow)
+- [batchInventoryItemLevelsWorkflow](/resources/references/medusa-workflows/batchInventoryItemLevelsWorkflow)
+
+***
+
+## Reservation Item Events
+
+### Summary
+
+| Event                                                                                        | Description                            |
+| -------------------------------------------------------------------------------------------- | -------------------------------------- |
+| [`reservation-item.created`](/resources/references/inventory/events#reservation-itemcreated) | Emitted when reservations are created. |
+| [`reservation-item.updated`](/resources/references/inventory/events#reservation-itemupdated) | Emitted when reservations are updated. |
+| [`reservation-item.deleted`](/resources/references/inventory/events#reservation-itemdeleted) | Emitted when reservations are deleted. |
+
+### reservation-item.created
+
+Emitted when reservations are created.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the reservation
+  order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+}
+```
+
+#### Workflows Emitting this Event
+
+- [createReservationsWorkflow](/resources/references/medusa-workflows/createReservationsWorkflow)
+- [cancelOrderFulfillmentWorkflow](/resources/references/medusa-workflows/cancelOrderFulfillmentWorkflow)
+- [convertDraftOrderWorkflow](/resources/references/medusa-workflows/convertDraftOrderWorkflow)
+- [completeCartWorkflow](/resources/references/medusa-workflows/completeCartWorkflow)
+- [confirmOrderEditRequestWorkflow](/resources/references/medusa-workflows/confirmOrderEditRequestWorkflow)
+- [confirmExchangeRequestWorkflow](/resources/references/medusa-workflows/confirmExchangeRequestWorkflow)
+- [confirmClaimRequestWorkflow](/resources/references/medusa-workflows/confirmClaimRequestWorkflow)
+
+### reservation-item.updated
+
+Emitted when reservations are updated.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the reservation
+  order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+}
+```
+
+#### Workflows Emitting this Event
+
+- [updateReservationsWorkflow](/resources/references/medusa-workflows/updateReservationsWorkflow)
+- [createOrderFulfillmentWorkflow](/resources/references/medusa-workflows/createOrderFulfillmentWorkflow)
+- [cancelOrderFulfillmentWorkflow](/resources/references/medusa-workflows/cancelOrderFulfillmentWorkflow)
+
+### reservation-item.deleted
+
+Emitted when reservations are deleted.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the reservation
+  order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+}
+```
+
+#### Workflows Emitting this Event
+
+- [deleteReservationsWorkflow](/resources/references/medusa-workflows/deleteReservationsWorkflow)
+- [deleteReservationsByLineItemsWorkflow](/resources/references/medusa-workflows/deleteReservationsByLineItemsWorkflow)
+- [createOrderFulfillmentWorkflow](/resources/references/medusa-workflows/createOrderFulfillmentWorkflow)
+- [cancelOrderWorkflow](/resources/references/medusa-workflows/cancelOrderWorkflow)
+- [confirmOrderEditRequestWorkflow](/resources/references/medusa-workflows/confirmOrderEditRequestWorkflow)
+- [cancelOrderExchangeWorkflow](/resources/references/medusa-workflows/cancelOrderExchangeWorkflow)
+- [cancelOrderClaimWorkflow](/resources/references/medusa-workflows/cancelOrderClaimWorkflow)

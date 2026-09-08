@@ -1,0 +1,15 @@
+---
+title: Event
+---
+
+- `Event`: `object`
+  - `name`: `string` — The event's name.
+
+    Example:
+
+    ```
+    user.created
+    ```
+  - `metadata`: [EventMetadata](/resources/references/store_credit/types/store_creditEventMetadata) (optional) — Additional meadata to pass with the event.
+    - `eventGroupId`: `string` (optional) — The ID of the event's group. Grouped events are useful when you have distributed transactions where you need to explicitly group, release and clear events upon lifecycle events of a transaction. When set, you must release the grouped events using the Event Module's `releaseGroupedEvents` method to emit the events.
+  - `data`: TData — The data payload that subscribers receive. For example, the ID or IDs of the created user. (e.g. \{ id: "123" } or \{ ids: \["123", "456"] })

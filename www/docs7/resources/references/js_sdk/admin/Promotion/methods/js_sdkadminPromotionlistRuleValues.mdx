@@ -1,0 +1,57 @@
+---
+title: listRuleValues
+---
+
+Retrieve all potential values for promotion rules and target and buy rules based on the specified rule attribute and type.
+For example, if you provide the ID of the `currency_code` rule attribute, and set `rule_type` to rules,
+a list of currencies are retrieved in label-value pairs.
+
+This method sends a request to the
+[List Rule Values API Route](/api/admin/promotions/list-rule-values)
+
+## Example
+
+```ts
+sdk.admin.promotion.listRuleValues("rules", "attr_123")
+.then(({ values }) => {
+  console.log(values)
+})
+```
+
+<a id="listrulevalues-parameters" />
+
+## Parameters
+
+**listRuleValues**
+
+- `ruleType`: `string` — The type of rules to retrieve the values for. Can be `rules`, `buy-rules`, or `target-rules`.
+- `ruleValue`: `string` — The ID of the rule attribute to retrieve the values for.
+- `query`: [AdminGetPromotionsRuleValueParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPromotionsRuleValueParams) (optional) — Configure the fields to retrieve in the rule values.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Search for a rule value by its searchable
+  - `value`: `string` | `string`\[] (optional) — Filter by rule value.
+  - `application_method_target_type`: [ApplicationMethodTargetTypeValues](/resources/references/promotion/types/promotionApplicationMethodTargetTypeValues) (optional) — The target type of application method to retrieve the attributes for.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listrulevalues-returns" />
+
+## Returns
+
+**listRuleValues**
+
+- `Promise`: Promise\<[AdminRuleValueOptionsListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminRuleValueOptionsListResponse)> — The list of rule values.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.

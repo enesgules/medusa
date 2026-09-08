@@ -1,0 +1,206 @@
+---
+title: createTaxRates - Tax Module Reference
+sidebarTitle: createTaxRates
+---
+
+This documentation provides a reference to the `createTaxRates` method. This belongs to the Tax Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createtaxrates-data-sharedcontext-promisetaxratedto" />
+
+## createTaxRates(data, sharedContext?): Promise\<[TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[]>
+
+This method creates tax rates.
+
+### Example
+
+```ts
+const taxRates = await taxModuleService.createTaxRates([
+  {
+    tax_region_id: "txreg_123",
+    name: "Default rate",
+    rate: 10,
+  },
+  {
+    tax_region_id: "txreg_123",
+    name: "Custom rate",
+    rate: 15,
+    rules: [
+      {
+        reference: "product_type",
+        reference_id: "ptyp_1",
+      },
+      {
+        reference: "product",
+        reference_id: "prod_123",
+      },
+    ],
+  },
+])
+```
+
+<a id="createtaxrates-parameters" />
+
+### Parameters
+
+**createTaxRates**
+
+- `data`: [CreateTaxRateDTO](/resources/references/tax/interfaces/taxCreateTaxRateDTO)\[] — The tax rates to be created.
+  - `tax_region_id`: `string` — The associated tax region's ID.
+  - `rate`: `null` | `number` (optional) — The rate to charge.
+
+    Example:
+
+    ```
+    10
+    ```
+  - `code`: `null` | `string` (optional) — The code of the tax rate.
+  - `name`: `string` — The name of the tax rate.
+  - `rules`: Omit\<[CreateTaxRateRuleDTO](/resources/references/tax/interfaces/taxCreateTaxRateRuleDTO), "tax\_rate\_id">\[] (optional) — The rules of the tax rate.
+    - `reference`: `string` — The snake-case name of the data model that the tax rule references. For example, `product`. Learn more in [this guide](/resources/commerce-modules/tax/tax-rates-and-rules#override-tax-rates-with-rules).
+    - `reference_id`: `string` — The ID of the record of the data model that the tax rule references. For example, `prod_123`. Learn more in [this guide](/resources/commerce-modules/tax/tax-rates-and-rules#override-tax-rates-with-rules).
+    - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_by`: `null` | `string` (optional) — Who created the tax rate rule. For example, the ID of the user that created it.
+  - `is_default`: `boolean` (optional) — Whether the tax rate is default.
+  - `created_by`: `string` (optional) — Who created the tax rate. For example, the ID of the user that created the tax rate.
+  - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/tax/interfaces/taxContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/tax/interfaces/taxIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createtaxrates-returns" />
+
+### Returns
+
+**createTaxRates**
+
+- `Promise`: Promise\<[TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[]> — The created tax rates.
+  - `TaxRateDTO[]`: [TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[]
+    - `id`: `string` — The ID of the tax rate.
+    - `rate`: `null` | `number` — The rate to charge.
+
+      Example:
+
+      ```
+      10
+      ```
+    - `code`: `null` | `string` — The code the tax rate is identified by.
+    - `name`: `string` — The name of the Tax Rate.
+
+      Example:
+
+      ```
+      VAT
+      ```
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `tax_region_id`: `string` — The ID of the associated tax region.
+    - `is_combinable`: `boolean` — Whether the tax rate should be combined with parent rates. Learn more [here](/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+    - `is_default`: `boolean` — Whether the tax rate is the default rate for the region.
+    - `created_at`: `string` | `Date` — The creation date of the tax rate.
+    - `updated_at`: `string` | `Date` — The update date of the tax rate.
+    - `deleted_at`: `null` | `Date` — The deletion date of the tax rate.
+    - `created_by`: `null` | `string` — Who created the tax rate. For example, the ID of the user that created the tax rate.
+
+<a id="createtaxrates-data-sharedcontext-promisetaxratedto-1" />
+
+## createTaxRates(data, sharedContext?): Promise\<[TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)>
+
+This method creates a tax rate.
+
+### Example
+
+```ts
+const taxRate = await taxModuleService.createTaxRates({
+  tax_region_id: "txreg_123",
+  name: "Default rate",
+  rate: 10,
+})
+```
+
+<a id="createtaxrates-parameters-1" />
+
+### Parameters
+
+**createTaxRates**
+
+- `data`: [CreateTaxRateDTO](/resources/references/tax/interfaces/taxCreateTaxRateDTO) — The tax rate to be created.
+  - `tax_region_id`: `string` — The associated tax region's ID.
+  - `rate`: `null` | `number` (optional) — The rate to charge.
+
+    Example:
+
+    ```
+    10
+    ```
+  - `code`: `null` | `string` (optional) — The code of the tax rate.
+  - `name`: `string` — The name of the tax rate.
+  - `rules`: Omit\<[CreateTaxRateRuleDTO](/resources/references/tax/interfaces/taxCreateTaxRateRuleDTO), "tax\_rate\_id">\[] (optional) — The rules of the tax rate.
+    - `reference`: `string` — The snake-case name of the data model that the tax rule references. For example, `product`. Learn more in [this guide](/resources/commerce-modules/tax/tax-rates-and-rules#override-tax-rates-with-rules).
+    - `reference_id`: `string` — The ID of the record of the data model that the tax rule references. For example, `prod_123`. Learn more in [this guide](/resources/commerce-modules/tax/tax-rates-and-rules#override-tax-rates-with-rules).
+    - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_by`: `null` | `string` (optional) — Who created the tax rate rule. For example, the ID of the user that created it.
+  - `is_default`: `boolean` (optional) — Whether the tax rate is default.
+  - `created_by`: `string` (optional) — Who created the tax rate. For example, the ID of the user that created the tax rate.
+  - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/tax/interfaces/taxContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/tax/interfaces/taxIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createtaxrates-returns-1" />
+
+### Returns
+
+**createTaxRates**
+
+- `Promise`: Promise\<[TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)> — The created tax rate.
+  - `id`: `string` — The ID of the tax rate.
+  - `rate`: `null` | `number` — The rate to charge.
+
+    Example:
+
+    ```
+    10
+    ```
+  - `code`: `null` | `string` — The code the tax rate is identified by.
+  - `name`: `string` — The name of the Tax Rate.
+
+    Example:
+
+    ```
+    VAT
+    ```
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `tax_region_id`: `string` — The ID of the associated tax region.
+  - `is_combinable`: `boolean` — Whether the tax rate should be combined with parent rates. Learn more [here](/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+  - `is_default`: `boolean` — Whether the tax rate is the default rate for the region.
+  - `created_at`: `string` | `Date` — The creation date of the tax rate.
+  - `updated_at`: `string` | `Date` — The update date of the tax rate.
+  - `deleted_at`: `null` | `Date` — The deletion date of the tax rate.
+  - `created_by`: `null` | `string` — Who created the tax rate. For example, the ID of the user that created the tax rate.

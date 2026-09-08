@@ -1,0 +1,54 @@
+---
+title: restoreOrderShippingMethodTaxLines - Order Module Reference
+sidebarTitle: restoreOrderShippingMethodTaxLines
+---
+
+This documentation provides a reference to the `restoreOrderShippingMethodTaxLines` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method restores soft-deleted shipping method tax lines by their IDs.
+
+## Example
+
+```ts
+await orderModuleService.restoreOrderShippingMethodTaxLines([
+  "123", "321"
+])
+```
+
+<a id="restoreordershippingmethodtaxlines-parameters" />
+
+## Parameters
+
+**restoreOrderShippingMethodTaxLines**
+
+- `ids`: `string`\[] — The IDs of the shipping method tax lines.
+- `config`: [RestoreReturn](/resources/references/order/interfaces/orderRestoreReturn)\<TReturnableLinkableKeys> (optional) — Configurations determining which relations to restore along with each of the shipping method tax lines. You can pass to its `returnLinkableKeys` property any of the shipping method tax line's relation attribute names.
+  - `returnLinkableKeys`: TReturnableLinkableKeys\[] (optional) — An array of strings, each being the ID attribute names of the entity's relations.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="restoreordershippingmethodtaxlines-returns" />
+
+## Returns
+
+**restoreOrderShippingMethodTaxLines**
+
+- `Promise`: Promise\<void | Record\<TReturnableLinkableKeys, string\[]>> — An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the shipping method tax line entity's relations, and its value is an array of strings, each being the ID of the record associated with the shipping method tax line through this relation. If there are no related records restored, the promise resolves to `void`.
+  - `void \| Record<TReturnableLinkableKeys, string[]>`: `void` | `Record<TReturnableLinkableKeys, string[]>`

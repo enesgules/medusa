@@ -1,0 +1,38 @@
+---
+title: AuthenticationResponse
+---
+
+The details of the authentication response.
+
+## Properties
+
+**AuthenticationResponse**
+
+- `success`: `boolean` — Whether the authentication was successful.
+- `authIdentity`: [AuthIdentityDTO](/resources/references/auth/interfaces/authAuthIdentityDTO) (optional) — The authenticated user's details.
+  - `id`: `string` — The ID of the auth identity.
+  - `provider_identities`: [ProviderIdentityDTO](/resources/references/auth/interfaces/authProviderIdentityDTO)\[] (optional) — The list of provider identities linked to the auth identity.
+    - `id`: `string` — The ID of the provider identity.
+    - `provider`: `string`
+    - `entity_id`: `string` — The user's identifier. For example, when using the `emailpass` provider, the `entity_id` would be the user's email.
+    - `auth_identity_id`: `string` (optional) — The ID of the auth identity linked to the provider identity.
+    - `auth_identity`: [AuthIdentityDTO](/resources/references/auth/interfaces/authAuthIdentityDTO) (optional) — The auth identity linked to the provider identity.
+    - `provider_metadata`: `Record<string, unknown>` (optional) — Holds custom data related to the provider in key-value pairs.
+    - `user_metadata`: `Record<string, unknown>` (optional) — Holds custom data related to the user in key-value pairs.
+  - `app_metadata`: `Record<string, unknown>` (optional) — Holds information related to the actor IDs tied to the auth identity.
+- `mfaChallenge`: [AuthMfaChallengeDTO](/resources/references/auth/types/authAuthMfaChallengeDTO) (optional) — The multi-factor authentication (MFA) challenge to complete before issuing a token.
+  - `id`: `string` — The multi-factor authentication (MFA) challenge's ID.
+  - `auth_identity_id`: `string` (optional) — The ID of the authentication identity being challenged.
+  - `auth_identity`: [AuthIdentityDTO](/resources/references/auth/interfaces/authAuthIdentityDTO) (optional) — The authentication identity being challenged.
+    - `id`: `string` — The ID of the auth identity.
+    - `provider_identities`: [ProviderIdentityDTO](/resources/references/auth/interfaces/authProviderIdentityDTO)\[] (optional) — The list of provider identities linked to the auth identity.
+    - `app_metadata`: `Record<string, unknown>` (optional) — Holds information related to the actor IDs tied to the auth identity.
+  - `auth_provider`: `string` | `null` (optional) — The authentication provider handling the challenge.
+  - `methods`: [AuthMfaChallengeMethod](/resources/references/auth/types/authAuthMfaChallengeMethod)\[] — Available methods for completing this challenge.
+  - `expires_at`: `Date` — When the challenge expires.
+  - `attempts`: `number` — Number of verification attempts made.
+  - `max_attempts`: `number` — Maximum verification attempts allowed.
+  - `completed_at`: `Date` | `null` (optional) — When the challenge was completed.
+  - `metadata`: `Record<string, unknown>` | `null` (optional) — Additional metadata for the challenge.
+- `error`: `string` (optional) — If an error occurs during the authentication process, whether within the Auth Module or a third-party provider, the error message is set in this field.
+- `location`: `string` (optional) — The URL to redirect to for further authentication action with a third-party provider. This takes precedence before the `success` field. So, after checking that authentication is successful, you should check whether this field is defined and, if so, redirect to the specified location.

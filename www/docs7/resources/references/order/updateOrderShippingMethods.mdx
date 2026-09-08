@@ -1,0 +1,157 @@
+---
+title: updateOrderShippingMethods - Order Module Reference
+sidebarTitle: updateOrderShippingMethods
+---
+
+This documentation provides a reference to the `updateOrderShippingMethods` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updateordershippingmethods-data-sharedcontext-promiseordershippingmethoddto" />
+
+## updateOrderShippingMethods(data, sharedContext?): Promise\<[OrderShippingMethodDTO](/resources/references/order/interfaces/orderOrderShippingMethodDTO)\[]>
+
+This method updates existing shipping methods. The shipping method IDs are specified in each shipping method object.
+
+### Example
+
+```ts
+const shippingMethods = await orderModuleService.updateOrderShippingMethods([{
+  id: "123",
+  name: "Express Shipping"
+}])
+```
+
+<a id="updateordershippingmethods-parameters" />
+
+### Parameters
+
+**updateOrderShippingMethods**
+
+- `data`: [UpdateOrderShippingMethodDTO](/resources/references/order/interfaces/orderUpdateOrderShippingMethodDTO)\[] — The attributes to update in the shipping methods.
+  - `id`: `string` — The ID of the shipping method.
+  - `name`: `string` (optional) — The name of the shipping method.
+  - `shipping_option_id`: `string` (optional) — The associated shipping option's ID.
+  - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The amount of the shipping method.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `data`: `Record<string, unknown>` (optional) — The data of the shipping method.
+  - `tax_lines`: [CreateOrderTaxLineDTO](/resources/references/order/interfaces/orderCreateOrderTaxLineDTO)\[] | [UpdateOrderTaxLineDTO](/resources/references/order/interfaces/orderUpdateOrderTaxLineDTO)\[] (optional) — The tax lines of the shipping method.
+    - `description`: `string` (optional) — The description of the tax line.
+    - `tax_rate_id`: `string` (optional) — The associated tax rate's ID.
+    - `code`: `string` — The code of the tax line.
+    - `rate`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The rate of the tax line.
+    - `provider_id`: `string` (optional) — The associated provider's ID.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `data`: `null` | `Record<string, unknown>` (optional) — Holds data returned by the tax provider in key-value pairs.
+    - `id`: `string` — The ID of the tax line.
+  - `adjustments`: [CreateOrderAdjustmentDTO](/resources/references/order/interfaces/orderCreateOrderAdjustmentDTO)\[] | [UpdateOrderAdjustmentDTO](/resources/references/order/interfaces/orderUpdateOrderAdjustmentDTO)\[] (optional) — The adjustments of the shipping method.
+    - `code`: `string` (optional) — The code of the adjustment.
+    - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The amount of the adjustment.
+    - `description`: `string` (optional) — The description of the adjustment.
+    - `promotion_id`: `string` (optional) — The associated promotion's ID.
+    - `provider_id`: `string` (optional) — The associated provider's ID.
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the adjustment is tax inclusive.
+    - `version`: `number` (optional) — The version of the adjustment.
+    - `id`: `string` — The ID of the adjustment.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateordershippingmethods-returns" />
+
+### Returns
+
+**updateOrderShippingMethods**
+
+- `Promise`: Promise\<[OrderShippingMethodDTO](/resources/references/order/interfaces/orderOrderShippingMethodDTO)\[]> — The updated shipping methods.
+  - `OrderShippingMethodDTO[]`: [OrderShippingMethodDTO](/resources/references/order/interfaces/orderOrderShippingMethodDTO)\[]
+
+<a id="updateordershippingmethods-data-sharedcontext-promiseordershippingmethoddto-1" />
+
+## updateOrderShippingMethods(data, sharedContext?): Promise\<[OrderShippingMethodDTO](/resources/references/order/interfaces/orderOrderShippingMethodDTO)>
+
+This method updates an existing shipping method.
+
+### Example
+
+```ts
+const shippingMethod = await orderModuleService.updateOrderShippingMethods({
+  id: "123",
+  name: "Express Shipping"
+})
+```
+
+<a id="updateordershippingmethods-parameters-1" />
+
+### Parameters
+
+**updateOrderShippingMethods**
+
+- `data`: [UpdateOrderShippingMethodDTO](/resources/references/order/interfaces/orderUpdateOrderShippingMethodDTO) — The attributes to update in the shipping method.
+  - `id`: `string` — The ID of the shipping method.
+  - `name`: `string` (optional) — The name of the shipping method.
+  - `shipping_option_id`: `string` (optional) — The associated shipping option's ID.
+  - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The amount of the shipping method.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `data`: `Record<string, unknown>` (optional) — The data of the shipping method.
+  - `tax_lines`: [CreateOrderTaxLineDTO](/resources/references/order/interfaces/orderCreateOrderTaxLineDTO)\[] | [UpdateOrderTaxLineDTO](/resources/references/order/interfaces/orderUpdateOrderTaxLineDTO)\[] (optional) — The tax lines of the shipping method.
+    - `description`: `string` (optional) — The description of the tax line.
+    - `tax_rate_id`: `string` (optional) — The associated tax rate's ID.
+    - `code`: `string` — The code of the tax line.
+    - `rate`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The rate of the tax line.
+    - `provider_id`: `string` (optional) — The associated provider's ID.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `data`: `null` | `Record<string, unknown>` (optional) — Holds data returned by the tax provider in key-value pairs.
+    - `id`: `string` — The ID of the tax line.
+  - `adjustments`: [CreateOrderAdjustmentDTO](/resources/references/order/interfaces/orderCreateOrderAdjustmentDTO)\[] | [UpdateOrderAdjustmentDTO](/resources/references/order/interfaces/orderUpdateOrderAdjustmentDTO)\[] (optional) — The adjustments of the shipping method.
+    - `code`: `string` (optional) — The code of the adjustment.
+    - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The amount of the adjustment.
+    - `description`: `string` (optional) — The description of the adjustment.
+    - `promotion_id`: `string` (optional) — The associated promotion's ID.
+    - `provider_id`: `string` (optional) — The associated provider's ID.
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the adjustment is tax inclusive.
+    - `version`: `number` (optional) — The version of the adjustment.
+    - `id`: `string` — The ID of the adjustment.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateordershippingmethods-returns-1" />
+
+### Returns
+
+**updateOrderShippingMethods**
+
+- `Promise`: Promise\<[OrderShippingMethodDTO](/resources/references/order/interfaces/orderOrderShippingMethodDTO)> — The updated shipping method.

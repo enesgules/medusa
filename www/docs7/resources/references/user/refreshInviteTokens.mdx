@@ -1,0 +1,63 @@
+---
+title: refreshInviteTokens - User Module Reference
+sidebarTitle: refreshInviteTokens
+---
+
+This documentation provides a reference to the `refreshInviteTokens` method. This belongs to the User Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method updates the token and expiration date of invites.
+
+## Example
+
+```ts
+const invites = await userModuleService.refreshInviteTokens([
+  "invite_123",
+  "invite_321"
+])
+```
+
+<a id="refreshinvitetokens-parameters" />
+
+## Parameters
+
+**refreshInviteTokens**
+
+- `inviteIds`: `string`\[] — The IDs of the invites to refresh.
+- `sharedContext`: [Context](/resources/references/user/interfaces/userContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/user/interfaces/userIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="refreshinvitetokens-returns" />
+
+## Returns
+
+**refreshInviteTokens**
+
+- `Promise`: Promise\<[InviteDTO](/resources/references/user/interfaces/userInviteDTO)\[]> — The updated invites.
+  - `InviteDTO[]`: [InviteDTO](/resources/references/user/interfaces/userInviteDTO)\[]
+    - `id`: `string` — The ID of the invite.
+    - `email`: `string` — The email of the invite.
+    - `accepted`: `boolean` — Whether the invite is accepted.
+    - `token`: `string` — The token of the invite.
+    - `expires_at`: `Date` — The invite's expiry date.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `roles`: `null` | `string`\[] (optional) — The RBAC roles to assign to the user when the invite is accepted.
+    - `created_at`: `Date` — The invite's creation date.
+    - `updated_at`: `Date` — The invite's update date.
+    - `deleted_at`: `null` | `Date` — The invite's deletion date.

@@ -1,0 +1,617 @@
+---
+title: customer - JS SDK Store Reference
+sidebarTitle: customer
+---
+
+This documentation provides a reference to the `sdk.store.customer` set of methods used to send requests to Medusa's Store API routes.
+
+## create
+
+This method registers a customer. It sends a request to the [Register Customer](/api/store/customers/register-customer)
+API route.
+
+You must use the Auth.register method first to retrieve a registration token. Then, pass that
+registration token in the `headers` parameter of this method as an authorization bearer header.
+
+Related guide: [How to register customer in storefront](/resources/storefront-development/customers/register)
+
+### Example
+
+```ts
+const token = await sdk.auth.register("customer", "emailpass", {
+  "email": "customer@gmail.com",
+  "password": "supersecret"
+})
+
+sdk.store.customer.create(
+  {
+    "email": "customer@gmail.com"
+  },
+  {},
+  {
+    Authorization: `Bearer ${token}`
+  }
+)
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [StoreCreateCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCreateCustomer) — The customer's details.
+  - `email`: `null` | `string` (optional) — The customer's email.
+  - `company_name`: `null` | `string` (optional) — The customer's company name.
+  - `first_name`: `null` | `string` (optional) — The customer's first name.
+  - `last_name`: `null` | `string` (optional) — The customer's last name.
+  - `phone`: `null` | `string` (optional) — The customer's phone number.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the customer.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request. This is where you include the authorization JWT registration token.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[StoreCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerResponse)> — The customer's details.
+  - `customer`: [StoreCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomer) — The customer's details.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.
+    - `addresses`: [StoreCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerAddress)\[] — The customer's address.
+
+## update
+
+This method updates the logged-in customer's details. The customer must be logged in
+first with the Auth.login method.
+
+It sends a request to the
+[Update Customer](/api/store/customers/update-customer) API route.
+
+Related guide: [How to edit customer's profile in the storefront](/resources/storefront-development/customers/profile).
+
+### Example
+
+```ts
+// TODO must be authenticated as the customer to update their details
+sdk.store.customer.update({
+  first_name: "John"
+})
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `body`: [StoreUpdateCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreUpdateCustomer) — The customer's details to update.
+  - `company_name`: `null` | `string` (optional) — The customer's company name.
+  - `first_name`: `null` | `string` (optional) — The customer's first name.
+  - `last_name`: `null` | `string` (optional) — The customer's last name.
+  - `phone`: `null` | `string` (optional) — The customer's phone number.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the customer.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[StoreCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerResponse)> — The customer's details.
+  - `customer`: [StoreCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomer) — The customer's details.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.
+    - `addresses`: [StoreCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerAddress)\[] — The customer's address.
+
+## retrieve
+
+This method retrieves the logged-in customer's details. The customer must be logged in
+first with the Auth.login method.
+
+It sends a request to the [Get Logged-In Customer](/api/store/customers/get-customer)
+API route.
+
+### Example
+
+```ts
+// TODO must be authenticated as the customer to retrieve their details
+sdk.store.customer.retrieve()
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the customer.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[StoreCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerResponse)> — The customer's details.
+  - `customer`: [StoreCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomer) — The customer's details.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.
+    - `addresses`: [StoreCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerAddress)\[] — The customer's address.
+
+## createAddress
+
+This method creates an address for the logged-in customer. The customer must be logged in
+first with the Auth.login method.
+
+It sends a request to the [Create Address](/api/store/customers/create-address)
+API route.
+
+Related guides: [How to manage customer's addresses in the storefront](/resources/storefront-development/customers/addresses)
+
+### Example
+
+```ts
+// TODO must be authenticated as the customer to create an address
+sdk.store.customer.createAddress({
+  country_code: "us"
+})
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="createaddress-parameters" />
+
+### Parameters
+
+**createAddress**
+
+- `body`: [StoreCreateCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCreateCustomerAddress) — The address's details.
+  - `first_name`: `null` | `string` (optional) — The address's first name.
+  - `last_name`: `null` | `string` (optional) — The address's last name.
+  - `phone`: `null` | `string` (optional) — The address's phone.
+  - `company`: `null` | `string` (optional) — The address's company.
+  - `address_1`: `null` | `string` (optional) — The address's first line.
+  - `address_2`: `null` | `string` (optional) — The address's second line.
+  - `city`: `null` | `string` (optional) — The address's city.
+  - `country_code`: `null` | `string` (optional) — The address's country code.
+
+    Example:
+
+    ```
+    us
+    ```
+  - `province`: `null` | `string` (optional) — The address's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province.
+  - `postal_code`: `null` | `string` (optional) — The address's postal code.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `address_name`: `null` | `string` (optional) — The address's name.
+  - `is_default_shipping`: `boolean` (optional) — Whether the address is used by default for shipping.
+  - `is_default_billing`: `boolean` (optional) — Whether the address is used by default for billing.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the customer.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="createaddress-returns" />
+
+### Returns
+
+**createAddress**
+
+- `Promise`: Promise\<[StoreCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerResponse)> — The customer's details.
+  - `customer`: [StoreCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomer) — The customer's details.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.
+    - `addresses`: [StoreCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerAddress)\[] — The customer's address.
+
+## updateAddress
+
+This method updates the address of the logged-in customer. The customer must be logged in
+first with the Auth.login method.
+
+It sends a request to the [Update Address](/api/store/customers/update-address)
+API route.
+
+Related guides: [How to manage customer's addresses in the storefront](/resources/storefront-development/customers/addresses)
+
+### Example
+
+```ts
+// TODO must be authenticated as the customer to update their address
+sdk.store.customer.updateAddress(
+  "caddr_123",
+  {
+    country_code: "us"
+  }
+)
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="updateaddress-parameters" />
+
+### Parameters
+
+**updateAddress**
+
+- `addressId`: `string` — The ID of the address to update.
+- `body`: [StoreUpdateCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreUpdateCustomerAddress) — The details to update in the address.
+  - `first_name`: `null` | `string` (optional) — The address's first name.
+  - `last_name`: `null` | `string` (optional) — The address's last name.
+  - `phone`: `null` | `string` (optional) — The address's phone.
+  - `company`: `null` | `string` (optional) — The address's company.
+  - `address_1`: `null` | `string` (optional) — The address's first line.
+  - `address_2`: `null` | `string` (optional) — The address's second line.
+  - `city`: `null` | `string` (optional) — The address's city.
+  - `country_code`: `null` | `string` (optional) — The address's country code.
+
+    Example:
+
+    ```
+    us
+    ```
+  - `province`: `null` | `string` (optional) — The address's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province.
+  - `postal_code`: `null` | `string` (optional) — The address's postal code.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `address_name`: `null` | `string` (optional) — The address's name.
+  - `is_default_shipping`: `boolean` (optional) — Whether the address is used by default for shipping.
+  - `is_default_billing`: `boolean` (optional) — Whether the address is used by default for billing.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the customer.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updateaddress-returns" />
+
+### Returns
+
+**updateAddress**
+
+- `Promise`: Promise\<[StoreCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerResponse)> — The customer's details.
+  - `customer`: [StoreCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomer) — The customer's details.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.
+    - `addresses`: [StoreCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerAddress)\[] — The customer's address.
+
+## listAddress
+
+This method retrieves the logged-in customer's address. The customer must be logged in
+first with the Auth.login method.
+
+It sends a request to the [List Customer's Address](/api/store/customers/list-customers-addresses)
+API route.
+
+Related guides: [How to manage customer's addresses in the storefront](/resources/storefront-development/customers/addresses)
+
+### Example
+
+To retrieve the list of addresses:
+
+```ts
+// TODO must be authenticated as the customer to list their addresses
+sdk.store.customer.listAddress()
+.then(({ addresses, count, offset, limit }) => {
+  console.log(addresses)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+// TODO must be authenticated as the customer to list their addresses
+sdk.store.customer.listAddress({
+  limit: 10,
+  offset: 10
+})
+.then(({ addresses, count, offset, limit }) => {
+  console.log(addresses)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each address:
+
+```ts
+// TODO must be authenticated as the customer to list their addresses
+sdk.store.customer.listAddress({
+  fields: "id,country_code"
+})
+.then(({ addresses, count, offset, limit }) => {
+  console.log(addresses)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="listaddress-parameters" />
+
+### Parameters
+
+**listAddress**
+
+- `query`: [FindParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesFindParams) & [StoreCustomerAddressFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerAddressFilters) (optional) — Configure the fields to retrieve in the addresses.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `$and`: ([BaseCustomerAddressFilters](/resources/references/types/interfaces/typesBaseCustomerAddressFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCustomerAddressFilters](/resources/references/types/interfaces/typesBaseCustomerAddressFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([BaseCustomerAddressFilters](/resources/references/types/interfaces/typesBaseCustomerAddressFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCustomerAddressFilters](/resources/references/types/interfaces/typesBaseCustomerAddressFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseCustomerAddressFilters](/resources/references/types/interfaces/typesBaseCustomerAddressFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCustomerAddressFilters](/resources/references/types/interfaces/typesBaseCustomerAddressFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — A query or keyword to search the address's searchable fields.
+    - `company`: `string` | `string`\[] (optional) — Filter by company name(s).
+    - `city`: `string` | `string`\[] (optional) — Filter by cities.
+    - `country_code`: `string` | `string`\[] (optional) — Filter by country code(s).
+    - `province`: `string` | `string`\[] (optional) — Filter by lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province code(s).
+    - `postal_code`: `string` | `string`\[] (optional) — Filter by postal code(s).
+  - `$or`: ([BaseCustomerAddressFilters](/resources/references/types/interfaces/typesBaseCustomerAddressFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCustomerAddressFilters](/resources/references/types/interfaces/typesBaseCustomerAddressFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([BaseCustomerAddressFilters](/resources/references/types/interfaces/typesBaseCustomerAddressFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCustomerAddressFilters](/resources/references/types/interfaces/typesBaseCustomerAddressFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseCustomerAddressFilters](/resources/references/types/interfaces/typesBaseCustomerAddressFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCustomerAddressFilters](/resources/references/types/interfaces/typesBaseCustomerAddressFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — A query or keyword to search the address's searchable fields.
+    - `company`: `string` | `string`\[] (optional) — Filter by company name(s).
+    - `city`: `string` | `string`\[] (optional) — Filter by cities.
+    - `country_code`: `string` | `string`\[] (optional) — Filter by country code(s).
+    - `province`: `string` | `string`\[] (optional) — Filter by lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province code(s).
+    - `postal_code`: `string` | `string`\[] (optional) — Filter by postal code(s).
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — A query or keyword to search the address's searchable fields.
+  - `city`: `string` | `string`\[] (optional) — Filter by cities.
+  - `country_code`: `string` | `string`\[] (optional) — Filter by country code(s).
+  - `postal_code`: `string` | `string`\[] (optional) — Filter by postal code(s).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listaddress-returns" />
+
+### Returns
+
+**listAddress**
+
+- `Promise`: Promise\<[StoreCustomerAddressListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerAddressListResponse)> — The paginated list of addresses.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `addresses`: [StoreCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerAddress)\[] — The paginated list of addresses.
+    - `id`: `string` — The address's ID.
+    - `address_name`: `null` | `string` — The address's name.
+    - `is_default_shipping`: `boolean` — Whether the address is used by default for shipping.
+    - `is_default_billing`: `boolean` — Whether the address is used by default for billing.
+    - `customer_id`: `string` — The ID of the customer this address belongs to.
+    - `company`: `null` | `string` — The address's company.
+    - `first_name`: `null` | `string` — The address's first name.
+    - `last_name`: `null` | `string` — The address's last name.
+    - `address_1`: `null` | `string` — The address's first line.
+    - `address_2`: `null` | `string` — The address's second line.
+    - `city`: `null` | `string` — The address's city.
+    - `country_code`: `null` | `string` — The address's country code.
+
+      Example:
+
+      ```
+      us
+      ```
+    - `province`: `null` | `string` — The address's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province.
+    - `postal_code`: `null` | `string` — The address's postal code.
+    - `phone`: `null` | `string` — The address's phone number.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `created_at`: `string` — The date the address was created.
+    - `updated_at`: `string` — The date the address was updated.
+
+## retrieveAddress
+
+This method retrieves an address of the logged-in customer. The customer must be logged in
+first with the Auth.login method.
+
+It sends a request to the [Get Address](/api/store/customers/get-address)
+API route.
+
+Related guides: [How to manage customer's addresses in the storefront](/resources/storefront-development/customers/addresses)
+
+### Example
+
+To retrieve an address by its ID:
+
+```ts
+// TODO must be authenticated as the customer to retrieve their address
+sdk.store.customer.retrieveAddress(
+  "caddr_123"
+)
+.then(({ address }) => {
+  console.log(address)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+// TODO must be authenticated as the customer to retrieve their address
+sdk.store.customer.retrieveAddress(
+  "caddr_123",
+  {
+    fields: "id,country_code"
+  }
+)
+.then(({ address }) => {
+  console.log(address)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieveaddress-parameters" />
+
+### Parameters
+
+**retrieveAddress**
+
+- `addressId`: `string` — The address's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the address.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieveaddress-returns" />
+
+### Returns
+
+**retrieveAddress**
+
+- `Promise`: Promise\<[StoreCustomerAddressResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerAddressResponse)> — The address's details.
+  - `address`: [StoreCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomerAddress) — The address's details.
+    - `id`: `string` — The address's ID.
+    - `address_name`: `null` | `string` — The address's name.
+    - `is_default_shipping`: `boolean` — Whether the address is used by default for shipping.
+    - `is_default_billing`: `boolean` — Whether the address is used by default for billing.
+    - `customer_id`: `string` — The ID of the customer this address belongs to.
+    - `company`: `null` | `string` — The address's company.
+    - `first_name`: `null` | `string` — The address's first name.
+    - `last_name`: `null` | `string` — The address's last name.
+    - `address_1`: `null` | `string` — The address's first line.
+    - `address_2`: `null` | `string` — The address's second line.
+    - `city`: `null` | `string` — The address's city.
+    - `country_code`: `null` | `string` — The address's country code.
+
+      Example:
+
+      ```
+      us
+      ```
+    - `province`: `null` | `string` — The address's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province.
+    - `postal_code`: `null` | `string` — The address's postal code.
+    - `phone`: `null` | `string` — The address's phone number.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `created_at`: `string` — The date the address was created.
+    - `updated_at`: `string` — The date the address was updated.
+
+## deleteAddress
+
+This method deletes an address of the logged-in customer. The customer must be logged in
+first with the Auth.login method.
+
+It sends a request to the [Remove Address](/api/store/customers/remove-address)
+API route.
+
+Related guides: [How to manage customer's addresses in the storefront](/resources/storefront-development/customers/addresses)
+
+### Example
+
+```ts
+// TODO must be authenticated as the customer to delete their address
+sdk.store.customer.deleteAddress("caddr_123")
+.then(({ deleted, parent: customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="deleteaddress-parameters" />
+
+### Parameters
+
+**deleteAddress**
+
+- `addressId`: `string` — The address's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="deleteaddress-returns" />
+
+### Returns
+
+**deleteAddress**
+
+- `Promise`: Promise\<[StoreCustomerAddressDeleteResponse](/resources/references/types/HttpTypes/types/typesHttpTypesStoreCustomerAddressDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: TObject — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+  - `parent`: TParent (optional) — The parent resource of the item that was deleted, if applicable.

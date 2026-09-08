@@ -1,0 +1,69 @@
+---
+title: retrieveServiceZone
+---
+
+This method retrieves a fulfillment set's service zone's details. It sends a request to the
+[Get Service Zone](/api/admin/fulfillment-sets/get-a-service-zone)
+API route.
+
+## Example
+
+To retrieve a fulfillment set's service zone by its ID:
+
+```ts
+sdk.admin.fulfillmentSet.retrieveServiceZone(
+  "fset_123",
+  "serzo_123"
+)
+.then(({ service_zone }) => {
+  console.log(service_zone)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.fulfillmentSet.retrieveServiceZone(
+  "fset_123",
+  "serzo_123",
+  {
+    fields: "id,*geo_zones"
+  }
+)
+.then(({ service_zone }) => {
+  console.log(service_zone)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieveservicezone-parameters" />
+
+## Parameters
+
+**retrieveServiceZone**
+
+- `fulfillmentSetId`: `string` — The fulfillment set's ID.
+- `serviceZoneId`: `string` — The service zone's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the service zone.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieveservicezone-returns" />
+
+## Returns
+
+**retrieveServiceZone**
+
+- `Promise`: Promise\<[AdminServiceZoneResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminServiceZoneResponse)> — The service zone's details.
+  - `service_zone`: [AdminServiceZone](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminServiceZone) — The service zone's details.
+    - `id`: `string` — The service zone's ID.
+    - `name`: `string` — The service zone's name.
+    - `fulfillment_set_id`: `string` — The ID of the fulfillment set this service zone belongs to.
+    - `fulfillment_set`: [AdminFulfillmentSet](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentSet) — The fulfillment set this service zone belongs to.
+    - `geo_zones`: [AdminGeoZone](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGeoZone)\[] — The service zone's geo zones.
+    - `shipping_options`: [AdminShippingOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOption)\[] — The shipping options that can be used in this service zone.
+    - `created_at`: `string` — The date the service zone is created.
+    - `updated_at`: `string` — The date the service zone is updated.
+    - `deleted_at`: `null` | `string` — The date the service zone is deleted.

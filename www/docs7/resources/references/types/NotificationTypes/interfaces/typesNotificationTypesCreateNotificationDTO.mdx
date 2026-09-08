@@ -1,0 +1,32 @@
+---
+title: CreateNotificationDTO
+---
+
+A notification to send and have created in the DB
+
+## Properties
+
+**CreateNotificationDTO**
+
+- `to`: `string` — The recipient of the notification. It can be email, phone number, or username, depending on the channel.
+- `from`: `null` | `string` (optional) — The sender of the notification. It can be email, phone number, or username, depending on the channel.
+- `channel`: `string` — The channel through which the notification is sent, such as `email` or `sms`.
+- `template`: `null` | `string` (optional) — The template name in the provider's system.
+- `data`: `null` | `Record<string, unknown>` (optional) — The data that gets passed over to the provider for rendering the notification.
+- `provider_data`: `null` | `Record<string, unknown>` (optional) — Additional data specific to the provider or channel. For example, cc and bcc for emails.
+- `content`: `null` | [NotificationContent](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationContent) (optional) — The content that gets passed over to the provider.
+  - `subject`: `string` (optional) — the subject of the notification
+  - `text`: `string` (optional) — the text content of the notification
+  - `html`: `string` (optional) — the html content of the notification
+- `trigger_type`: `null` | `string` (optional) — The event name, the workflow, or anything else that can help to identify what triggered the notification.
+- `resource_id`: `null` | `string` (optional) — The ID of the resource this notification is for, if applicable. Useful for displaying relevant information in the UI. For example, the ID of the order if the notification is related to an order update.
+- `resource_type`: `null` | `string` (optional) — The type of the resource this notification is for, if applicable. For example, `order` if it's related to an order update.
+- `receiver_id`: `null` | `string` (optional) — The ID of the customer this notification is for, if applicable.
+- `original_notification_id`: `null` | `string` (optional) — The original notification, in case this is a resent notification.
+- `idempotency_key`: `null` | `string` (optional) — An idempotency key that ensures the same notification is not sent multiple times.
+- `attachments`: `null` | [Attachment](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesAttachment)\[] (optional) — Optional attachments for the notification.
+  - `content`: `string` — The content of the attachment, encoded as a binary string.
+  - `filename`: `string` — The filename of the attachment.
+  - `content_type`: `string` (optional) — The MIME type of the attachment.
+  - `disposition`: `string` (optional) — The disposition of the attachment, For example, "inline" or "attachment".
+  - `id`: `string` (optional) — The ID, if the attachment is meant to be referenced within the body of the message.

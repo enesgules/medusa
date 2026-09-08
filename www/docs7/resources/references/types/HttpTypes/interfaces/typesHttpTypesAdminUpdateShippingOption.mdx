@@ -1,0 +1,57 @@
+---
+title: AdminUpdateShippingOption
+---
+
+## Properties
+
+**AdminUpdateShippingOption**
+
+- `name`: `string` (optional) — The name of the shipping option. Customers can view this name during checkout.
+
+  Example:
+
+  ```
+  "Standard Shipping"
+  ```
+- `data`: `Record<string, unknown>` (optional) — Additional data that is useful for third-party fulfillment providers that process fulfillments for the shipping option.
+- `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) (optional) — The type of shipping option's price.
+- `provider_id`: `string` (optional) — The ID of the fulfillment provider that the shipping option belongs to.
+- `shipping_profile_id`: `string` (optional) — The ID of the shipping profile that the shipping option belongs to. Learn more in the [Shipping Options](/resources/commerce-modules/fulfillment/shipping-option#shipping-profiles-and-types) documentation.
+- `type`: [AdminCreateShippingOptionType](/resources/references/types/interfaces/typesAdminCreateShippingOptionType) (optional) — The type of shipping option. Learn more in the [Shipping Options](/resources/commerce-modules/fulfillment/shipping-option#shipping-profiles-and-types) documentation.
+  - `label`: `string` — The label of the shipping option type.
+  - `description`: `string` (optional) — The description of the shipping option type.
+  - `code`: `string` — The code of the shipping option type.
+- `type_id`: `string` (optional) — The ID of the type of shipping option. Learn more in the [Shipping Option](/resources/commerce-modules/fulfillment/shipping-option#shipping-profiles-and-types) documentation.
+- `prices`: ([AdminUpdateShippingOptionPriceWithCurrency](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateShippingOptionPriceWithCurrency) | [AdminUpdateShippingOptionPriceWithRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateShippingOptionPriceWithRegion))\[] (optional) — The prices of the shipping option.
+  - `rules`: [PriceRule](/resources/references/pricing/models/PriceRule)\[] (optional) — The rules of the shipping option price that indicate when the price should be applied.
+    - `[IsDmlEntity]`: `boolean` (default: true)
+    - `name`: [InferDmlEntityNameFromConfig](/resources/references/types/DmlTypes/types/typesDmlTypesInferDmlEntityNameFromConfig)\<TConfig>
+    - `schema`: Schema
+  - `id`: `string` (optional) — The ID of the shipping option price that is being updated. If not provided, a new shipping option price will be created.
+  - `currency_code`: `string` (optional) — The currency code of the shipping option price.
+
+    Example:
+
+    ```
+    "usd"
+    ```
+  - `amount`: `number` (optional) — The amount of the shipping option price.
+  - `region_id`: `string` (optional) — The ID of the region that the shipping option price belongs to.
+- `rules`: ([AdminCreateShippingOptionRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateShippingOptionRule) | [AdminUpdateShippingOptionRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateShippingOptionRule))\[] (optional) — The rules of the shipping option. Learn more in the [Shipping Option Rules](/resources/commerce-modules/fulfillment/shipping-option#shipping-option-rules) documentation.
+  - `operator`: [RuleOperatorType](/resources/references/types/CommonTypes/types/typesCommonTypesRuleOperatorType) — The operator of the shipping option rule.
+  - `attribute`: `string` — The attribute of the shipping option rule.
+
+    Example:
+
+    ```
+    `enabled_in_store`
+    ```
+  - `value`: `string` | `string`\[] — The value of the shipping option rule.
+
+    Example:
+
+    ```
+    `true`
+    ```
+  - `id`: `string` — The ID of the shipping option rule that is being updated.
+- `metadata`: `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the shipping option.

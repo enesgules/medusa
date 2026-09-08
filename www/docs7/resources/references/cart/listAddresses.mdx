@@ -1,0 +1,103 @@
+---
+title: listAddresses - Cart Module Reference
+sidebarTitle: listAddresses
+---
+
+This documentation provides a reference to the `listAddresses` method. This belongs to the Cart Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of addresses based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of addresses using their IDs:
+
+```ts
+const addresses = await cartModuleService.listAddresses({
+  id: ["caaddr_123", "caaddr_321"],
+})
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const addresses = await cartModuleService.listAddresses(
+  {
+    id: ["caaddr_123", "caaddr_321"],
+  },
+  {
+    take: 20,
+    skip: 2,
+  }
+)
+```
+
+<a id="listaddresses-parameters" />
+
+## Parameters
+
+**listAddresses**
+
+- `filters`: [FilterableAddressProps](/resources/references/cart/interfaces/cartFilterableAddressProps) (optional) — The filters to apply on the retrieved addresss.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the addresss by.
+  - `$and`: ([FilterableAddressProps](/resources/references/cart/interfaces/cartFilterableAddressProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableAddressProps](/resources/references/cart/interfaces/cartFilterableAddressProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the addresss by.
+    - `$and`: ([FilterableAddressProps](/resources/references/cart/interfaces/cartFilterableAddressProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableAddressProps](/resources/references/cart/interfaces/cartFilterableAddressProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableAddressProps](/resources/references/cart/interfaces/cartFilterableAddressProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableAddressProps](/resources/references/cart/interfaces/cartFilterableAddressProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `$or`: ([FilterableAddressProps](/resources/references/cart/interfaces/cartFilterableAddressProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableAddressProps](/resources/references/cart/interfaces/cartFilterableAddressProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the addresss by.
+    - `$and`: ([FilterableAddressProps](/resources/references/cart/interfaces/cartFilterableAddressProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableAddressProps](/resources/references/cart/interfaces/cartFilterableAddressProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableAddressProps](/resources/references/cart/interfaces/cartFilterableAddressProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableAddressProps](/resources/references/cart/interfaces/cartFilterableAddressProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+- `config`: [FindConfig](/resources/references/cart/interfaces/cartFindConfig)\<[CartAddressDTO](/resources/references/cart/interfaces/cartCartAddressDTO)> (optional) — The configurations determining how the address is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a address.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/cart/types/cartFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/cart/types/cartInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/cart/types/cartCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/cart/interfaces/cartContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/cart/interfaces/cartIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listaddresses-returns" />
+
+## Returns
+
+**listAddresses**
+
+- `Promise`: Promise\<[CartAddressDTO](/resources/references/cart/interfaces/cartCartAddressDTO)\[]> — The list of addresses.
+  - `CartAddressDTO[]`: [CartAddressDTO](/resources/references/cart/interfaces/cartCartAddressDTO)\[]
+    - `id`: `string` — The ID of the address.
+    - `customer_id`: `string` (optional) — The customer ID of the address.
+    - `first_name`: `string` (optional) — The first name of the address.
+    - `last_name`: `string` (optional) — The last name of the address.
+    - `phone`: `string` (optional) — The phone number of the address.
+    - `company`: `string` (optional) — The company of the address.
+    - `address_1`: `string` (optional) — The first address line of the address.
+    - `address_2`: `string` (optional) — The second address line of the address.
+    - `city`: `string` (optional) — The city of the address.
+    - `country_code`: `string` (optional) — The country code of the address.
+    - `province`: `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
+    - `postal_code`: `string` (optional) — The postal code of the address.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the address was created.
+    - `updated_at`: `string` | `Date` — When the address was updated.

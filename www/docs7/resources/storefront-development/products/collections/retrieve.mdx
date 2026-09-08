@@ -1,0 +1,167 @@
+---
+title: Retrieve a Collection in Storefront
+---
+
+In this guide, you'll learn how to retrieve a product collection and its details in the storefront.
+
+## How to Retrieve a Product Collection in Storefront?
+
+There are two ways to retrieve a product collection:
+
+- [Retrieve a collection by its ID](/resources/storefront-development/products/collections/retrieve#retrieve-a-product-collection-by-id). This method is straightforward and useful if you only have the collection's ID.
+- [Retrieve a collection by its `handle` field](/resources/storefront-development/products/collections/retrieve#retrieve-a-product-collection-by-handle). This is useful if you're creating human-readable URLs in your storefront.
+
+***
+
+## Retrieve a Product Collection by ID
+
+To retrieve a product collection by its ID, send a request to the [Get a Collection API route](/api/store/collections/get-a-collection):
+
+<Note>
+  **Tip**
+
+  Learn how to install and configure the JS SDK in the [JS SDK documentation](/resources/js-sdk).
+</Note>
+
+<Tabs>
+  <Tab title="React">
+    ```tsx
+    "use client" // include with Next.js 13+
+
+    import { useEffect, useState } from "react"
+    import { HttpTypes } from "@medusajs/types"
+    import { sdk } from "@/lib/sdk"
+
+    type Props = {
+      id: string
+    }
+
+    export default function Collection({ id }: Props) {
+      const [loading, setLoading] = useState(true)
+      const [collection, setCollection] = useState<
+        HttpTypes.StoreCollection | undefined
+      >()
+
+      useEffect(() => {
+        if (!loading) {
+          return 
+        }
+
+        sdk.store.collection.retrieve(id)
+        .then(({ collection: dataCollection }) => {
+          setCollection(dataCollection)
+          setLoading(false)
+        })
+      }, [loading])
+
+      return (
+        <div>
+          {loading && <span>Loading...</span>}
+          {collection && (
+            <>
+              <h1>{collection.title}</h1>
+            </>
+          )}
+        </div>
+      )
+    }
+    ```
+  </Tab>
+
+  <Tab title="JS SDK">
+    ```ts
+    sdk.store.collection.retrieve(id)
+    .then(({ collection }) => {
+      // use the collection...
+      console.log(collection)
+    })
+    ```
+  </Tab>
+</Tabs>
+
+In this example, you retrieve the product collection by sending a request to the [Get a Collection API route](/api/store/collections/get-a-collection).
+
+The response has a `collection` field, which is a [product collection object](/api/store/collections/schema).
+
+***
+
+## Retrieve a Product Collection by Handle
+
+To retrieve a product by its handle, send a request to the [List Product Collections API route](/api/store/collections/list-collections) passing it the `handle` query parameter:
+
+<Tabs>
+  <Tab title="React">
+    ```tsx
+    "use client" // include with Next.js 13+
+
+    import { useEffect, useState } from "react"
+    import { HttpTypes } from "@medusajs/types"
+    import { sdk } from "@/lib/sdk"
+
+    type Props = {
+      handle: string
+    }
+
+    export default function Collection(
+      { handle }: Props
+    ) {
+      const [loading, setLoading] = useState(true)
+      const [collection, setCollection] = useState<
+        HttpTypes.StoreCollection | undefined
+      >()
+
+      useEffect(() => {
+        if (!loading) {
+          return 
+        }
+
+        sdk.store.collection.list({
+          handle,
+        })
+        .then(({ collections }) => {
+          if (collections.length) {
+            setCollection(collections[0])
+          }
+          setLoading(false)
+        })
+      }, [loading])
+
+      return (
+        <div>
+          {loading && <span>Loading...</span>}
+          {!loading && !collection && (
+            <span>Product collection not found</span>
+          )}
+          {collection && (
+            <>
+              <h1>{collection.title}</h1>
+            </>
+          )}
+        </div>
+      )
+    }
+    ```
+  </Tab>
+
+  <Tab title="JS SDK">
+    ```ts
+    sdk.store.collection.list({
+      handle,
+    })
+    .then(({ collections }) => {
+      if (!collections.length) {
+        // collections with the specified handle doesn't exist
+        return
+      }
+      // use the collection...
+      console.log(collections[0])
+    })
+    ```
+  </Tab>
+</Tabs>
+
+In this example, you retrieve the product collection by sending a request to the [List Product Collections API route](/api/store/collections/list-collections) passing it the `handle` query parameter.
+
+Since handles are unique, you can be sure that the product collection you retrieve is the one you're looking for. If no product collection matches the handle, you can show a 404 error or a custom message to the customer.
+
+The product collection in the response is a [product collection object](/api/store/collections/schema).

@@ -1,0 +1,72 @@
+---
+title: calculateShippingOptionsPrices - Fulfillment Module Reference
+sidebarTitle: calculateShippingOptionsPrices
+---
+
+This documentation provides a reference to the `calculateShippingOptionsPrices` method. This belongs to the Fulfillment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method calculates the prices for one or more shipping options.
+
+## Example
+
+```ts
+const prices =
+  await fulfillmentModuleService.calculateShippingOptionsPrices(
+    [
+      {
+        provider_id: "webshipper",
+        data: {
+          cart: {
+            id: "cart_123",
+          },
+        },
+      },
+    ]
+  )
+```
+
+<a id="calculateshippingoptionsprices-parameters" />
+
+## Parameters
+
+**calculateShippingOptionsPrices**
+
+- `shippingOptionsData`: [CalculateShippingOptionPriceDTO](/resources/references/fulfillment/interfaces/fulfillmentCalculateShippingOptionPriceDTO)\[] — The shipping options data to calculate the prices for.
+  - `id`: `string` — The ID of the shipping option.
+  - `provider_id`: `string` — The ID of the fulfillment provider.
+  - `optionData`: `Record<string, unknown>` — The `data` property of the shipping option.
+  - `data`: `Record<string, unknown>` — The shipping method's `data` property with custom data passed from the frontend.
+  - `context`: [CartPropsForFulfillment](/resources/references/fulfillment/types/fulfillmentCartPropsForFulfillment) & \{ \[k: string]: unknown; from\_location?: StockLocationDTO | undefined; } & CalculatedRMAShippingContext — The calculation context needed for the associated fulfillment provider to calculate the price of a shipping option.
+    - `id`: [CartDTO](/resources/references/fulfillment/interfaces/fulfillmentCartDTO)\[`"id"`] — The cart's ID.
+    - `shipping_address`: [CartDTO](/resources/references/fulfillment/interfaces/fulfillmentCartDTO)\[`"shipping_address"`] — The cart's shipping address.
+    - `items`: [CartLineItemDTO](/resources/references/fulfillment/interfaces/fulfillmentCartLineItemDTO) & `object`\[] — The cart's items
+- `sharedContext`: [Context](/resources/references/fulfillment/interfaces/fulfillmentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/fulfillment/interfaces/fulfillmentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="calculateshippingoptionsprices-returns" />
+
+## Returns
+
+**calculateShippingOptionsPrices**
+
+- `Promise`: Promise\<[CalculatedShippingOptionPrice](/resources/references/fulfillment/types/fulfillmentCalculatedShippingOptionPrice)\[]> — The calculated shipping option prices.
+  - `CalculatedShippingOptionPrice[]`: [CalculatedShippingOptionPrice](/resources/references/fulfillment/types/fulfillmentCalculatedShippingOptionPrice)\[]
+    - `calculated_amount`: `number` — The calculated price.
+    - `is_calculated_price_tax_inclusive`: `boolean` — Whether the calculated price includes taxes. If enabled, Medusa will infer the taxes from the calculated price. If false, Medusa will add taxes to the calculated price.

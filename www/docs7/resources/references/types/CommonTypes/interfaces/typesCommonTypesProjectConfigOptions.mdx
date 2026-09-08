@@ -1,0 +1,233 @@
+---
+title: ProjectConfigOptions
+---
+
+Essential configurations related to the Medusa application, such as database and CORS configurations.
+
+## Properties
+
+**ProjectConfigOptions**
+
+- `databaseName`: `string` (optional) — The name of the database to connect to. If the name is specified in `databaseUrl`, then you don't have to use this configuration. Make sure to create the PostgreSQL database before using it. You can check how to create a database in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html).
+
+  Example:
+
+  ````
+  js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { databaseName: process.env.DATABASE_NAME || "medusa-store", // ... }, // ... }) ```
+  ````
+- `databaseUrl`: `string` (optional) — The PostgreSQL connection URL of the database, which is of the following format: `bash postgres://[user][:password]@[host][:port]/[dbname] ` Where: - `[user]`: (required) your PostgreSQL username. If not specified, the system's username is used by default. The database user that you use must have create privileges. If you're using the `postgres` superuser, then it should have these privileges by default. Otherwise, make sure to grant your user create privileges. You can learn how to do that in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/ddl-priv.html). - `[:password]`: an optional password for the user. When provided, make sure to put `:` before the password. - `[host]`: (required) your PostgreSQL host. When run locally, it should be `localhost`. - `[:port]`: an optional port that the PostgreSQL server is listening on. By default, it's `5432`. When provided, make sure to put `:` before the port. - `[dbname]`: (required) the name of the database. You can learn more about the connection URL format in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).
+
+  Example:
+
+  ````
+  For example, set the following database URL in your environment variables:bash DATABASE_URL=postgres://postgres@localhost/medusa-store ```Then, use the value in`medusa-config.ts`:js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { databaseUrl: process.env.DATABASE_URL, // ... }, // ... }) ```
+  ````
+- `databaseSchema`: `string` (optional) — The database schema to connect to. This is not required to provide if you’re using the default schema, which is `public`. `js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { databaseSchema: process.env.DATABASE_SCHEMA || "custom", // ... }, // ... }) `
+- `databaseLogging`: `boolean` (optional) — This configuration specifies whether database messages should be logged.
+
+  Example:
+
+  ````
+  js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { databaseLogging: false // ... }, // ... }) ```
+  ````
+- `databaseDriverOptions`: `Record<string, unknown>` & `object` (optional) — This configuration is used to pass additional options to the database connection. You can pass any configuration. For example, pass the `ssl` property that enables support for TLS/SSL connections. This is useful for production databases, which can be supported by setting the `rejectUnauthorized` attribute of `ssl` object to `false`. During development, it’s recommended not to pass this option. :::note Make sure to add to the end of the database URL `?ssl_mode=disable` as well when disabling `rejectUnauthorized`. :::
+
+  Example:
+
+  ````
+  js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { databaseDriverOptions: process.env.NODE_ENV !== "development" ? { connection: { ssl: { rejectUnauthorized: false } } } : {} // ... }, // ... }) ```
+  ````
+
+  - `connection`: `object` (optional)
+    - `ssl`: `boolean` | `ConnectionOptions` (optional) — Configure support for TLS/SSL connection
+- `redisUrl`: `string` (optional) — This configuration specifies the connection URL to Redis to store the Medusa server's session. :::note You must first have Redis installed. You can refer to [Redis's installation guide](https://redis.io/docs/getting-started/installation/). ::: The Redis connection URL has the following format: `bash redis[s]://[[username][:password]@][host][:port][/db-number] ` For a local Redis installation, the connection URL should be `redis://localhost:6379` unless you’ve made any changes to the Redis configuration during installation.
+
+  Example:
+
+  ````
+  js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { redisUrl: process.env.REDIS_URL || "redis://localhost:6379", // ... }, // ... }) ```
+  ````
+- `redisPrefix`: `string` (optional) — This configuration defines a prefix on all keys stored in Redis for the Medusa server's session. The default value is `sess:`. If this configuration option is provided, it is prepended to `sess:`.
+
+  Example:
+
+  ````
+  js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { redisPrefix: process.env.REDIS_URL || "medusa:", // ... }, // ... }) ```
+  ````
+- `redisOptions`: `RedisOptions` (optional) — This configuration defines options to pass ioredis for the Redis connection used to store the Medusa server's session. Refer to [ioredis’s RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions) for the list of available options.
+
+  Example:
+
+  ````
+  js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { redisOptions: { connectionName: process.env.REDIS_CONNECTION_NAME || "medusa", } // ... }, // ... }) ```
+  ````
+- `sessionOptions`: [SessionOptions](/resources/references/types/CommonTypes/interfaces/typesCommonTypesSessionOptions) (optional) — This configuration defines additional options to pass to [express-session](https://www.npmjs.com/package/express-session), which is used to store the Medusa server's session.
+
+  Example:
+
+  ````
+  js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { sessionOptions: { name: process.env.SESSION_NAME || "custom", } // ... }, // ... }) ```
+  ````
+
+  - `name`: `string` (optional) — The name of the session ID cookie to set in the response (and read from in the request). The default value is `connect.sid`. Refer to [express-session’s documentation](https://www.npmjs.com/package/express-session#name) for more details.
+  - `resave`: `boolean` (optional) — Whether the session should be saved back to the session store, even if the session was never modified during the request. The default value is `true`. Refer to [express-session’s documentation](https://www.npmjs.com/package/express-session#resave) for more details.
+  - `rolling`: `boolean` (optional) — Whether the session identifier cookie should be force-set on every response. The default value is `false`. Refer to [express-session’s documentation](https://www.npmjs.com/package/express-session#rolling) for more details.
+  - `saveUninitialized`: `boolean` (optional) — Whether a session that is "uninitialized" is forced to be saved to the store. The default value is `true`. Refer to [express-session’s documentation](https://www.npmjs.com/package/express-session#saveUninitialized) for more details.
+  - `secret`: `string` (optional) — The secret to sign the session ID cookie. By default, the value of `http.cookieSecret` is used. Refer to [express-session’s documentation](https://www.npmjs.com/package/express-session#secret) for details.
+  - `ttl`: `number` (optional) — Used when calculating the `Expires` `Set-Cookie` attribute of cookies. By default, its value is `10 * 60 * 60 * 1000`. Refer to [express-session’s documentation](https://www.npmjs.com/package/express-session#cookiemaxage) for details.
+  - `dynamodbOptions`: `object` (optional) — Specify the options for storing session data to dynamoDB. Make sure to install the following dependencies first. - @aws-sdk/client-dynamodb@^3.218.0 - connect-dynamodb@^3.0.5
+    - `clientOptions`: `object` (optional)
+    - `table`: `string` (optional)
+    - `prefix`: `string` (optional) — Defaults to 'sess:'
+    - `hashKey`: `string` (optional) — Defaults to 'id'
+    - `readCapacityUnits`: `number` (optional)
+    - `writeCapacityUnits`: `number` (optional)
+    - `specialKeys`: `object`\[] (optional)
+    - `skipThrowMissingSpecialKeys`: `boolean` (optional)
+    - `initialized`: `boolean` (optional) — Disable initialization. Useful if the table already exists or if you want to skip existence checks in a serverless environment such as AWS Lambda.
+- `cookieOptions`: [CookieOptions](/resources/references/types/CommonTypes/interfaces/typesCommonTypesCookieOptions) (optional) — Additional cookie options to apply when setting cookies in the HTTP layer.
+  - `secure`: `boolean` (optional) — Whether the cookie should only be sent over HTTPS connections.
+  - `sameSite`: `"lax"` | `"strict"` | `"none"` (optional) — The `SameSite` attribute of the cookie, controlling cross-site request behavior.
+  - `maxAge`: `number` (optional) — The maximum age of the cookie in milliseconds.
+  - `httpOnly`: `boolean` (optional) — Whether the cookie is accessible only via HTTP(S) and not JavaScript.
+  - `priority`: `"low"` | `"medium"` | `"high"` (optional) — The priority of the cookie as defined in RFC 8030.
+  - `domain`: `string` (optional) — The domain for which the cookie is valid.
+  - `path`: `string` (optional) — The URL path for which the cookie is valid.
+  - `signed`: `boolean` (optional) — Whether the cookie should be signed.
+- `workerMode`: `"shared"` | `"worker"` | `"server"` (optional) — Configure the application's worker mode. Workers are processes running separately from the main application. They're useful for executing long-running or resource-heavy tasks in the background, such as importing products. With a worker, these tasks are offloaded to a separate process. So, they won't affect the performance of the main application. ![Diagram showcasing how the server and worker work together](https://res.cloudinary.com/dza7lstvk/image/upload/fl_lossy/f_auto/r_16/ar_16:9,c_pad/v1/Medusa%20Book/medusa-worker_klkbch.jpg?_a=BATFJtAA0) Medusa has three runtime modes: - Use `shared` to run the application in a single process. - Use `worker` to run the a worker process only. - Use `server` to run the application server only. In production, it's recommended to deploy two instances: 1. One having the `workerMode` configuration set to `server`. 2. Another having the `workerMode` configuration set to `worker`.
+
+  Example:
+
+  ````
+  js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { workerMode: process.env.WORKER_MODE || "shared" // ... }, // ... }) ```
+  ````
+- `http`: `object` — This property configures the application's http-specific settings.
+
+  Example:
+
+  ````
+  js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { cookieSecret: "supersecret", compression: { // ... } } // ... }, // ... }) ```
+  ````
+
+  - `jwtSecret`: `Secret` (optional) — A random string used to create authentication tokens in the http layer. Although this configuration option is not required, it’s highly recommended to set it for better security. In a development environment, if this option is not set the default secret is `supersecret`. However, in production, if this configuration is not set, an error is thrown and the application crashes.
+
+    Example:
+
+    ````
+    js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { jwtSecret: "supersecret", } // ... }, // ... }) ```
+    ````
+  - `jwtPublicKey`: `Secret` (optional) — The public key used to verify the JWT token in combination with the JWT secret and the JWT options. Only used when the JWT secret is a secret key for asymetric validation.
+
+    Example:
+
+    ````
+    js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { jwtPublicKey: "public-key" } // ... }, // ... }) ```
+    ````
+  - `jwtOptions`: `SignOptions` (optional) — Options for the JWT token when using asymetric signing private/public key. Will be used for validation if `jwtVerifyOptions` is not provided.
+
+    Example:
+
+    ````
+    js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { jwtOptions: { algorithm: "RS256", expiresIn: "1h", issuer: "medusa", keyid: "medusa", } } // ... }, // ... }) ```
+    ````
+  - `jwtVerifyOptions`: `VerifyOptions` (optional) — Options for the JWT token when using asymetric validation private/public key.
+
+    Example:
+
+    ````
+    js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { jwtVerifyOptions: { // ... } } // ... }, // ... }) ```
+    ````
+  - `jwtExpiresIn`: `string` (optional) — The expiration time for the JWT token. Its format is based off the [ms package](https://github.com/vercel/ms). If not provided, the default value is `24h`.
+
+    Example:
+
+    ````
+    js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { jwtExpiresIn: "2d" } // ... }, // ... }) ```
+    ````
+  - `cookieSecret`: `string` (optional) — A random string used to create cookie tokens in the http layer. Although this configuration option is not required, it’s highly recommended to set it for better security. In a development environment, if this option is not set, the default secret is `supersecret`. However, in production, if this configuration is not set, an error is thrown and the application crashes.
+
+    Example:
+
+    ````
+    js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { cookieSecret: "supersecret" } // ... }, // ... }) ```
+    ````
+  - `authCors`: `string` — The Medusa application's API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes. `cors` is a string used to specify the accepted URLs or patterns for API Routes starting with `/auth`. It can either be one accepted origin, or a comma-separated list of accepted origins. Every origin in that list must either be: 1. A URL. For example, `http://localhost:7001`. The URL must not end with a backslash; 2. Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that Medusa tests for is `^([/~@;%#'])(.*?)\1([gimsuy]*)$`.
+
+    Example:
+
+    ````
+    Some example values of common use cases:bash # Allow different ports locally starting with 700 AUTH_CORS=/http://localhost:700\d+$/ # Allow any origin ending with vercel.app. For example, admin.vercel.app AUTH_CORS=/vercel\.app$/ # Allow all HTTP requests AUTH_CORS=/http://.+/ ```Then, set the configuration in`medusa-config.ts`:js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { authCors: process.env.AUTH_CORS } // ... }, // ... }) ```If you’re adding the value directly within`medusa-config.ts`, make sure to add an extra escaping`/`for every backslash in the pattern. For example:js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { authCors: "/http:\\/\\/localhost:700\\d+$/", } // ... }, // ... }) ```
+    ````
+  - `compression`: [HttpCompressionOptions](/resources/references/types/CommonTypes/interfaces/typesCommonTypesHttpCompressionOptions) (optional) — Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there. However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative. If you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header `"x-no-compression": true`. Learn more in the [API Reference](/api/store/http-compression).
+
+    Example:
+
+    ````
+    js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { compression: { enabled: true, level: 6, memLevel: 8, threshold: 1024 } } // ... }, // ... }) ```
+    ````
+
+    - `enabled`: `boolean` (optional) — Whether HTTP compression is enabled. By default, it's `false`.
+    - `level`: `number` (optional) — The level of zlib compression to apply to responses. A higher level will result in better compression but will take longer to complete. A lower level will result in less compression but will be much faster. The default value is `6`.
+    - `memLevel`: `number` (optional) — How much memory should be allocated to the internal compression state. It's an integer in the range of 1 (minimum level) and 9 (maximum level). The default value is `8`.
+    - `threshold`: `string` | `number` (optional) — The minimum response body size that compression is applied on. Its value can be the number of bytes or any string accepted by the [bytes](https://www.npmjs.com/package/bytes) module. The default value is `1024`.
+  - `storeCors`: `string` — The Medusa application's API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes. `store_cors` is a string used to specify the accepted URLs or patterns for store API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins. Every origin in that list must either be: 1. A URL. For example, `http://localhost:8000`. The URL must not end with a backslash; 2. Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that the backend tests for is `^([/~@;%#'])(.*?)\1([gimsuy]*)$`.
+
+    Example:
+
+    ````
+    Some example values of common use cases:bash # Allow different ports locally starting with 800 STORE_CORS=/http://localhost:800\d+$/ # Allow any origin ending with vercel.app. For example, storefront.vercel.app STORE_CORS=/vercel\.app$/ # Allow all HTTP requests STORE_CORS=/http://.+/ ```Then, set the configuration in`medusa-config.ts`:js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { storeCors: process.env.STORE_CORS, } // ... }, // ... }) ```If you’re adding the value directly within`medusa-config.ts`, make sure to add an extra escaping`/`for every backslash in the pattern. For example:js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { storeCors: "/vercel\\.app$/", } // ... }, // ... }) ```
+    ````
+  - `adminCors`: `string` — The Medusa application's API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes. `admin_cors` is a string used to specify the accepted URLs or patterns for admin API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins. Every origin in that list must either be: 1. A URL. For example, `http://localhost:7001`. The URL must not end with a backslash; 2. Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that the backend tests for is `^([/~@;%#'])(.*?)\1([gimsuy]*)$`.
+
+    Example:
+
+    ````
+    Some example values of common use cases:bash # Allow different ports locally starting with 700 ADMIN_CORS=/http://localhost:700\d+$/ # Allow any origin ending with vercel.app. For example, admin.vercel.app ADMIN_CORS=/vercel\.app$/ # Allow all HTTP requests ADMIN_CORS=/http://.+/ ```Then, set the configuration in`medusa-config.ts`:js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { adminCors: process.env.ADMIN_CORS, } // ... }, // ... }) ```If you’re adding the value directly within`medusa-config.ts`, make sure to add an extra escaping`/`for every backslash in the pattern. For example:js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { adminCors: "/vercel\\.app$/", } // ... }, // ... }) ```
+    ````
+  - `authMethodsPerActor`: `Record<string, string[]>` (optional) — This configuration specifies the supported authentication providers per actor type (such as `user`, `customer`, or any custom actors). For example, you only want to allow SSO logins for `users`, while you want to allow email/password logins for `customers` to the storefront. `authMethodsPerActor` is a map where the actor type (eg. 'user') is the key, and the value is an array of supported auth provider IDs.
+
+    Example:
+
+    ````
+    Some example values of common use cases: Then, set the configuration in`medusa-config.ts`:js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { authMethodsPerActor: { user: ["email"], customer: ["emailpass", "google"] } } // ... }, // ... }) ```
+    ````
+  - `authVerificationsPerActor`: `Record<string, object[]>` (optional) — This configuration specifies the required verification types per actor type (such as `user`, `customer`, or any custom actors). For example, you only want to require email verification for `customers` when authenticating with emailpass, or phone number verification for `users` when authenticating with phone-auth. `authVerificationsPerActor` is a map where the actor type (eg. 'user') is the key, and the value is an array of objects with the following properties: - `entity_type`: The type of entity being verified. For example, `email` or `phone_number`. - `auth_provider`: The provider that requires the verification. For example, `emailpass` or `phone-auth`.
+
+    Example:
+
+    ````
+    js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { authVerificationsPerActor: { // No verifications required for users user: [], // Email verification required for customers using emailpass, but if they use google auth no need to verify customer: [ { entity_type: "email", auth_provider: "emailpass" }, ], }, } // ... }, // ... ```
+    ````
+
+    - `entity_type`: `string`
+    - `auth_provider`: `string`
+  - `restrictedFields`: `object` (optional) — Specifies the fields that can't be selected in the response unless specified in the allowed query config. This is useful to restrict sensitive fields from being exposed in the API.
+
+    Example:
+
+    ````
+    js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { restrictedFields: { store: ["order", "orders"], } } ```
+    ````
+
+    - `store`: `string`\[] (optional)
+  - `storeRelationsLimit`: `number` (optional) — The maximum number of relations that can be expanded in a single request to a Store API route. For example, requesting `variants.options.values` expands three relations. Routes can override this limit through their query configuration's `storeRelationsLimit` property. The default value is `3`.
+
+    Example:
+
+    ````
+    js title="medusa-config.ts" module.exports = defineConfig({ projectConfig: { http: { storeRelationsLimit: 4, } // ... }, // ... }) ```
+    ````
+- `cloud`: [MedusaCloudOptions](/resources/references/types/CommonTypes/interfaces/typesCommonTypesMedusaCloudOptions) (optional) — This property holds configurations for running in Medusa Cloud. It gets automatically populated in the cloud, and is not needed outside of it.
+  - `environmentHandle`: `string` (optional) — The environment handle of the Medusa Cloud environment.
+  - `sandboxHandle`: `string` (optional) — The sandbox handle of the Medusa Cloud sandbox.
+  - `apiKey`: `string` (optional) — The API key used to access Medusa Cloud services.
+  - `webhookSecret`: `string` (optional) — The webhook secret used to verify webhooks.
+  - `paymentsEndpoint`: `string` (optional) — The endpoint of the Medusa Cloud payment service.
+  - `emailsEndpoint`: `string` (optional) — The endpoint of the Medusa Cloud email service.
+  - `searchEndpoint`: `string` (optional) — The endpoint of the Medusa Cloud search service.
+  - `oauthAuthorizeEndpoint`: `string` (optional) — The authorization endpoint of the Medusa Cloud OAuth service.
+  - `oauthTokenEndpoint`: `string` (optional) — The token endpoint of the Medusa Cloud OAuth token service.
+  - `oauthCallbackUrl`: `string` (optional) — The callback URL for the Medusa Cloud OAuth service. If not provided, it will be set to `${AdminOptions.backendUrl}/auth/user/cloud/callback`.
+  - `oauthDisabled`: `boolean` (optional) — Whether the Medusa Cloud OAuth service is disabled.
+  - `oauthJwksUri`: `string` (optional) — The JWKS URI for the Medusa Cloud OAuth service. This is used to verify the JWT tokens issued by the Medusa Cloud OAuth service. If not provided, an error is thrown when trying to use the Medusa Cloud OAuth service.
+  - `oauthAudience`: `string` (optional) — The expected `aud` claim of id\_tokens issued by the Medusa Cloud OAuth service. If not provided, an error is thrown when trying to use the Medusa Cloud OAuth service.

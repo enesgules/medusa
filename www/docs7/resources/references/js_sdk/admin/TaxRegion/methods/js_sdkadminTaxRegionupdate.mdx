@@ -1,0 +1,72 @@
+---
+title: update
+---
+
+This method updates a tax region. It sends a request to the
+[Update Tax Region](/api/admin/tax-regions/update-a-tax-region)
+API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.8.0](https://github.com/medusajs/medusa/releases/tag/v2.8.0).
+
+## Example
+
+```ts
+sdk.admin.taxRegion.update("txreg_123", {
+  province_code: "ca",
+})
+.then(({ tax_region }) => {
+  console.log(tax_region)
+})
+```
+
+<a id="update-parameters" />
+
+## Parameters
+
+**update**
+
+- `id`: `string` — The ID of the tax region to update.
+- `body`: [AdminUpdateTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateTaxRegion) — The details of the tax region to update.
+  - `province_code`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code of the tax region.
+  - `provider_id`: `string` (optional) — The ID of the tax provider.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the tax region.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the tax region.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+## Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminTaxRegionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionResponse)> — The tax region's details.
+  - `tax_region`: [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion) — The tax region's details.
+    - `id`: `string` — The tax region's ID.
+    - `country_code`: `null` | `string` — The tax region's country code.
+
+      Example:
+
+      ```
+      "us"
+      ```
+    - `province_code`: `null` | `string` — The tax region's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code.
+
+      Example:
+
+      ```
+      "us-ca"
+      ```
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the tax region.
+    - `parent_id`: `null` | `string` — The ID of the parent tax region.
+    - `provider_id`: `null` | `string` — The ID of the tax provider for the region.
+    - `created_at`: `string` — The date the tax region was created.
+    - `updated_at`: `string` — The date the tax region was updated.
+    - `deleted_at`: `null` | `string` — The date the tax region was deleted.
+    - `created_by`: `null` | `string` — The ID of the user who created the tax region.
+    - `tax_rates`: [AdminTaxRate](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRate)\[] — The tax rates associated with the tax region.
+    - `parent`: `null` | [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion) — The parent tax region.
+    - `children`: [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion)\[] — The child tax regions.

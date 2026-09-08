@@ -1,0 +1,50 @@
+---
+title: validateInventoryLevelsDelete - Medusa Core Workflows Reference
+sidebarTitle: validateInventoryLevelsDelete
+---
+
+This documentation provides a reference to the `validateInventoryLevelsDelete`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that inventory levels are deletable. If the
+inventory levels have reserved or incoming items, or the force
+flag is not set and the inventory levels have stocked items, the
+step will throw an error.
+
+> **Note**
+>
+> You can retrieve an inventory level's details using [Query](/learn/fundamentals/module-links/query),
+> or [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep).
+
+## Example
+
+```ts
+const data = validateInventoryLevelsDelete({
+  inventoryLevels: [
+    {
+      id: "iilev_123",
+      // other inventory level details...
+    }
+  ]
+})
+```
+
+<a id="validateinventorylevelsdelete-input" />
+
+## Input
+
+**validateInventoryLevelsDelete**
+
+- `ValidateInventoryLevelsDeleteStepInput`: [ValidateInventoryLevelsDeleteStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcValidateInventoryLevelsDeleteStepInput)
+  - `inventoryLevels`: [InventoryLevelDTO](/resources/references/types/InventoryTypes/interfaces/typesInventoryTypesInventoryLevelDTO)\[] — The inventory levels to validate.
+    - `id`: `string` — The ID of the inventory level.
+    - `inventory_item_id`: `string` — The associated inventory item's ID.
+    - `location_id`: `string` — The associated location's ID.
+    - `stocked_quantity`: `number` — The stocked quantity of the inventory level.
+    - `reserved_quantity`: `number` — The reserved quantity of the inventory level.
+    - `incoming_quantity`: `number` — The incoming quantity of the inventory level.
+    - `available_quantity`: `number` — The available quantity of the inventory level.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — The creation date of the inventory level.
+    - `updated_at`: `string` | `Date` — The update date of the inventory level.
+    - `deleted_at`: `null` | `string` | `Date` — The deletion date of the inventory level.
+  - `force`: `boolean` (optional) — If true, the inventory levels will be deleted even if they have stocked items.

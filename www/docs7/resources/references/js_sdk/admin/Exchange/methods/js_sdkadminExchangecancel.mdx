@@ -1,0 +1,56 @@
+---
+title: cancel
+---
+
+This method cancels an exchange. It sends a request to the
+[Cancel Exchange](/api/admin/exchanges/cancel-an-exchange) API route.
+
+## Example
+
+```ts
+sdk.admin.exchange.cancel("exchange_123")
+.then(({ exchange }) => {
+  console.log(exchange)
+})
+```
+
+<a id="cancel-parameters" />
+
+## Parameters
+
+**cancel**
+
+- `id`: `string` — The exchange's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the exchange.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="cancel-returns" />
+
+## Returns
+
+**cancel**
+
+- `Promise`: Promise\<[AdminExchangeResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminExchangeResponse)> — The exchange's details.
+  - `exchange`: [AdminExchange](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminExchange) — The exchange's details.
+    - `id`: `string` — The exchange's ID.
+    - `order_id`: `string` — The ID of the order this exchange is created for.
+    - `return_id`: `string` (optional) — The ID of the associated return.
+    - `display_id`: `string` (optional) — The exchange's display ID.
+    - `order_version`: `string` (optional) — The version of the order when the exchange is applied.
+    - `created_by`: `string` (optional) — The ID of the user that created the exchange.
+    - `created_at`: `string` | `Date` — The date the exchange was created.
+    - `updated_at`: `string` | `Date` — The date the exchange was updated.
+    - `canceled_at`: `string` | `Date` — The date the exchange was canceled.
+    - `deleted_at`: `string` | `Date` — The date the exchange was deleted.
+    - `additional_items`: [BaseExchangeItem](/resources/references/types/interfaces/typesBaseExchangeItem)\[] — The exchange's new (outbound) items.
+    - `return_items`: [AdminReturnItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturnItem)\[] — The exchange's returned (inbound) items.
+    - `no_notification`: `boolean` (optional) — Whether to notify the customer about changes in the exchange.
+    - `difference_due`: `number` (optional) — The exchange's difference amount due, either to the customer or the merchant. If the value is positive, the customer owes the merchant additional payment of this amount. If negative, the merchant owes the customer a refund of this amount.
+    - `return`: [AdminReturn](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturn) (optional) — The associated return.
+    - `order`: [BaseOrder](/resources/references/types/interfaces/typesBaseOrder) (optional) — The associated order.
+    - `allow_backorder`: `boolean` (optional) — Whether out-of-stock variants can be added as new items.
+    - `shipping_methods`: [BaseOrderShippingMethod](/resources/references/types/interfaces/typesBaseOrderShippingMethod)\[] (optional) — The shipping methods used to send the outbound items.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The exchange's transactions.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.

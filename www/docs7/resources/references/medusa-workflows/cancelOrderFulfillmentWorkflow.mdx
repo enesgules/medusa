@@ -1,0 +1,230 @@
+---
+title: cancelOrderFulfillmentWorkflow - Medusa Core Workflows Reference
+sidebarTitle: cancelOrderFulfillmentWorkflow
+---
+
+This documentation provides a reference to the `cancelOrderFulfillmentWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow cancels an order's fulfillment. It's used by the [Cancel Order's Fulfillment Admin API Route](/api/admin/orders/cancel-fulfillment).
+
+This workflow has a hook that allows you to perform custom actions on the canceled fulfillment. For example, you can pass under `additional_data` custom data that
+allows you to update custom data models linked to the fulfillment.
+
+You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around canceling a fulfillment.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/order/workflows/cancel-order-fulfillment.ts#L317)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { cancelOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await cancelOrderFulfillmentWorkflow(req.scope)
+    .run({
+      input: {
+        order_id: "order_123",
+        fulfillment_id: "ful_123",
+        additional_data: {
+          reason: "Customer changed their mind"
+        }
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { cancelOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await cancelOrderFulfillmentWorkflow(container)
+    .run({
+      input: {
+        order_id: "order_123",
+        fulfillment_id: "ful_123",
+        additional_data: {
+          reason: "Customer changed their mind"
+        }
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { cancelOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await cancelOrderFulfillmentWorkflow(container)
+    .run({
+      input: {
+        order_id: "order_123",
+        fulfillment_id: "ful_123",
+        additional_data: {
+          reason: "Customer changed their mind"
+        }
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { cancelOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = cancelOrderFulfillmentWorkflow
+      .runAsStep({
+        input: {
+          order_id: "order_123",
+          fulfillment_id: "ful_123",
+          additional_data: {
+            reason: "Customer changed their mind"
+          }
+        }
+      })
+  }
+)
+```
+
+<a id="cancelorderfulfillmentworkflow-steps" />
+
+## Steps
+
+- [cancelOrderFulfillmentValidateOrder](/resources/references/medusa-workflows/cancelOrderFulfillmentValidateOrder): This step validates that an order fulfillment can be canceled. If the fulfillment doesn't exist, or it has already been shipped, the step throws an error. :::note You can retrieve an order and fulfillment details using [Query](/learn/fundamentals/module-links/query), or [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep). :::
+  - [adjustInventoryLevelsStep](/resources/references/medusa-workflows/steps/adjustInventoryLevelsStep): This step adjusts the stocked quantity of one or more inventory levels. You can pass a positive value in `adjustment` to add to the stocked quantity, or a negative value to subtract from the stocked quantity.
+    - [cancelOrderFulfillmentStep](/resources/references/medusa-workflows/steps/cancelOrderFulfillmentStep): This step cancels an order's fulfillment.
+    - [createReservationsStep](/resources/references/medusa-workflows/steps/createReservationsStep): This step creates one or more reservations.
+    - [updateReservationsStep](/resources/references/medusa-workflows/steps/updateReservationsStep): This step updates one or more reservations.
+    - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+      - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+      - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+      - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+        - [cancelFulfillmentWorkflow](/resources/references/medusa-workflows/cancelFulfillmentWorkflow): Cancel a fulfillment.
+          - [orderFulfillmentCanceled](/resources/references/medusa-workflows/cancelOrderFulfillmentWorkflow#orderfulfillmentcanceled): This hook is executed after the fulfillment is canceled. You can consume this hook to perform custom actions on the canceled fulfillment.
+
+<a id="cancelorderfulfillmentworkflow-input" />
+
+## Input
+
+**cancelOrderFulfillmentWorkflow**
+
+- `CancelOrderFulfillmentWorkflowInput`: [CancelOrderFulfillmentWorkflowInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcCancelOrderFulfillmentWorkflowInput)
+  - `order_id`: `string` — The ID of the order to cancel its fulfillment.
+  - `fulfillment_id`: `string` — The ID of the fulfillment to cancel.
+  - `no_notification`: `boolean` (optional) — Whether to notify the customer about the cancellation.
+  - `canceled_by`: `string` (optional) — The ID of the user that canceled the fulfillment.
+  - `additional_data`: `Record<string, unknown>` (optional) — Additional data that can be passed through the `additional_data` property in HTTP requests. Learn more in [this documentation](/learn/fundamentals/api-routes/additional-data).
+
+## Hooks
+
+Hooks allow you to inject custom functionalities into the workflow. You'll receive data from the workflow, as well as additional data sent through an HTTP request.
+
+Learn more about [Hooks](/learn/fundamentals/workflows/workflow-hooks) and [Additional Data](/learn/fundamentals/api-routes/additional-data).
+
+### orderFulfillmentCanceled
+
+This hook is executed after the fulfillment is canceled. You can consume this hook to perform custom actions on the canceled fulfillment.
+
+#### Example
+
+```ts
+import { cancelOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
+
+cancelOrderFulfillmentWorkflow.hooks.orderFulfillmentCanceled(
+  (async ({ fulfillment, additional_data }, { container }) => {
+    //TODO
+  })
+)
+```
+
+<a id="input" />
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+**orderFulfillmentCanceled**
+
+- `input`: object — The input data for the hook.
+  - `fulfillment`: `any`
+  - `additional_data`: `Record<string, unknown> | undefined` — Additional data that can be passed through the `additional_data` property in HTTP requests. Learn more in [this documentation](/learn/fundamentals/api-routes/additional-data).
+
+<a id="cancelorderfulfillmentworkflow-emitted-events" />
+
+## Emitted Events
+
+- `order.fulfillment_canceled`: Emitted when an order's fulfillment is canceled.
+
+  ```ts
+  {
+    order_id, // The ID of the order
+    fulfillment_id, // The ID of the fulfillment
+    no_notification, // (boolean) Whether to notify the customer
+  }
+  ```
+- `inventory-level.updated` (since v2.18.0): Emitted when inventory levels are updated. This includes adjustments to the stocked or reserved quantity, such as during order fulfillment.
+
+  ```ts
+  {
+    id, // The ID of the inventory level
+    order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+  }
+  ```
+- `reservation-item.created` (since v2.18.0): Emitted when reservations are created.
+
+  ```ts
+  {
+    id, // The ID of the reservation
+    order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+  }
+  ```
+- `reservation-item.updated` (since v2.18.0): Emitted when reservations are updated.
+
+  ```ts
+  {
+    id, // The ID of the reservation
+    order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+  }
+  ```

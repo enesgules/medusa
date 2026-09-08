@@ -1,0 +1,68 @@
+---
+title: BaseCapture
+---
+
+The capture details.
+
+## Properties
+
+**BaseCapture**
+
+- `id`: `string` — The ID of the capture.
+- `amount`: `number` — The captured amount.
+- `created_at`: `Date` — The creation date of the capture.
+- `created_by`: `string` (optional) — Who the capture was created by. For example, the ID of a user.
+- `payment`: [BasePayment](/resources/references/types/interfaces/typesBasePayment) — The associated payment.
+  - `id`: `string` — The ID of the payment.
+  - `amount`: `number` — The payment's total amount.
+  - `authorized_amount`: `number` (optional) — The authorized amount of the payment.
+  - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+  - `provider_id`: `string` — The ID of the associated payment provider.
+  - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+  - `created_at`: `string` | `Date` (optional) — When the payment was created.
+  - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+  - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+  - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+  - `captured_amount`: `number` (optional) — The sum of the associated captures' amounts.
+  - `refunded_amount`: `number` (optional) — The sum of the associated refunds' amounts.
+  - `captures`: [BaseCapture](/resources/references/types/interfaces/typesBaseCapture)\[] (optional) — The associated captures.
+    - `id`: `string` — The ID of the capture.
+    - `amount`: `number` — The captured amount.
+    - `created_at`: `Date` — The creation date of the capture.
+    - `created_by`: `string` (optional) — Who the capture was created by. For example, the ID of a user.
+    - `payment`: [BasePayment](/resources/references/types/interfaces/typesBasePayment) — The associated payment.
+  - `refunds`: [BaseRefund](/resources/references/types/interfaces/typesBaseRefund)\[] (optional) — The associated refunds.
+    - `id`: `string` — The ID of the refund
+    - `amount`: `number` — The refunded amount.
+    - `refund_reason_id`: `null` | `string` (optional) — The id of the refund\_reason that is associated with the refund
+    - `refund_reason`: `null` | [BaseRefundReason](/resources/references/types/interfaces/typesBaseRefundReason) (optional) — The id of the refund\_reason that is associated with the refund
+    - `note`: `null` | `string` (optional) — A field to add some additional information about the refund
+    - `created_at`: `Date` — The creation date of the refund.
+    - `created_by`: `string` (optional) — Who created the refund. For example, the user's ID.
+    - `payment`: [BasePayment](/resources/references/types/interfaces/typesBasePayment) — The associated payment.
+  - `payment_collection`: [BasePaymentCollection](/resources/references/types/interfaces/typesBasePaymentCollection) (optional) — The associated payment collection.
+    - `id`: `string` — The ID of the payment collection.
+    - `currency_code`: `string` — The ISO 3 character currency code of the payment sessions and payments associated with payment collection.
+    - `amount`: `number` — The total amount to be authorized and captured.
+    - `authorized_amount`: `number` (optional) — The amount authorized within the associated payment sessions.
+    - `captured_amount`: `number` (optional) — The amount captured within the associated payment sessions.
+    - `refunded_amount`: `number` (optional) — The amount refunded within the associated payments.
+    - `completed_at`: `string` | `Date` (optional) — When the payment collection was completed.
+    - `created_at`: `string` | `Date` (optional) — When the payment collection was created.
+    - `updated_at`: `string` | `Date` (optional) — When the payment collection was updated.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `status`: [BasePaymentCollectionStatus](/resources/references/types/types/typesBasePaymentCollectionStatus) — The status of the payment collection.
+    - `payment_providers`: [BasePaymentProvider](/resources/references/types/interfaces/typesBasePaymentProvider)\[] — The payment provider used to process the associated payment sessions and payments.
+    - `payment_sessions`: [BasePaymentSession](/resources/references/types/interfaces/typesBasePaymentSession)\[] (optional) — The associated payment sessions.
+    - `payments`: [BasePayment](/resources/references/types/interfaces/typesBasePayment)\[] (optional) — The associated payments.
+  - `payment_session`: [BasePaymentSession](/resources/references/types/interfaces/typesBasePaymentSession) (optional) — The payment session from which the payment is created.
+    - `id`: `string` — The ID of the payment session.
+    - `amount`: `number` — The amount to authorize.
+    - `currency_code`: `string` — The 3 character currency code of the payment session.
+    - `provider_id`: `string` — The ID of the associated payment provider.
+    - `data`: `Record<string, unknown>` — The data necessary for the payment provider to process the payment session.
+    - `context`: `Record<string, unknown>` (optional) — The context necessary for the payment provider.
+    - `status`: [BasePaymentSessionStatus](/resources/references/types/types/typesBasePaymentSessionStatus) — The status of the payment session.
+    - `authorized_at`: `Date` (optional) — When the payment session was authorized.
+    - `payment_collection`: [BasePaymentCollection](/resources/references/types/interfaces/typesBasePaymentCollection) (optional) — The payment collection the session is associated with.
+    - `payment`: [BasePayment](/resources/references/types/interfaces/typesBasePayment) (optional) — The payment created from the session.

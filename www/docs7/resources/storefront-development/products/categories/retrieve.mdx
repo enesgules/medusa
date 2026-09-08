@@ -1,0 +1,167 @@
+---
+title: Retrieve a Category in Storefront
+---
+
+In this guide, you'll learn how to retrieve a product category and its details in the storefront.
+
+## How to Retrieve a Product Category in Storefront?
+
+There are two ways to retrieve a product category:
+
+- [Retrieve a category by its ID](/resources/storefront-development/products/categories/retrieve#retrieve-a-product-category-by-id). This method is straightforward and useful if you only have the category's ID.
+- [Retrieve a category by its `handle` field](/resources/storefront-development/products/categories/retrieve#retrieve-a-product-category-by-handle). This is useful if you're creating human-readable URLs in your storefront.
+
+***
+
+## Retrieve a Product Category by ID
+
+To retrieve a product category by its ID, send a request to the [Get a Product Category API route](/api/store/product-categories/get-a-product-category):
+
+<Note>
+  **Tip**
+
+  Learn how to install and configure the JS SDK in the [JS SDK documentation](/resources/js-sdk).
+</Note>
+
+<Tabs>
+  <Tab title="React">
+    ```tsx
+    "use client" // include with Next.js 13+
+
+    import { useEffect, useState } from "react"
+    import { HttpTypes } from "@medusajs/types"
+    import { sdk } from "@/lib/sdk"
+
+    type Props = {
+      id: string
+    }
+
+    export default function Category({ id }: Props) {
+      const [loading, setLoading] = useState(true)
+      const [category, setCategory] = useState<
+        HttpTypes.StoreProductCategory | undefined
+      >()
+
+      useEffect(() => {
+        if (!loading) {
+          return 
+        }
+
+        sdk.store.category.retrieve(id)
+        .then(({ product_category }) => {
+          setCategory(product_category)
+          setLoading(false)
+        })
+      }, [loading])
+
+      return (
+        <div>
+          {loading && <span>Loading...</span>}
+          {category && (
+            <>
+              <h1>{category.name}</h1>
+              <p>{category.description}</p>
+            </>
+          )}
+        </div>
+      )
+    }
+    ```
+  </Tab>
+
+  <Tab title="JS SDK">
+    ```ts
+    sdk.store.category.retrieve(id)
+    .then(({ product_category }) => {
+      // use the product...
+      console.log(product)
+    })
+    ```
+  </Tab>
+</Tabs>
+
+In this example, you send a request to the [Get a Product Category API route](/api/store/product-categories/get-a-product-category) with the category's ID.
+
+The response has a `product_category` field, which is a [product category object](/api/store/#product-categories_productcategory_schema).
+
+***
+
+## Retrieve a Product Category by Handle
+
+To retrieve a product by its handle, send a request to the [List Product Categories API route](/api/store/product-categories/list-product-categories) passing it the `handle` query parameter:
+
+<Tabs>
+  <Tab title="React">
+    ```tsx
+    "use client" // include with Next.js 13+
+
+    import { useEffect, useState } from "react"
+    import { HttpTypes } from "@medusajs/types"
+    import { sdk } from "@/lib/sdk"
+
+    type Props = {
+      handle: string
+    }
+
+    export default function Category({ handle }: Props) {
+      const [loading, setLoading] = useState(true)
+      const [category, setCategory] = useState<
+        HttpTypes.StoreProductCategory | undefined
+      >()
+
+      useEffect(() => {
+        if (!loading) {
+          return 
+        }
+
+        sdk.store.category.list({
+          handle,
+        })
+        .then(({ product_categories }) => {
+          if (product_categories.length) {
+            setCategory(product_categories[0])
+          }
+          setLoading(false)
+        })
+      }, [loading])
+
+      return (
+        <div>
+          {loading && <span>Loading...</span>}
+          {!loading && !category && (
+            <span>Product category not found</span>
+          )}
+          {category && (
+            <>
+              <h1>{category.name}</h1>
+              <p>{category.description}</p>
+            </>
+          )}
+        </div>
+      )
+    }
+    ```
+  </Tab>
+
+  <Tab title="JS SDK">
+    ```ts
+    sdk.store.category.list({
+      handle,
+    })
+    .then(({ product_categories }) => {
+      if (!product_categories.length) {
+        // product categories with the specified handle doesn't exist
+        return
+      }
+      // use the product category...
+      console.log(product_categories[0])
+    })
+    ```
+  </Tab>
+</Tabs>
+
+In this example, you filter the product categories by their handle and retrieve the first product category that matches the handle. Since handles are unique, you can be sure that the product category you retrieve is the one you're looking for.
+
+If no product category matches the handle, the product category doesn't exist, so you can show a 404 error or a custom message to the customer.
+
+The product category in the response is a [product category object](/api/store/#product-categories_productcategory_schema).

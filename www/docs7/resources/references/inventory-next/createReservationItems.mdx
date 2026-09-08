@@ -1,0 +1,167 @@
+---
+title: createReservationItems - Inventory Next Module Reference
+sidebarTitle: createReservationItems
+---
+
+This documentation provides a reference to the `createReservationItems` method. This belongs to the Inventory Next Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createreservationitems-input-context-promisereservationitemdto" />
+
+## createReservationItems(input, context?): Promise\<[ReservationItemDTO](/resources/references/inventory_next/interfaces/inventory_nextReservationItemDTO)\[]>
+
+This method creates reservation items.
+
+### Example
+
+```ts
+const reservationItems =
+  await inventoryModuleService.createReservationItems([
+    {
+      inventory_item_id: "iitem_123",
+      location_id: "loc_123",
+      quantity: 10,
+    },
+  ])
+```
+
+<a id="createreservationitems-parameters" />
+
+### Parameters
+
+**createReservationItems**
+
+- `input`: [CreateReservationItemInput](/resources/references/inventory_next/interfaces/inventory_nextCreateReservationItemInput)\[] — The details of the reservation items to be created.
+  - `line_item_id`: `null` | `string` (optional) — The ID of the associated line item.
+  - `inventory_item_id`: `string` — The ID of the associated inventory item.
+  - `location_id`: `string` — The ID of the associated location.
+  - `quantity`: [BigNumberInput](/resources/references/inventory_next/types/inventory_nextBigNumberInput) — The reserved quantity.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/inventory_next/types/inventory_nextBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `allow_backorder`: `boolean` (optional) — Allow backorder of the item. If true, it won't check inventory levels before reserving it.
+  - `description`: `null` | `string` (optional) — The description of the reservation.
+  - `created_by`: `null` | `string` (optional) — The user or system that created the reservation. Can be any form of identification string.
+  - `external_id`: `null` | `string` (optional) — An ID associated with an external third-party system that the reservation item is connected to.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `context`: [Context](/resources/references/inventory_next/interfaces/inventory_nextContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/inventory_next/interfaces/inventory_nextIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createreservationitems-returns" />
+
+### Returns
+
+**createReservationItems**
+
+- `Promise`: Promise\<[ReservationItemDTO](/resources/references/inventory_next/interfaces/inventory_nextReservationItemDTO)\[]> — The created reservation items.
+  - `ReservationItemDTO[]`: [ReservationItemDTO](/resources/references/inventory_next/interfaces/inventory_nextReservationItemDTO)\[]
+    - `id`: `string` — The ID of the reservation item.
+    - `location_id`: `string` — The associated location's ID.
+    - `inventory_item_id`: `string` — The associated inventory item's ID.
+    - `quantity`: [BigNumberInput](/resources/references/inventory_next/types/inventory_nextBigNumberInput) — The quantity of the reservation item.
+      - `value`: `string` | `number`
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/inventory_next/types/inventory_nextBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `line_item_id`: `null` | `string` (optional) — The associated line item's ID.
+    - `description`: `null` | `string` (optional) — The description of the reservation item.
+    - `allow_backorder`: `boolean` (optional) — Allow backorder of the item. If true, it won't check inventory levels before reserving it.
+    - `created_by`: `null` | `string` (optional) — The created by of the reservation item.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — The creation date of the reservation item.
+    - `updated_at`: `string` | `Date` — The update date of the reservation item.
+    - `deleted_at`: `null` | `string` | `Date` — The deletion date of the reservation item.
+
+<a id="createreservationitems-input-context-promisereservationitemdto-1" />
+
+## createReservationItems(input, context?): Promise\<[ReservationItemDTO](/resources/references/inventory_next/interfaces/inventory_nextReservationItemDTO)>
+
+This method creates a reservation item.
+
+### Example
+
+```ts
+const reservationItem =
+  await inventoryModuleService.createReservationItems({
+    inventory_item_id: "iitem_123",
+    location_id: "loc_123",
+    quantity: 10,
+  })
+```
+
+<a id="createreservationitems-parameters-1" />
+
+### Parameters
+
+**createReservationItems**
+
+- `input`: [CreateReservationItemInput](/resources/references/inventory_next/interfaces/inventory_nextCreateReservationItemInput) — The details of the reservation item to be created.
+  - `line_item_id`: `null` | `string` (optional) — The ID of the associated line item.
+  - `inventory_item_id`: `string` — The ID of the associated inventory item.
+  - `location_id`: `string` — The ID of the associated location.
+  - `quantity`: [BigNumberInput](/resources/references/inventory_next/types/inventory_nextBigNumberInput) — The reserved quantity.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/inventory_next/types/inventory_nextBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `allow_backorder`: `boolean` (optional) — Allow backorder of the item. If true, it won't check inventory levels before reserving it.
+  - `description`: `null` | `string` (optional) — The description of the reservation.
+  - `created_by`: `null` | `string` (optional) — The user or system that created the reservation. Can be any form of identification string.
+  - `external_id`: `null` | `string` (optional) — An ID associated with an external third-party system that the reservation item is connected to.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `context`: [Context](/resources/references/inventory_next/interfaces/inventory_nextContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/inventory_next/interfaces/inventory_nextIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createreservationitems-returns-1" />
+
+### Returns
+
+**createReservationItems**
+
+- `Promise`: Promise\<[ReservationItemDTO](/resources/references/inventory_next/interfaces/inventory_nextReservationItemDTO)> — The created reservation item.
+  - `id`: `string` — The ID of the reservation item.
+  - `location_id`: `string` — The associated location's ID.
+  - `inventory_item_id`: `string` — The associated inventory item's ID.
+  - `quantity`: [BigNumberInput](/resources/references/inventory_next/types/inventory_nextBigNumberInput) — The quantity of the reservation item.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/inventory_next/types/inventory_nextBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `line_item_id`: `null` | `string` (optional) — The associated line item's ID.
+  - `description`: `null` | `string` (optional) — The description of the reservation item.
+  - `allow_backorder`: `boolean` (optional) — Allow backorder of the item. If true, it won't check inventory levels before reserving it.
+  - `created_by`: `null` | `string` (optional) — The created by of the reservation item.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `created_at`: `string` | `Date` — The creation date of the reservation item.
+  - `updated_at`: `string` | `Date` — The update date of the reservation item.
+  - `deleted_at`: `null` | `string` | `Date` — The deletion date of the reservation item.

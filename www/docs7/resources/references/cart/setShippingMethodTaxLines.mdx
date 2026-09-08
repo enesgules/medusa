@@ -1,0 +1,127 @@
+---
+title: setShippingMethodTaxLines - Cart Module Reference
+sidebarTitle: setShippingMethodTaxLines
+---
+
+This documentation provides a reference to the `setShippingMethodTaxLines` method. This belongs to the Cart Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method sets the shipping item tax lines in a cart. The shipping line item tax lines,
+except those included in the specified list, are removed and replaced with the specified tax lines.
+
+## Example
+
+```ts
+const shippingMethodTaxLines =
+  await cartModuleService.setShippingMethodTaxLines(
+    "cart_123",
+    [
+      {
+        code: "1000",
+        rate: 10,
+      },
+      {
+        code: "1234",
+        rate: 20,
+      },
+    ]
+  )
+```
+
+<a id="setshippingmethodtaxlines-parameters" />
+
+## Parameters
+
+**setShippingMethodTaxLines**
+
+- `cartId`: `string` — The cart's ID.
+- `taxLines`: ([CreateShippingMethodTaxLineDTO](/resources/references/cart/interfaces/cartCreateShippingMethodTaxLineDTO) | [UpdateShippingMethodTaxLineDTO](/resources/references/cart/interfaces/cartUpdateShippingMethodTaxLineDTO))\[] — The shipping item tax lines to add. If the `id` field is specified, the tax line is kept and its attributes can be updated.
+  - `description`: `string` (optional) — The description of the tax line.
+  - `tax_rate_id`: `string` (optional) — The associated tax rate's ID.
+  - `code`: `string` — The code of the tax line.
+  - `rate`: `number` — The rate of the tax line.
+  - `provider_id`: `string` (optional) — The associated provider's ID.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `data`: `null` | `Record<string, unknown>` (optional) — Holds data returned by the tax provider in key-value pairs.
+  - `shipping_method_id`: `string` — The associated shipping method's ID.
+  - `id`: `string` — The ID of the tax line.
+- `sharedContext`: [Context](/resources/references/cart/interfaces/cartContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/cart/interfaces/cartIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="setshippingmethodtaxlines-returns" />
+
+## Returns
+
+**setShippingMethodTaxLines**
+
+- `Promise`: Promise\<[ShippingMethodTaxLineDTO](/resources/references/cart/interfaces/cartShippingMethodTaxLineDTO)\[]> — The added shipping method tax lines.
+  - `ShippingMethodTaxLineDTO[]`: [ShippingMethodTaxLineDTO](/resources/references/cart/interfaces/cartShippingMethodTaxLineDTO)\[]
+    - `id`: `string` — The ID of the tax line
+    - `description`: `string` (optional) — The description of the tax line
+    - `tax_rate_id`: `string` (optional) — The ID of the associated tax rate.
+    - `code`: `string` — The code of the tax line.
+    - `rate`: `number` — The rate of the tax line.
+    - `provider_id`: `string` (optional) — The ID of the associated provider.
+    - `data`: `null` | `Record<string, unknown>` (optional) — Holds data returned by the tax provider in key-value pairs.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the tax line was created.
+    - `updated_at`: `string` | `Date` — When the tax line was updated.
+    - `shipping_method`: [CartShippingMethodDTO](/resources/references/cart/interfaces/cartCartShippingMethodDTO) — The associated shipping method.
+      - `id`: `string` — The ID of the shipping method.
+      - `cart_id`: `string` — The ID of the associated cart.
+      - `name`: `string` — The name of the shipping method.
+      - `description`: `string` (optional) — The description of the shipping method.
+      - `amount`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The price of the shipping method.
+      - `is_tax_inclusive`: `boolean` — Whether the shipping method price is tax inclusive.
+      - `shipping_option_id`: `string` (optional) — The ID of the shipping option the method was created from.
+      - `data`: `Record<string, unknown>` (optional) — Additional data needed for fulfillment.
+      - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+      - `tax_lines`: [ShippingMethodTaxLineDTO](/resources/references/cart/interfaces/cartShippingMethodTaxLineDTO)\[] (optional) — The associated tax lines.
+      - `adjustments`: [ShippingMethodAdjustmentDTO](/resources/references/cart/interfaces/cartShippingMethodAdjustmentDTO)\[] (optional) — The associated adjustments.
+      - `created_at`: `string` | `Date` — When the shipping method was created.
+      - `updated_at`: `string` | `Date` — When the shipping method was updated.
+      - `original_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The original total of the cart shipping method.
+      - `original_subtotal`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The original subtotal of the cart shipping method.
+      - `original_tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The original tax total of the cart shipping method.
+      - `total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The total of the cart shipping method.
+      - `subtotal`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The subtotal of the cart shipping method.
+      - `tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The tax total of the cart shipping method.
+      - `discount_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The discount total of the cart shipping method.
+      - `discount_tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The discount tax total of the cart shipping method.
+      - `raw_original_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw original total of the cart shipping method.
+      - `raw_original_subtotal`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw original subtotal of the cart shipping method.
+      - `raw_original_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw original tax total of the cart shipping method.
+      - `raw_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw total of the cart shipping method.
+      - `raw_subtotal`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw subtotal of the cart shipping method.
+      - `raw_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw tax total of the cart shipping method.
+      - `raw_discount_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw discount total of the cart shipping method.
+      - `raw_discount_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw discount tax total of the cart shipping method.
+    - `shipping_method_id`: `string` — The ID of the associated shipping method.
+    - `total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The total tax relative to the shipping method.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `subtotal`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The subtotal tax relative to the shipping method.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `raw_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw total tax relative to the shipping method.
+      - `value`: `string` | `number`
+    - `raw_subtotal`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw subtotal tax relative to the shipping method.
+      - `value`: `string` | `number`

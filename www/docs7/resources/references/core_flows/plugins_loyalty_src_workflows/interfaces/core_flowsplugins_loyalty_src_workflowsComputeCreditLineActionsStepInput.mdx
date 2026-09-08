@@ -1,0 +1,37 @@
+---
+title: ComputeCreditLineActionsStepInput
+---
+
+Input to compute the credit line actions to apply store credits to a cart.
+
+**ComputeCreditLineActionsStepInput**
+
+- `storeCreditAccount`: [ModuleStoreCreditAccount](/resources/references/store_credit/types/store_creditModuleStoreCreditAccount) — The customer's store credit account.
+  - `id`: `string` — The store credit account's ID.
+  - `customer_id`: `string` (optional) — The ID of the customer who owns this account, if any.
+  - `code`: `string` (optional) — The unique code that identifies this account, used for anonymous or gift card accounts.
+  - `currency_code`: `string` — The three-letter ISO currency code of the account's balance.
+
+    Example:
+
+    ```
+    usd
+    ```
+  - `credits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount credited to this account.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `debits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount debited from this account.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `balance`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The current balance of this account (credits minus debits).
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `metadata`: `Record<string, unknown>` — Custom key-value pairs attached to this account.
+  - `created_at`: `string` — The date the account was created.
+  - `updated_at`: `string` — The date the account was last updated.
+- `cart`: `PluginCartDTO` — The cart to apply store credits to.
+- `input`: `object` — The workflow input containing the amount of store credits to apply.
+  - `amount`: `number` (optional)

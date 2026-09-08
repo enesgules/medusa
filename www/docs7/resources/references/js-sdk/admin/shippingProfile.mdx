@@ -1,0 +1,381 @@
+---
+title: shippingProfile - JS SDK Admin Reference
+sidebarTitle: shippingProfile
+---
+
+This documentation provides a reference to the `sdk.admin.shippingProfile` set of methods used to send requests to Medusa's Admin API routes.
+
+## create
+
+This method creates a new shipping profile. It sends a request to the
+[Create Shipping Profile](/api/admin/shipping-profiles/create-shipping-profile)
+API route.
+
+### Example
+
+```ts
+sdk.admin.shippingProfile.create({
+  name: "Default Shipping Profile",
+})
+.then(({ shipping_profile }) => {
+  console.log(shipping_profile)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [AdminCreateShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateShippingProfile) — The details of the shipping profile to create.
+  - `name`: `string` — The name of the shipping profile.
+  - `type`: `string` — The type of the shipping profile.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the shipping profile.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the shipping profile.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminShippingProfileResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfileResponse)> — The shipping profile's details.
+  - `shipping_profile`: [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) — The shipping profile's details.
+    - `id`: `string` — The ID of the shipping profile.
+    - `name`: `string` — The name of the shipping profile.
+    - `type`: `string` — The type of the shipping profile.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the shipping profile.
+    - `created_at`: `string` — The date when the shipping profile was created.
+    - `updated_at`: `string` — The date when the shipping profile was updated.
+    - `deleted_at`: `null` | `string` — The date when the shipping profile was deleted.
+
+## update
+
+This method updates a shipping profile. It sends a request to the
+[Update Shipping Profile](/api/admin/shipping-profiles/update-a-shipping-profile)
+API route.
+
+### Example
+
+```ts
+sdk.admin.shippingProfile.update("sp_123", {
+  name: "Updated Shipping Profile",
+})
+.then(({ shipping_profile }) => {
+  console.log(shipping_profile)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `id`: `string` — The ID of the shipping profile to update.
+- `body`: [AdminUpdateShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateShippingProfile) — The details of the shipping profile to update.
+  - `name`: `string` (optional) — The name of the shipping profile.
+  - `type`: `string` (optional) — The type of the shipping profile.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the shipping profile.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the shipping profile.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminShippingProfileResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfileResponse)> — The shipping profile's details.
+  - `shipping_profile`: [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) — The shipping profile's details.
+    - `id`: `string` — The ID of the shipping profile.
+    - `name`: `string` — The name of the shipping profile.
+    - `type`: `string` — The type of the shipping profile.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the shipping profile.
+    - `created_at`: `string` — The date when the shipping profile was created.
+    - `updated_at`: `string` — The date when the shipping profile was updated.
+    - `deleted_at`: `null` | `string` — The date when the shipping profile was deleted.
+
+## delete
+
+This method deletes a shipping profile. It sends a request to the
+[Delete Shipping Profile](/api/admin/shipping-profiles/delete-a-shipping-profile)
+API route.
+
+### Example
+
+```ts
+sdk.admin.shippingProfile.delete("sp_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The ID of the shipping profile to delete.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminShippingProfileDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfileDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: `"shipping_profile"` — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## list
+
+This method retrieves a list of shipping profiles. It sends a request to the
+[List Shipping Profiles](/api/admin/shipping-profiles/list-shipping-profiles)
+API route.
+
+### Example
+
+To retrieve the list of shipping profiles:
+
+```ts
+sdk.admin.shippingProfile.list()
+.then(({ shipping_profiles, count, limit, offset }) => {
+  console.log(shipping_profiles)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.shippingProfile.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ shipping_profiles, count, limit, offset }) => {
+  console.log(shipping_profiles)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each shipping profile:
+
+```ts
+sdk.admin.shippingProfile.list({
+  fields: "id,name"
+})
+.then(({ shipping_profiles, count, limit, offset }) => {
+  console.log(shipping_profiles)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [AdminShippingProfileListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfileListParams) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `id`: `string` | `string`\[] (optional) — Filter by shipping profile ID(s).
+  - `q`: `string` (optional) — Query or keywords to search the shipping profile's searchable fields.
+  - `type`: `string` (optional) — Filter by shipping profile type.
+  - `name`: `string` (optional) — Filter by shipping profile name.
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the shipping profile was created.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the shipping profile was updated.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the shipping profile was deleted.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `$and`: [AdminShippingProfileListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfileListParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by shipping profile ID(s).
+    - `q`: `string` (optional) — Query or keywords to search the shipping profile's searchable fields.
+    - `type`: `string` (optional) — Filter by shipping profile type.
+    - `name`: `string` (optional) — Filter by shipping profile name.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the shipping profile was created.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the shipping profile was updated.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the shipping profile was deleted.
+    - `$and`: [AdminShippingProfileListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfileListParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: [AdminShippingProfileListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfileListParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `$or`: [AdminShippingProfileListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfileListParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by shipping profile ID(s).
+    - `q`: `string` (optional) — Query or keywords to search the shipping profile's searchable fields.
+    - `type`: `string` (optional) — Filter by shipping profile type.
+    - `name`: `string` (optional) — Filter by shipping profile name.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the shipping profile was created.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the shipping profile was updated.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the shipping profile was deleted.
+    - `$and`: [AdminShippingProfileListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfileListParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: [AdminShippingProfileListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfileListParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminShippingProfileListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminShippingProfileListResponse)> — The list of shipping profiles.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## retrieve
+
+This method retrieves a shipping profile. It sends a request to the
+[Get Shipping Profile](/api/admin/shipping-profiles/get-a-shipping-profile)
+API route.
+
+### Example
+
+To retrieve a shipping profile by its ID:
+
+```ts
+sdk.admin.shippingProfile.retrieve("sp_123")
+.then(({ shipping_profile }) => {
+  console.log(shipping_profile)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.shippingProfile.retrieve("sp_123", {
+  fields: "id,name"
+})
+.then(({ shipping_profile }) => {
+  console.log(shipping_profile)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The ID of the shipping profile to retrieve.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the shipping profile.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminShippingProfileResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfileResponse)> — The shipping profile's details.
+  - `shipping_profile`: [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) — The shipping profile's details.
+    - `id`: `string` — The ID of the shipping profile.
+    - `name`: `string` — The name of the shipping profile.
+    - `type`: `string` — The type of the shipping profile.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the shipping profile.
+    - `created_at`: `string` — The date when the shipping profile was created.
+    - `updated_at`: `string` — The date when the shipping profile was updated.
+    - `deleted_at`: `null` | `string` — The date when the shipping profile was deleted.

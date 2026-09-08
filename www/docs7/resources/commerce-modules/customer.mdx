@@ -1,0 +1,208 @@
+---
+title: Customer Module
+---
+
+In this section of the documentation, you will find resources to learn more about the Customer Module and how to use it in your application.
+
+<Note>
+  **Looking for no-code docs?**
+
+  Refer to the [Medusa Admin User Guide](/user-guide/customers) to learn how to manage customers and groups using the dashboard.
+</Note>
+
+Medusa has customer related features available out-of-the-box through the Customer Module. A [module](/learn/fundamentals/modules) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Customer Module.
+
+<Note>
+  Learn more about why modules are isolated in [this documentation](/learn/fundamentals/modules/isolation).
+</Note>
+
+## Customer Features
+
+- [Customer Management](/resources/commerce-modules/customer/customer-accounts): Store and manage guest and registered customers in your store.
+- [Customer Organization](/resources/references/customer/models): Organize customers into groups. This has a lot of benefits and supports many use cases, such as provide discounts for specific customer groups using the [Promotion Module](/resources/commerce-modules/promotion).
+
+***
+
+## How to Use the Customer Module
+
+In your Medusa application, you build flows around Commerce Modules. A flow is built as a [Workflow](/learn/fundamentals/workflows), which is a special function composed of a series of steps that guarantees data consistency and reliable roll-back mechanism.
+
+You can build custom workflows and steps. You can also re-use Medusa's workflows and steps, which are provided by the `@medusajs/medusa/core-flows` package.
+
+For example:
+
+```ts title="src/workflows/create-customer.ts"
+import { 
+  createWorkflow, 
+  WorkflowResponse,
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+
+const createCustomerStep = createStep(
+  "create-customer",
+  async ({}, { container }) => {
+    const customerModuleService = container.resolve(Modules.CUSTOMER)
+
+    const customer = await customerModuleService.createCustomers({
+      first_name: "Peter",
+      last_name: "Hayes",
+      email: "peter.hayes@example.com",
+    })
+
+    return new StepResponse({ customer }, customer.id)
+  },
+  async (customerId, { container }) => {
+    if (!customerId) {
+      return
+    }
+    const customerModuleService = container.resolve(Modules.CUSTOMER)
+
+    await customerModuleService.deleteCustomers([customerId])
+  }
+)
+
+export const createCustomerWorkflow = createWorkflow(
+  "create-customer",
+  () => {
+    const { customer } = createCustomerStep()
+
+    return new WorkflowResponse({
+      customer,
+    })
+  }
+)
+```
+
+You can then execute the workflow in your custom API routes, scheduled jobs, or subscribers:
+
+<Tabs>
+  <Tab title="API Route">
+    ```ts title="src/api/workflow/route.ts"
+    import type {
+      MedusaRequest,
+      MedusaResponse,
+    } from "@medusajs/framework/http"
+    import { createCustomerWorkflow } from "../../workflows/create-customer"
+
+    export async function GET(
+      req: MedusaRequest,
+      res: MedusaResponse
+    ) {
+      const { result } = await createCustomerWorkflow(req.scope)
+        .run()
+
+      res.send(result)
+    }
+    ```
+  </Tab>
+
+  <Tab title="Subscriber">
+    ```ts title="src/subscribers/user-created.ts"
+    import {
+      type SubscriberConfig,
+      type SubscriberArgs,
+    } from "@medusajs/framework"
+    import { createCustomerWorkflow } from "../workflows/create-customer"
+
+    export default async function handleUserCreated({
+      event: { data },
+      container,
+    }: SubscriberArgs<{ id: string }>) {
+      const { result } = await createCustomerWorkflow(container)
+        .run()
+
+      console.log(result)
+    }
+
+    export const config: SubscriberConfig = {
+      event: "user.created",
+    }
+    ```
+  </Tab>
+
+  <Tab title="Scheduled Job">
+    ```ts title="src/jobs/run-daily.ts"
+    import { MedusaContainer } from "@medusajs/framework/types"
+    import { createCustomerWorkflow } from "../workflows/create-customer"
+
+    export default async function myCustomJob(
+      container: MedusaContainer
+    ) {
+      const { result } = await createCustomerWorkflow(container)
+        .run()
+
+      console.log(result)
+    }
+
+    export const config = {
+      name: "run-once-a-day",
+      schedule: `0 0 * * *`,
+    }
+    ```
+  </Tab>
+</Tabs>
+
+Learn more about workflows in [this documentation](/learn/fundamentals/workflows).
+
+***
+
+[Overview](/resources/commerce-modules/customer)
+
+## Concepts
+
+- [Customer Accounts](/resources/commerce-modules/customer/customer-accounts)
+- [Link to Modules](/resources/commerce-modules/customer/links-to-other-modules)
+
+***
+
+## Server Guides
+
+Learn how to use the Customer Module in your customizations on the Medusa application server.
+
+- [Extend Module](/resources/commerce-modules/customer/extend)
+- [Implement Customer Tiers](/resources/how-to-tutorials/tutorials/customer-tiers)
+- [Implement First-Purchase Discount](/resources/how-to-tutorials/tutorials/first-purchase-discounts)
+- [Implement Loyalty Points](/resources/how-to-tutorials/tutorials/loyalty-points)
+- [Implement Phone Authentication](/resources/how-to-tutorials/tutorials/phone-auth)
+
+***
+
+## Storefront Guides
+
+Learn how to integrate the Customer Module's features into your storefront.
+
+- [Customer Context in Storefront](/resources/storefront-development/customers/context)
+- [Edit Customer Profile in Storefront](/resources/storefront-development/customers/profile)
+- [Log-out Customer in Storefront](/resources/storefront-development/customers/log-out)
+- [Login Customer in Storefront](/resources/storefront-development/customers/login)
+- [Manage Customer Addresses in Storefront](/resources/storefront-development/customers/addresses)
+- [Register Customer in Storefront](/resources/storefront-development/customers/register)
+- [Register Customer with Email Verification in Storefront](/resources/storefront-development/customers/verify-account)
+- [Reset Customer Password in Storefront](/resources/storefront-development/customers/reset-password)
+- [Retrieve Logged-In Customer in Storefront](/resources/storefront-development/customers/retrieve)
+- [Third-Party or Social Login in Storefront](/resources/storefront-development/customers/third-party-login)
+
+***
+
+## Admin User Guides
+
+Learn how to utilize and manage Customer features in the Medusa Admin dashboard.
+
+- [Customers Overview](/user-guide/customers)
+- [Manage Customer Groups](/user-guide/customers/groups)
+- [Manage Customers](/user-guide/customers/manage)
+
+***
+
+## References
+
+Find references for tools and resources related to the Customer Module, such as data models, methods, and more. These are useful for your customizations.
+
+- [Workflows](/resources/commerce-modules/customer/workflows)
+- [JS SDK](/resources/commerce-modules/customer/js-sdk)
+- [Events Reference](/resources/references/customer/events)
+- [Admin Widget Zones](/resources/commerce-modules/customer/admin-widget-zones)
+- [Main Service Reference](/resources/references/customer)
+- [Data Models Reference](/resources/references/customer/models)

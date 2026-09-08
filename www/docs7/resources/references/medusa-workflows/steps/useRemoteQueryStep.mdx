@@ -1,0 +1,74 @@
+---
+title: useRemoteQueryStep - Medusa Core Workflows Reference
+sidebarTitle: useRemoteQueryStep
+---
+
+This documentation provides a reference to the `useRemoteQueryStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step fetches data across modules using the remote query.
+
+Learn more in the [Remote Query documentation](/learn/fundamentals/module-links/query).
+
+> **Note**
+>
+> This step is deprecated. Use [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep) instead.
+
+## Example
+
+To retrieve a list of records of a data model:
+
+```ts
+const products = useRemoteQueryStep({
+  entry_point: "product",
+  fields: [
+    "*",
+    "variants.*"
+  ]
+})
+```
+
+To retrieve a single item instead of a an array:
+
+```ts
+const product = useRemoteQueryStep({
+  entry_point: "product",
+  fields: [
+    "*",
+    "variants.*"
+  ],
+  variables: {
+    filters: {
+      id: "123"
+    }
+  },
+  list: false
+})
+```
+
+To throw an error if a record isn't found matching the specified ID:
+
+```ts
+const product = useRemoteQueryStep({
+  entry_point: "product",
+  fields: [
+    "*",
+    "variants.*"
+  ],
+  variables: {
+    filters: {
+      id: "123"
+    }
+  },
+  list: false,
+  throw_if_key_not_found: true
+})
+```
+
+<a id="useremotequerystep-input" />
+
+## Input
+
+**useRemoteQueryStep**
+
+- `EntryStepInput \| ServiceStepInput`: [EntryStepInput](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcEntryStepInput) | [ServiceStepInput](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcServiceStepInput)
+  - `EntryStepInput \| ServiceStepInput`: [EntryStepInput](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcEntryStepInput) | [ServiceStepInput](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcServiceStepInput)

@@ -1,0 +1,52 @@
+---
+title: updateRules
+---
+
+This method manages the rules of a shipping option to create, update, or remove them. It sends a request to the
+[Manage Rules of a Shipping Option](/api/admin/shipping-options/manage-rules)
+API route.
+
+## Example
+
+```ts
+sdk.admin.shippingOption.updateRules("so_123", {
+  create: [{ attribute: "enabled_in_store", operator: "eq", value: "true" }],
+})
+.then(({ shipping_option }) => {
+  console.log(shipping_option)
+})
+```
+
+<a id="updaterules-parameters" />
+
+## Parameters
+
+**updateRules**
+
+- `id`: `string` — The ID of the shipping option to manage the rules for.
+- `body`: [AdminUpdateShippingOptionRules](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateShippingOptionRules) — The details of the shipping option rules to manage.
+  - `create`: `any`\[] (optional) — The rules to create.
+  - `update`: `any`\[] (optional) — The rules to update.
+  - `delete`: `string`\[] (optional) — The rules to delete.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updaterules-returns" />
+
+## Returns
+
+**updateRules**
+
+- `Promise`: Promise\<[AdminUpdateShippingOptionRulesResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminUpdateShippingOptionRulesResponse)> — The shipping option's details.
+  - `created`: T\[] — The items that were created.
+  - `updated`: T\[] — The items that were updated.
+  - `deleted`: `object` — Details of the items that were deleted.
+    - `ids`: `string`\[] — The IDs of the items that were deleted.
+    - `object`: `string` — The type of the items that were deleted.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `deleted`: `boolean` — Whether the items were deleted successfully.

@@ -1,0 +1,61 @@
+---
+title: createTaxRegionsStep - Medusa Core Workflows Reference
+sidebarTitle: createTaxRegionsStep
+---
+
+This documentation provides a reference to the `createTaxRegionsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates one or more tax regions.
+
+## Example
+
+```ts
+const data = createTaxRegionsStep([
+  {
+    country_code: "us",
+  }
+])
+```
+
+<a id="createtaxregionsstep-input" />
+
+## Input
+
+**createTaxRegionsStep**
+
+- `CreateTaxRegionDTO[]`: [CreateTaxRegionDTO](/resources/references/tax/interfaces/taxCreateTaxRegionDTO)\[]
+  - `country_code`: `string` — The ISO 3 character country code of the tax region.
+  - `province_code`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code of the tax region.
+  - `parent_id`: `null` | `string` (optional) — The ID of the tax region's parent.
+  - `provider_id`: `null` | `string` (optional) — The ID of the tax provider for the region.
+  - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `created_by`: `string` (optional) — Who created the tax region. For example, the ID of the user that created the tax region.
+  - `default_tax_rate`: `object` (optional) — The default tax rate of the tax region.
+    - `rate`: `null` | `number` (optional) — The rate to charge.
+
+      Example:
+
+      ```
+      10
+      ```
+    - `code`: `null` | `string` (optional) — The code of the tax rate.
+    - `name`: `string` — The name of the tax rate.
+    - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+
+<a id="createtaxregionsstep-output" />
+
+## Output
+
+**createTaxRegionsStep**
+
+- `TaxRegionDTO[]`: [TaxRegionDTO](/resources/references/tax/interfaces/taxTaxRegionDTO)\[]
+  - `id`: `string` — The ID of the tax region.
+  - `country_code`: `string` — The ISO 2 character country code of the tax region.
+  - `province_code`: `null` | `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code of the tax region.
+  - `parent_id`: `null` | `string` — The ID of the tax region's parent tax region.
+  - `provider_id`: `null` | `string` — The ID of the tax provider for the region.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `created_at`: `string` | `Date` — The creation date of the tax region.
+  - `updated_at`: `string` | `Date` — The update date of the tax region.
+  - `created_by`: `null` | `string` — Who created the tax region. For example, the ID of the user that created the tax region.
+  - `deleted_at`: `null` | `string` | `Date` — The deletion date of the tax region.

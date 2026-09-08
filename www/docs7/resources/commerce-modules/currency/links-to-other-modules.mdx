@@ -1,0 +1,101 @@
+---
+title: Links between Currency Module and Other Modules
+---
+
+This document showcases the module links defined between the Currency Module and other Commerce Modules.
+
+## Summary
+
+The Currency Module has the following links to other modules:
+
+<Note>
+  **Tip**
+
+  Read-only links are used to query data across modules, but the relations aren't stored in a pivot table in the database.
+</Note>
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        First Data Model
+      </th>
+
+      <th>
+        Second Data Model
+      </th>
+
+      <th>
+        Type
+      </th>
+
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        [StoreCurrency](/resources/references/store/models/StoreCurrency) in [Store Module](/resources/commerce-modules/store)
+      </td>
+
+      <td>
+        [Currency](/resources/references/currency/models/Currency)
+      </td>
+
+      <td>
+        Read-only - has one
+      </td>
+
+      <td>
+        [Learn more](/resources/commerce-modules/currency/links-to-other-modules#store-module)
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## Store Module
+
+The Store Module has a `Currency` data model that stores the supported currencies of a store. However, these currencies don't hold all the details of a currency, such as its name or symbol.
+
+Instead, Medusa defines a read-only link between the [Store Module](/resources/commerce-modules/store)'s `StoreCurrency` data model and the Currency Module's `Currency` data model. Because the link is read-only from the `Store`'s side, you can only retrieve the details of a store's supported currencies, and not the other way around.
+
+### Retrieve with Query
+
+To retrieve the details of a store's currencies with [Query](/learn/fundamentals/module-links/query), pass `supported_currencies.currency.*` in `fields`:
+
+<Tabs>
+  <Tab title="query.graph">
+    ```ts
+    const { data: stores } = await query.graph({
+      entity: "store",
+      fields: [
+        "supported_currencies.currency.*",
+      ],
+    })
+
+    // stores[0].supported_currencies[0].currency
+    ```
+  </Tab>
+
+  <Tab title="useQueryGraphStep">
+    ```ts
+    import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+    // ...
+
+    const { data: stores } = useQueryGraphStep({
+      entity: "store",
+      fields: [
+        "supported_currencies.currency.*",
+      ],
+    })
+
+    // stores[0].supported_currencies[0].currency
+    ```
+  </Tab>
+</Tabs>

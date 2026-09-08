@@ -1,0 +1,21 @@
+---
+title: SearchTask
+---
+
+A write to a search index, along with its status.
+
+Some search engines, such as Meilisearch and Algolia, acknowledge a write and
+apply it later, whereas others, such as PostgreSQL and Typesense, apply it
+inline. Every write returns a task so both look the same — an inline
+provider's task is already `succeeded`.
+
+## Properties
+
+**SearchTask**
+
+- `id`: `string` (optional) — The ID identifying the write in the search engine, which is passed back to the provider's `waitForTask` method. It's set only for a deferred write, since a provider applying writes inline has nothing to identify.
+- `index`: `string` (optional) — The name of the index the write was applied to.
+- `status`: [SearchTaskStatus](/resources/references/types/SearchTypes/types/typesSearchTypesSearchTaskStatus) — The write's status.
+- `error`: `object` (optional) — The error that made the write fail, if its `status` is `failed`.
+  - `message`: `string` — The error's message.
+  - `code`: `string` (optional) — The error's code, as reported by the search engine.

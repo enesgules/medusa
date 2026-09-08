@@ -1,0 +1,239 @@
+---
+title: CartWorkflowDTO
+---
+
+A cart's details.
+
+## Properties
+
+**CartWorkflowDTO**
+
+- `customer`: [CustomerDTO](/resources/references/customer/interfaces/customerCustomerDTO) (optional) — The cart's customer.
+  - `id`: `string` — The ID of the customer.
+  - `email`: `string` — The email of the customer.
+  - `has_account`: `boolean` — A flag indicating if customer has an account or not.
+  - `default_billing_address_id`: `null` | `string` — The associated default billing address's ID.
+  - `default_shipping_address_id`: `null` | `string` — The associated default shipping address's ID.
+  - `company_name`: `null` | `string` — The company name of the customer.
+  - `first_name`: `null` | `string` — The first name of the customer.
+  - `last_name`: `null` | `string` — The last name of the customer.
+  - `addresses`: [CustomerAddressDTO](/resources/references/customer/interfaces/customerCustomerAddressDTO)\[] — The addresses of the customer.
+    - `id`: `string` — The ID of the customer address.
+    - `address_name`: `string` (optional) — The address name of the customer address.
+    - `is_default_shipping`: `boolean` — Whether the customer address is default shipping.
+    - `is_default_billing`: `boolean` — Whether the customer address is default billing.
+    - `customer_id`: `string` — The associated customer's ID.
+    - `company`: `string` (optional) — The company of the customer address.
+    - `first_name`: `string` (optional) — The first name of the customer address.
+    - `last_name`: `string` (optional) — The last name of the customer address.
+    - `address_1`: `string` (optional) — The address 1 of the customer address.
+    - `address_2`: `string` (optional) — The address 2 of the customer address.
+    - `city`: `string` (optional) — The city of the customer address.
+    - `country_code`: `string` (optional) — The country code of the customer address.
+    - `province`: `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the customer address.
+    - `postal_code`: `string` (optional) — The postal code of the customer address.
+    - `phone`: `string` (optional) — The phone of the customer address.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` — The created at of the customer address.
+    - `updated_at`: `string` — The updated at of the customer address.
+  - `phone`: `null` | `string` — The phone of the customer.
+  - `groups`: `object`\[] — The groups of the customer.
+    - `id`: `string` — The ID of the group.
+    - `name`: `string` — The name of the group.
+  - `metadata`: `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `created_by`: `null` | `string` — Who created the customer.
+  - `deleted_at`: `null` | `string` | `Date` — The deletion date of the customer.
+  - `created_at`: `string` | `Date` — The creation date of the customer.
+  - `updated_at`: `string` | `Date` — The update date of the customer.
+- `product`: [ProductDTO](/resources/references/product/interfaces/productProductDTO) (optional) — The cart's product to be added.
+  - `id`: `string` — The ID of the product.
+  - `title`: `string` — The title of the product.
+  - `handle`: `string` — The handle of the product. The handle can be used to create slug URL paths.
+  - `subtitle`: `null` | `string` — The subttle of the product.
+  - `description`: `null` | `string` — The description of the product.
+  - `is_giftcard`: `boolean` — Whether the product is a gift card.
+  - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) — The status of the product.
+  - `thumbnail`: `null` | `string` — The URL of the product's thumbnail.
+  - `width`: `null` | `number` — The width of the product.
+  - `weight`: `null` | `number` — The weight of the product.
+  - `length`: `null` | `number` — The length of the product.
+  - `height`: `null` | `number` — The height of the product.
+  - `origin_country`: `null` | `string` — The origin country of the product.
+  - `hs_code`: `null` | `string` — The HS Code of the product.
+  - `mid_code`: `null` | `string` — The MID Code of the product.
+  - `material`: `null` | `string` — The material of the product.
+  - `collection`: `null` | [ProductCollectionDTO](/resources/references/product/interfaces/productProductCollectionDTO) — The associated product collection.
+    - `id`: `string` — The ID of the product collection.
+    - `title`: `string` — The title of the product collection.
+    - `handle`: `string` — The handle of the product collection. The handle can be used to create slug URL paths.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product collection was created.
+    - `updated_at`: `string` | `Date` — When the product collection was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product collection was deleted.
+    - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+  - `collection_id`: `null` | `string` — The associated product collection id.
+  - `categories`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] (optional) — The associated product categories.
+    - `id`: `string` — The ID of the product category.
+    - `name`: `string` — The name of the product category.
+    - `description`: `string` — The description of the product category.
+    - `handle`: `string` — The handle of the product category. The handle can be used to create slug URL paths.
+    - `is_active`: `boolean` — Whether the product category is active.
+    - `is_internal`: `boolean` — Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.
+    - `rank`: `number` — The ranking of the product category among sibling categories.
+    - `external_id`: `null` | `string` — An external identifier for the product category, such as an ID from a third-party system.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — The ranking of the product category among sibling categories.
+    - `parent_category`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO) — The associated parent category.
+    - `parent_category_id`: `null` | `string` — The associated parent category id.
+    - `category_children`: [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] — The associated child categories.
+    - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] — The associated products.
+    - `created_at`: `string` | `Date` — When the product category was created.
+    - `updated_at`: `string` | `Date` — When the product category was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product category was deleted.
+  - `type`: `null` | [ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO) — The associated product type.
+    - `id`: `string` — The ID of the product type.
+    - `value`: `string` — The value of the product type.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product type was created.
+    - `updated_at`: `string` | `Date` — When the product type was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product type was deleted.
+  - `type_id`: `null` | `string` — The associated product type id.
+  - `tags`: [ProductTagDTO](/resources/references/product/interfaces/productProductTagDTO)\[] — The associated product tags.
+    - `id`: `string` — The ID of the product tag.
+    - `value`: `string` — The value of the product tag.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+  - `variants`: [ProductVariantDTO](/resources/references/product/interfaces/productProductVariantDTO)\[] — The associated product variants.
+    - `id`: `string` — The ID of the product variant.
+    - `title`: `string` — The tile of the product variant.
+    - `sku`: `null` | `string` — The SKU of the product variant.
+    - `barcode`: `null` | `string` — The barcode of the product variant.
+    - `ean`: `null` | `string` — The EAN of the product variant.
+    - `upc`: `null` | `string` — The UPC of the product variant.
+    - `allow_backorder`: `boolean` — Whether the product variant can be ordered when it's out of stock.
+    - `manage_inventory`: `boolean` — Whether the product variant's inventory should be managed by the core system.
+    - `thumbnail`: `null` | `string` — The thumbnail of the product variant form the product images.
+    - `requires_shipping`: `boolean` — Whether the product variant's requires shipping.
+    - `hs_code`: `null` | `string` — The HS Code of the product variant.
+    - `origin_country`: `null` | `string` — The origin country of the product variant.
+    - `mid_code`: `null` | `string` — The MID Code of the product variant.
+    - `material`: `null` | `string` — The material of the product variant.
+    - `weight`: `null` | `number` — The weight of the product variant.
+    - `length`: `null` | `number` — The length of the product variant.
+    - `height`: `null` | `number` — The height of the product variant.
+    - `width`: `null` | `number` — The width of the product variant.
+    - `options`: [ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[] — The associated product options.
+    - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `product`: `null` | [ProductDTO](/resources/references/product/interfaces/productProductDTO) (optional) — The associated product.
+    - `product_id`: `null` | `string` — The associated product id.
+    - `variant_rank`: `null` | `number` (optional) — he ranking of the variant among other variants associated with the product.
+    - `created_at`: `string` | `Date` — When the product variant was created.
+    - `updated_at`: `string` | `Date` — When the product variant was updated.
+    - `deleted_at`: `string` | `Date` — When the product variant was deleted.
+  - `options`: [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO)\[] — The associated product options.
+    - `id`: `string` — The ID of the product option.
+    - `title`: `string` — The title of the product option.
+    - `is_exclusive`: `boolean` — Whether the product option is exclusive to a product or shared across products.
+    - `products`: `null` | [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+    - `values`: [ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[] — The associated product option values.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product option was created.
+    - `updated_at`: `string` | `Date` — When the product option was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product option was deleted.
+  - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+    - `id`: `string` — The ID of the product image.
+    - `url`: `string` — The URL of the product image.
+    - `rank`: `number` — The rank of the product image.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product image was created.
+    - `updated_at`: `string` | `Date` — When the product image was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product image was deleted.
+  - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+  - `external_id`: `null` | `string` — The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.
+  - `created_at`: `string` | `Date` — When the product was created.
+  - `updated_at`: `string` | `Date` — When the product was updated.
+  - `deleted_at`: `string` | `Date` — When the product was deleted.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+- `region`: [RegionDTO](/resources/references/region/interfaces/regionRegionDTO) (optional) — The cart's region.
+  - `id`: `string` — The ID of the region.
+  - `name`: `string` — The name of the region.
+  - `currency_code`: `string` — The currency code of the region.
+  - `automatic_taxes`: `boolean` — Setting to indicate whether taxes need to be applied automatically
+  - `countries`: [RegionCountryDTO](/resources/references/region/interfaces/regionRegionCountryDTO)\[] — The countries of the region.
+    - `id`: `string` — The ID of the country.
+    - `iso_2`: `string` — The ISO 2 code of the country.
+    - `iso_3`: `string` — The ISO 3 code of the country.
+    - `num_code`: `string` — The country's code number.
+    - `name`: `string` — The name of the country.
+    - `display_name`: `string` — The display name of the country.
+  - `payment_providers`: [PaymentProviderDTO](/resources/references/region/interfaces/regionPaymentProviderDTO)\[] — Payment providers available in the region
+    - `id`: `string` — The ID of the payment provider.
+    - `is_enabled`: `boolean` — Whether the payment provider is enabled.
+  - `metadata`: `Record<string, any>` (optional) — Holds custom data in key-value pairs.
+  - `created_at`: `string` — The date the region was created.
+  - `updated_at`: `string` — The date the region was updated.
+- `id`: `string` — The ID of the cart.
+- `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) — The payment collection details.
+  - `id`: `string` — The ID of the payment collection.
+  - `currency_code`: `string` — The ISO 3 character currency code of the payment sessions and payments associated with payment collection.
+  - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The total amount to be authorized and captured.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount authorized within the associated payment sessions.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount refunded within the associated payments.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount captured within the associated payments.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `completed_at`: `string` | `Date` (optional) — When the payment collection was completed.
+  - `created_at`: `string` | `Date` (optional) — When the payment collection was created.
+  - `updated_at`: `string` | `Date` (optional) — When the payment collection was updated.
+  - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `status`: [PaymentCollectionStatus](/resources/references/payment/types/paymentPaymentCollectionStatus) — The status of the payment collection.
+  - `payment_providers`: [PaymentProviderDTO](/resources/references/payment/interfaces/paymentPaymentProviderDTO)\[] — The payment provider used to process the associated payment sessions and payments.
+    - `id`: `string` — The ID of the payment provider.
+    - `is_enabled`: `boolean` — Whether the payment provider is enabled.
+  - `payment_sessions`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO)\[] (optional) — The associated payment sessions.
+    - `id`: `string` — The ID of the payment session.
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The amount to authorize.
+    - `currency_code`: `string` — The 3 character currency code of the payment session.
+    - `provider_id`: `string` — The ID of the associated payment provider.
+    - `data`: `Record<string, unknown>` — The data necessary for the payment provider to process the payment session.
+    - `context`: `Record<string, unknown>` (optional) — The context necessary for the payment provider.
+    - `status`: [PaymentSessionStatus](/resources/references/payment/types/paymentPaymentSessionStatus) — The status of the payment session.
+    - `authorized_at`: `Date` (optional) — When the payment session was authorized.
+    - `created_at`: `string` | `Date` — When the payment session was created
+    - `updated_at`: `string` | `Date` — When the payment session was updated
+    - `payment_collection_id`: `string` — The ID of the associated payment collection.
+    - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The payment collection the session is associated with.
+    - `payment`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO) (optional) — The payment created from the session.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `payments`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO)\[] (optional) — The associated payments.
+    - `id`: `string` — The ID of the payment.
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The payment's total amount.
+    - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw amount of the payment.
+    - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The authorized amount of the payment.
+    - `raw_authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw authorized amount of the payment.
+    - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+    - `provider_id`: `string` — The ID of the associated payment provider.
+    - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+    - `created_at`: `string` | `Date` (optional) — When the payment was created.
+    - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+    - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+    - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+    - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' amounts.
+    - `raw_captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' raw amounts.
+    - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' amounts.
+    - `raw_refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' raw amounts.
+    - `captures`: [CaptureDTO](/resources/references/payment/interfaces/paymentCaptureDTO)\[] (optional) — The associated captures.
+    - `refunds`: [RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)\[] (optional) — The associated refunds.
+    - `payment_collection_id`: `string` — The ID of the associated payment collection.
+    - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The associated payment collection.
+    - `payment_session`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO) (optional) — The payment session from which the payment is created.

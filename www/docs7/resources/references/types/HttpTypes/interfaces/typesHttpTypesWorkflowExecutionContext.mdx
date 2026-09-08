@@ -1,0 +1,17 @@
+---
+title: WorkflowExecutionContext
+---
+
+## Properties
+
+**WorkflowExecutionContext**
+
+- `data`: `object` — The data of the workflow execution.
+  - `invoke`: `Record<string, [StepInvokeResult](/references/types/HttpTypes/types/types.HttpTypes.StepInvokeResult)>` — The details of the invocation of the workflow execution's steps. The key is the step's ID, and the value is the step's details. These details are only included for steps that have their `saveResponse` property set to `true`.
+    - `output`: `object` — The output details of the step.
+  - `payload`: `unknown` (optional) — The payload or input of the workflow execution.
+- `compensate`: `Record<string, unknown>` — The output of the compensation function of the workflow execution. The key is the step's ID, and the value is the compensation function's output. These details are only included for steps that have their `saveResponse` property set to `true`.
+- `errors`: [StepError](/resources/references/types/HttpTypes/types/typesHttpTypesStepError)\[] — The errors of the workflow execution.
+  - `error`: `Record<string, unknown>` — The error details.
+  - `action`: `string` — The ID of the action that failed.
+  - `handlerType`: `string` — The type of the handler that failed. It can be `invoke` or `compensate`.

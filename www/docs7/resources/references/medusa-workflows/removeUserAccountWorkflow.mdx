@@ -1,0 +1,156 @@
+---
+title: removeUserAccountWorkflow - Medusa Core Workflows Reference
+sidebarTitle: removeUserAccountWorkflow
+---
+
+This documentation provides a reference to the `removeUserAccountWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow deletes a user and remove the association to its auth identity. It's used
+by the [Delete User Admin API Route](/api/admin/users/delete-a-user).
+
+You can use this workflow within your customizations or your own custom workflows, allowing you to
+delete users within your custom flows.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/user/workflows/remove-user-account.ts#L41)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { removeUserAccountWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await removeUserAccountWorkflow(req.scope)
+    .run({
+      input: {
+        userId: "user_123"
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { removeUserAccountWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await removeUserAccountWorkflow(container)
+    .run({
+      input: {
+        userId: "user_123"
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { removeUserAccountWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await removeUserAccountWorkflow(container)
+    .run({
+      input: {
+        userId: "user_123"
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { removeUserAccountWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = removeUserAccountWorkflow
+      .runAsStep({
+        input: {
+          userId: "user_123"
+        }
+      })
+  }
+)
+```
+
+<a id="removeuseraccountworkflow-steps" />
+
+## Steps
+
+- [deleteUsersWorkflow](/resources/references/medusa-workflows/deleteUsersWorkflow): Delete one or more users.
+  - **when** (when: \{
+    return shouldKeepAuthIdentity === true
+    })
+  - [setAuthAppMetadataStep](/resources/references/medusa-workflows/steps/setAuthAppMetadataStep): This step sets the `app_metadata` property of an auth identity. This is useful to associate a user (whether it's an admin user or customer) with an auth identity that allows them to authenticate into Medusa. You can learn more about auth identites in [this documentation](/resources/commerce-modules/auth/auth-identity-and-actor-types). To use this for a custom actor type, check out [this guide](/resources/commerce-modules/auth/create-actor-type) that explains how to create a custom `manager` actor type and manage its users.
+    - **when** (when: \{
+      return shouldKeepAuthIdentity === false
+      })
+    - [deleteAuthIdentityStep](/resources/references/medusa-workflows/steps/deleteAuthIdentityStep): This step deletes one or more auth identities.
+
+<a id="removeuseraccountworkflow-input" />
+
+## Input
+
+**removeUserAccountWorkflow**
+
+- `RemoveUserAccountWorkflowInput`: [RemoveUserAccountWorkflowInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcRemoveUserAccountWorkflowInput)
+  - `userId`: `string` — The ID of the user to remove.
+
+<a id="removeuseraccountworkflow-output" />
+
+## Output
+
+**removeUserAccountWorkflow**
+
+- `string`: `string`
+  - `string`: `string`
+
+<a id="removeuseraccountworkflow-emitted-events" />
+
+## Emitted Events
+
+- `user.deleted`: Emitted when users are deleted.
+
+  ```ts
+  {
+    id, // The ID of the user
+  }
+  ```

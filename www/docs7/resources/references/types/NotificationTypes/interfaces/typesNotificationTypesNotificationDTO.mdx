@@ -1,0 +1,37 @@
+---
+title: NotificationDTO
+---
+
+A notification's data.
+
+## Properties
+
+**NotificationDTO**
+
+- `id`: `string` — The ID of the notification.
+- `to`: `string` — The recipient of the notification. It can be email, phone number, or username, depending on the channel.
+- `from`: `null` | `string` (optional) — The sender of the notification. It can be email, phone number, or username, depending on the channel.
+- `attachments`: `null` | [Attachment](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesAttachment)\[] (optional) — Optional attachments for the notification.
+  - `content`: `string` — The content of the attachment, encoded as a binary string.
+  - `filename`: `string` — The filename of the attachment.
+  - `content_type`: `string` (optional) — The MIME type of the attachment.
+  - `disposition`: `string` (optional) — The disposition of the attachment, For example, "inline" or "attachment".
+  - `id`: `string` (optional) — The ID, if the attachment is meant to be referenced within the body of the message.
+- `channel`: `string` — The channel through which the notification is sent, such as 'email' or 'sms'
+- `template`: `string` — The template name in the provider's system.
+- `data`: `null` | `Record<string, unknown>` — The data that gets passed over to the provider for rendering the notification.
+- `provider_data`: `null` | `Record<string, unknown>` (optional) — Additional data specific to the provider or channel. For example, cc and bcc for emails.
+- `trigger_type`: `null` | `string` (optional) — The event name, the workflow, or anything else that can help to identify what triggered the notification.
+- `resource_id`: `null` | `string` (optional) — The ID of the resource this notification is for, if applicable. Useful for displaying relevant information in the UI
+- `resource_type`: `null` | `string` (optional) — The type of the resource this notification is for, if applicable, eg. "order"
+- `receiver_id`: `null` | `string` (optional) — The ID of the customer this notification is for, if applicable.
+- `original_notification_id`: `null` | `string` (optional) — The original notification, in case this is a retried notification.
+- `external_id`: `null` | `string` (optional) — The id of the notification in the external system, if applicable
+- `provider_id`: `string` — The ID of the notification provider.
+- `provider`: [NotificationProviderDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationProviderDTO) — Information about the notification provider
+  - `id`: `string` — The ID of the notification provider.
+  - `handle`: `string` — The handle of the notification provider.
+  - `name`: `string` — A user-friendly name of the notification provider.
+  - `channels`: `string`\[] — The supported channels by the notification provider.
+- `created_at`: `Date` — The date and time the notification was created.
+- `status`: `"pending"` | `"success"` | `"failure"` — The status of the notification

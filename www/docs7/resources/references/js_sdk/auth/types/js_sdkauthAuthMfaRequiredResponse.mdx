@@ -1,0 +1,21 @@
+---
+title: AuthMfaRequiredResponse
+---
+
+Response returned when authentication succeeds but must be completed with
+a multi-factor authentication (MFA) challenge before issuing a token.
+
+- `AuthMfaRequiredResponse`: `object` — Response returned when authentication succeeds but must be completed with a multi-factor authentication (MFA) challenge before issuing a token.
+  - `token`: `string` — A token without an actor type (permissions) attached to it. Used to request and confirm verifications.
+  - `mfa_required`: `true` — Indicates that the client must complete the returned MFA challenge.
+  - `mfa_challenge`: [AuthMfaChallengeDTO](/resources/references/auth/types/authAuthMfaChallengeDTO) — The MFA challenge to complete.
+    - `id`: `string` — The multi-factor authentication (MFA) challenge's ID.
+    - `auth_identity_id`: `string` (optional) — The ID of the authentication identity being challenged.
+    - `auth_identity`: [AuthIdentityDTO](/resources/references/auth/interfaces/authAuthIdentityDTO) (optional) — The authentication identity being challenged.
+    - `auth_provider`: `string` | `null` (optional) — The authentication provider handling the challenge.
+    - `methods`: [AuthMfaChallengeMethod](/resources/references/auth/types/authAuthMfaChallengeMethod)\[] — Available methods for completing this challenge.
+    - `expires_at`: `Date` — When the challenge expires.
+    - `attempts`: `number` — Number of verification attempts made.
+    - `max_attempts`: `number` — Maximum verification attempts allowed.
+    - `completed_at`: `Date` | `null` (optional) — When the challenge was completed.
+    - `metadata`: `Record<string, unknown>` | `null` (optional) — Additional metadata for the challenge.

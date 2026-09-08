@@ -1,0 +1,158 @@
+---
+title: updateTranslationSettings - Translation Module Reference
+sidebarTitle: updateTranslationSettings
+---
+
+This documentation provides a reference to the `updateTranslationSettings` method. This belongs to the Translation Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updatetranslationsettings-data-sharedcontext-promisetranslationsettingsdto" />
+
+## updateTranslationSettings(data, sharedContext?): Promise\<[TranslationSettingsDTO](/resources/references/translation/interfaces/translationTranslationSettingsDTO)>
+
+This method updates an existent translation setting. The ID should be included in the data object.
+}
+
+### Example
+
+```ts
+const translationSettings = await translationModuleService.updateTranslationSettings([
+  {
+    id: "ts_123",
+    entity_type: "product_collection",
+    fields: ["title"],
+    is_active: true,
+  },
+])
+```
+
+<a id="updatetranslationsettings-parameters" />
+
+### Parameters
+
+**updateTranslationSettings**
+
+- `data`: [UpdateTranslationSettingsDTO](/resources/references/translation/interfaces/translationUpdateTranslationSettingsDTO) — The attributes to update in the translation setting (including id).
+  - `id`: `string` — The ID of the translation settings to update.
+  - `entity_type`: `string` (optional) — The entity type.
+
+    Example:
+
+    ```
+    "product"
+    ```
+  - `fields`: `string`\[] (optional) — The translatable fields.
+
+    Example:
+
+    ```
+    ["title", "description", "material"]
+    ```
+  - `is_active`: `boolean` (optional) — Whether the entity translatable status is enabled.
+- `sharedContext`: [Context](/resources/references/translation/interfaces/translationContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/translation/interfaces/translationIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatetranslationsettings-returns" />
+
+### Returns
+
+**updateTranslationSettings**
+
+- `Promise`: Promise\<[TranslationSettingsDTO](/resources/references/translation/interfaces/translationTranslationSettingsDTO)> — The updated translation setting.
+  - `id`: `string` — The ID of the settings record.
+  - `entity_type`: `string` — The entity type these settings apply to (e.g., "product", "product\_variant").
+  - `fields`: `string`\[] — The translatable fields for this entity type.
+  - `is_active`: `boolean` — Whether the entity translatable status is enabled.
+  - `created_at`: `string` | `Date` — The date and time the settings were created.
+  - `updated_at`: `string` | `Date` — The date and time the settings were last updated.
+  - `deleted_at`: `null` | `string` | `Date` — The date and time the settings were deleted.
+
+<a id="updatetranslationsettings-data-sharedcontext-promisetranslationsettingsdto-1" />
+
+## updateTranslationSettings(data, sharedContext?): Promise\<[TranslationSettingsDTO](/resources/references/translation/interfaces/translationTranslationSettingsDTO)\[]>
+
+This method updates one or more existent translation settings.
+
+### Example
+
+```ts
+const translationSettings = await translationModuleService.updateTranslationSettings([
+  {
+    id: "ts_123",
+    entity_type: "product_collection",
+    fields: ["title"],
+    is_active: true,
+  },
+])
+```
+
+<a id="updatetranslationsettings-parameters-1" />
+
+### Parameters
+
+**updateTranslationSettings**
+
+- `data`: [UpdateTranslationSettingsDTO](/resources/references/translation/interfaces/translationUpdateTranslationSettingsDTO)\[] — The translation settings to update.
+  - `id`: `string` — The ID of the translation settings to update.
+  - `entity_type`: `string` (optional) — The entity type.
+
+    Example:
+
+    ```
+    "product"
+    ```
+  - `fields`: `string`\[] (optional) — The translatable fields.
+
+    Example:
+
+    ```
+    ["title", "description", "material"]
+    ```
+  - `is_active`: `boolean` (optional) — Whether the entity translatable status is enabled.
+- `sharedContext`: [Context](/resources/references/translation/interfaces/translationContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/translation/interfaces/translationIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatetranslationsettings-returns-1" />
+
+### Returns
+
+**updateTranslationSettings**
+
+- `Promise`: Promise\<[TranslationSettingsDTO](/resources/references/translation/interfaces/translationTranslationSettingsDTO)\[]> — The updated translation settings.
+  - `TranslationSettingsDTO[]`: [TranslationSettingsDTO](/resources/references/translation/interfaces/translationTranslationSettingsDTO)\[]
+    - `id`: `string` — The ID of the settings record.
+    - `entity_type`: `string` — The entity type these settings apply to (e.g., "product", "product\_variant").
+    - `fields`: `string`\[] — The translatable fields for this entity type.
+    - `is_active`: `boolean` — Whether the entity translatable status is enabled.
+    - `created_at`: `string` | `Date` — The date and time the settings were created.
+    - `updated_at`: `string` | `Date` — The date and time the settings were last updated.
+    - `deleted_at`: `null` | `string` | `Date` — The date and time the settings were deleted.

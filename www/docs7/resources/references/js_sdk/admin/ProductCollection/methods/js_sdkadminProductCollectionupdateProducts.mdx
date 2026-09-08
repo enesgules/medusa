@@ -1,0 +1,51 @@
+---
+title: updateProducts
+---
+
+This method manages the products of a collection to add or remove them. It sends a request
+to the [Manage Products](/api/admin/collections/manage-products)
+API route.
+
+## Example
+
+```ts
+sdk.admin.productCollection.updateProducts("pcol_123", {
+  add: ["prod_123"],
+  remove: ["prod_321"]
+})
+.then(({ collection }) => {
+  console.log(collection)
+})
+```
+
+<a id="updateproducts-parameters" />
+
+## Parameters
+
+**updateProducts**
+
+- `id`: `string` — The collection's ID.
+- `body`: [AdminUpdateCollectionProducts](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateCollectionProducts) — The products to add or remove.
+  - `add`: `string`\[] (optional) — IDs of products to add to the collection.
+  - `remove`: `string`\[] (optional) — IDs of products to remove from the collection.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updateproducts-returns" />
+
+## Returns
+
+**updateProducts**
+
+- `Promise`: Promise\<[AdminCollectionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollectionResponse)> — The product category's details.
+  - `collection`: [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) — The collection's details.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The collection's translations.
+    - `id`: `string` — The collection's ID.
+    - `title`: `string` — The collection's title.
+    - `handle`: `string` — The collection's handle.
+    - `created_at`: `string` — The date the collection was created.
+    - `updated_at`: `string` — The date the collection was updated.
+    - `deleted_at`: `null` | `string` — The date the collection was deleted.
+    - `products`: [BaseProduct](/resources/references/types/interfaces/typesBaseProduct)\[] (optional) — The collection's products.
+    - `external_id`: `null` | `string` (optional) — An external ID for the collection.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.

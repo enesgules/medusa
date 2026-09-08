@@ -1,0 +1,41 @@
+---
+title: belongsTo Relationship Method - DML Reference
+sidebarTitle: belongsTo
+---
+
+This method defines the inverse of the [hasOne](/resources/references/data-model/relationship-methods/hasone) or [hasMany](/resources/references/data-model/relationship-methods/hasmany) relationship.
+
+For example, a product "belongsTo" a store.
+
+## Example
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const Product = model.define("product", {
+  id: model.id(),
+  store: model.belongsTo(() => Store, {
+    mappedBy: "products",
+  }),
+})
+```
+
+<a id="belongsto-type-parameters" />
+
+## Type Parameters
+
+**belongsTo**
+
+- `T`: `object` (optional) — The type of the entity builder passed as a first parameter. By default, it's a function returning the related model.
+- `ForeignKeyName`: `undefined` | `string` (optional)
+
+<a id="belongsto-parameters" />
+
+## Parameters
+
+**belongsTo**
+
+- `entityBuilder`: T — A function that returns the data model this model is related to.
+- `options`: `object` & `Record<string, any>` & `object` (optional) — The relationship's options.
+  - `mappedBy`: `string` (optional) — The name of the relationship as defined in the other data model. This is only required by the `belongsTo` and `manyToMany` relationship method.
+  - `foreignKeyName`: ForeignKeyName (optional)

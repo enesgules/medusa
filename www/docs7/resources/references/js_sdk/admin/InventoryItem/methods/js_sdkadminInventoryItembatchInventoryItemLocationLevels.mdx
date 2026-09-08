@@ -1,0 +1,79 @@
+---
+title: batchInventoryItemLocationLevels
+---
+
+This method manages the inventory levels of an inventory item. It sends a request to the
+[Manage Inventory Levels](/api/admin/inventory-items/manage-inventory-levels-2)
+API route.
+
+## Example
+
+```ts
+sdk.admin.inventoryItem.batchInventoryItemLocationLevels("iitem_123", {
+  create: [{
+    location_id: "sloc_123",
+    stocked_quantity: 10
+  }],
+  delete: ["ilvl_123"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+<a id="batchinventoryitemlocationlevels-parameters" />
+
+## Parameters
+
+**batchInventoryItemLocationLevels**
+
+- `id`: `string` — The inventory item's ID.
+- `body`: [AdminBatchInventoryItemLocationLevels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchInventoryItemLocationLevels) — The inventory levels to create, update or delete, and an optional `force` flag.
+  - `update`: [AdminBatchUpdateInventoryItemLocationLevels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchUpdateInventoryItemLocationLevels)\[] (optional) — A list of inventory levels to update.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` (optional) — The associated inventory item's stocked quantity in the associated stock location.
+    - `incoming_quantity`: `number` (optional) — The associated inventory item's incoming quantity in the associated stock location.
+    - `id`: `string` (optional) — The ID of the inventory level to update.
+  - `create`: [AdminBatchCreateInventoryItemLocationLevels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchCreateInventoryItemLocationLevels)\[] (optional) — A list of inventory levels to create.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` (optional) — The associated inventory item's stocked quantity in the associated stock location.
+    - `incoming_quantity`: `number` (optional) — The associated inventory item's incoming quantity in the associated stock location.
+  - `delete`: `string`\[] (optional) — A list of location IDs to delete their associated inventory levels of the inventory item.
+  - `force`: `boolean` (optional) — Whether to force the deletion of the inventory levels, even if the location has stocked quantity.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchinventoryitemlocationlevels-returns" />
+
+## Returns
+
+**batchInventoryItemLocationLevels**
+
+- `Promise`: Promise\<[AdminBatchInventoryItemLocationLevelsResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchInventoryItemLocationLevelsResponse)> — The inventory item's details.
+  - `created`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The created inventory levels.
+    - `id`: `string` — The inventory level's ID.
+    - `created_at`: `Date` — The date the inventory level was created.
+    - `updated_at`: `Date` — The date the inventory level was updated.
+    - `deleted_at`: `null` | `Date` — The date the inventory level was deleted.
+    - `inventory_item_id`: `string` — The ID of the associated inventory item.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` — The associated inventory item's stocked quantity in the associated location.
+    - `reserved_quantity`: `number` — The associated inventory item's reserved quantity in the associated location.
+    - `incoming_quantity`: `number` — The associated inventory item's incoming quantity in the associated location.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `inventory_item`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem) (optional) — The associated inventory item.
+    - `available_quantity`: `null` | `number` — The associated inventory item's available quantity in the associated location.
+  - `updated`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The updated inventory levels.
+    - `id`: `string` — The inventory level's ID.
+    - `created_at`: `Date` — The date the inventory level was created.
+    - `updated_at`: `Date` — The date the inventory level was updated.
+    - `deleted_at`: `null` | `Date` — The date the inventory level was deleted.
+    - `inventory_item_id`: `string` — The ID of the associated inventory item.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` — The associated inventory item's stocked quantity in the associated location.
+    - `reserved_quantity`: `number` — The associated inventory item's reserved quantity in the associated location.
+    - `incoming_quantity`: `number` — The associated inventory item's incoming quantity in the associated location.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `inventory_item`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem) (optional) — The associated inventory item.
+    - `available_quantity`: `null` | `number` — The associated inventory item's available quantity in the associated location.
+  - `deleted`: `string`\[] (optional) — The IDs of the deleted inventory levels.

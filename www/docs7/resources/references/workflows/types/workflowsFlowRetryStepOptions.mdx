@@ -1,0 +1,37 @@
+---
+title: FlowRetryStepOptions
+---
+
+- `FlowRetryStepOptions`: Omit\<[BaseFlowRunOptions](/resources/references/workflows/types/workflowsBaseFlowRunOptions), "resultFrom"> & `object`
+  - `context`: [Context](/resources/references/workflows/interfaces/workflowsContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+    - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+    - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+    - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+    - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+    - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+    - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+    - `runId`: `string` (optional) — A string indicating the ID of the current run.
+    - `messageAggregator`: [IMessageAggregator](/resources/references/workflows/interfaces/workflowsIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+    - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+    - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+    - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+    - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+    - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+    - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+  - `throwOnError`: `boolean` (optional)
+  - `logOnError`: `boolean` (optional)
+  - `events`: [DistributedTransactionEvents](/resources/references/workflows/types/workflowsDistributedTransactionEvents) (optional)
+    - `onBegin`: (`args`: `{ transaction: [DistributedTransaction](/references/workflows/classes/workflows.DistributedTransaction)  }`) => `void` (optional)
+    - `onResume`: (`args`: `{ transaction: [DistributedTransaction](/references/workflows/classes/workflows.DistributedTransaction)  }`) => `void` (optional)
+    - `onFinish`: (`args`: `{ transaction: [DistributedTransaction](/references/workflows/classes/workflows.DistributedTransaction) ; result?: unknown ; errors?: unknown[]  }`) => `void` (optional)
+    - `onTimeout`: (`args`: `{ transaction: [DistributedTransaction](/references/workflows/classes/workflows.DistributedTransaction)  }`) => `void` (optional)
+    - `onStepBegin`: (`args`: `{ step: [TransactionStep](/references/workflows/classes/workflows.TransactionStep) ; transaction: [DistributedTransaction](/references/workflows/classes/workflows.DistributedTransaction)  }`) => `void` (optional)
+    - `onStepSuccess`: (`args`: `{ step: [TransactionStep](/references/workflows/classes/workflows.TransactionStep) ; transaction: [DistributedTransaction](/references/workflows/classes/workflows.DistributedTransaction)  }`) => `void` (optional)
+    - `onStepFailure`: (`args`: `{ step: [TransactionStep](/references/workflows/classes/workflows.TransactionStep) ; transaction: [DistributedTransaction](/references/workflows/classes/workflows.DistributedTransaction)  }`) => `void` (optional)
+    - `onStepAwaiting`: (`args`: `{ step: [TransactionStep](/references/workflows/classes/workflows.TransactionStep) ; transaction: [DistributedTransaction](/references/workflows/classes/workflows.DistributedTransaction)  }`) => `void` (optional)
+    - `onCompensateBegin`: (`args`: `{ transaction: [DistributedTransaction](/references/workflows/classes/workflows.DistributedTransaction)  }`) => `void` (optional)
+    - `onCompensateStepSuccess`: (`args`: `{ step: [TransactionStep](/references/workflows/classes/workflows.TransactionStep) ; transaction: [DistributedTransaction](/references/workflows/classes/workflows.DistributedTransaction)  }`) => `void` (optional)
+    - `onCompensateStepFailure`: (`args`: `{ step: [TransactionStep](/references/workflows/classes/workflows.TransactionStep) ; transaction: [DistributedTransaction](/references/workflows/classes/workflows.DistributedTransaction)  }`) => `void` (optional)
+    - `onStepSkipped`: (`args`: `{ step: [TransactionStep](/references/workflows/classes/workflows.TransactionStep) ; transaction: [DistributedTransaction](/references/workflows/classes/workflows.DistributedTransaction)  }`) => `void` (optional)
+  - `container`: [LoadedModule](/resources/references/workflows/types/workflowsLoadedModule)\[] | [MedusaContainer](/resources/references/workflows/types/workflowsMedusaContainer) (optional)
+  - `idempotencyKey`: `string`

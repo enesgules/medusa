@@ -1,0 +1,850 @@
+---
+title: rbacRole - JS SDK Admin Reference
+sidebarTitle: rbacRole
+---
+
+This documentation provides a reference to the `sdk.admin.rbacRole` set of methods used to send requests to Medusa's Admin API routes.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.15.5](https://github.com/medusajs/medusa/releases/tag/v2.15.5).
+
+## list
+
+This method retrieves a paginated list of RBAC roles. It sends a request to the
+List RBAC Roles API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.15.5](https://github.com/medusajs/medusa/releases/tag/v2.15.5).
+
+### Example
+
+To retrieve the list of roles:
+
+```ts
+sdk.admin.rbacRole.list()
+.then(({ roles, count, limit, offset }) => {
+  console.log(roles)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.rbacRole.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ roles, count, limit, offset }) => {
+  console.log(roles)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each role:
+
+```ts
+sdk.admin.rbacRole.list({
+  fields: "id,name,*policies"
+})
+.then(({ roles, count, limit, offset }) => {
+  console.log(roles)
+})
+```
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `queryParams`: [AdminRbacRoleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleListParams) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keywords to search the role's searchable fields.
+  - `id`: `string` | `string`\[] (optional) — Filter by role ID(s).
+  - `name`: `string` | `string`\[] (optional) — Filter by role name(s).
+  - `parent_id`: `string` | `string`\[] (optional) — Filter by parent role ID(s).
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the role was created.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the role was updated.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the role was deleted.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminRbacRoleListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleListResponse)> — The paginated list of RBAC roles.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `roles`: [AdminRbacRole](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRole)\[] — The list of roles.
+    - `id`: `string` — The role's ID.
+    - `name`: `string` — The role's name.
+    - `description`: `null` | `string` — The role's description.
+    - `parent_id`: `null` | `string` — The ID of the parent role, if any.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the role.
+    - `policies`: [AdminRbacPolicy](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicy)\[] (optional) — The policies associated with the role.
+    - `created_at`: `string` — The date the role was created.
+    - `updated_at`: `string` — The date the role was updated.
+    - `deleted_at`: `null` | `string` — The date the role was deleted.
+
+## retrieve
+
+This method retrieves an RBAC role's details. It sends a request to the
+Get RBAC Role API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.15.5](https://github.com/medusajs/medusa/releases/tag/v2.15.5).
+
+### Example
+
+```ts
+sdk.admin.rbacRole.retrieve("role_123")
+.then(({ role }) => {
+  console.log(role)
+})
+```
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The role's ID.
+- `query`: [AdminRbacRoleParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleParams) (optional) — Configure the fields to retrieve in the role.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `policies`: `string` | `string`\[] (optional) — Comma-separated relations to include in the response. Can include `policies`.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminRbacRoleResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleResponse)> — The role's details.
+  - `role`: [AdminRbacRole](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRole) — The role's details.
+    - `id`: `string` — The role's ID.
+    - `name`: `string` — The role's name.
+    - `description`: `null` | `string` — The role's description.
+    - `parent_id`: `null` | `string` — The ID of the parent role, if any.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the role.
+    - `policies`: [AdminRbacPolicy](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicy)\[] (optional) — The policies associated with the role.
+    - `created_at`: `string` — The date the role was created.
+    - `updated_at`: `string` — The date the role was updated.
+    - `deleted_at`: `null` | `string` — The date the role was deleted.
+
+## create
+
+This method creates an RBAC role. It sends a request to the Create RBAC Role
+API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.15.5](https://github.com/medusajs/medusa/releases/tag/v2.15.5).
+
+### Example
+
+```ts
+sdk.admin.rbacRole.create({
+  name: "Editor",
+  description: "Can edit content"
+})
+.then(({ role }) => {
+  console.log(role)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [AdminCreateRbacRole](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateRbacRole) — The role's details.
+  - `name`: `string` — The role's name.
+  - `parent_id`: `null` | `string` (optional) — The ID of the parent role, if any.
+  - `description`: `null` | `string` (optional) — The role's description.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the role.
+  - `policy_ids`: `string`\[] (optional) — The IDs of the policies to attach to the role on creation. The actor must hold every policy in the list; omit or leave empty to create a role without any policies.
+- `query`: [AdminRbacRoleParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleParams) (optional) — Configure the fields to retrieve in the created role.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `policies`: `string` | `string`\[] (optional) — Comma-separated relations to include in the response. Can include `policies`.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminRbacRoleResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleResponse)> — The created role
+  - `role`: [AdminRbacRole](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRole) — The role's details.
+    - `id`: `string` — The role's ID.
+    - `name`: `string` — The role's name.
+    - `description`: `null` | `string` — The role's description.
+    - `parent_id`: `null` | `string` — The ID of the parent role, if any.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the role.
+    - `policies`: [AdminRbacPolicy](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicy)\[] (optional) — The policies associated with the role.
+    - `created_at`: `string` — The date the role was created.
+    - `updated_at`: `string` — The date the role was updated.
+    - `deleted_at`: `null` | `string` — The date the role was deleted.
+
+## update
+
+This method updates an RBAC role's details. It sends a request to the
+Update RBAC Role API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.15.5](https://github.com/medusajs/medusa/releases/tag/v2.15.5).
+
+### Example
+
+```ts
+sdk.admin.rbacRole.update("role_123", {
+  name: "Senior Editor"
+})
+.then(({ role }) => {
+  console.log(role)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `id`: `string` — The role's ID.
+- `body`: [AdminUpdateRbacRole](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateRbacRole) — The data to update in the role.
+  - `name`: `string` (optional) — The role's name.
+  - `parent_id`: `null` | `string` (optional) — The ID of the parent role, if any.
+  - `description`: `null` | `string` (optional) — The role's description.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the role.
+- `query`: [AdminRbacRoleParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleParams) (optional) — Configure the fields to retrieve in the role.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `policies`: `string` | `string`\[] (optional) — Comma-separated relations to include in the response. Can include `policies`.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminRbacRoleResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleResponse)> — The role's details.
+  - `role`: [AdminRbacRole](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRole) — The role's details.
+    - `id`: `string` — The role's ID.
+    - `name`: `string` — The role's name.
+    - `description`: `null` | `string` — The role's description.
+    - `parent_id`: `null` | `string` — The ID of the parent role, if any.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the role.
+    - `policies`: [AdminRbacPolicy](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicy)\[] (optional) — The policies associated with the role.
+    - `created_at`: `string` — The date the role was created.
+    - `updated_at`: `string` — The date the role was updated.
+    - `deleted_at`: `null` | `string` — The date the role was deleted.
+
+## delete
+
+This method deletes an RBAC role by its ID. It sends a request to the
+Delete RBAC Role API route.
+
+### Example
+
+```ts
+sdk.admin.rbacRole.delete("role_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The role's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminRbacRoleDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: `"rbac_role"` — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## listPolicies
+
+This method retrieves a paginated list of policies associated with an RBAC role.
+It sends a request to the List Role Policies API route.
+
+### Example
+
+```ts
+sdk.admin.rbacRole.listPolicies("role_123")
+.then(({ policies, count, limit, offset }) => {
+  console.log(policies)
+})
+```
+
+<a id="listpolicies-parameters" />
+
+### Parameters
+
+**listPolicies**
+
+- `roleId`: `string` — The role's ID.
+- `queryParams`: [AdminRbacPolicyListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicyListParams) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keywords to search the policy's searchable fields.
+  - `id`: `string` | `string`\[] (optional) — Filter by policy ID(s).
+  - `key`: `string` | `string`\[] (optional) — Filter by policy key(s).
+  - `resource`: `string` | `string`\[] (optional) — Filter by resource(s).
+  - `operation`: `string` | `string`\[] (optional) — Filter by operation(s).
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the policy was created.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the policy was updated.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the policy was deleted.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listpolicies-returns" />
+
+### Returns
+
+**listPolicies**
+
+- `Promise`: Promise\<[AdminRbacPolicyListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicyListResponse)> — The paginated list of policies.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `policies`: [AdminRbacPolicy](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicy)\[] — The list of policies.
+    - `id`: `string` — The policy's ID.
+    - `key`: `string` — The policy's unique key.
+    - `resource`: `string` — The resource the policy applies to.
+    - `operation`: `string` — The operation the policy allows.
+    - `name`: `null` | `string` — The policy's name.
+    - `description`: `null` | `string` — The policy's description.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the policy.
+    - `inherited_from_role_id`: `null` | `string` (optional) — The role ID the policy is inherited from, if any.
+    - `created_at`: `string` — The date the policy was created.
+    - `updated_at`: `string` — The date the policy was updated.
+    - `deleted_at`: `null` | `string` — The date the policy was deleted.
+
+## listUsers
+
+This method retrieves a paginated list of users associated with an RBAC role.
+It sends a request to the List Role Users API route.
+
+### Example
+
+```ts
+sdk.admin.rbacRole.listUsers("role_123")
+.then(({ users, count, limit, offset }) => {
+  console.log(users)
+})
+```
+
+<a id="listusers-parameters" />
+
+### Parameters
+
+**listUsers**
+
+- `roleId`: `string` — The role's ID.
+- `queryParams`: [AdminRbacRoleUserListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleUserListParams) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `user_id`: `string` | `string`\[] (optional) — Filter by user ID(s).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listusers-returns" />
+
+### Returns
+
+**listUsers**
+
+- `Promise`: Promise\<[AdminRbacRoleUserListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleUserListResponse)> — The paginated list of users.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `users`: [AdminUser](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUser)\[] — The list of users.
+    - `id`: `string` — The user's ID.
+    - `email`: `string` — The user's email.
+    - `first_name`: `null` | `string` — The user's first name.
+    - `last_name`: `null` | `string` — The user's last name.
+    - `avatar_url`: `null` | `string` — The URL of the user's avatar image.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the user.
+    - `created_at`: `string` — The date the user was created.
+    - `updated_at`: `string` — The date the user was updated.
+    - `deleted_at`: `null` | `string` — The date the user was deleted.
+
+## addUsers
+
+This method adds users to an RBAC role. It sends a request to the
+Add Role Users API route.
+
+### Example
+
+```ts
+sdk.admin.rbacRole.addUsers("role_123", {
+  users: ["user_123"]
+})
+.then(({ users }) => {
+  console.log(users)
+})
+```
+
+<a id="addusers-parameters" />
+
+### Parameters
+
+**addUsers**
+
+- `roleId`: `string` — The role's ID.
+- `body`: [AdminAssignRoleUsers](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminAssignRoleUsers) — The users to add to the role.
+  - `users`: `string`\[] — The IDs of the users to add to the role.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="addusers-returns" />
+
+### Returns
+
+**addUsers**
+
+- `Promise`: Promise\<[AdminRbacRoleUsersResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleUsersResponse)> — The role's users.
+  - `users`: [AdminUser](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUser)\[] — The list of users.
+    - `id`: `string` — The user's ID.
+    - `email`: `string` — The user's email.
+    - `first_name`: `null` | `string` — The user's first name.
+    - `last_name`: `null` | `string` — The user's last name.
+    - `avatar_url`: `null` | `string` — The URL of the user's avatar image.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the user.
+    - `created_at`: `string` — The date the user was created.
+    - `updated_at`: `string` — The date the user was updated.
+    - `deleted_at`: `null` | `string` — The date the user was deleted.
+
+## removeUsers
+
+This method removes users from an RBAC role. It sends a request to the
+Remove Role Users API route.
+
+### Example
+
+```ts
+sdk.admin.rbacRole.removeUsers("role_123", {
+  users: ["user_123"]
+})
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="removeusers-parameters" />
+
+### Parameters
+
+**removeUsers**
+
+- `roleId`: `string` — The role's ID.
+- `body`: [AdminRemoveRoleUsers](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRemoveRoleUsers) — The users to remove from the role.
+  - `users`: `string`\[] — The IDs of the users to remove from the role.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="removeusers-returns" />
+
+### Returns
+
+**removeUsers**
+
+- `Promise`: Promise\<[AdminRbacRoleUsersDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleUsersDeleteResponse)> — The removal's details.
+  - `ids`: `string`\[] — The IDs of the users that were removed.
+  - `object`: `"role_user"` — The type of the removed items.
+  - `deleted`: `boolean` — Whether the users were removed successfully.
+
+## addPolicies
+
+This method adds policies to an RBAC role. It sends a request to the
+Add Role Policies API route.
+
+### Example
+
+```ts
+sdk.admin.rbacRole.addPolicies("role_123", {
+  policies: ["policy_123", "policy_456"]
+})
+.then(({ policies }) => {
+  console.log(policies)
+})
+```
+
+<a id="addpolicies-parameters" />
+
+### Parameters
+
+**addPolicies**
+
+- `roleId`: `string` — The role's ID.
+- `body`: [AdminAddRolePolicies](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminAddRolePolicies) — The policies to add to the role.
+  - `policies`: `string`\[] — The IDs of the policies to add to the role.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="addpolicies-returns" />
+
+### Returns
+
+**addPolicies**
+
+- `Promise`: Promise\<[AdminRbacPolicyListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicyListResponse)> — The updated role with policies.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `policies`: [AdminRbacPolicy](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicy)\[] — The list of policies.
+    - `id`: `string` — The policy's ID.
+    - `key`: `string` — The policy's unique key.
+    - `resource`: `string` — The resource the policy applies to.
+    - `operation`: `string` — The operation the policy allows.
+    - `name`: `null` | `string` — The policy's name.
+    - `description`: `null` | `string` — The policy's description.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the policy.
+    - `inherited_from_role_id`: `null` | `string` (optional) — The role ID the policy is inherited from, if any.
+    - `created_at`: `string` — The date the policy was created.
+    - `updated_at`: `string` — The date the policy was updated.
+    - `deleted_at`: `null` | `string` — The date the policy was deleted.
+
+## removePolicy
+
+This method removes a policy from an RBAC role. It sends a request to the
+Remove Role Policy API route.
+
+### Example
+
+```ts
+sdk.admin.rbacRole.removePolicy("role_123", "policy_456")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="removepolicy-parameters" />
+
+### Parameters
+
+**removePolicy**
+
+- `roleId`: `string` — The role's ID.
+- `policyId`: `string` — The policy's ID to remove.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="removepolicy-returns" />
+
+### Returns
+
+**removePolicy**
+
+- `Promise`: Promise\<[AdminRbacPolicyDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicyDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: `"rbac_policy"` — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## mePermissions
+
+Retrieves the authenticated actor's resolved permission set: a flat list
+of `resource:operation` strings with wildcards already expanded.
+
+### Example
+
+```ts
+sdk.admin.rbacRole.mePermissions().then(({ permissions }) => {
+  console.log(permissions) // ["product:read", "customer:read", ...]
+})
+```
+
+<a id="mepermissions-parameters" />
+
+### Parameters
+
+**mePermissions**
+
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="mepermissions-returns" />
+
+### Returns
+
+**mePermissions**
+
+- `Promise`: Promise\<[AdminRbacMePermissionsResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacMePermissionsResponse)> — The flat permission list.
+  - `permissions`: `string`\[] — The actor's effective `resource:operation` permissions, with wildcards already expanded.
+
+## listAssignable
+
+Lists the roles the authenticated actor is allowed to assign.
+
+<a id="listassignable-parameters" />
+
+### Parameters
+
+**listAssignable**
+
+- `queryParams`: [AdminRbacRoleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleListParams) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keywords to search the role's searchable fields.
+  - `id`: `string` | `string`\[] (optional) — Filter by role ID(s).
+  - `name`: `string` | `string`\[] (optional) — Filter by role name(s).
+  - `parent_id`: `string` | `string`\[] (optional) — Filter by parent role ID(s).
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the role was created.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the role was updated.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the role was deleted.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listassignable-returns" />
+
+### Returns
+
+**listAssignable**
+
+- `Promise`: Promise\<[AdminRbacAssignableRolesListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacAssignableRolesListResponse)> — The assignable roles.
+  - `roles`: Pick\<[AdminRbacRole](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRole), "id" | "description" | "name">\[] — The roles the authenticated actor is allowed to assign.
+    - `id`: `string` — The role's ID.
+    - `name`: `string` — The role's name.
+    - `description`: `null` | `string` — The role's description.
+  - `count`: `number` — Total number of assignable roles after applying actor-coverage filtering.

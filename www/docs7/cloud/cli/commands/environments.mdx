@@ -1,0 +1,1146 @@
+---
+title: environments Command - Medusa Cloud CLI Reference
+---
+
+In this guide, you'll learn how to manage your Cloud environments using the CLI.
+
+## environments list
+
+List all environments in a project.
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud environments list --organization org_123 --project proj_123
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123 --project proj_123
+
+    mcloud environments list
+    ```
+  </Tab>
+</Tabs>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) that the project belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-p <id-or-handle>`, `--project <id-or-handle>`
+      </td>
+
+      <td>
+        The [ID or handle of the project](/cloud/cli/commands/projects#find-project-ids-and-handles) to list environments from.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## environments get
+
+Retrieve a single environment by its ID, handle, or name. This is useful if you want to retrieve the environment's details, such as its status or tracked branch.
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud environments get <environment> --organization org_123 --project proj_123
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123 --project proj_123
+
+    mcloud environments get <environment>
+    ```
+  </Tab>
+</Tabs>
+
+Returns the following information:
+
+<Tabs>
+  <Tab title="Plaintext">
+    ```bash
+    Name:            Production
+    Handle:          <environment-handle>
+    Type:            production
+    Status:          ready
+    Medusa domain:   https://trusting-soft-form.medusajs.app
+    Custom domain:   https://acme.com
+    Tracked branch:  main
+    Project Name:    My Store
+    Project Handle:  <project-handle>
+    Created at:      Apr 1, 2026, 11:44 AM GMT+2
+    ```
+  </Tab>
+
+  <Tab title="JSON (--json)">
+    ```json
+    {
+      "id": "<environment-id>",
+      "project_id": "<project-id>",
+      "handle": "<environment-handle>",
+      "name": "Production",
+      "type": "production",
+      "default_subdomain": "trusting-soft-form",
+      "custom_subdomain": "acme",
+      "default_domain": "trusting-soft-form.medusajs.app",
+      "custom_domain": "acme.com",
+      "created_at": "2024-10-10T08:24:32.382Z",
+      "updated_at": "2024-10-10T08:24:32.382Z",
+      "external_id": "main",
+      "status": "ready",
+      "metadata": null,
+      "project": {
+        "id": "<project-id>",
+        "name": "My Store",
+        "handle": "<project-handle>",
+        "region": "us-east-1",
+        "organization_id": "<organization-id>",
+        "repository": "myuser/my-repo",
+        "root_path": "/apps/backend",
+        "status": "ready",
+        "created_by": "<user-id>",
+        "created_at": "2024-10-10T08:24:32.382Z",
+        "updated_at": "2024-10-10T08:24:32.382Z",
+        "deleted_at": null,
+        "metadata": {
+          "arch": "arm64"
+        },
+        "builds": [],
+        "environments": []
+      },
+      "builds": [],
+      "deployments": [],
+      "variables": [],
+      "configuration": {
+        "read_replica_database_url": "postgresql://<user>:<password>@<host>/<database>?channel_binding=require&sslmode=require",
+        "tent_handle": "<tent-handle>",
+        "s3_file_url": "https://s3.us-east-1.amazonaws.com/<bucket>",
+        "s3_endpoint": "https://s3.us-east-1.amazonaws.com",
+        "upstash_external_id": "<upstash-id>"
+      },
+      "rules": null,
+      "active_deployment": null
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Arguments
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `environment`
+      </td>
+
+      <td>
+        The ID, handle, or name of the environment to retrieve.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Falls back to the environment in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-e <id-handle-or-name>`, `--environment <id-handle-or-name>`
+      </td>
+
+      <td>
+        The ID, handle, or name of the environment to retrieve. Interchangeable with the positional argument.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Falls back to the environment in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) that the environment belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-p <id-or-handle>`, `--project <id-or-handle>`
+      </td>
+
+      <td>
+        The [ID or handle of the project](/cloud/cli/commands/projects#find-project-ids-and-handles) that the environment belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## environments create
+
+Create a new [long-lived environment](/cloud/environments/long-lived) for a project. You must already have a branch in your repository to track. The environment will be deployed and updated with every push to the tracked branch.
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud environments create \
+      --organization org_123 \
+      --project proj_123 \
+      --name "Staging" \
+      --branch develop
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123 --project proj_123
+
+    mcloud environments create \
+      --name "Staging" \
+      --branch develop
+    ```
+  </Tab>
+</Tabs>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) to create the environment in.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-p <id-or-handle>`, `--project <id-or-handle>`
+      </td>
+
+      <td>
+        The [ID or handle of the project](/cloud/cli/commands/projects#find-project-ids-and-handles) to create the environment in.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-n <name>`, `--name <name>`
+      </td>
+
+      <td>
+        Display name for the new environment.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        \-
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-b <branch>`, `--branch <branch>`
+      </td>
+
+      <td>
+        The Git branch this environment tracks. Pushes to this branch trigger
+        new deployments.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        \-
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--custom-subdomain <subdomain>`
+      </td>
+
+      <td>
+        [Custom subdomain](/cloud/environments/subdomains) for the environment's URL.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        \-
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## environments delete
+
+Delete an environment by its ID, handle, or name.
+
+<Warning>
+  Deleting an environment is irreversible and removes all associated
+  deployments and resources. Production environments cannot be deleted.
+</Warning>
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud environments delete <environment> --organization org_123 --project proj_123
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123 --project proj_123
+
+    mcloud environments delete <environment>
+    ```
+  </Tab>
+</Tabs>
+
+### Arguments
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `environment`
+      </td>
+
+      <td>
+        The ID, handle, or name of the environment to delete.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Falls back to the environment in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-e <id-handle-or-name>`, `--environment <id-handle-or-name>`
+      </td>
+
+      <td>
+        The ID, handle, or name of the environment to delete. Interchangeable with the positional argument.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Falls back to the environment in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) that the environment belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-p <id-or-handle>`, `--project <id-or-handle>`
+      </td>
+
+      <td>
+        The [ID or handle of the project](/cloud/cli/commands/projects#find-project-ids-and-handles) that the environment belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-y`, `--yes`
+      </td>
+
+      <td>
+        Skip the confirmation prompt. Use this in scripts and pipelines where
+        interactive input is not possible.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## environments redeploy
+
+Redeploy an environment using its current active deployment build. This is useful when you want to roll back to a previous deployment or re-run the active deployment without triggering a new build.
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud environments redeploy <environment> --organization org_123 --project proj_123
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123 --project proj_123
+
+    mcloud environments redeploy <environment>
+    ```
+  </Tab>
+</Tabs>
+
+The environment must already have an active deployment. If it doesn't, run [`mcloud environments trigger-build`](/cloud/cli/commands/environments#environments-trigger-build) first to create one.
+
+### Arguments
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `environment`
+      </td>
+
+      <td>
+        The ID, handle, or name of the environment to redeploy.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Falls back to the environment in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-e <id-handle-or-name>`, `--environment <id-handle-or-name>`
+      </td>
+
+      <td>
+        The ID, handle, or name of the environment to redeploy. Interchangeable with the positional argument.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Falls back to the environment in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) that the environment belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-p <id-or-handle>`, `--project <id-or-handle>`
+      </td>
+
+      <td>
+        The [ID or handle of the project](/cloud/cli/commands/projects#find-project-ids-and-handles) that the environment belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## environments trigger-build
+
+Start a new build for an environment from its tracked branch. This is the equivalent of pushing a commit to the tracked branch but without requiring a Git push.
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud environments trigger-build <environment> --organization org_123 --project proj_123
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123 --project proj_123
+
+    mcloud environments trigger-build <environment>
+    ```
+  </Tab>
+</Tabs>
+
+### Arguments
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `environment`
+      </td>
+
+      <td>
+        The ID, handle, or name of the environment to build.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Falls back to the environment in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-e <id-handle-or-name>`, `--environment <id-handle-or-name>`
+      </td>
+
+      <td>
+        The ID, handle, or name of the environment to build. Interchangeable with the positional argument.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Falls back to the environment in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) that the environment belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-p <id-or-handle>`, `--project <id-or-handle>`
+      </td>
+
+      <td>
+        The [ID or handle of the project](/cloud/cli/commands/projects#find-project-ids-and-handles) that the environment belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## Find Environment Handles
+
+Commands that operate on environments require an environment handle. You can either:
+
+- Use the interactive selector in [mcloud use](/cloud/cli/commands/use#set-the-active-context) to set an active environment for the current context. Once set, you can omit the `--environment` flag from all subsequent commands;
+- Or use `environments list --json` to get machine-readable environment data. Pipe the output to `jq` to extract handles for use in subsequent commands. This is useful if you want to set the active environment through an AI agent, script, or CI/CD pipeline.
+
+For example, to set the first environment in the list as the active environment:
+
+<Tabs>
+  <Tab title="macOS / Linux">
+    ```bash
+    ENVIRONMENT_HANDLE=$(
+      mcloud environments list --json \
+        | jq -r '.[0].handle'
+    )
+    mcloud use --environment "$ENVIRONMENT_HANDLE"
+    ```
+  </Tab>
+
+  <Tab title="Windows (PowerShell)">
+    ```powershell
+    $ENVIRONMENT_HANDLE = (
+      mcloud environments list --json |
+      jq -r '.[0].handle'
+    )
+    mcloud use --environment $ENVIRONMENT_HANDLE
+    ```
+  </Tab>
+</Tabs>
+
+To set an environment by name as the active environment:
+
+<Tabs>
+  <Tab title="macOS / Linux">
+    ```bash
+    ENVIRONMENT_HANDLE=$(
+      mcloud environments list --json \
+        | jq -r '.[] | select(.name == "Staging") | .handle'
+    )
+    mcloud use --environment "$ENVIRONMENT_HANDLE"
+    ```
+  </Tab>
+
+  <Tab title="Windows (PowerShell)">
+    ```powershell
+    $ENVIRONMENT_HANDLE = (
+      mcloud environments list --json |
+      jq -r '.[] | select(.name == "Staging") | .handle'
+    )
+    mcloud use --environment $ENVIRONMENT_HANDLE
+    ```
+  </Tab>
+</Tabs>
+
+Once set, you can omit the `--environment` flag from all subsequent commands.
+
+***
+
+## Manage Environments in a CI/CD Pipeline
+
+You can provision and tear down environments automatically as branches are
+created and deleted in your repository. This is useful for staging
+environments that mirror production, or for short-lived feature-branch
+environments used for testing and review.
+
+For example, the following GitHub Actions workflow:
+
+- Creates a Cloud environment when a branch is pushed
+- Deletes it when the branch is removed.
+
+```yaml title=".github/workflows/cloud-environments.yml"
+name: Cloud Environments
+
+on:
+  create:
+    branches-ignore:
+      - main
+  delete:
+    branches-ignore:
+      - main
+
+env:
+  MCLOUD_TOKEN: ${{ secrets.MCLOUD_TOKEN }}
+
+jobs:
+  create-environment:
+    if: github.event_name == 'create' && github.event.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install the Cloud CLI
+        run: npm install @medusajs/mcloud -g
+
+      - name: Create Cloud environment
+        run: |
+          mcloud environments create \
+            --organization org_123 \
+            --project proj_123 \
+            --name "${{ github.event.ref }}" \
+            --branch "${{ github.event.ref }}" \
+            --custom-subdomain "my-store-${{ github.event.ref }}"
+
+  delete-environment:
+    if: github.event_name == 'delete' && github.event.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install the Cloud CLI
+        run: npm install @medusajs/mcloud -g
+
+      - name: Delete Cloud environment
+        run: |
+          mcloud environments delete "${{ github.event.ref }}" \
+            --organization org_123 \
+            --project proj_123 \
+            --yes
+```
+
+The `create-environment` job runs `mcloud environments create` with the
+branch name as both the environment name and tracked branch. The
+`delete-environment` job runs `mcloud environments delete` with `--yes` to
+skip the confirmation prompt, which is required for non-interactive
+environments like CI runners.

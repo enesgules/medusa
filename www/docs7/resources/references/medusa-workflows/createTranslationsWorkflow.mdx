@@ -1,0 +1,212 @@
+---
+title: createTranslationsWorkflow - Medusa Core Workflows Reference
+sidebarTitle: createTranslationsWorkflow
+---
+
+This documentation provides a reference to the `createTranslationsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow creates one or more translations. It's used by other workflows
+like the [batchTranslationsWorkflow](/resources/references/medusa-workflows/batchTranslationsWorkflow) workflow.
+
+You can use this workflow within your own customizations or custom workflows, allowing you
+to create translations in your custom flows.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.12.3](https://github.com/medusajs/medusa/releases/tag/v2.12.3).
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/translation/workflows/create-translations.ts#L52)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { createTranslationsWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await createTranslationsWorkflow(req.scope)
+    .run({
+      input: {
+        translations: [{
+          reference_id: "prod_123",
+          reference: "product",
+          locale: "fr-FR",
+          translations: { title: "Produit",
+            description: "Description du produit" }
+        }]
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { createTranslationsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await createTranslationsWorkflow(container)
+    .run({
+      input: {
+        translations: [{
+          reference_id: "prod_123",
+          reference: "product",
+          locale: "fr-FR",
+          translations: { title: "Produit",
+            description: "Description du produit" }
+        }]
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { createTranslationsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await createTranslationsWorkflow(container)
+    .run({
+      input: {
+        translations: [{
+          reference_id: "prod_123",
+          reference: "product",
+          locale: "fr-FR",
+          translations: { title: "Produit",
+            description: "Description du produit" }
+        }]
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { createTranslationsWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = createTranslationsWorkflow
+      .runAsStep({
+        input: {
+          translations: [{
+            reference_id: "prod_123",
+            reference: "product",
+            locale: "fr-FR",
+            translations: { title: "Produit",
+              description: "Description du produit" }
+          }]
+        }
+      })
+  }
+)
+```
+
+<a id="createtranslationsworkflow-steps" />
+
+## Steps
+
+- [createTranslationsStep](/resources/references/medusa-workflows/steps/createTranslationsStep): This step creates one or more translations.
+  - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+
+<a id="createtranslationsworkflow-input" />
+
+## Input
+
+**createTranslationsWorkflow**
+
+- `CreateTranslationsWorkflowInput`: [CreateTranslationsWorkflowInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcCreateTranslationsWorkflowInput)
+  - `translations`: [CreateTranslationDTO](/resources/references/translation/interfaces/translationCreateTranslationDTO)\[] — The translations to create.
+    - `reference_id`: `string` — The ID of the data model being translated.
+
+      Example:
+
+      ```
+      "prod_123"
+      ```
+    - `reference`: `string` — The name of the table that the translation belongs to.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `locale_code`: `string` — The BCP 47 language tag code for this translation.
+
+      Example:
+
+      ```
+      "en-US"
+      ```
+    - `translations`: `Record<string, unknown>` — The translated fields as key-value pairs.
+
+      Example:
+
+      ```
+      { * "title": "Product Title", * "description": "Product Description", * }
+      ```
+
+<a id="createtranslationsworkflow-output" />
+
+## Output
+
+**createTranslationsWorkflow**
+
+- `TranslationDTO[]`: [TranslationDTO](/resources/references/translation/interfaces/translationTranslationDTO)\[]
+  - `id`: `string` — The ID of the translation.
+  - `reference_id`: `string` — The ID of the entity being translated.
+  - `reference`: `string` — The type of entity being translated (e.g., "product", "product\_variant").
+  - `locale_code`: `string` — The BCP 47 language tag code for this translation (e.g., "en-US", "fr-FR").
+  - `translations`: `Record<string, unknown>` — The translated fields as key-value pairs.
+  - `created_at`: `string` | `Date` — The date and time the translation was created.
+  - `updated_at`: `string` | `Date` — The date and time the translation was last updated.
+  - `deleted_at`: `null` | `string` | `Date` — The date and time the translation was deleted.
+
+<a id="createtranslationsworkflow-emitted-events" />
+
+## Emitted Events
+
+- `translation.created` (since v2.12.3): Emitted when translations are created.
+
+  ```ts
+  {
+    id, // The ID of the translation
+  }
+  ```

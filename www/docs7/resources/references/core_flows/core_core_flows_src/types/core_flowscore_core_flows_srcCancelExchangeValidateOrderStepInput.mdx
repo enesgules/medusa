@@ -1,0 +1,58 @@
+---
+title: CancelExchangeValidateOrderStepInput
+---
+
+The data to validate that an exchange can be canceled.
+
+- `CancelExchangeValidateOrderStepInput`: `object` — The data to validate that an exchange can be canceled.
+  - `orderExchange`: [OrderExchangeDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderExchangeDTO) — The order exchange's details.
+    - `id`: `string` — The exchange's ID.
+    - `order_id`: `string` — The associated order's ID.
+    - `order`: [OrderDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderDTO) (optional) — The associated order.
+    - `order_version`: `number` — The version of the order when the exchange is applied.
+    - `display_id`: `number` — The exchange's display ID.
+    - `additional_items`: `any`\[] — The items to be sent to the customer.
+    - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications related to updates on the exchange.
+    - `difference_due`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) (optional) — The difference due of the order exchange. - If less than `0`, the merchant owes the customer this amount. - If greater than `0`, the customer owes the merchange this amount. - If equal to `0`, no payment is required by either sides.
+    - `raw_difference_due`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) (optional) — The raw difference due of the order exchange. - If less than `0`, the merchant owes the customer this amount. - If greater than `0`, the customer owes the merchange this amount. - If equal to `0`, no payment is required by either sides.
+    - `allow_backorder`: `boolean` (optional) — Whether the variants that are out of stock can be added to the exchange.
+    - `return`: [ReturnDTO](/resources/references/fulfillment/interfaces/fulfillmentReturnDTO) (optional) — The associated return.
+    - `return_id`: `string` (optional) — The associated return's ID.
+    - `created_by`: `null` | `string` (optional) — The id of the user that created the order exchange
+    - `shipping_methods`: [OrderShippingMethodDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderShippingMethodDTO)\[] (optional) — The shipping methods used to send the additional items.
+    - `transactions`: [OrderTransactionDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderTransactionDTO)\[] (optional) — The exchange's transactions if additional payment is required.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — The creation date of the exchange.
+    - `updated_at`: `string` | `Date` (optional) — The update date of the exchange.
+    - `deleted_at`: `string` | `Date` (optional) — The deletion date of the exchange.
+    - `canceled_at`: `string` | `Date` (optional) — The cancelation date of the exchange.
+  - `orderReturn`: [ReturnDTO](/resources/references/fulfillment/interfaces/fulfillmentReturnDTO) & `object` — The order return's details.
+    - `id`: `string` — The ID of the return.
+    - `status`: [ReturnStatus](/resources/references/fulfillment/types/fulfillmentReturnStatus) — The status of the return.
+    - `refund_amount`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) (optional) — The refund amount of the return.
+    - `raw_refund_amount`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) (optional) — The raw refund amount of the return.
+    - `order_id`: `string` — The associated order's ID.
+    - `order`: [OrderDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderDTO) (optional) — The associated order.
+    - `items`: [OrderReturnItemDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderReturnItemDTO)\[] — The items of the return
+    - `exchange_id`: `string` (optional) — The associated exchange's ID.
+    - `exchange`: [OrderExchangeDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderExchangeDTO) (optional) — The associated exchange.
+    - `claim_id`: `string` (optional) — The associated claim's ID.
+    - `claim`: [OrderClaimDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderClaimDTO) (optional) — The associated claim.
+    - `display_id`: `number` — The return's display ID.
+    - `location_id`: `string` (optional) — The ID of the location to return the items to.
+    - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications related to updates on the return.
+    - `created_by`: `null` | `string` (optional) — The id of the user that created the return
+    - `shipping_methods`: [OrderShippingMethodDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderShippingMethodDTO)\[] (optional) — The shipping methods used to receive the returned items.
+    - `transactions`: [OrderTransactionDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderTransactionDTO)\[] (optional) — The return's transactions if refund is required.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — The creation date of the return.
+    - `updated_at`: `string` | `Date` (optional) — The update date of the return.
+    - `deleted_at`: `string` | `Date` (optional) — The deletion date of the return.
+    - `canceled_at`: `string` | `Date` (optional) — The cancelation date of the return.
+    - `requested_at`: `string` | `Date` (optional) — The request date of the return.
+    - `received_at`: `string` | `Date` (optional) — The receival date of the return.
+    - `fulfillments`: [FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO)\[]
+  - `input`: [CancelOrderExchangeWorkflowInput](/resources/references/types/WorkflowTypes/OrderWorkflow/interfaces/typesWorkflowTypesOrderWorkflowCancelOrderExchangeWorkflowInput) — The details of canceling the exchange.
+    - `exchange_id`: `string` — The ID of the exchange to cancel.
+    - `no_notification`: `boolean` (optional) — Whether to notify the customer of the cancellation.
+    - `canceled_by`: `string` (optional) — The ID of the user that's canceling the exchange.

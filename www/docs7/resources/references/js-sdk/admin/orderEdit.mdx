@@ -1,0 +1,743 @@
+---
+title: orderEdit - JS SDK Admin Reference
+sidebarTitle: orderEdit
+---
+
+This documentation provides a reference to the `sdk.admin.orderEdit` set of methods used to send requests to Medusa's Admin API routes.
+
+## initiateRequest
+
+This method creates an order edit request. It sends a HTTP request to the
+[Create Order Edit](/api/admin/order-edits/create-order-edit)
+API route.
+
+### Example
+
+```ts
+sdk.admin.orderEdit.initiateRequest({
+  order_id: "order_123"
+})
+.then(({ order_change }) => {
+  console.log(order_change)
+})
+```
+
+<a id="initiaterequest-parameters" />
+
+### Parameters
+
+**initiateRequest**
+
+- `body`: [AdminInitiateOrderEditRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInitiateOrderEditRequest) — The order edit's details.
+  - `order_id`: `string` — The ID of the order to create the edit for.
+  - `description`: `string` (optional) — The order edit's description.
+  - `internal_note`: `string` (optional) — An internal note viewed by admin users only.
+  - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the order edit.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="initiaterequest-returns" />
+
+### Returns
+
+**initiateRequest**
+
+- `Promise`: Promise\<[AdminOrderEditResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderEditResponse)> — The order edit's details.
+  - `order_change`: [AdminOrderChange](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderChange) — The order edit's details.
+    - `order`: [AdminOrder](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrder) — The order's details.
+    - `claim`: [AdminClaim](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminClaim) — The claim's details.
+    - `return_order`: [AdminReturn](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturn) — The return's details.
+    - `exchange`: [AdminExchange](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminExchange) — The exchange's details.
+    - `actions`: [AdminOrderChangeAction](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderChangeAction)\[] — The order change action's details.
+    - `id`: `string` — The ID of the order change
+    - `version`: `number` — The version of the order change
+    - `change_type`: `"claim"` | `"exchange"` | `"return"` | `"edit"` | `"return_request"` | `"transfer"` | `"update_order"` (optional) — The type of the order change
+    - `order_id`: `string` — The ID of the associated order
+    - `return_id`: `string` — The ID of the associated return order
+    - `exchange_id`: `string` — The ID of the associated exchange order
+    - `claim_id`: `string` — The ID of the associated claim order
+    - `internal_note`: `null` | `string` — An internal note viewed by admin users only.
+    - `carry_over_promotions`: `null` | `boolean` (optional) — Whether to carry over promotions (apply promotions to outbound exchange items).
+    - `no_notification`: `null` | `boolean` (optional) — Whether the customer shouldn't be notified of the order change.
+    - `status`: [OrderChangeStatus](/resources/references/fulfillment/types/fulfillmentOrderChangeStatus) — The status of the order change
+    - `requested_by`: `null` | `string` — The requested by of the order change
+    - `requested_at`: `null` | `Date` — When the order change was requested
+    - `confirmed_by`: `null` | `string` — The confirmed by of the order change
+    - `confirmed_at`: `null` | `Date` — When the order change was confirmed
+    - `declined_by`: `null` | `string` — The declined by of the order change
+    - `declined_reason`: `null` | `string` — The declined reason of the order change
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata of the order change
+    - `declined_at`: `null` | `Date` — When the order change was declined
+    - `canceled_by`: `null` | `string` — The ID of the user that canceled the order change
+    - `canceled_at`: `null` | `Date` — When the order change was canceled
+    - `created_by`: `null` | `string` — The ID of the user that created the order change
+    - `created_at`: `string` | `Date` — When the order change was created
+    - `updated_at`: `string` | `Date` — When the order change was updated
+
+## request
+
+This method changes an order edit to requested. It sends a request to the
+[Request Order Edit](/api/admin/order-edits/request-order-edit)
+API route.
+
+### Example
+
+```ts
+sdk.admin.orderEdit.request("order_123", {
+  no_notification: false
+})
+.then(({ order_preview }) => {
+  console.log(order_preview)
+})
+```
+
+<a id="request-parameters" />
+
+### Parameters
+
+**request**
+
+- `id`: `string` — The ID of the order that is being edited.
+- `body`: [AdminRequestOrderEdit](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRequestOrderEdit) (optional) — The order edit request's details.
+  - `no_notification`: `boolean` (optional) — Whether to prevent sending the customer a notification about the requested order edit. The value is passed to the `order-edit.requested` event's payload, allowing subscribers to check it before sending a notification.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the order preview.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="request-returns" />
+
+### Returns
+
+**request**
+
+- `Promise`: Promise\<[AdminOrderEditPreviewResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderEditPreviewResponse)> — The order preview's details.
+  - `order_preview`: [AdminOrderPreview](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderPreview) — A preview of the order when the edit is applied.
+    - `payment_collections`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection)\[] — The order's payment collections.
+    - `fulfillments`: [AdminOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `sales_channel`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel) (optional) — The associated sales channel's details.
+    - `region`: [AdminRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegion) (optional) — The order's region.
+    - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) (optional) — The details of the customer that placed the order.
+    - `shipping_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's shipping address.
+    - `billing_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's billing address.
+    - `credit_lines`: [OrderCreditLineDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderCreditLineDTO)\[] (optional) — The order's credit lines.
+    - `return_requested_total`: `number` — The total amount for the items requested to be returned.
+    - `order_change`: [AdminOrderChange](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderChange) — The details of the changes on the order.
+    - `items`: [AdminOrderLinePreview](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderLinePreview)\[] — The order's items.
+    - `shipping_methods`: [AdminOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderShippingMethod) & `object`\[] — The order's shipping methods.
+    - `id`: `string` — The order's ID.
+    - `version`: `number` — The order's version.
+    - `region_id`: `null` | `string` — The ID of the associated region.
+    - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+    - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+    - `email`: `null` | `string` — The email of the customer that placed the order.
+    - `currency_code`: `string` — The order's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `display_id`: `number` (optional) — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `status`: `string` — The order's status.
+    - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+    - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the order was created.
+    - `updated_at`: `string` | `Date` — The date the order was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+    - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The total gift card amount.
+    - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+
+## confirm
+
+This method confirms an order edit and applies it on the order. It sends a request
+to the [Confirm Order Edit](/api/admin/order-edits/confirm-order-edit)
+API route.
+
+### Example
+
+```ts
+sdk.admin.orderEdit.confirm("order_123")
+.then(({ order_preview }) => {
+  console.log(order_preview)
+})
+```
+
+<a id="confirm-parameters" />
+
+### Parameters
+
+**confirm**
+
+- `id`: `string` — The ID of the order that is being edited.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the order preview.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="confirm-returns" />
+
+### Returns
+
+**confirm**
+
+- `Promise`: Promise\<[AdminOrderEditPreviewResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderEditPreviewResponse)> — The order preview's details.
+  - `order_preview`: [AdminOrderPreview](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderPreview) — A preview of the order when the edit is applied.
+    - `payment_collections`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection)\[] — The order's payment collections.
+    - `fulfillments`: [AdminOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `sales_channel`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel) (optional) — The associated sales channel's details.
+    - `region`: [AdminRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegion) (optional) — The order's region.
+    - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) (optional) — The details of the customer that placed the order.
+    - `shipping_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's shipping address.
+    - `billing_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's billing address.
+    - `credit_lines`: [OrderCreditLineDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderCreditLineDTO)\[] (optional) — The order's credit lines.
+    - `return_requested_total`: `number` — The total amount for the items requested to be returned.
+    - `order_change`: [AdminOrderChange](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderChange) — The details of the changes on the order.
+    - `items`: [AdminOrderLinePreview](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderLinePreview)\[] — The order's items.
+    - `shipping_methods`: [AdminOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderShippingMethod) & `object`\[] — The order's shipping methods.
+    - `id`: `string` — The order's ID.
+    - `version`: `number` — The order's version.
+    - `region_id`: `null` | `string` — The ID of the associated region.
+    - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+    - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+    - `email`: `null` | `string` — The email of the customer that placed the order.
+    - `currency_code`: `string` — The order's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `display_id`: `number` (optional) — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `status`: `string` — The order's status.
+    - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+    - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the order was created.
+    - `updated_at`: `string` | `Date` — The date the order was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+    - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The total gift card amount.
+    - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+
+## cancelRequest
+
+This method cancels a requested order edit. It sends a request to the
+[Cancel Order Edit](/api/admin/order-edits/cancel-order-edit)
+API route.
+
+### Example
+
+```ts
+sdk.admin.orderEdit.cancelRequest("order_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="cancelrequest-parameters" />
+
+### Parameters
+
+**cancelRequest**
+
+- `id`: `string` — The ID of the order that is being edited.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Query parameters
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="cancelrequest-returns" />
+
+### Returns
+
+**cancelRequest**
+
+- `Promise`: Promise\<[AdminOrderEditDeleteResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminOrderEditDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: TObject — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## addItems
+
+This method adds items to an order edit. These items will have the action `ITEM_ADD`.
+
+The method sends a request to the [Add Items](/api/admin/order-edits/add-items)
+API route.
+
+### Example
+
+```ts
+sdk.admin.orderEdit.addItems("order_123", {
+  items: [
+    {
+      variant_id: "variant_123",
+      quantity: 1
+    }
+  ]
+})
+.then(({ order_preview }) => {
+  console.log(order_preview)
+})
+```
+
+<a id="additems-parameters" />
+
+### Parameters
+
+**addItems**
+
+- `id`: `string` — The ID of the order that is being edited.
+- `body`: [AdminAddOrderEditItems](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminAddOrderEditItems) — The items to add.
+  - `items`: `object`\[] — The details of the items to add.
+    - `variant_id`: `string` — The ID of the product variant to add.
+    - `quantity`: `number` — The item's quantity.
+    - `unit_price`: `number` (optional) — A custom price to use for the item.
+    - `internal_note`: `string` (optional) — An internal note viewed by admin users only.
+    - `allow_backorder`: `boolean` (optional) — Whether the variant can be added even if it's out of stock.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the order preview.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="additems-returns" />
+
+### Returns
+
+**addItems**
+
+- `Promise`: Promise\<[AdminOrderEditPreviewResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderEditPreviewResponse)> — The order preview's details.
+  - `order_preview`: [AdminOrderPreview](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderPreview) — A preview of the order when the edit is applied.
+    - `payment_collections`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection)\[] — The order's payment collections.
+    - `fulfillments`: [AdminOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `sales_channel`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel) (optional) — The associated sales channel's details.
+    - `region`: [AdminRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegion) (optional) — The order's region.
+    - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) (optional) — The details of the customer that placed the order.
+    - `shipping_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's shipping address.
+    - `billing_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's billing address.
+    - `credit_lines`: [OrderCreditLineDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderCreditLineDTO)\[] (optional) — The order's credit lines.
+    - `return_requested_total`: `number` — The total amount for the items requested to be returned.
+    - `order_change`: [AdminOrderChange](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderChange) — The details of the changes on the order.
+    - `items`: [AdminOrderLinePreview](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderLinePreview)\[] — The order's items.
+    - `shipping_methods`: [AdminOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderShippingMethod) & `object`\[] — The order's shipping methods.
+    - `id`: `string` — The order's ID.
+    - `version`: `number` — The order's version.
+    - `region_id`: `null` | `string` — The ID of the associated region.
+    - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+    - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+    - `email`: `null` | `string` — The email of the customer that placed the order.
+    - `currency_code`: `string` — The order's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `display_id`: `number` (optional) — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `status`: `string` — The order's status.
+    - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+    - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the order was created.
+    - `updated_at`: `string` | `Date` — The date the order was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+    - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The total gift card amount.
+    - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+
+## updateOriginalItem
+
+This method updates the quantity and other details of an item in an order. It sends a request to the
+[Update Item Quantity](/api/admin/order-edits/update-item-quantity)
+API route.
+
+You can also use this method to remove an item from an order by setting the `quantity` to `0`.
+
+### Example
+
+```ts
+sdk.admin.orderEdit.updateOriginalItem(
+  "order_123",
+  "orli_123",
+  {
+    quantity: 1
+  }
+)
+.then(({ order_preview }) => {
+  console.log(order_preview)
+})
+```
+
+<a id="updateoriginalitem-parameters" />
+
+### Parameters
+
+**updateOriginalItem**
+
+- `id`: `string` — The ID of the order that is being edited.
+- `itemId`: `string` — The item's ID in the order.
+- `body`: [AdminUpdateOrderEditItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateOrderEditItem) — The data to edit in the item.
+  - `quantity`: `number` (optional) — The item's quantity.
+  - `internal_note`: `null` | `string` (optional) — An internal note viewed by admin users only.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the order preview.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updateoriginalitem-returns" />
+
+### Returns
+
+**updateOriginalItem**
+
+- `Promise`: Promise\<[AdminOrderEditPreviewResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderEditPreviewResponse)> — The order preview's details.
+  - `order_preview`: [AdminOrderPreview](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderPreview) — A preview of the order when the edit is applied.
+    - `payment_collections`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection)\[] — The order's payment collections.
+    - `fulfillments`: [AdminOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `sales_channel`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel) (optional) — The associated sales channel's details.
+    - `region`: [AdminRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegion) (optional) — The order's region.
+    - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) (optional) — The details of the customer that placed the order.
+    - `shipping_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's shipping address.
+    - `billing_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's billing address.
+    - `credit_lines`: [OrderCreditLineDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderCreditLineDTO)\[] (optional) — The order's credit lines.
+    - `return_requested_total`: `number` — The total amount for the items requested to be returned.
+    - `order_change`: [AdminOrderChange](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderChange) — The details of the changes on the order.
+    - `items`: [AdminOrderLinePreview](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderLinePreview)\[] — The order's items.
+    - `shipping_methods`: [AdminOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderShippingMethod) & `object`\[] — The order's shipping methods.
+    - `id`: `string` — The order's ID.
+    - `version`: `number` — The order's version.
+    - `region_id`: `null` | `string` — The ID of the associated region.
+    - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+    - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+    - `email`: `null` | `string` — The email of the customer that placed the order.
+    - `currency_code`: `string` — The order's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `display_id`: `number` (optional) — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `status`: `string` — The order's status.
+    - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+    - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the order was created.
+    - `updated_at`: `string` | `Date` — The date the order was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+    - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The total gift card amount.
+    - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+
+## updateAddedItem
+
+This method updates an added item in the order edit by the ID of the item's `ITEM_ADD` action.
+
+Every item has an `actions` property, whose value is an array of actions.
+You can check the action's name using its `action` property, and use the value of the `id` property.
+
+It sends a request
+to the [Update Item](/api/admin/order-edits/update-item)
+API route.
+
+### Example
+
+```ts
+sdk.admin.orderEdit.updateAddedItem(
+  "order_123",
+  "orli_123",
+  {
+    quantity: 1
+  }
+)
+.then(({ order_preview }) => {
+  console.log(order_preview)
+})
+```
+
+<a id="updateaddeditem-parameters" />
+
+### Parameters
+
+**updateAddedItem**
+
+- `id`: `string` — The ID of the order that is being edited.
+- `actionId`: `string` — The id of the new item's `ITEM_ADD` action.
+- `body`: [AdminUpdateOrderEditItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateOrderEditItem) — The data to update.
+  - `quantity`: `number` (optional) — The item's quantity.
+  - `internal_note`: `null` | `string` (optional) — An internal note viewed by admin users only.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the order preview.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updateaddeditem-returns" />
+
+### Returns
+
+**updateAddedItem**
+
+- `Promise`: Promise\<[AdminOrderEditPreviewResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderEditPreviewResponse)> — The order preview's details.
+  - `order_preview`: [AdminOrderPreview](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderPreview) — A preview of the order when the edit is applied.
+    - `payment_collections`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection)\[] — The order's payment collections.
+    - `fulfillments`: [AdminOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `sales_channel`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel) (optional) — The associated sales channel's details.
+    - `region`: [AdminRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegion) (optional) — The order's region.
+    - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) (optional) — The details of the customer that placed the order.
+    - `shipping_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's shipping address.
+    - `billing_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's billing address.
+    - `credit_lines`: [OrderCreditLineDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderCreditLineDTO)\[] (optional) — The order's credit lines.
+    - `return_requested_total`: `number` — The total amount for the items requested to be returned.
+    - `order_change`: [AdminOrderChange](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderChange) — The details of the changes on the order.
+    - `items`: [AdminOrderLinePreview](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderLinePreview)\[] — The order's items.
+    - `shipping_methods`: [AdminOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderShippingMethod) & `object`\[] — The order's shipping methods.
+    - `id`: `string` — The order's ID.
+    - `version`: `number` — The order's version.
+    - `region_id`: `null` | `string` — The ID of the associated region.
+    - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+    - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+    - `email`: `null` | `string` — The email of the customer that placed the order.
+    - `currency_code`: `string` — The order's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `display_id`: `number` (optional) — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `status`: `string` — The order's status.
+    - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+    - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the order was created.
+    - `updated_at`: `string` | `Date` — The date the order was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+    - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The total gift card amount.
+    - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+
+## removeAddedItem
+
+This method removes an added item in the order edit by the ID of the item's `ITEM_ADD` action.
+
+Every item has an `actions` property, whose value is an array of actions.
+You can check the action's name using its `action` property, and use the value of the `id` property.
+
+### Example
+
+```ts
+sdk.admin.orderEdit.removeAddedItem(
+  "order_123",
+  "orli_123",
+)
+.then(({ order_preview }) => {
+  console.log(order_preview)
+})
+```
+
+<a id="removeaddeditem-parameters" />
+
+### Parameters
+
+**removeAddedItem**
+
+- `id`: `string` — The ID of the order that is being edited.
+- `actionId`: `string` — The id of the new item's `ITEM_ADD` action.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the order preview.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="removeaddeditem-returns" />
+
+### Returns
+
+**removeAddedItem**
+
+- `Promise`: Promise\<[AdminOrderEditPreviewResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderEditPreviewResponse)> — The order preview's details.
+  - `order_preview`: [AdminOrderPreview](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderPreview) — A preview of the order when the edit is applied.
+    - `payment_collections`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection)\[] — The order's payment collections.
+    - `fulfillments`: [AdminOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `sales_channel`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel) (optional) — The associated sales channel's details.
+    - `region`: [AdminRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegion) (optional) — The order's region.
+    - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) (optional) — The details of the customer that placed the order.
+    - `shipping_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's shipping address.
+    - `billing_address`: `null` | [AdminOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderAddress) (optional) — The order's billing address.
+    - `credit_lines`: [OrderCreditLineDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderCreditLineDTO)\[] (optional) — The order's credit lines.
+    - `return_requested_total`: `number` — The total amount for the items requested to be returned.
+    - `order_change`: [AdminOrderChange](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderChange) — The details of the changes on the order.
+    - `items`: [AdminOrderLinePreview](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderLinePreview)\[] — The order's items.
+    - `shipping_methods`: [AdminOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderShippingMethod) & `object`\[] — The order's shipping methods.
+    - `id`: `string` — The order's ID.
+    - `version`: `number` — The order's version.
+    - `region_id`: `null` | `string` — The ID of the associated region.
+    - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+    - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+    - `email`: `null` | `string` — The email of the customer that placed the order.
+    - `currency_code`: `string` — The order's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `display_id`: `number` (optional) — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `status`: `string` — The order's status.
+    - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+    - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the order was created.
+    - `updated_at`: `string` | `Date` — The date the order was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+    - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The total gift card amount.
+    - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.

@@ -1,0 +1,131 @@
+---
+title: createRefundReasons - Payment Module Reference
+sidebarTitle: createRefundReasons
+---
+
+This documentation provides a reference to the `createRefundReasons` method. This belongs to the Payment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createrefundreasons-data-sharedcontext-promiserefundreasondto" />
+
+## createRefundReasons(data, sharedContext?): Promise\<[RefundReasonDTO](/resources/references/payment/interfaces/paymentRefundReasonDTO)\[]>
+
+This method creates refund reasons.
+
+### Example
+
+```ts
+const refundReasons =
+  await paymentModuleService.createRefundReasons([
+    {
+      label: "Too big",
+      code: "too_big
+    },
+    {
+      label: "Too small",
+      code: "too_small
+    },
+  ])
+```
+
+<a id="createrefundreasons-parameters" />
+
+### Parameters
+
+**createRefundReasons**
+
+- `data`: [CreateRefundReasonDTO](/resources/references/payment/interfaces/paymentCreateRefundReasonDTO)\[] — The refund reasons to create.
+  - `label`: `string` — The label of the refund reason
+  - `code`: `string` — The code of the refund reason
+  - `description`: `null` | `string` (optional) — The description of the refund reason
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — The metadata of the refund reason
+- `sharedContext`: [Context](/resources/references/payment/interfaces/paymentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/payment/interfaces/paymentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createrefundreasons-returns" />
+
+### Returns
+
+**createRefundReasons**
+
+- `Promise`: Promise\<[RefundReasonDTO](/resources/references/payment/interfaces/paymentRefundReasonDTO)\[]> — The created refund reasons.
+  - `RefundReasonDTO[]`: [RefundReasonDTO](/resources/references/payment/interfaces/paymentRefundReasonDTO)\[]
+    - `id`: `string` — The ID of the refund reason
+    - `label`: `string` — The label of the refund reason
+    - `description`: `null` | `string` (optional) — The description of the refund reason
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata of the refund reason
+    - `created_at`: `string` | `Date` — When the refund reason was created
+    - `updated_at`: `string` | `Date` — When the refund reason was updated
+
+<a id="createrefundreasons-data-sharedcontext-promiserefundreasondto-1" />
+
+## createRefundReasons(data, sharedContext?): Promise\<[RefundReasonDTO](/resources/references/payment/interfaces/paymentRefundReasonDTO)>
+
+This method creates a refund reason.
+
+### Example
+
+```ts
+const refundReason =
+  await paymentModuleService.createRefundReasons({
+    label: "Too big",
+    code: "too_big"
+  })
+```
+
+<a id="createrefundreasons-parameters-1" />
+
+### Parameters
+
+**createRefundReasons**
+
+- `data`: [CreateRefundReasonDTO](/resources/references/payment/interfaces/paymentCreateRefundReasonDTO) — The refund reason to create.
+  - `label`: `string` — The label of the refund reason
+  - `code`: `string` — The code of the refund reason
+  - `description`: `null` | `string` (optional) — The description of the refund reason
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — The metadata of the refund reason
+- `sharedContext`: [Context](/resources/references/payment/interfaces/paymentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/payment/interfaces/paymentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createrefundreasons-returns-1" />
+
+### Returns
+
+**createRefundReasons**
+
+- `Promise`: Promise\<[RefundReasonDTO](/resources/references/payment/interfaces/paymentRefundReasonDTO)> — The created refund reason.
+  - `id`: `string` — The ID of the refund reason
+  - `label`: `string` — The label of the refund reason
+  - `description`: `null` | `string` (optional) — The description of the refund reason
+  - `metadata`: `null` | `Record<string, unknown>` — The metadata of the refund reason
+  - `created_at`: `string` | `Date` — When the refund reason was created
+  - `updated_at`: `string` | `Date` — When the refund reason was updated

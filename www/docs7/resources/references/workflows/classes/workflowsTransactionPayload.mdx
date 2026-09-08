@@ -1,0 +1,43 @@
+---
+title: TransactionPayload
+---
+
+## constructor
+
+<a id="constructor-parameters" />
+
+### Parameters
+
+**constructor**
+
+- `metadata`: [TransactionMetadata](/resources/references/workflows/types/workflowsTransactionMetadata) — The metadata of the transaction.
+  - `model_id`: `string`
+  - `idempotency_key`: `string`
+  - `action`: `string`
+  - `action_type`: [TransactionHandlerType](/resources/references/workflows/enums/workflowsTransactionHandlerType)
+    - `INVOKE`: `"invoke"` (optional)
+    - `COMPENSATE`: `"compensate"` (optional)
+  - `attempt`: `number`
+  - `timestamp`: `number`
+- `data`: `Record<string, unknown>` — The initial payload data to begin a transation.
+- `context`: [TransactionContext](/resources/references/workflows/classes/workflowsTransactionContext) — Object gathering responses of all steps flagged with saveResponse.
+  - `payload`: `unknown` — Object containing the initial payload.
+  - `invoke`: `Record<string, unknown>` — Object containing responses of Invoke handlers on steps flagged with saveResponse.
+  - `compensate`: `Record<string, unknown>` — Object containing responses of Compensate handlers on steps flagged with saveResponse.
+
+**TransactionPayload**
+
+- `metadata`: [TransactionMetadata](/resources/references/workflows/types/workflowsTransactionMetadata)
+  - `model_id`: `string`
+  - `idempotency_key`: `string`
+  - `action`: `string`
+  - `action_type`: [TransactionHandlerType](/resources/references/workflows/enums/workflowsTransactionHandlerType)
+    - `INVOKE`: `"invoke"` (optional)
+    - `COMPENSATE`: `"compensate"` (optional)
+  - `attempt`: `number`
+  - `timestamp`: `number`
+- `data`: `Record<string, unknown>`
+- `context`: [TransactionContext](/resources/references/workflows/classes/workflowsTransactionContext)
+  - `payload`: `unknown` — Object containing the initial payload.
+  - `invoke`: `Record<string, unknown>` — Object containing responses of Invoke handlers on steps flagged with saveResponse.
+  - `compensate`: `Record<string, unknown>` — Object containing responses of Compensate handlers on steps flagged with saveResponse.

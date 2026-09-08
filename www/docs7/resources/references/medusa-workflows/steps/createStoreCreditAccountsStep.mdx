@@ -1,0 +1,75 @@
+---
+title: createStoreCreditAccountsStep - Medusa Core Workflows Reference
+sidebarTitle: createStoreCreditAccountsStep
+---
+
+This documentation provides a reference to the `createStoreCreditAccountsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates store credit accounts. If no code is provided, a unique code
+prefixed with "SC" is automatically generated. The step supports rollback by
+deleting the created accounts.
+
+## Example
+
+```ts
+const data = createStoreCreditAccountsStep([
+  {
+    currency_code: "usd",
+    customer_id: "cust_123",
+  },
+])
+```
+
+<a id="createstorecreditaccountsstep-input" />
+
+## Input
+
+**createStoreCreditAccountsStep**
+
+- `CreateStoreCreditAccountsStepInput`: [CreateStoreCreditAccountsStepInput](/resources/references/core_flows/plugins_loyalty_src_workflows/types/core_flowsplugins_loyalty_src_workflowsCreateStoreCreditAccountsStepInput)
+  - `code`: `string` (optional) — The unique code for the account. If not provided, one is auto-generated.
+  - `customer_id`: `string` (optional) — The ID of the customer to associate with the account.
+  - `currency_code`: `string` — The three-letter ISO currency code for the account.
+
+    Example:
+
+    ```
+    usd
+    ```
+  - `metadata`: `Record<string, unknown>` (optional) — Custom key-value pairs to attach to the account.
+
+<a id="createstorecreditaccountsstep-output" />
+
+## Output
+
+**createStoreCreditAccountsStep**
+
+- `ModuleStoreCreditAccount[]`: [ModuleStoreCreditAccount](/resources/references/store_credit/types/store_creditModuleStoreCreditAccount)\[]
+  - `id`: `string` — The store credit account's ID.
+  - `customer_id`: `string` (optional) — The ID of the customer who owns this account, if any.
+  - `code`: `string` (optional) — The unique code that identifies this account, used for anonymous or gift card accounts.
+  - `currency_code`: `string` — The three-letter ISO currency code of the account's balance.
+
+    Example:
+
+    ```
+    usd
+    ```
+  - `credits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount credited to this account.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `debits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount debited from this account.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `balance`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The current balance of this account (credits minus debits).
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `metadata`: `Record<string, unknown>` — Custom key-value pairs attached to this account.
+  - `created_at`: `string` — The date the account was created.
+  - `updated_at`: `string` — The date the account was last updated.

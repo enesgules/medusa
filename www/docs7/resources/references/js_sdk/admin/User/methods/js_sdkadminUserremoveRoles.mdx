@@ -1,0 +1,40 @@
+---
+title: removeRoles
+---
+
+This method removes roles from a user. It sends a request to the
+Remove User Roles API route.
+
+## Example
+
+```ts
+sdk.admin.user.removeRoles("user_123", {
+  roles: ["role_123"]
+})
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="removeroles-parameters" />
+
+## Parameters
+
+**removeRoles**
+
+- `id`: `string` — The user's ID.
+- `body`: [AdminRemoveUserRoles](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRemoveUserRoles) — The roles to remove.
+  - `roles`: `string`\[] — The IDs of the roles to remove from the user.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="removeroles-returns" />
+
+## Returns
+
+**removeRoles**
+
+- `Promise`: Promise\<[AdminUserRolesDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserRolesDeleteResponse)> — The removal's details.
+  - `ids`: `string`\[] — The IDs of the roles that were removed.
+  - `object`: `"user_role"` — The type of the removed items.
+  - `deleted`: `boolean` — Whether the roles were removed successfully.

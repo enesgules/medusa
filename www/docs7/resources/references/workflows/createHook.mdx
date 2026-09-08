@@ -1,0 +1,68 @@
+---
+title: createHook - Workflows SDK Reference
+sidebarTitle: createHook
+---
+
+This documentation provides a reference to the `createHook` . It belongs to the Workflows SDK.
+
+Expose a hook in your workflow where you can inject custom functionality as a step function.
+
+A handler hook can later be registered to consume the hook and perform custom functionality.
+
+Learn more in [this documentation](/learn/fundamentals/workflows/workflow-hooks).
+
+## Example
+
+```ts
+import {
+  createStep,
+  createHook,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { createProductStep } from "./steps/create-product"
+
+export const myWorkflow = createWorkflow(
+  "my-workflow",
+  function (input) {
+    const product = createProductStep(input)
+    const productCreatedHook = createHook(
+      "productCreated",
+      { productId: product.id }
+    )
+
+    return new WorkflowResponse(product, {
+      hooks: [productCreatedHook],
+    })
+  }
+)
+```
+
+<a id="createhook-type-parameters" />
+
+## Type Parameters
+
+**createHook**
+
+- `Name`: `string` (optional)
+- `TInvokeInput`: `object` (optional)
+- `TInvokeOutput`: `object` (optional)
+
+<a id="createhook-parameters" />
+
+## Parameters
+
+**createHook**
+
+- `name`: Name — The hook's name. This is used when the hook handler is registered to consume the workflow.
+- `hookInput`: TInvokeInput — The input to pass to the hook handler.
+- `options`: `object` (default: \{})
+  - `resultValidator`: [ZodLike](/resources/references/workflows/types/workflowsZodLike)\<TInvokeOutput> (optional)
+
+<a id="createhook-returns" />
+
+## Returns
+
+**createHook**
+
+- `Hook`: [Hook](/resources/references/workflows/types/workflowsHook)\<Name, TInvokeInput, TInvokeOutput> — A workflow hook.

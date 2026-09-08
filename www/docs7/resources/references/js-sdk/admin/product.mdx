@@ -1,0 +1,2391 @@
+---
+title: product - JS SDK Admin Reference
+sidebarTitle: product
+---
+
+This documentation provides a reference to the `sdk.admin.product` set of methods used to send requests to Medusa's Admin API routes.
+
+## import
+
+This method creates a product import. The products are only imported after
+the import is confirmed using the [confirmImport](/resources/references/js_sdk/admin/Product/methods/js_sdkadminProductconfirmImport) method.
+
+This method sends a request to the
+[Create Product Import](/api/admin/products/create-product-import)
+API route.
+
+### Example
+
+```ts
+sdk.admin.product.import({
+  file // uploaded File instance
+})
+.then(({ transaction_id }) => {
+  console.log(transaction_id)
+})
+```
+
+<a id="import-parameters" />
+
+### Parameters
+
+**import**
+
+- `body`: [AdminImportProductRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminImportProductRequest) — The import's details.
+  - `file`: [File](/resources/references/core_flows/core_flowsFile) — The CSV file to import the products from. It's an uploaded file of type [File](https://developer.mozilla.org/en-US/docs/Web/API/File).
+- `query`: `object` (optional) — Query parameters to pass to the request.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="import-returns" />
+
+### Returns
+
+**import**
+
+- `Promise`: Promise\<[AdminImportProductResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminImportProductResponse)> — The import's details.
+  - `transaction_id`: `string` — The ID of the import product workflow execution's transaction. This is useful to confirm the import using the `/admin/products/:transaction-id/import` API route.
+  - `summary`: `object` — Details of the products to create or update when the import is confirmed.
+    - `toCreate`: `number` — The number of products that will be created by the import.
+    - `toUpdate`: `number` — The number of products that will be updated by the import.
+
+## createImport
+
+This method creates a product import. The products are only imported after
+the import is confirmed using the [confirmImport](/resources/references/js_sdk/admin/Product/methods/js_sdkadminProductconfirmImport) method.
+
+This method sends a request to the
+[Create Product Import](/api/admin/products/create-product-import-2)
+API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.8.5](https://github.com/medusajs/medusa/releases/tag/v2.8.5).
+
+### Example
+
+```ts
+sdk.admin.product.createImport({
+  file // uploaded File instance
+})
+.then(({ transaction_id }) => {
+  console.log(transaction_id)
+})
+```
+
+<a id="createimport-parameters" />
+
+### Parameters
+
+**createImport**
+
+- `body`: [AdminImportProductRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminImportProductRequest) — The import's details.
+  - `file`: [File](/resources/references/core_flows/core_flowsFile) — The CSV file to import the products from. It's an uploaded file of type [File](https://developer.mozilla.org/en-US/docs/Web/API/File).
+- `query`: `object` (optional) — Query parameters to pass to the request.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="createimport-returns" />
+
+### Returns
+
+**createImport**
+
+- `Promise`: Promise\<[AdminImportProductsResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminImportProductsResponse)> — The import's details.
+  - `transaction_id`: `string` — The ID of the import product workflow execution's transaction. This is useful to confirm the import using the `/admin/products/:transaction-id/import` API route.
+  - `summary`: `object` — Details of the products to create or update when the import is confirmed.
+    - `toCreate`: `number` — The number of products that will be created by the import.
+    - `toUpdate`: `number` — The number of products that will be updated by the import.
+
+## confirmImport
+
+This method confirms a product import created using the method [import](/resources/references/js_sdk/admin/Product/methods/js_sdkadminProductimport).
+It sends a request to the
+[Confirm Product Import](/api/admin/products/confirm-product-import)
+API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.8.5](https://github.com/medusajs/medusa/releases/tag/v2.8.5).
+
+### Example
+
+```ts
+sdk.admin.product.confirmImport("transaction_123")
+.then(() => {
+  console.log("Import confirmed")
+})
+```
+
+<a id="confirmimport-parameters" />
+
+### Parameters
+
+**confirmImport**
+
+- `transactionId`: `string` — The ID of the transaction of the created product import. This is returned by the API route used to create the product import.
+- `query`: `object` (optional) — Query parameters to pass in the request.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="confirmimport-returns" />
+
+### Returns
+
+**confirmImport**
+
+- `Promise`: Promise\<object> — This method confirms a product import created using the method [import](/resources/references/js_sdk/admin/Product/methods/js_sdkadminProductimport). It sends a request to the [Confirm Product Import](/api/admin/products/confirm-product-import) API route.
+
+## export
+
+This method starts a product export process to retrieve a CSV of exported products.
+
+You'll receive in the response the transaction ID of the workflow generating the CSV file.
+To check the status of the execution, send a `GET` request to
+`/admin/workflows-executions/export-products/:transaction-id`.
+
+Once the execution finishes successfully, a notification is created for the export.
+You can retrieve the notifications using the `/admin/notification` API route to
+retrieve the file's download URL.
+
+This method sends a request to the [Export Product](/api/admin/products/export-products)
+API route.
+
+### Example
+
+```ts
+sdk.admin.product.export({})
+.then(({ transaction_id }) => {
+  console.log(transaction_id)
+})
+```
+
+<a id="export-parameters" />
+
+### Parameters
+
+**export**
+
+- `body`: [AdminExportProductRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminExportProductRequest) — The export's details.
+- `query`: [AdminProductListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductListParams) (optional) — Filters to specify which products to export.
+  - `$and`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) | [ProductStatus](/resources/references/types/types/typesProductStatus)\[] (optional) — Filter the product by status(es).
+    - `sales_channel_id`: `string` | `string`\[] (optional) — Filter the product by the sales channel(s) it belongs to.
+    - `title`: `string` | `string`\[] (optional) — Filter by the product's title(s).
+    - `handle`: `string` | `string`\[] (optional) — Filter by the product's handle(s).
+    - `external_id`: `string` | `string`\[] (optional) — Filter by the product's external ID(s).
+    - `id`: `string` | `string`\[] (optional) — Filter by the product's id(s).
+    - `is_giftcard`: `boolean` (optional) — Filter by whether the product is a gift card.
+    - `tag_id`: `string` | `string`\[] (optional) — Filter by the product's tag(s).
+    - `type_id`: `string` | `string`\[] (optional) — Filter by the product's type(s).
+    - `option_id`: `string` | `string`\[] (optional) — Filter by the product's option(s).
+    - `option_value_id`: `string` | `string`\[] (optional) — Filter by the product's option value(s).
+    - `category_id`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+    - `categories`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+    - `collection_id`: `string` | `string`\[] (optional) — Filter by the product's collection(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's deletion date.
+  - `$or`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) | [ProductStatus](/resources/references/types/types/typesProductStatus)\[] (optional) — Filter the product by status(es).
+    - `sales_channel_id`: `string` | `string`\[] (optional) — Filter the product by the sales channel(s) it belongs to.
+    - `title`: `string` | `string`\[] (optional) — Filter by the product's title(s).
+    - `handle`: `string` | `string`\[] (optional) — Filter by the product's handle(s).
+    - `external_id`: `string` | `string`\[] (optional) — Filter by the product's external ID(s).
+    - `id`: `string` | `string`\[] (optional) — Filter by the product's id(s).
+    - `is_giftcard`: `boolean` (optional) — Filter by whether the product is a gift card.
+    - `tag_id`: `string` | `string`\[] (optional) — Filter by the product's tag(s).
+    - `type_id`: `string` | `string`\[] (optional) — Filter by the product's type(s).
+    - `option_id`: `string` | `string`\[] (optional) — Filter by the product's option(s).
+    - `option_value_id`: `string` | `string`\[] (optional) — Filter by the product's option value(s).
+    - `category_id`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+    - `categories`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+    - `collection_id`: `string` | `string`\[] (optional) — Filter by the product's collection(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's deletion date.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `price_list_id`: `string` | `string`\[] (optional) — Filter by price list ID(s) to retrieve the associated products only.
+  - `variants`: Omit\<[AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams), "q"> (optional) — Apply filters on the product variants.
+    - `$and`: ([AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by variant ID(s).
+    - `manage_inventory`: `boolean` (optional) — Filter by whether Medusa manages the inventory of the variant.
+    - `allow_backorder`: `boolean` (optional) — Filter by whether the variant can be ordered even if it's out of stock.
+    - `sku`: `string` | `string`\[] (optional) — Filter by sku(s).
+    - `ean`: `string` | `string`\[] (optional) — Filter by variant ean(s).
+    - `upc`: `string` | `string`\[] (optional) — Filter by variant upc(s).
+    - `barcode`: `string` | `string`\[] (optional) — Filter by variant barcode(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's deletion date.
+  - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+  - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) | [ProductStatus](/resources/references/types/types/typesProductStatus)\[] (optional) — Filter the product by status(es).
+  - `sales_channel_id`: `string` | `string`\[] (optional) — Filter the product by the sales channel(s) it belongs to.
+  - `title`: `string` | `string`\[] (optional) — Filter by the product's title(s).
+  - `handle`: `string` | `string`\[] (optional) — Filter by the product's handle(s).
+  - `external_id`: `string` | `string`\[] (optional) — Filter by the product's external ID(s).
+  - `id`: `string` | `string`\[] (optional) — Filter by the product's id(s).
+  - `is_giftcard`: `boolean` (optional) — Filter by whether the product is a gift card.
+  - `tag_id`: `string` | `string`\[] (optional) — Filter by the product's tag(s).
+  - `type_id`: `string` | `string`\[] (optional) — Filter by the product's type(s).
+  - `option_id`: `string` | `string`\[] (optional) — Filter by the product's option(s).
+  - `option_value_id`: `string` | `string`\[] (optional) — Filter by the product's option value(s).
+  - `category_id`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+  - `collection_id`: `string` | `string`\[] (optional) — Filter by the product's collection(s).
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's creation date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's update date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's deletion date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="export-returns" />
+
+### Returns
+
+**export**
+
+- `Promise`: Promise\<[AdminExportProductResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminExportProductResponse)> — The export's details.
+  - `transaction_id`: `string` — The ID of the export product workflow's transaction.
+
+## batch
+
+This method manages products to create, update, or delete them. It sends a request to the
+[Manage Products](/api/admin/products/manage-products)
+API route.
+
+### Example
+
+```ts
+sdk.admin.product.batch({
+  create: [
+    {
+      title: "Shirt",
+      options: [{
+        title: "Default",
+        values: ["Default Option"]
+      }],
+      variants: [
+        {
+          title: "Default",
+          options: {
+            Default: "Default Option"
+          },
+          prices: []
+        }
+      ]
+    }
+  ],
+  update: [{
+    id: "prod_123",
+    title: "Pants"
+  }],
+  delete: ["prod_321"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+<a id="batch-parameters" />
+
+### Parameters
+
+**batch**
+
+- `body`: [AdminBatchProductRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchProductRequest) — The products to create, update, or delete.
+  - `create`: [AdminCreateProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProduct)\[] (optional) — Records to create in bulk.
+    - `title`: `string` — The product's title.
+    - `subtitle`: `null` | `string` (optional) — The product's subtitle.
+    - `description`: `null` | `string` (optional) — The product's description.
+    - `is_giftcard`: `boolean` (optional) — Whether the product is a gift card.
+    - `discountable`: `boolean` (optional) — Whether discounts can be applied on the product.
+    - `images`: `object`\[] (optional) — The product's images.
+    - `thumbnail`: `null` | `string` (optional) — The product's thumbnail URL.
+    - `handle`: `null` | `string` (optional) — The product's handle.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) (optional) — The product's status.
+    - `type_id`: `null` | `string` (optional) — The ID of the product's type.
+    - `external_id`: `null` | `string` (optional) — The ID of the product in an external or third-party system.
+    - `collection_id`: `null` | `string` (optional) — The ID of the product's collection.
+    - `shipping_profile_id`: `string` (optional) — The ID of the product's shipping profile.
+    - `categories`: `object`\[] (optional) — The product's categories.
+    - `tags`: `object`\[] (optional) — The product's tags.
+    - `options`: ([AdminCreateProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductOption) | [AdminProductCreateLinkProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCreateLinkProductOption))\[] (optional) — The product's options.
+    - `variants`: [AdminCreateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariant)\[] (optional) — The product's variants.
+    - `sales_channels`: `object`\[] (optional) — The sales channels that the product is available in.
+    - `weight`: `null` | `number` (optional) — The product's weight.
+    - `length`: `null` | `number` (optional) — The product's length.
+    - `height`: `null` | `number` (optional) — The product's height.
+    - `width`: `null` | `number` (optional) — The product's width.
+    - `hs_code`: `null` | `string` (optional) — The product's HS code.
+    - `mid_code`: `null` | `string` (optional) — The product's MID code.
+    - `origin_country`: `null` | `string` (optional) — The product's origin country.
+    - `material`: `null` | `string` (optional) — The product's material.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `update`: [AdminBatchUpdateProduct](/resources/references/types/interfaces/typesAdminBatchUpdateProduct)\[] (optional) — Records to update in bulk.
+    - `id`: `string` — The ID of the product to update.
+    - `title`: `string` (optional) — The product's title.
+    - `subtitle`: `null` | `string` (optional) — The product's subtitle.
+    - `description`: `null` | `string` (optional) — The product's description.
+    - `is_giftcard`: `boolean` (optional) — Whether the product is a gift card.
+    - `discountable`: `boolean` (optional) — Whether discounts can be applied on the product.
+    - `images`: `object`\[] (optional) — The product's images.
+    - `thumbnail`: `null` | `string` (optional) — The product's thumbnail URL.
+    - `handle`: `string` (optional) — The product's handle.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) (optional) — The product's status.
+    - `type_id`: `null` | `string` (optional) — The ID of the associated product type.
+    - `external_id`: `null` | `string` (optional) — The ID of the product in an external or third-party system.
+    - `collection_id`: `null` | `string` (optional) — The ID of the associated product collection.
+    - `categories`: `object`\[] (optional) — The product's categories.
+    - `tags`: `object`\[] (optional) — The product's tags.
+    - `option_ids`: `string`\[] (optional) — The IDs of the associated product options.
+    - `variants`: ([AdminCreateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariant) | [AdminUpdateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateProductVariant))\[] (optional) — The product's variants.
+    - `sales_channels`: `object`\[] (optional) — The sales channels that the product is available in.
+    - `shipping_profile_id`: `null` | `string` (optional) — The ID of the product's shipping profile.
+    - `weight`: `null` | `number` (optional) — The product's weight.
+    - `length`: `null` | `number` (optional) — The product's length.
+    - `height`: `null` | `number` (optional) — The product's height.
+    - `width`: `null` | `number` (optional) — The product's width.
+    - `hs_code`: `null` | `string` (optional) — The product's HS code.
+    - `mid_code`: `null` | `string` (optional) — The product's MID code.
+    - `origin_country`: `null` | `string` (optional) — The product's origin country.
+    - `material`: `null` | `string` (optional) — The product's material.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `delete`: `string`\[] (optional) — Records to delete in bulk.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the products.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batch-returns" />
+
+### Returns
+
+**batch**
+
+- `Promise`: Promise\<[AdminBatchProductResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchProductResponse)> — The batch operations details.
+  - `created`: [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct)\[] — The items that were created.
+    - `collection`: `null` | [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) (optional) — The product's collection.
+    - `categories`: `null` | [AdminProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategory)\[] (optional) — The product's categories.
+    - `sales_channels`: `null` | [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels that the product is available in.
+    - `shipping_profile`: `null` | [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) (optional) — The shipping profile that the product is available in.
+    - `variants`: `null` | [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)\[] — The product's variants.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product's translations.
+    - `type`: `null` | [AdminProductType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductType) — The product's type.
+    - `tags`: `null` | [AdminProductTag](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductTag)\[] (optional) — The product's tags.
+    - `options`: `null` | [AdminProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOption)\[] — The product's options.
+    - `images`: `null` | [AdminProductImage](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductImage)\[] — The product's images.
+    - `id`: `string` — The product's ID.
+    - `title`: `string` — The product's title.
+    - `handle`: `string` — The product's handle.
+    - `subtitle`: `null` | `string` — The product's subtitle.
+    - `description`: `null` | `string` — The product's description.
+    - `is_giftcard`: `boolean` — Whether the product is a gift card.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) — The product's status.
+    - `thumbnail`: `null` | `string` — The product's thumbnail.
+    - `width`: `null` | `number` — The product's width.
+    - `weight`: `null` | `number` — The product's weight.
+    - `length`: `null` | `number` — The product's length.
+    - `height`: `null` | `number` — The product's height.
+    - `origin_country`: `null` | `string` — The product's origin country.
+    - `hs_code`: `null` | `string` — The product's HS code.
+    - `mid_code`: `null` | `string` — The product's MID code.
+    - `material`: `null` | `string` — The product's material.
+    - `collection_id`: `null` | `string` — The ID of the associated product collection.
+    - `type_id`: `null` | `string` — The ID of the associated product type.
+    - `discountable`: `boolean` — Whether the product is discountable.
+    - `external_id`: `null` | `string` — The ID of the product in external systems.
+    - `created_at`: `null` | `string` — The date the product was created.
+    - `updated_at`: `null` | `string` — The date the product was update.
+    - `deleted_at`: `null` | `string` — The date the product was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `updated`: [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct)\[] — The items that were updated.
+    - `collection`: `null` | [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) (optional) — The product's collection.
+    - `categories`: `null` | [AdminProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategory)\[] (optional) — The product's categories.
+    - `sales_channels`: `null` | [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels that the product is available in.
+    - `shipping_profile`: `null` | [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) (optional) — The shipping profile that the product is available in.
+    - `variants`: `null` | [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)\[] — The product's variants.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product's translations.
+    - `type`: `null` | [AdminProductType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductType) — The product's type.
+    - `tags`: `null` | [AdminProductTag](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductTag)\[] (optional) — The product's tags.
+    - `options`: `null` | [AdminProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOption)\[] — The product's options.
+    - `images`: `null` | [AdminProductImage](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductImage)\[] — The product's images.
+    - `id`: `string` — The product's ID.
+    - `title`: `string` — The product's title.
+    - `handle`: `string` — The product's handle.
+    - `subtitle`: `null` | `string` — The product's subtitle.
+    - `description`: `null` | `string` — The product's description.
+    - `is_giftcard`: `boolean` — Whether the product is a gift card.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) — The product's status.
+    - `thumbnail`: `null` | `string` — The product's thumbnail.
+    - `width`: `null` | `number` — The product's width.
+    - `weight`: `null` | `number` — The product's weight.
+    - `length`: `null` | `number` — The product's length.
+    - `height`: `null` | `number` — The product's height.
+    - `origin_country`: `null` | `string` — The product's origin country.
+    - `hs_code`: `null` | `string` — The product's HS code.
+    - `mid_code`: `null` | `string` — The product's MID code.
+    - `material`: `null` | `string` — The product's material.
+    - `collection_id`: `null` | `string` — The ID of the associated product collection.
+    - `type_id`: `null` | `string` — The ID of the associated product type.
+    - `discountable`: `boolean` — Whether the product is discountable.
+    - `external_id`: `null` | `string` — The ID of the product in external systems.
+    - `created_at`: `null` | `string` — The date the product was created.
+    - `updated_at`: `null` | `string` — The date the product was update.
+    - `deleted_at`: `null` | `string` — The date the product was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `deleted`: `object` — Details of the items that were deleted.
+    - `ids`: `string`\[] — The IDs of the items that were deleted.
+    - `object`: `string` — The type of the items that were deleted.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `deleted`: `boolean` — Whether the items were deleted successfully.
+
+## create
+
+This method creates a product. It sends a request to the
+[Create Product](/api/admin/products/create-product)
+API route.
+
+### Example
+
+```ts
+sdk.admin.product.create({
+  title: "Shirt",
+  options: [{
+    title: "Default",
+    values: ["Default Option"]
+  }],
+  variants: [
+    {
+      title: "Default",
+      options: {
+        Default: "Default Option"
+      },
+      prices: []
+    }
+  ],
+  shipping_profile_id: "sp_123"
+})
+.then(({ product }) => {
+  console.log(product)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [AdminCreateProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProduct) — The product's details.
+  - `title`: `string` — The product's title.
+  - `subtitle`: `null` | `string` (optional) — The product's subtitle.
+  - `description`: `null` | `string` (optional) — The product's description.
+  - `is_giftcard`: `boolean` (optional) — Whether the product is a gift card.
+  - `discountable`: `boolean` (optional) — Whether discounts can be applied on the product.
+  - `images`: `object`\[] (optional) — The product's images.
+    - `url`: `string` — The image's URL.
+  - `thumbnail`: `null` | `string` (optional) — The product's thumbnail URL.
+  - `handle`: `null` | `string` (optional) — The product's handle.
+  - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) (optional) — The product's status.
+  - `type_id`: `null` | `string` (optional) — The ID of the product's type.
+  - `external_id`: `null` | `string` (optional) — The ID of the product in an external or third-party system.
+  - `collection_id`: `null` | `string` (optional) — The ID of the product's collection.
+  - `shipping_profile_id`: `string` (optional) — The ID of the product's shipping profile.
+  - `categories`: `object`\[] (optional) — The product's categories.
+    - `id`: `string` — The ID of a product category that the product belongs to.
+  - `tags`: `object`\[] (optional) — The product's tags.
+    - `id`: `string` — The ID of the associated product tag.
+  - `options`: ([AdminCreateProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductOption) | [AdminProductCreateLinkProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCreateLinkProductOption))\[] (optional) — The product's options.
+    - `title`: `string` — The option's title.
+    - `values`: `string`\[] — The option's values.
+    - `ranks`: `Record<string, number>` (optional) — The rank for each option value. The keys are the option values, and the values are their respective ranks.
+
+      Example:
+
+      ```
+      { * "Small": 1, * "Medium": 2, * "Large": 3 * }
+      ```
+    - `is_exclusive`: `boolean` (optional) — Whether the option is exclusive to a specific product, or can be shared across multiple products.
+    - `id`: `string` — The ID of the product option to link.
+    - `value_ids`: `string`\[] (optional) — The IDs of specific option values to link. If undefined, every value will be linked by default.
+  - `variants`: [AdminCreateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariant)\[] (optional) — The product's variants.
+    - `title`: `string` — The variant's title.
+    - `sku`: `null` | `string` (optional) — The variant's SKU.
+    - `ean`: `null` | `string` (optional) — The variant's EAN.
+    - `upc`: `null` | `string` (optional) — The variant's UPC.
+    - `barcode`: `null` | `string` (optional) — The variant's barcode.
+    - `hs_code`: `null` | `string` (optional) — The variant's HS code.
+    - `mid_code`: `null` | `string` (optional) — The variant's MID code.
+    - `allow_backorder`: `boolean` (optional) — Whether the variant can be ordered even if it's out of stock.
+    - `manage_inventory`: `boolean` (optional) — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+    - `variant_rank`: `number` (optional) — The variant's ranking among its sibling variants.
+    - `weight`: `null` | `number` (optional) — The variant's weight.
+    - `length`: `null` | `number` (optional) — The variant's length.
+    - `height`: `null` | `number` (optional) — The variant's height.
+    - `width`: `null` | `number` (optional) — The variant's width.
+    - `origin_country`: `null` | `string` (optional) — The variant's origin country.
+    - `material`: `null` | `string` (optional) — The variant's material.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `prices`: [AdminCreateProductVariantPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantPrice)\[] — The variant's prices.
+    - `inventory_items`: [AdminCreateProductVariantInventoryKit](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantInventoryKit)\[] (optional) — The variant's inventory items. It's only available if `manage_inventory` is enabled.
+    - `options`: `Record<string, string>` (optional) — The variant's values for the associated product's options.
+  - `sales_channels`: `object`\[] (optional) — The sales channels that the product is available in.
+    - `id`: `string` — The ID of a sales channel that the product is available in.
+  - `weight`: `null` | `number` (optional) — The product's weight.
+  - `length`: `null` | `number` (optional) — The product's length.
+  - `height`: `null` | `number` (optional) — The product's height.
+  - `width`: `null` | `number` (optional) — The product's width.
+  - `hs_code`: `null` | `string` (optional) — The product's HS code.
+  - `mid_code`: `null` | `string` (optional) — The product's MID code.
+  - `origin_country`: `null` | `string` (optional) — The product's origin country.
+  - `material`: `null` | `string` (optional) — The product's material.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the product.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminProductResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductResponse)> — The product's details.
+  - `product`: [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) — The product's details.
+    - `collection`: `null` | [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) (optional) — The product's collection.
+    - `categories`: `null` | [AdminProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategory)\[] (optional) — The product's categories.
+    - `sales_channels`: `null` | [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels that the product is available in.
+    - `shipping_profile`: `null` | [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) (optional) — The shipping profile that the product is available in.
+    - `variants`: `null` | [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)\[] — The product's variants.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product's translations.
+    - `type`: `null` | [AdminProductType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductType) — The product's type.
+    - `tags`: `null` | [AdminProductTag](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductTag)\[] (optional) — The product's tags.
+    - `options`: `null` | [AdminProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOption)\[] — The product's options.
+    - `images`: `null` | [AdminProductImage](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductImage)\[] — The product's images.
+    - `id`: `string` — The product's ID.
+    - `title`: `string` — The product's title.
+    - `handle`: `string` — The product's handle.
+    - `subtitle`: `null` | `string` — The product's subtitle.
+    - `description`: `null` | `string` — The product's description.
+    - `is_giftcard`: `boolean` — Whether the product is a gift card.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) — The product's status.
+    - `thumbnail`: `null` | `string` — The product's thumbnail.
+    - `width`: `null` | `number` — The product's width.
+    - `weight`: `null` | `number` — The product's weight.
+    - `length`: `null` | `number` — The product's length.
+    - `height`: `null` | `number` — The product's height.
+    - `origin_country`: `null` | `string` — The product's origin country.
+    - `hs_code`: `null` | `string` — The product's HS code.
+    - `mid_code`: `null` | `string` — The product's MID code.
+    - `material`: `null` | `string` — The product's material.
+    - `collection_id`: `null` | `string` — The ID of the associated product collection.
+    - `type_id`: `null` | `string` — The ID of the associated product type.
+    - `discountable`: `boolean` — Whether the product is discountable.
+    - `external_id`: `null` | `string` — The ID of the product in external systems.
+    - `created_at`: `null` | `string` — The date the product was created.
+    - `updated_at`: `null` | `string` — The date the product was update.
+    - `deleted_at`: `null` | `string` — The date the product was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+
+## update
+
+This method updates a product. It sends a request to the
+[Update Product](/api/admin/products/update-a-product)
+API route.
+
+### Example
+
+```ts
+sdk.admin.product.update("prod_123", {
+  title: "Shirt",
+})
+.then(({ product }) => {
+  console.log(product)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `id`: `string` — The product's ID.
+- `body`: [AdminUpdateProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateProduct) — The data to update in the product.
+  - `title`: `string` (optional) — The product's title.
+  - `subtitle`: `null` | `string` (optional) — The product's subtitle.
+  - `description`: `null` | `string` (optional) — The product's description.
+  - `is_giftcard`: `boolean` (optional) — Whether the product is a gift card.
+  - `discountable`: `boolean` (optional) — Whether discounts can be applied on the product.
+  - `images`: `object`\[] (optional) — The product's images.
+    - `id`: `string` (optional) — The ID of the image to update or set for existing images.
+    - `url`: `string` — The image's URL.
+  - `thumbnail`: `null` | `string` (optional) — The product's thumbnail URL.
+  - `handle`: `string` (optional) — The product's handle.
+  - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) (optional) — The product's status.
+  - `type_id`: `null` | `string` (optional) — The ID of the associated product type.
+  - `external_id`: `null` | `string` (optional) — The ID of the product in an external or third-party system.
+  - `collection_id`: `null` | `string` (optional) — The ID of the associated product collection.
+  - `categories`: `object`\[] (optional) — The product's categories.
+    - `id`: `string` — The ID of the category that the product belongs to.
+  - `tags`: `object`\[] (optional) — The product's tags.
+    - `id`: `string` — The ID of a tag that the product is associated with.
+  - `option_ids`: `string`\[] (optional) — The IDs of the associated product options.
+  - `variants`: ([AdminCreateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariant) | [AdminUpdateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateProductVariant))\[] (optional) — The product's variants.
+    - `title`: `string` — The variant's title.
+    - `sku`: `null` | `string` (optional) — The variant's SKU.
+    - `ean`: `null` | `string` (optional) — The variant's EAN.
+    - `upc`: `null` | `string` (optional) — The variant's UPC.
+    - `barcode`: `null` | `string` (optional) — The variant's barcode.
+    - `hs_code`: `null` | `string` (optional) — The variant's HS code.
+    - `mid_code`: `null` | `string` (optional) — The variant's MID code.
+    - `allow_backorder`: `boolean` (optional) — Whether the variant can be ordered even if it's out of stock.
+    - `manage_inventory`: `boolean` (optional) — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+    - `variant_rank`: `number` (optional) — The variant's ranking among its sibling variants.
+    - `weight`: `null` | `number` (optional) — The variant's weight.
+    - `length`: `null` | `number` (optional) — The variant's length.
+    - `height`: `null` | `number` (optional) — The variant's height.
+    - `width`: `null` | `number` (optional) — The variant's width.
+    - `origin_country`: `null` | `string` (optional) — The variant's origin country.
+    - `material`: `null` | `string` (optional) — The variant's material.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `prices`: [AdminCreateProductVariantPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantPrice)\[] — The variant's prices.
+    - `inventory_items`: [AdminCreateProductVariantInventoryKit](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantInventoryKit)\[] (optional) — The variant's inventory items. It's only available if `manage_inventory` is enabled.
+    - `options`: `Record<string, string>` (optional) — The variant's values for the associated product's options.
+    - `id`: `string` (optional) — The variant's ID.
+    - `thumbnail`: `null` | `string` (optional) — The variant's thumbnail.
+  - `sales_channels`: `object`\[] (optional) — The sales channels that the product is available in.
+    - `id`: `string` — The ID of a sales channel that the product is available in.
+  - `shipping_profile_id`: `null` | `string` (optional) — The ID of the product's shipping profile.
+  - `weight`: `null` | `number` (optional) — The product's weight.
+  - `length`: `null` | `number` (optional) — The product's length.
+  - `height`: `null` | `number` (optional) — The product's height.
+  - `width`: `null` | `number` (optional) — The product's width.
+  - `hs_code`: `null` | `string` (optional) — The product's HS code.
+  - `mid_code`: `null` | `string` (optional) — The product's MID code.
+  - `origin_country`: `null` | `string` (optional) — The product's origin country.
+  - `material`: `null` | `string` (optional) — The product's material.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the product.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminProductResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductResponse)> — The product's details.
+  - `product`: [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) — The product's details.
+    - `collection`: `null` | [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) (optional) — The product's collection.
+    - `categories`: `null` | [AdminProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategory)\[] (optional) — The product's categories.
+    - `sales_channels`: `null` | [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels that the product is available in.
+    - `shipping_profile`: `null` | [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) (optional) — The shipping profile that the product is available in.
+    - `variants`: `null` | [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)\[] — The product's variants.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product's translations.
+    - `type`: `null` | [AdminProductType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductType) — The product's type.
+    - `tags`: `null` | [AdminProductTag](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductTag)\[] (optional) — The product's tags.
+    - `options`: `null` | [AdminProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOption)\[] — The product's options.
+    - `images`: `null` | [AdminProductImage](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductImage)\[] — The product's images.
+    - `id`: `string` — The product's ID.
+    - `title`: `string` — The product's title.
+    - `handle`: `string` — The product's handle.
+    - `subtitle`: `null` | `string` — The product's subtitle.
+    - `description`: `null` | `string` — The product's description.
+    - `is_giftcard`: `boolean` — Whether the product is a gift card.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) — The product's status.
+    - `thumbnail`: `null` | `string` — The product's thumbnail.
+    - `width`: `null` | `number` — The product's width.
+    - `weight`: `null` | `number` — The product's weight.
+    - `length`: `null` | `number` — The product's length.
+    - `height`: `null` | `number` — The product's height.
+    - `origin_country`: `null` | `string` — The product's origin country.
+    - `hs_code`: `null` | `string` — The product's HS code.
+    - `mid_code`: `null` | `string` — The product's MID code.
+    - `material`: `null` | `string` — The product's material.
+    - `collection_id`: `null` | `string` — The ID of the associated product collection.
+    - `type_id`: `null` | `string` — The ID of the associated product type.
+    - `discountable`: `boolean` — Whether the product is discountable.
+    - `external_id`: `null` | `string` — The ID of the product in external systems.
+    - `created_at`: `null` | `string` — The date the product was created.
+    - `updated_at`: `null` | `string` — The date the product was update.
+    - `deleted_at`: `null` | `string` — The date the product was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+
+## list
+
+This method retrieves a paginated list of products. It sends a request to the
+[List Products](/api/admin/products/list-products) API route.
+
+### Example
+
+To retrieve the list of products:
+
+```ts
+sdk.admin.product.list()
+.then(({ products, count, limit, offset }) => {
+  console.log(products)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.product.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ products, count, limit, offset }) => {
+  console.log(products)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each products:
+
+```ts
+sdk.admin.product.list({
+  fields: "id,*variants"
+})
+.then(({ products, count, limit, offset }) => {
+  console.log(products)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `queryParams`: [AdminProductListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductListParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) | [ProductStatus](/resources/references/types/types/typesProductStatus)\[] (optional) — Filter the product by status(es).
+    - `sales_channel_id`: `string` | `string`\[] (optional) — Filter the product by the sales channel(s) it belongs to.
+    - `title`: `string` | `string`\[] (optional) — Filter by the product's title(s).
+    - `handle`: `string` | `string`\[] (optional) — Filter by the product's handle(s).
+    - `external_id`: `string` | `string`\[] (optional) — Filter by the product's external ID(s).
+    - `id`: `string` | `string`\[] (optional) — Filter by the product's id(s).
+    - `is_giftcard`: `boolean` (optional) — Filter by whether the product is a gift card.
+    - `tag_id`: `string` | `string`\[] (optional) — Filter by the product's tag(s).
+    - `type_id`: `string` | `string`\[] (optional) — Filter by the product's type(s).
+    - `option_id`: `string` | `string`\[] (optional) — Filter by the product's option(s).
+    - `option_value_id`: `string` | `string`\[] (optional) — Filter by the product's option value(s).
+    - `category_id`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+    - `categories`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+    - `collection_id`: `string` | `string`\[] (optional) — Filter by the product's collection(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's deletion date.
+  - `$or`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) | [ProductStatus](/resources/references/types/types/typesProductStatus)\[] (optional) — Filter the product by status(es).
+    - `sales_channel_id`: `string` | `string`\[] (optional) — Filter the product by the sales channel(s) it belongs to.
+    - `title`: `string` | `string`\[] (optional) — Filter by the product's title(s).
+    - `handle`: `string` | `string`\[] (optional) — Filter by the product's handle(s).
+    - `external_id`: `string` | `string`\[] (optional) — Filter by the product's external ID(s).
+    - `id`: `string` | `string`\[] (optional) — Filter by the product's id(s).
+    - `is_giftcard`: `boolean` (optional) — Filter by whether the product is a gift card.
+    - `tag_id`: `string` | `string`\[] (optional) — Filter by the product's tag(s).
+    - `type_id`: `string` | `string`\[] (optional) — Filter by the product's type(s).
+    - `option_id`: `string` | `string`\[] (optional) — Filter by the product's option(s).
+    - `option_value_id`: `string` | `string`\[] (optional) — Filter by the product's option value(s).
+    - `category_id`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+    - `categories`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+    - `collection_id`: `string` | `string`\[] (optional) — Filter by the product's collection(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's deletion date.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `price_list_id`: `string` | `string`\[] (optional) — Filter by price list ID(s) to retrieve the associated products only.
+  - `variants`: Omit\<[AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams), "q"> (optional) — Apply filters on the product variants.
+    - `$and`: ([AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by variant ID(s).
+    - `manage_inventory`: `boolean` (optional) — Filter by whether Medusa manages the inventory of the variant.
+    - `allow_backorder`: `boolean` (optional) — Filter by whether the variant can be ordered even if it's out of stock.
+    - `sku`: `string` | `string`\[] (optional) — Filter by sku(s).
+    - `ean`: `string` | `string`\[] (optional) — Filter by variant ean(s).
+    - `upc`: `string` | `string`\[] (optional) — Filter by variant upc(s).
+    - `barcode`: `string` | `string`\[] (optional) — Filter by variant barcode(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's deletion date.
+  - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+  - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) | [ProductStatus](/resources/references/types/types/typesProductStatus)\[] (optional) — Filter the product by status(es).
+  - `sales_channel_id`: `string` | `string`\[] (optional) — Filter the product by the sales channel(s) it belongs to.
+  - `title`: `string` | `string`\[] (optional) — Filter by the product's title(s).
+  - `handle`: `string` | `string`\[] (optional) — Filter by the product's handle(s).
+  - `external_id`: `string` | `string`\[] (optional) — Filter by the product's external ID(s).
+  - `id`: `string` | `string`\[] (optional) — Filter by the product's id(s).
+  - `is_giftcard`: `boolean` (optional) — Filter by whether the product is a gift card.
+  - `tag_id`: `string` | `string`\[] (optional) — Filter by the product's tag(s).
+  - `type_id`: `string` | `string`\[] (optional) — Filter by the product's type(s).
+  - `option_id`: `string` | `string`\[] (optional) — Filter by the product's option(s).
+  - `option_value_id`: `string` | `string`\[] (optional) — Filter by the product's option value(s).
+  - `category_id`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+  - `collection_id`: `string` | `string`\[] (optional) — Filter by the product's collection(s).
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's creation date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's update date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's deletion date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminProductListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminProductListResponse)> — The paginated list of products.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## retrieve
+
+This method retrieves a product by its ID. It sends a request to the
+[Get Product](/api/admin/products/get-a-product)
+API route.
+
+### Example
+
+To retrieve a product by its ID:
+
+```ts
+sdk.admin.product.retrieve("prod_123")
+.then(({ product }) => {
+  console.log(product)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.product.retrieve("prod_123", {
+  fields: "id,*variants"
+})
+.then(({ product }) => {
+  console.log(product)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The product's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the product.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminProductResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductResponse)> — The product's details.
+  - `product`: [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) — The product's details.
+    - `collection`: `null` | [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) (optional) — The product's collection.
+    - `categories`: `null` | [AdminProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategory)\[] (optional) — The product's categories.
+    - `sales_channels`: `null` | [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels that the product is available in.
+    - `shipping_profile`: `null` | [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) (optional) — The shipping profile that the product is available in.
+    - `variants`: `null` | [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)\[] — The product's variants.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product's translations.
+    - `type`: `null` | [AdminProductType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductType) — The product's type.
+    - `tags`: `null` | [AdminProductTag](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductTag)\[] (optional) — The product's tags.
+    - `options`: `null` | [AdminProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOption)\[] — The product's options.
+    - `images`: `null` | [AdminProductImage](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductImage)\[] — The product's images.
+    - `id`: `string` — The product's ID.
+    - `title`: `string` — The product's title.
+    - `handle`: `string` — The product's handle.
+    - `subtitle`: `null` | `string` — The product's subtitle.
+    - `description`: `null` | `string` — The product's description.
+    - `is_giftcard`: `boolean` — Whether the product is a gift card.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) — The product's status.
+    - `thumbnail`: `null` | `string` — The product's thumbnail.
+    - `width`: `null` | `number` — The product's width.
+    - `weight`: `null` | `number` — The product's weight.
+    - `length`: `null` | `number` — The product's length.
+    - `height`: `null` | `number` — The product's height.
+    - `origin_country`: `null` | `string` — The product's origin country.
+    - `hs_code`: `null` | `string` — The product's HS code.
+    - `mid_code`: `null` | `string` — The product's MID code.
+    - `material`: `null` | `string` — The product's material.
+    - `collection_id`: `null` | `string` — The ID of the associated product collection.
+    - `type_id`: `null` | `string` — The ID of the associated product type.
+    - `discountable`: `boolean` — Whether the product is discountable.
+    - `external_id`: `null` | `string` — The ID of the product in external systems.
+    - `created_at`: `null` | `string` — The date the product was created.
+    - `updated_at`: `null` | `string` — The date the product was update.
+    - `deleted_at`: `null` | `string` — The date the product was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+
+## delete
+
+This method deletes a product. It sends a request to the
+[Delete Product](/api/admin/products/delete-a-product)
+API route.
+
+### Example
+
+```ts
+sdk.admin.product.delete("prod_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The product's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminProductDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: `"product"` — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## batchVariants
+
+This method manages the variants of a product. It sends a request to the
+[Manage Variants](/api/admin/products/manage-variants-in-a-product)
+API route.
+
+### Example
+
+```ts
+sdk.admin.product.batchVariants("prod_123", {
+  create: [
+    {
+      title: "Blue Shirt",
+      options: {
+        Color: "Blue"
+      },
+      prices: []
+    }
+  ],
+  update: [
+    {
+      id: "variant_123",
+      title: "Pants"
+    }
+  ],
+  delete: ["variant_123"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+<a id="batchvariants-parameters" />
+
+### Parameters
+
+**batchVariants**
+
+- `productId`: `string` — The product's ID.
+- `body`: [AdminBatchProductVariantRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchProductVariantRequest) — The variants to create, update, or delete.
+  - `create`: [AdminCreateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariant)\[] (optional) — Records to create in bulk.
+    - `title`: `string` — The variant's title.
+    - `sku`: `null` | `string` (optional) — The variant's SKU.
+    - `ean`: `null` | `string` (optional) — The variant's EAN.
+    - `upc`: `null` | `string` (optional) — The variant's UPC.
+    - `barcode`: `null` | `string` (optional) — The variant's barcode.
+    - `hs_code`: `null` | `string` (optional) — The variant's HS code.
+    - `mid_code`: `null` | `string` (optional) — The variant's MID code.
+    - `allow_backorder`: `boolean` (optional) — Whether the variant can be ordered even if it's out of stock.
+    - `manage_inventory`: `boolean` (optional) — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+    - `variant_rank`: `number` (optional) — The variant's ranking among its sibling variants.
+    - `weight`: `null` | `number` (optional) — The variant's weight.
+    - `length`: `null` | `number` (optional) — The variant's length.
+    - `height`: `null` | `number` (optional) — The variant's height.
+    - `width`: `null` | `number` (optional) — The variant's width.
+    - `origin_country`: `null` | `string` (optional) — The variant's origin country.
+    - `material`: `null` | `string` (optional) — The variant's material.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `prices`: [AdminCreateProductVariantPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantPrice)\[] — The variant's prices.
+    - `inventory_items`: [AdminCreateProductVariantInventoryKit](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantInventoryKit)\[] (optional) — The variant's inventory items. It's only available if `manage_inventory` is enabled.
+    - `options`: `Record<string, string>` (optional) — The variant's values for the associated product's options.
+  - `update`: [AdminBatchUpdateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchUpdateProductVariant)\[] (optional) — Records to update in bulk.
+    - `title`: `string` (optional) — The variant's title.
+    - `sku`: `null` | `string` (optional) — The variant's SKU.
+    - `ean`: `null` | `string` (optional) — The variant's EAN.
+    - `upc`: `null` | `string` (optional) — The variant's UPC.
+    - `barcode`: `null` | `string` (optional) — The variant's barcode.
+    - `hs_code`: `null` | `string` (optional) — The variant's HS code.
+    - `mid_code`: `null` | `string` (optional) — The variant's MID code.
+    - `thumbnail`: `null` | `string` (optional) — The variant's thumbnail.
+    - `allow_backorder`: `boolean` (optional) — Whether the variant can be ordered even if it's out of stock.
+    - `manage_inventory`: `boolean` (optional) — Whether Medusa should manage the variant's inventory. If disabled, the variant is always considered in stock.
+    - `variant_rank`: `number` (optional) — The variant's ranking among its sibling variants.
+    - `weight`: `null` | `number` (optional) — The variant's weight.
+    - `length`: `null` | `number` (optional) — The variant's length.
+    - `height`: `null` | `number` (optional) — The variant's height.
+    - `width`: `null` | `number` (optional) — The variant's width.
+    - `origin_country`: `null` | `string` (optional) — The variant's origin country.
+    - `material`: `null` | `string` (optional) — The variant's material.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `prices`: [AdminUpdateProductVariantPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateProductVariantPrice)\[] (optional) — The variant's prices.
+    - `options`: `Record<string, string>` (optional) — The variant's values for the associated product's options.
+    - `id`: `string` — The ID of the variant to update.
+  - `delete`: `string`\[] (optional) — Records to delete in bulk.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the product variants.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchvariants-returns" />
+
+### Returns
+
+**batchVariants**
+
+- `Promise`: Promise\<[AdminBatchProductVariantResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchProductVariantResponse)> — The product variants' details.
+  - `created`: [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)\[] — The items that were created.
+    - `prices`: `null` | [AdminPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPrice)\[] — The product variant's prices.
+    - `options`: `null` | [AdminProductOptionValue](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOptionValue)\[] — The variant's values for the associated product's options.
+    - `product`: `null` | [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) (optional) — The product that this variant belongs to.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product variant's translations.
+    - `inventory_items`: `null` | [AdminProductVariantInventoryItemLink](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantInventoryItemLink)\[] (optional) — The variant's inventory items.
+    - `id`: `string` — The variant's ID.
+    - `title`: `null` | `string` — The variant's title.
+    - `sku`: `null` | `string` — The variant's SKU.
+    - `barcode`: `null` | `string` — The variant's barcode.
+    - `ean`: `null` | `string` — The variant's EAN.
+    - `upc`: `null` | `string` — The variant's UPC.
+    - `thumbnail`: `null` | `string` — The variant's thumbnail.
+    - `images`: `null` | [BaseProductImage](/resources/references/types/interfaces/typesBaseProductImage)\[] (optional) — The variant's images.
+    - `allow_backorder`: `null` | `boolean` — Whether the variant can be ordered even if it's out of stock.
+    - `manage_inventory`: `null` | `boolean` — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+    - `inventory_quantity`: `null` | `number` (optional) — The variant's inventory quantity if `manage_inventory` is enabled. This field is only retrieved in the [Get Product](/api/store/products/get-a-product) and [List Products](/api/store/products/list-products) API routes if you pass `+variants.inventory_quantity` in the `fields` query parameter. Learn more in the [Retrieve Product Variant's Inventory](/resources/storefront-development/products/inventory) storefront guide.
+    - `hs_code`: `null` | `string` — The variant's HS code.
+    - `origin_country`: `null` | `string` — The variant's origin country.
+    - `mid_code`: `null` | `string` — The variant's MID code.
+    - `material`: `null` | `string` — The variant's material.
+    - `weight`: `null` | `number` — The variant's weight.
+    - `length`: `null` | `number` — The variant's length.
+    - `height`: `null` | `number` — The variant's height.
+    - `width`: `null` | `number` — The variant's width.
+    - `variant_rank`: `null` | `number` (optional) — The variant's ranking among its siblings.
+    - `product_id`: `string` (optional) — The ID of the product that the variant belongs to.
+    - `calculated_price`: [BaseCalculatedPriceSet](/resources/references/types/interfaces/typesBaseCalculatedPriceSet) (optional) — The variant's calculated price for the provided context.
+    - `created_at`: `string` — The date the variant was created.
+    - `updated_at`: `string` — The date the variant was updated.
+    - `deleted_at`: `null` | `string` — The date the variant was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `updated`: [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)\[] — The items that were updated.
+    - `prices`: `null` | [AdminPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPrice)\[] — The product variant's prices.
+    - `options`: `null` | [AdminProductOptionValue](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOptionValue)\[] — The variant's values for the associated product's options.
+    - `product`: `null` | [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) (optional) — The product that this variant belongs to.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product variant's translations.
+    - `inventory_items`: `null` | [AdminProductVariantInventoryItemLink](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantInventoryItemLink)\[] (optional) — The variant's inventory items.
+    - `id`: `string` — The variant's ID.
+    - `title`: `null` | `string` — The variant's title.
+    - `sku`: `null` | `string` — The variant's SKU.
+    - `barcode`: `null` | `string` — The variant's barcode.
+    - `ean`: `null` | `string` — The variant's EAN.
+    - `upc`: `null` | `string` — The variant's UPC.
+    - `thumbnail`: `null` | `string` — The variant's thumbnail.
+    - `images`: `null` | [BaseProductImage](/resources/references/types/interfaces/typesBaseProductImage)\[] (optional) — The variant's images.
+    - `allow_backorder`: `null` | `boolean` — Whether the variant can be ordered even if it's out of stock.
+    - `manage_inventory`: `null` | `boolean` — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+    - `inventory_quantity`: `null` | `number` (optional) — The variant's inventory quantity if `manage_inventory` is enabled. This field is only retrieved in the [Get Product](/api/store/products/get-a-product) and [List Products](/api/store/products/list-products) API routes if you pass `+variants.inventory_quantity` in the `fields` query parameter. Learn more in the [Retrieve Product Variant's Inventory](/resources/storefront-development/products/inventory) storefront guide.
+    - `hs_code`: `null` | `string` — The variant's HS code.
+    - `origin_country`: `null` | `string` — The variant's origin country.
+    - `mid_code`: `null` | `string` — The variant's MID code.
+    - `material`: `null` | `string` — The variant's material.
+    - `weight`: `null` | `number` — The variant's weight.
+    - `length`: `null` | `number` — The variant's length.
+    - `height`: `null` | `number` — The variant's height.
+    - `width`: `null` | `number` — The variant's width.
+    - `variant_rank`: `null` | `number` (optional) — The variant's ranking among its siblings.
+    - `product_id`: `string` (optional) — The ID of the product that the variant belongs to.
+    - `calculated_price`: [BaseCalculatedPriceSet](/resources/references/types/interfaces/typesBaseCalculatedPriceSet) (optional) — The variant's calculated price for the provided context.
+    - `created_at`: `string` — The date the variant was created.
+    - `updated_at`: `string` — The date the variant was updated.
+    - `deleted_at`: `null` | `string` — The date the variant was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `deleted`: `object` — Details of the items that were deleted.
+    - `ids`: `string`\[] — The IDs of the items that were deleted.
+    - `object`: `string` — The type of the items that were deleted.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `deleted`: `boolean` — Whether the items were deleted successfully.
+
+## createVariant
+
+This method creates a variant for a product. It sends a request to the
+[Create Variant](/api/admin/products/create-variant)
+API route.
+
+### Example
+
+```ts
+sdk.admin.product.createVariant("prod_123", {
+  title: "Blue Shirt",
+  options: {
+    Color: "Blue"
+  },
+  prices: [
+    {
+      amount: 10,
+      currency_code: "usd"
+    }
+  ]
+})
+.then(({ product }) => {
+  console.log(product)
+})
+```
+
+<a id="createvariant-parameters" />
+
+### Parameters
+
+**createVariant**
+
+- `productId`: `string` — The product's ID.
+- `body`: [AdminCreateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariant) — The variant's details.
+  - `title`: `string` — The variant's title.
+  - `sku`: `null` | `string` (optional) — The variant's SKU.
+  - `ean`: `null` | `string` (optional) — The variant's EAN.
+  - `upc`: `null` | `string` (optional) — The variant's UPC.
+  - `barcode`: `null` | `string` (optional) — The variant's barcode.
+  - `hs_code`: `null` | `string` (optional) — The variant's HS code.
+  - `mid_code`: `null` | `string` (optional) — The variant's MID code.
+  - `allow_backorder`: `boolean` (optional) — Whether the variant can be ordered even if it's out of stock.
+  - `manage_inventory`: `boolean` (optional) — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+  - `variant_rank`: `number` (optional) — The variant's ranking among its sibling variants.
+  - `weight`: `null` | `number` (optional) — The variant's weight.
+  - `length`: `null` | `number` (optional) — The variant's length.
+  - `height`: `null` | `number` (optional) — The variant's height.
+  - `width`: `null` | `number` (optional) — The variant's width.
+  - `origin_country`: `null` | `string` (optional) — The variant's origin country.
+  - `material`: `null` | `string` (optional) — The variant's material.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `prices`: [AdminCreateProductVariantPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantPrice)\[] — The variant's prices.
+    - `currency_code`: `string` — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` — The price's amount.
+    - `min_quantity`: `null` | `number` (optional) — The minimum quantity required in the cart for the price to apply.
+    - `max_quantity`: `null` | `number` (optional) — The maximum quantity required in the cart for the price to apply.
+    - `rules`: `Record<string, string>` (optional) — The price's rules. Currently, only supports a `region_id` key to specify the region that the price applies to.
+
+      Example:
+
+      ```
+      { * "region_id": "region_123" * }
+      ```
+  - `inventory_items`: [AdminCreateProductVariantInventoryKit](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantInventoryKit)\[] (optional) — The variant's inventory items. It's only available if `manage_inventory` is enabled.
+    - `inventory_item_id`: `string`
+    - `required_quantity`: `number`
+  - `options`: `Record<string, string>` (optional) — The variant's values for the associated product's options.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the product.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="createvariant-returns" />
+
+### Returns
+
+**createVariant**
+
+- `Promise`: Promise\<[AdminProductResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductResponse)> — The product's details.
+  - `product`: [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) — The product's details.
+    - `collection`: `null` | [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) (optional) — The product's collection.
+    - `categories`: `null` | [AdminProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategory)\[] (optional) — The product's categories.
+    - `sales_channels`: `null` | [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels that the product is available in.
+    - `shipping_profile`: `null` | [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) (optional) — The shipping profile that the product is available in.
+    - `variants`: `null` | [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)\[] — The product's variants.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product's translations.
+    - `type`: `null` | [AdminProductType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductType) — The product's type.
+    - `tags`: `null` | [AdminProductTag](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductTag)\[] (optional) — The product's tags.
+    - `options`: `null` | [AdminProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOption)\[] — The product's options.
+    - `images`: `null` | [AdminProductImage](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductImage)\[] — The product's images.
+    - `id`: `string` — The product's ID.
+    - `title`: `string` — The product's title.
+    - `handle`: `string` — The product's handle.
+    - `subtitle`: `null` | `string` — The product's subtitle.
+    - `description`: `null` | `string` — The product's description.
+    - `is_giftcard`: `boolean` — Whether the product is a gift card.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) — The product's status.
+    - `thumbnail`: `null` | `string` — The product's thumbnail.
+    - `width`: `null` | `number` — The product's width.
+    - `weight`: `null` | `number` — The product's weight.
+    - `length`: `null` | `number` — The product's length.
+    - `height`: `null` | `number` — The product's height.
+    - `origin_country`: `null` | `string` — The product's origin country.
+    - `hs_code`: `null` | `string` — The product's HS code.
+    - `mid_code`: `null` | `string` — The product's MID code.
+    - `material`: `null` | `string` — The product's material.
+    - `collection_id`: `null` | `string` — The ID of the associated product collection.
+    - `type_id`: `null` | `string` — The ID of the associated product type.
+    - `discountable`: `boolean` — Whether the product is discountable.
+    - `external_id`: `null` | `string` — The ID of the product in external systems.
+    - `created_at`: `null` | `string` — The date the product was created.
+    - `updated_at`: `null` | `string` — The date the product was update.
+    - `deleted_at`: `null` | `string` — The date the product was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+
+## updateVariant
+
+This method updates a variant of a product. It sends a request to the
+[Update Variant](/api/admin/products/update-variant)
+API route.
+
+### Example
+
+```ts
+sdk.admin.product.updateVariant(
+  "prod_123",
+  "variant_123",
+    {
+    title: "Blue Shirt",
+  }
+)
+.then(({ product }) => {
+  console.log(product)
+})
+```
+
+<a id="updatevariant-parameters" />
+
+### Parameters
+
+**updateVariant**
+
+- `productId`: `string` — The product's ID.
+- `id`: `string` — The variant's ID.
+- `body`: [AdminUpdateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateProductVariant) — The data to update in the variant.
+  - `id`: `string` (optional) — The variant's ID.
+  - `title`: `string` (optional) — The variant's title.
+  - `sku`: `null` | `string` (optional) — The variant's SKU.
+  - `ean`: `null` | `string` (optional) — The variant's EAN.
+  - `upc`: `null` | `string` (optional) — The variant's UPC.
+  - `barcode`: `null` | `string` (optional) — The variant's barcode.
+  - `hs_code`: `null` | `string` (optional) — The variant's HS code.
+  - `mid_code`: `null` | `string` (optional) — The variant's MID code.
+  - `thumbnail`: `null` | `string` (optional) — The variant's thumbnail.
+  - `allow_backorder`: `boolean` (optional) — Whether the variant can be ordered even if it's out of stock.
+  - `manage_inventory`: `boolean` (optional) — Whether Medusa should manage the variant's inventory. If disabled, the variant is always considered in stock.
+  - `variant_rank`: `number` (optional) — The variant's ranking among its sibling variants.
+  - `weight`: `null` | `number` (optional) — The variant's weight.
+  - `length`: `null` | `number` (optional) — The variant's length.
+  - `height`: `null` | `number` (optional) — The variant's height.
+  - `width`: `null` | `number` (optional) — The variant's width.
+  - `origin_country`: `null` | `string` (optional) — The variant's origin country.
+  - `material`: `null` | `string` (optional) — The variant's material.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `prices`: [AdminUpdateProductVariantPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateProductVariantPrice)\[] (optional) — The variant's prices.
+    - `id`: `string` (optional) — The price's ID.
+    - `currency_code`: `string` (optional) — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` (optional) — The price's amount.
+    - `min_quantity`: `null` | `number` (optional) — The minimum quantity required in the cart for the price to apply.
+    - `max_quantity`: `null` | `number` (optional) — The maximum quantity required in the cart for the price to apply.
+    - `rules`: `Record<string, string>` (optional) — The price's rules.
+  - `options`: `Record<string, string>` (optional) — The variant's values for the associated product's options.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the product.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updatevariant-returns" />
+
+### Returns
+
+**updateVariant**
+
+- `Promise`: Promise\<[AdminProductResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductResponse)> — The product's details.
+  - `product`: [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) — The product's details.
+    - `collection`: `null` | [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) (optional) — The product's collection.
+    - `categories`: `null` | [AdminProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategory)\[] (optional) — The product's categories.
+    - `sales_channels`: `null` | [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels that the product is available in.
+    - `shipping_profile`: `null` | [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) (optional) — The shipping profile that the product is available in.
+    - `variants`: `null` | [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)\[] — The product's variants.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product's translations.
+    - `type`: `null` | [AdminProductType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductType) — The product's type.
+    - `tags`: `null` | [AdminProductTag](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductTag)\[] (optional) — The product's tags.
+    - `options`: `null` | [AdminProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOption)\[] — The product's options.
+    - `images`: `null` | [AdminProductImage](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductImage)\[] — The product's images.
+    - `id`: `string` — The product's ID.
+    - `title`: `string` — The product's title.
+    - `handle`: `string` — The product's handle.
+    - `subtitle`: `null` | `string` — The product's subtitle.
+    - `description`: `null` | `string` — The product's description.
+    - `is_giftcard`: `boolean` — Whether the product is a gift card.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) — The product's status.
+    - `thumbnail`: `null` | `string` — The product's thumbnail.
+    - `width`: `null` | `number` — The product's width.
+    - `weight`: `null` | `number` — The product's weight.
+    - `length`: `null` | `number` — The product's length.
+    - `height`: `null` | `number` — The product's height.
+    - `origin_country`: `null` | `string` — The product's origin country.
+    - `hs_code`: `null` | `string` — The product's HS code.
+    - `mid_code`: `null` | `string` — The product's MID code.
+    - `material`: `null` | `string` — The product's material.
+    - `collection_id`: `null` | `string` — The ID of the associated product collection.
+    - `type_id`: `null` | `string` — The ID of the associated product type.
+    - `discountable`: `boolean` — Whether the product is discountable.
+    - `external_id`: `null` | `string` — The ID of the product in external systems.
+    - `created_at`: `null` | `string` — The date the product was created.
+    - `updated_at`: `null` | `string` — The date the product was update.
+    - `deleted_at`: `null` | `string` — The date the product was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+
+## listVariants
+
+This method retrieves a paginated list of products. It sends a request to the
+[List Products](/api/admin/products/list-variants) API route.
+
+### Example
+
+To retrieve the list of product variants:
+
+```ts
+sdk.admin.product.listVariants("prod_123")
+.then(({ variants, count, limit, offset }) => {
+  console.log(variants)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.product.listVariants("prod_123", {
+  limit: 10,
+  offset: 10
+})
+.then(({ variants, count, limit, offset }) => {
+  console.log(variants)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each product variant:
+
+```ts
+sdk.admin.product.listVariants("prod_123", {
+  fields: "id,*product"
+})
+.then(({ variants, count, limit, offset }) => {
+  console.log(variants)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="listvariants-parameters" />
+
+### Parameters
+
+**listVariants**
+
+- `productId`: `string` — The ID of the product to retrieve its variants.
+- `query`: [AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keywords to filter the variant's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by variant ID(s).
+    - `manage_inventory`: `boolean` (optional) — Filter by whether Medusa manages the inventory of the variant.
+    - `allow_backorder`: `boolean` (optional) — Filter by whether the variant can be ordered even if it's out of stock.
+    - `sku`: `string` | `string`\[] (optional) — Filter by sku(s).
+    - `ean`: `string` | `string`\[] (optional) — Filter by variant ean(s).
+    - `upc`: `string` | `string`\[] (optional) — Filter by variant upc(s).
+    - `barcode`: `string` | `string`\[] (optional) — Filter by variant barcode(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's deletion date.
+  - `$or`: ([AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keywords to filter the variant's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by variant ID(s).
+    - `manage_inventory`: `boolean` (optional) — Filter by whether Medusa manages the inventory of the variant.
+    - `allow_backorder`: `boolean` (optional) — Filter by whether the variant can be ordered even if it's out of stock.
+    - `sku`: `string` | `string`\[] (optional) — Filter by sku(s).
+    - `ean`: `string` | `string`\[] (optional) — Filter by variant ean(s).
+    - `upc`: `string` | `string`\[] (optional) — Filter by variant upc(s).
+    - `barcode`: `string` | `string`\[] (optional) — Filter by variant barcode(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's deletion date.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keywords to filter the variant's searchable fields.
+  - `id`: `string` | `string`\[] (optional) — Filter by variant ID(s).
+  - `manage_inventory`: `boolean` (optional) — Filter by whether Medusa manages the inventory of the variant.
+  - `allow_backorder`: `boolean` (optional) — Filter by whether the variant can be ordered even if it's out of stock.
+  - `sku`: `string` | `string`\[] (optional) — Filter by sku(s).
+  - `ean`: `string` | `string`\[] (optional) — Filter by variant ean(s).
+  - `upc`: `string` | `string`\[] (optional) — Filter by variant upc(s).
+  - `barcode`: `string` | `string`\[] (optional) — Filter by variant barcode(s).
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's creation date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's update date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's deletion date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listvariants-returns" />
+
+### Returns
+
+**listVariants**
+
+- `Promise`: Promise\<[AdminProductVariantListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminProductVariantListResponse)> — The paginated list of product variants.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## retrieveVariant
+
+This method retrieves a product's variant. It sends a request to the
+[Retrieve Variant](/api/admin/products/get-variant)
+API route.
+
+### Example
+
+To retrieve a product variant by its ID:
+
+```ts
+sdk.admin.product.retrieveVariant(
+  "prod_123",
+  "variant_123"
+)
+.then(({ variant }) => {
+  console.log(variant)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.product.retrieveVariant(
+  "prod_123",
+  "variant_123",
+  {
+    fields: "id, *product"
+  }
+)
+.then(({ variant }) => {
+  console.log(variant)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrievevariant-parameters" />
+
+### Parameters
+
+**retrieveVariant**
+
+- `productId`: `string` — The product's ID.
+- `id`: `string` — The variant's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the product variant.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrievevariant-returns" />
+
+### Returns
+
+**retrieveVariant**
+
+- `Promise`: Promise\<[AdminProductVariantResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantResponse)> — The product variant's details.
+  - `variant`: [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)
+    - `prices`: `null` | [AdminPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPrice)\[] — The product variant's prices.
+    - `options`: `null` | [AdminProductOptionValue](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOptionValue)\[] — The variant's values for the associated product's options.
+    - `product`: `null` | [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) (optional) — The product that this variant belongs to.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product variant's translations.
+    - `inventory_items`: `null` | [AdminProductVariantInventoryItemLink](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantInventoryItemLink)\[] (optional) — The variant's inventory items.
+    - `id`: `string` — The variant's ID.
+    - `title`: `null` | `string` — The variant's title.
+    - `sku`: `null` | `string` — The variant's SKU.
+    - `barcode`: `null` | `string` — The variant's barcode.
+    - `ean`: `null` | `string` — The variant's EAN.
+    - `upc`: `null` | `string` — The variant's UPC.
+    - `thumbnail`: `null` | `string` — The variant's thumbnail.
+    - `images`: `null` | [BaseProductImage](/resources/references/types/interfaces/typesBaseProductImage)\[] (optional) — The variant's images.
+    - `allow_backorder`: `null` | `boolean` — Whether the variant can be ordered even if it's out of stock.
+    - `manage_inventory`: `null` | `boolean` — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+    - `inventory_quantity`: `null` | `number` (optional) — The variant's inventory quantity if `manage_inventory` is enabled. This field is only retrieved in the [Get Product](/api/store/products/get-a-product) and [List Products](/api/store/products/list-products) API routes if you pass `+variants.inventory_quantity` in the `fields` query parameter. Learn more in the [Retrieve Product Variant's Inventory](/resources/storefront-development/products/inventory) storefront guide.
+    - `hs_code`: `null` | `string` — The variant's HS code.
+    - `origin_country`: `null` | `string` — The variant's origin country.
+    - `mid_code`: `null` | `string` — The variant's MID code.
+    - `material`: `null` | `string` — The variant's material.
+    - `weight`: `null` | `number` — The variant's weight.
+    - `length`: `null` | `number` — The variant's length.
+    - `height`: `null` | `number` — The variant's height.
+    - `width`: `null` | `number` — The variant's width.
+    - `variant_rank`: `null` | `number` (optional) — The variant's ranking among its siblings.
+    - `product_id`: `string` (optional) — The ID of the product that the variant belongs to.
+    - `calculated_price`: [BaseCalculatedPriceSet](/resources/references/types/interfaces/typesBaseCalculatedPriceSet) (optional) — The variant's calculated price for the provided context.
+    - `created_at`: `string` — The date the variant was created.
+    - `updated_at`: `string` — The date the variant was updated.
+    - `deleted_at`: `null` | `string` — The date the variant was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+
+## deleteVariant
+
+This method deletes a product's variant. It sends a request to the
+[Delete Variant](/api/admin/products/delete-variant)
+API route.
+
+### Example
+
+```ts
+sdk.admin.product.deleteVariant("prod_123", "variant_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="deletevariant-parameters" />
+
+### Parameters
+
+**deleteVariant**
+
+- `productId`: `string` — The product's ID.
+- `id`: `string` — The ID of the variant.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the product variant.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="deletevariant-returns" />
+
+### Returns
+
+**deleteVariant**
+
+- `Promise`: Promise\<[AdminProductVariantDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: `"variant"` — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+  - `parent`: [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) (optional) — The parent resource of the item that was deleted, if applicable.
+    - `collection`: `null` | [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) (optional) — The product's collection.
+    - `categories`: `null` | [AdminProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategory)\[] (optional) — The product's categories.
+    - `sales_channels`: `null` | [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels that the product is available in.
+    - `shipping_profile`: `null` | [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) (optional) — The shipping profile that the product is available in.
+    - `variants`: `null` | [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)\[] — The product's variants.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product's translations.
+    - `type`: `null` | [AdminProductType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductType) — The product's type.
+    - `tags`: `null` | [AdminProductTag](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductTag)\[] (optional) — The product's tags.
+    - `options`: `null` | [AdminProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOption)\[] — The product's options.
+    - `images`: `null` | [AdminProductImage](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductImage)\[] — The product's images.
+    - `id`: `string` — The product's ID.
+    - `title`: `string` — The product's title.
+    - `handle`: `string` — The product's handle.
+    - `subtitle`: `null` | `string` — The product's subtitle.
+    - `description`: `null` | `string` — The product's description.
+    - `is_giftcard`: `boolean` — Whether the product is a gift card.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) — The product's status.
+    - `thumbnail`: `null` | `string` — The product's thumbnail.
+    - `width`: `null` | `number` — The product's width.
+    - `weight`: `null` | `number` — The product's weight.
+    - `length`: `null` | `number` — The product's length.
+    - `height`: `null` | `number` — The product's height.
+    - `origin_country`: `null` | `string` — The product's origin country.
+    - `hs_code`: `null` | `string` — The product's HS code.
+    - `mid_code`: `null` | `string` — The product's MID code.
+    - `material`: `null` | `string` — The product's material.
+    - `collection_id`: `null` | `string` — The ID of the associated product collection.
+    - `type_id`: `null` | `string` — The ID of the associated product type.
+    - `discountable`: `boolean` — Whether the product is discountable.
+    - `external_id`: `null` | `string` — The ID of the product in external systems.
+    - `created_at`: `null` | `string` — The date the product was created.
+    - `updated_at`: `null` | `string` — The date the product was update.
+    - `deleted_at`: `null` | `string` — The date the product was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+
+## batchVariantInventoryItems
+
+This method manages a product's variant's inventories to associate them with inventory items,
+update their inventory items, or delete their association with inventory items.
+
+It sends a request to the
+[Manage Variant Inventory](/api/admin/products/manage-variants-inventory)
+API route.
+
+### Example
+
+```ts
+sdk.admin.product.batchVariantInventoryItems(
+  "prod_123",
+  {
+    create: [
+      {
+        inventory_item_id: "iitem_123",
+        variant_id: "variant_123",
+        required_quantity: 10
+      }
+    ],
+    update: [
+      {
+        inventory_item_id: "iitem_1234",
+        variant_id: "variant_1234",
+        required_quantity: 20
+      }
+    ],
+    delete: [
+      {
+        inventory_item_id: "iitem_321",
+        variant_id: "variant_321"
+      }
+    ]
+  }
+)
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+<a id="batchvariantinventoryitems-parameters" />
+
+### Parameters
+
+**batchVariantInventoryItems**
+
+- `productId`: `string` — The ID of the product that the variant belongs to.
+- `body`: [AdminBatchProductVariantInventoryItemRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchProductVariantInventoryItemRequest) — The inventory items to create, update, or delete.
+  - `create`: [AdminCreateProductVariantInventoryItem](/resources/references/types/interfaces/typesAdminCreateProductVariantInventoryItem)\[] (optional) — Records to create in bulk.
+    - `required_quantity`: `number` — The number of units a single quantity is equivalent to. For example, if a customer orders one quantity of the variant, Medusa checks the availability of the quantity multiplied by the value set for `required_quantity`. When the customer orders the quantity, Medusa reserves the ordered quantity multiplied by the value set for `required_quantity`.
+    - `inventory_item_id`: `string` — The ID of the inventory item.
+    - `variant_id`: `string` — The ID of the variant.
+  - `update`: [AdminUpdateProductVariantInventoryItem](/resources/references/types/interfaces/typesAdminUpdateProductVariantInventoryItem)\[] (optional) — Records to update in bulk.
+    - `required_quantity`: `number` — The number of units a single quantity is equivalent to. For example, if a customer orders one quantity of the variant, Medusa checks the availability of the quantity multiplied by the value set for `required_quantity`. When the customer orders the quantity, Medusa reserves the ordered quantity multiplied by the value set for `required_quantity`.
+    - `inventory_item_id`: `string` — The ID of the inventory item.
+    - `variant_id`: `string` — The ID of the variant.
+  - `delete`: [AdminDeleteProductVariantInventoryItem](/resources/references/types/interfaces/typesAdminDeleteProductVariantInventoryItem)\[] (optional) — Records to delete in bulk.
+    - `inventory_item_id`: `string` — The ID of the inventory.
+    - `variant_id`: `string` — The ID of the variant.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Pass query parameters in the request.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchvariantinventoryitems-returns" />
+
+### Returns
+
+**batchVariantInventoryItems**
+
+- `Promise`: Promise\<[AdminBatchProductVariantInventoryItemResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchProductVariantInventoryItemResponse)> — The details of the created, updated, or deleted inventory items.
+  - `created`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem)\[] — The items that were created.
+    - `id`: `string` — The inventory item's ID.
+    - `sku`: `null` | `string` (optional) — The inventory item's SKU.
+    - `origin_country`: `null` | `string` (optional) — The inventory item's origin country.
+    - `hs_code`: `null` | `string` (optional) — The inventory item's HS code.
+    - `requires_shipping`: `boolean` — Whether the item requires shipping.
+    - `mid_code`: `null` | `string` (optional) — The inventory item's MID code.
+    - `material`: `null` | `string` (optional) — The inventory item's material.
+    - `unit_of_measure`: `null` | `string` (optional) — The unit of measure of the inventory item's quantities, such as `lb` or `kg`.
+    - `weight`: `null` | `number` (optional) — The inventory item's weight.
+    - `length`: `null` | `number` (optional) — The inventory item's length.
+    - `height`: `null` | `number` (optional) — The inventory item's height.
+    - `width`: `null` | `number` (optional) — The inventory item's width.
+    - `title`: `null` | `string` (optional) — The inventory item's title.
+    - `description`: `null` | `string` (optional) — The inventory item's description.
+    - `thumbnail`: `null` | `string` (optional) — The inventory item's thumbnail URL.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `location_levels`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The item's associated inventory levels.
+    - `stocked_quantity`: `number` — The total quantity of the inventory item that is stocked across all locations.
+    - `reserved_quantity`: `number` — The total quantity of the inventory item that is reserved across all locations.
+  - `updated`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem)\[] — The items that were updated.
+    - `id`: `string` — The inventory item's ID.
+    - `sku`: `null` | `string` (optional) — The inventory item's SKU.
+    - `origin_country`: `null` | `string` (optional) — The inventory item's origin country.
+    - `hs_code`: `null` | `string` (optional) — The inventory item's HS code.
+    - `requires_shipping`: `boolean` — Whether the item requires shipping.
+    - `mid_code`: `null` | `string` (optional) — The inventory item's MID code.
+    - `material`: `null` | `string` (optional) — The inventory item's material.
+    - `unit_of_measure`: `null` | `string` (optional) — The unit of measure of the inventory item's quantities, such as `lb` or `kg`.
+    - `weight`: `null` | `number` (optional) — The inventory item's weight.
+    - `length`: `null` | `number` (optional) — The inventory item's length.
+    - `height`: `null` | `number` (optional) — The inventory item's height.
+    - `width`: `null` | `number` (optional) — The inventory item's width.
+    - `title`: `null` | `string` (optional) — The inventory item's title.
+    - `description`: `null` | `string` (optional) — The inventory item's description.
+    - `thumbnail`: `null` | `string` (optional) — The inventory item's thumbnail URL.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `location_levels`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The item's associated inventory levels.
+    - `stocked_quantity`: `number` — The total quantity of the inventory item that is stocked across all locations.
+    - `reserved_quantity`: `number` — The total quantity of the inventory item that is reserved across all locations.
+  - `deleted`: `object` — Details of the items that were deleted.
+    - `ids`: `string`\[] — The IDs of the items that were deleted.
+    - `object`: `string` — The type of the items that were deleted.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `deleted`: `boolean` — Whether the items were deleted successfully.
+
+## listOptions
+
+This method retrieves a paginated list of product options. It sends a request to the
+[List Options](/api/admin/products/list-options) API route.
+
+### Example
+
+To retrieve the list of product options:
+
+```ts
+sdk.admin.product.listOptions("prod_123")
+.then(({ product_options, count, limit, offset }) => {
+  console.log(product_options)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.product.listOptions("prod_123", {
+  limit: 10,
+  offset: 10
+})
+.then(({ product_options, count, limit, offset }) => {
+  console.log(product_options)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each product options:
+
+```ts
+sdk.admin.product.listOptions("prod_123", {
+  fields: "id,title"
+})
+.then(({ product_options, count, limit, offset }) => {
+  console.log(product_options)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="listoptions-parameters" />
+
+### Parameters
+
+**listOptions**
+
+- `productId`: `string` — The ID of the product to retrieve its options
+- `query`: [AdminProductOptionParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOptionParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+    - `id`: `string` | `string`\[] (optional) — Filter by the option's id(s).
+    - `title`: `string` | `string`\[] (optional) — Filter by the option's title(s).
+    - `is_exclusive`: `boolean` (optional) — Filter by whether the option is exclusive to a product or global.
+    - `product_id`: `string` | `string`\[] (optional) — Filter by product ID(s).
+  - `$or`: ([BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+    - `id`: `string` | `string`\[] (optional) — Filter by the option's id(s).
+    - `title`: `string` | `string`\[] (optional) — Filter by the option's title(s).
+    - `is_exclusive`: `boolean` (optional) — Filter by whether the option is exclusive to a product or global.
+    - `product_id`: `string` | `string`\[] (optional) — Filter by product ID(s).
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+  - `id`: `string` | `string`\[] (optional) — Filter by the option's id(s).
+  - `title`: `string` | `string`\[] (optional) — Filter by the option's title(s).
+  - `is_exclusive`: `boolean` (optional) — Filter by whether the option is exclusive to a product or global.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listoptions-returns" />
+
+### Returns
+
+**listOptions**
+
+- `Promise`: Promise\<[AdminProductOptionListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminProductOptionListResponse)> — The paginated list of product options.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## batchImageVariants
+
+This method manages image-variant associations for a specific image. It sends a request to the
+[Batch Image Variants](/api/admin/products/manage-variants-of-product-image)
+API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.11.2](https://github.com/medusajs/medusa/releases/tag/v2.11.2).
+
+### Example
+
+```ts
+sdk.admin.product.batchImageVariants("prod_123", "img_123", {
+  add: ["variant_123", "variant_456"],
+  remove: ["variant_789"]
+})
+.then(({ added, removed }) => {
+  console.log(added, removed)
+})
+```
+
+<a id="batchimagevariants-parameters" />
+
+### Parameters
+
+**batchImageVariants**
+
+- `productId`: `string` — The product's ID.
+- `imageId`: `string` — The image's ID.
+- `body`: [AdminBatchImageVariantRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchImageVariantRequest) — The variants to add or remove from the image.
+  - `add`: `string`\[] (optional) — The variant IDs to add to the image.
+  - `remove`: `string`\[] (optional) — The variant IDs to remove from the image.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchimagevariants-returns" />
+
+### Returns
+
+**batchImageVariants**
+
+- `Promise`: Promise\<[AdminBatchImageVariantResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchImageVariantResponse)> — The batch operation details.
+  - `added`: `string`\[] — The variant IDs that were added to the image.
+  - `removed`: `string`\[] — The variant IDs that were removed from the image.
+
+## batchVariantImages
+
+This method manages variant-image associations for a specific variant. It sends a request to the
+[Batch Variant Images](/api/admin/products/manage-images-of-product-variant)
+API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.11.2](https://github.com/medusajs/medusa/releases/tag/v2.11.2).
+
+### Example
+
+```ts
+sdk.admin.product.batchVariantImages("prod_123", "variant_123", {
+  add: ["img_123", "img_456"],
+  remove: ["img_789"]
+})
+.then(({ added, removed }) => {
+  console.log(added, removed)
+})
+```
+
+<a id="batchvariantimages-parameters" />
+
+### Parameters
+
+**batchVariantImages**
+
+- `productId`: `string` — The product's ID.
+- `variantId`: `string` — The variant's ID.
+- `body`: [AdminBatchVariantImagesRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchVariantImagesRequest) — The images to add or remove from the variant.
+  - `add`: `string`\[] (optional) — The image IDs to add to the variant.
+  - `remove`: `string`\[] (optional) — The image IDs to remove from the variant.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchvariantimages-returns" />
+
+### Returns
+
+**batchVariantImages**
+
+- `Promise`: Promise\<[AdminBatchVariantImagesResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchVariantImagesResponse)> — The batch operation details.
+  - `added`: `string`\[] — The image IDs that were added to the variant.
+  - `removed`: `string`\[] — The image IDs that were removed from the variant.
+
+## linkOptions
+
+This method links product options to a product. It allows adding new options,
+removing existing ones, or updating option values. It sends a request to the
+[Batch Product Product Options](/api/admin/products/add-options-to-product)
+API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+### Example
+
+```ts
+sdk.admin.product.linkOptions("prod_123", {
+  add: [
+      "opt_123",
+      {
+        id: "opt_123",
+        value_ids: ["optval_1", "optval_2"]
+      }
+    ],
+    remove: ["opt_456"]
+})
+.then(({ product }) => {
+  console.log(product)
+})
+```
+
+<a id="linkoptions-parameters" />
+
+### Parameters
+
+**linkOptions**
+
+- `productId`: `string` — The product's ID.
+- `body`: [AdminLinkProductOptions](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLinkProductOptions) — The options to add or remove.
+  - `add`: (`string` | [AdminCreateProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductOption) | [AdminLinkProductOptionWithValues](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLinkProductOptionWithValues))\[] (optional) — The list of options to add to the product. You can pass either: 1. The ID of an existing product option as a string. 2. An object with `id` and `value_ids` to add an existing product option with specific values. This is useful when you want to associate only specific option values of an option to the product. 3. An object to create a new product option.
+    - `title`: `string` — The option's title.
+    - `values`: `string`\[] — The option's values.
+    - `ranks`: `Record<string, number>` (optional) — The rank for each option value. The keys are the option values, and the values are their respective ranks.
+
+      Example:
+
+      ```
+      { * "Small": 1, * "Medium": 2, * "Large": 3 * }
+      ```
+    - `is_exclusive`: `boolean` (optional) — Whether the option is exclusive to a specific product, or can be shared across multiple products.
+    - `id`: `string` — The ID of the product option to add.
+    - `value_ids`: `string`\[] — The IDs of specific option values to add to the product. This is useful when you want to associate only specific values of an option to the product.
+  - `remove`: `string`\[] (optional) — The list of options to remove from the product.
+  - `update`: [AdminUpdateProductOptionValues](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateProductOptionValues)\[] (optional) — The list of product option value updates for existing product options.
+    - `product_option_id`: `string` — The ID of the product option to update values for.
+    - `add`: (`string` | `object`)\[] (optional) — The IDs of specific option values to add or new values to create.
+    - `remove`: `string`\[] (optional) — The IDs of specific option values to remove.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the product.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="linkoptions-returns" />
+
+### Returns
+
+**linkOptions**
+
+- `Promise`: Promise\<[AdminProductResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductResponse)> — The product's details.
+  - `product`: [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) — The product's details.
+    - `collection`: `null` | [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) (optional) — The product's collection.
+    - `categories`: `null` | [AdminProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategory)\[] (optional) — The product's categories.
+    - `sales_channels`: `null` | [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels that the product is available in.
+    - `shipping_profile`: `null` | [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) (optional) — The shipping profile that the product is available in.
+    - `variants`: `null` | [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)\[] — The product's variants.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product's translations.
+    - `type`: `null` | [AdminProductType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductType) — The product's type.
+    - `tags`: `null` | [AdminProductTag](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductTag)\[] (optional) — The product's tags.
+    - `options`: `null` | [AdminProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOption)\[] — The product's options.
+    - `images`: `null` | [AdminProductImage](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductImage)\[] — The product's images.
+    - `id`: `string` — The product's ID.
+    - `title`: `string` — The product's title.
+    - `handle`: `string` — The product's handle.
+    - `subtitle`: `null` | `string` — The product's subtitle.
+    - `description`: `null` | `string` — The product's description.
+    - `is_giftcard`: `boolean` — Whether the product is a gift card.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) — The product's status.
+    - `thumbnail`: `null` | `string` — The product's thumbnail.
+    - `width`: `null` | `number` — The product's width.
+    - `weight`: `null` | `number` — The product's weight.
+    - `length`: `null` | `number` — The product's length.
+    - `height`: `null` | `number` — The product's height.
+    - `origin_country`: `null` | `string` — The product's origin country.
+    - `hs_code`: `null` | `string` — The product's HS code.
+    - `mid_code`: `null` | `string` — The product's MID code.
+    - `material`: `null` | `string` — The product's material.
+    - `collection_id`: `null` | `string` — The ID of the associated product collection.
+    - `type_id`: `null` | `string` — The ID of the associated product type.
+    - `discountable`: `boolean` — Whether the product is discountable.
+    - `external_id`: `null` | `string` — The ID of the product in external systems.
+    - `created_at`: `null` | `string` — The date the product was created.
+    - `updated_at`: `null` | `string` — The date the product was update.
+    - `deleted_at`: `null` | `string` — The date the product was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.

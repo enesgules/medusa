@@ -1,0 +1,11 @@
+---
+title: InternalQueryOptions
+---
+
+Internal-only query options passed through the DAL layer.
+
+- `InternalQueryOptions`: `object` — Internal-only query options passed through the DAL layer.
+  - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/types/types/typesCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+    - `parent`: `string` (optional) — When set, this join is correlated to the target row of the parent join instead of the root entity. The value must match the parent join's `target.table`. Used for multi-hop filters such as filtering orders by a product's sales channel.
+    - `link`: [CrossModuleJoinLink](/resources/references/types/types/typesCrossModuleJoinLink) — Describes a link table connecting the queried root entity to an external table.
+    - `target`: [CrossModuleJoinTarget](/resources/references/types/types/typesCrossModuleJoinTarget) — Describes an external table that can be filtered or sorted against.

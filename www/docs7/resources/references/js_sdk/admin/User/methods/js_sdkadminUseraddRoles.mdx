@@ -1,0 +1,47 @@
+---
+title: addRoles
+---
+
+This method assigns roles to a user. It sends a request to the
+Assign User Roles API route.
+
+## Example
+
+```ts
+sdk.admin.user.addRoles("user_123", {
+  roles: ["role_123"]
+})
+.then(({ roles }) => {
+  console.log(roles)
+})
+```
+
+<a id="addroles-parameters" />
+
+## Parameters
+
+**addRoles**
+
+- `id`: `string` — The user's ID.
+- `body`: [AdminAssignUserRoles](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminAssignUserRoles) — The roles to assign.
+  - `roles`: `string`\[] — The IDs of the roles to assign to the user.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="addroles-returns" />
+
+## Returns
+
+**addRoles**
+
+- `Promise`: Promise\<[AdminUserRolesResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserRolesResponse)> — The user's roles.
+  - `roles`: [AdminRbacRole](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRole)\[] — The list of roles.
+    - `id`: `string` — The role's ID.
+    - `name`: `string` — The role's name.
+    - `description`: `null` | `string` — The role's description.
+    - `parent_id`: `null` | `string` — The ID of the parent role, if any.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the role.
+    - `policies`: [AdminRbacPolicy](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicy)\[] (optional) — The policies associated with the role.
+    - `created_at`: `string` — The date the role was created.
+    - `updated_at`: `string` — The date the role was updated.
+    - `deleted_at`: `null` | `string` — The date the role was deleted.

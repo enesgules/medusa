@@ -1,0 +1,139 @@
+---
+title: listStores - Store Module Reference
+sidebarTitle: listStores
+---
+
+This documentation provides a reference to the `listStores` method. This belongs to the Store Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of stores based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of stores using their IDs:
+
+```ts
+const stores = await storeModuleService.listStores({
+  id: ["store_123", "store_321"],
+})
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const stores = await storeModuleService.listStores(
+  {
+    id: ["store_123", "store_321"],
+  },
+  {
+    take: 20,
+    skip: 2,
+  }
+)
+```
+
+<a id="liststores-parameters" />
+
+## Parameters
+
+**listStores**
+
+- `filters`: [FilterableStoreProps](/resources/references/store/interfaces/storeFilterableStoreProps) (optional) — The filters to apply on the retrieved stores.
+  - `$and`: ([FilterableStoreProps](/resources/references/store/interfaces/storeFilterableStoreProps) | [BaseFilterable](/resources/references/store/interfaces/storeBaseFilterable)\<[FilterableStoreProps](/resources/references/store/interfaces/storeFilterableStoreProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableStoreProps](/resources/references/store/interfaces/storeFilterableStoreProps) | [BaseFilterable](/resources/references/store/interfaces/storeBaseFilterable)\<[FilterableStoreProps](/resources/references/store/interfaces/storeFilterableStoreProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableStoreProps](/resources/references/store/interfaces/storeFilterableStoreProps) | [BaseFilterable](/resources/references/store/interfaces/storeBaseFilterable)\<[FilterableStoreProps](/resources/references/store/interfaces/storeFilterableStoreProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Find stores by name through this search term.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the stores by.
+    - `name`: `string` | `string`\[] (optional) — Filter stores by their names.
+    - `default_sales_channel_id`: `string` | `string`\[] | [OperatorMap](/resources/references/store/types/storeOperatorMap)\<string | string\[]> (optional) — Filter stores by their associated default sales channel's ID.
+  - `$or`: ([FilterableStoreProps](/resources/references/store/interfaces/storeFilterableStoreProps) | [BaseFilterable](/resources/references/store/interfaces/storeBaseFilterable)\<[FilterableStoreProps](/resources/references/store/interfaces/storeFilterableStoreProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableStoreProps](/resources/references/store/interfaces/storeFilterableStoreProps) | [BaseFilterable](/resources/references/store/interfaces/storeBaseFilterable)\<[FilterableStoreProps](/resources/references/store/interfaces/storeFilterableStoreProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableStoreProps](/resources/references/store/interfaces/storeFilterableStoreProps) | [BaseFilterable](/resources/references/store/interfaces/storeBaseFilterable)\<[FilterableStoreProps](/resources/references/store/interfaces/storeFilterableStoreProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Find stores by name through this search term.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the stores by.
+    - `name`: `string` | `string`\[] (optional) — Filter stores by their names.
+    - `default_sales_channel_id`: `string` | `string`\[] | [OperatorMap](/resources/references/store/types/storeOperatorMap)\<string | string\[]> (optional) — Filter stores by their associated default sales channel's ID.
+  - `q`: `string` (optional) — Find stores by name through this search term.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the stores by.
+  - `name`: `string` | `string`\[] (optional) — Filter stores by their names.
+  - `default_sales_channel_id`: `string` | `string`\[] | [OperatorMap](/resources/references/store/types/storeOperatorMap)\<string | string\[]> (optional) — Filter stores by their associated default sales channel's ID.
+    - `$and`: [Query](/resources/references/store/types/storeQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/store/types/storeQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/store/types/storeExpandScalar)\<T> | [ExpandScalar](/resources/references/store/types/storeExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/store/types/storeExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/store/types/storeExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/store/types/storeExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/store/types/storeQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/store/types/storeExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/store/types/storeExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/store/types/storeExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/store/types/storeExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `config`: [FindConfig](/resources/references/store/interfaces/storeFindConfig)\<[StoreDTO](/resources/references/store/interfaces/storeStoreDTO)> (optional) — The configurations determining how the store is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a store.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/store/types/storeFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/store/types/storeInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/store/types/storeCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/store/interfaces/storeContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/store/interfaces/storeIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="liststores-returns" />
+
+## Returns
+
+**listStores**
+
+- `Promise`: Promise\<[StoreDTO](/resources/references/store/interfaces/storeStoreDTO)\[]> — The list of stores.
+  - `StoreDTO[]`: [StoreDTO](/resources/references/store/interfaces/storeStoreDTO)\[]
+    - `id`: `string` — The ID of the store.
+    - `name`: `string` — The name of the store.
+    - `supported_currencies`: [StoreCurrencyDTO](/resources/references/store/interfaces/storeStoreCurrencyDTO)\[] (optional) — The supported currency codes of the store.
+      - `id`: `string` — The ID of the store currency.
+      - `currency_code`: `string` — The currency code of the store currency.
+      - `is_default`: `boolean` — Whether the currency is the default one for the store.
+      - `store_id`: `string` — The store ID associated with the currency.
+      - `created_at`: `string` — The created date of the currency
+      - `updated_at`: `string` — The updated date of the currency
+      - `deleted_at`: `null` | `string` — The deleted date of the currency
+    - `supported_locales`: [StoreLocaleDTO](/resources/references/store/interfaces/storeStoreLocaleDTO)\[] (optional) — The supported locale codes of the store.
+      - `id`: `string` — The ID of the store locale.
+      - `locale_code`: `string` — The locale code of the store locale.
+      - `store_id`: `string` — The store ID associated with the locale.
+      - `created_at`: `string` — The created date of the locale.
+      - `updated_at`: `string` — The updated date of the locale.
+      - `deleted_at`: `null` | `string` — The deleted date of the locale.
+    - `default_sales_channel_id`: `string` (optional) — The associated default sales channel's ID.
+    - `default_region_id`: `string` (optional) — The associated default region's ID.
+    - `default_location_id`: `string` (optional) — The associated default location's ID.
+    - `metadata`: `null` | `Record<string, any>` — Holds custom data in key-value pairs.
+    - `created_at`: `string` — The created at of the store.
+    - `updated_at`: `string` — The updated at of the store.

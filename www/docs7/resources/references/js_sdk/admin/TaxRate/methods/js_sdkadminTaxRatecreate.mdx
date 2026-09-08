@@ -1,0 +1,78 @@
+---
+title: create
+---
+
+This method creates a tax rate. It sends a request to the
+[Create Tax Rate](/api/admin/tax-rates/create-tax-rate)
+API route.
+
+## Example
+
+```ts
+sdk.admin.taxRate.create({
+  name: "VAT",
+  tax_region_id: "txreg_123",
+  code: "VAT",
+  rate: 2, // 2%
+})
+.then(({ tax_rate }) => {
+  console.log(tax_rate)
+})
+```
+
+<a id="create-parameters" />
+
+## Parameters
+
+**create**
+
+- `body`: [AdminCreateTaxRate](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateTaxRate) — The details of the tax rate to create.
+  - `name`: `string` — The name of the tax rate.
+  - `tax_region_id`: `string` — The ID of the tax region associated with the tax rate.
+  - `rate`: `number` (optional) — The rate of the tax rate.
+  - `code`: `string` — The code of the tax rate.
+  - `rules`: [AdminCreateTaxRateRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateTaxRateRule)\[] (optional) — The rules of the tax rate.
+    - `reference`: `string` — The name of the table that the rule references.
+
+      Example:
+
+      ```
+      "product_type"
+      ```
+    - `reference_id`: `string` — The ID of the record in the table that the rule references.
+
+      Example:
+
+      ```
+      "protyp_123"
+      ```
+  - `is_default`: `boolean` (optional) — Whether the tax rate is the default tax rate in its tax region.
+  - `is_combinable`: `boolean` (optional) — Whether the tax rate is combinable with other tax rates.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the tax rate.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the tax rate.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+## Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminTaxRateResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateResponse)> — The tax rate's details.
+  - `tax_rate`: [AdminTaxRate](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRate) — The tax rate's details.
+    - `id`: `string` — The tax rate's ID.
+    - `rate`: `null` | `number` — The tax rate's percentage rate.
+    - `code`: `string` — The tax rate's code.
+    - `name`: `string` — The tax rate's name.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the tax rate.
+    - `tax_region_id`: `string` — The ID of the tax region associated with the tax rate.
+    - `is_combinable`: `boolean` — Whether the tax rate is combinable with other tax rates.
+    - `is_default`: `boolean` — Whether the tax rate is the default tax rate in its tax region.
+    - `created_at`: `string` — The date the tax rate was created.
+    - `updated_at`: `string` — The date the tax rate was updated.
+    - `deleted_at`: `null` — The date the tax rate was deleted.
+    - `created_by`: `null` | `string` — The ID of the user who created the tax rate.
+    - `tax_region`: [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion) — The tax region associated with the tax rate.
+    - `rules`: [AdminTaxRateRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateRule)\[] — The rules associated with the tax rate.

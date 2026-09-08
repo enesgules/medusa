@@ -1,0 +1,406 @@
+---
+title: listOrderChanges - Order Module Reference
+sidebarTitle: listOrderChanges
+---
+
+This documentation provides a reference to the `listOrderChanges` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of order changes based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of order changes using their IDs:
+
+```ts
+const orderChanges = await orderModuleService.listOrderChanges({
+  id: ["123", "321"]
+})
+```
+
+To specify relations that should be retrieved within the exchange:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const orderChanges = await orderModuleService.listOrderChanges({
+  id: ["123", "321"]
+}, {
+  relations: ["actions"]
+})
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const orderChanges = await orderModuleService.listOrderChanges({
+  id: ["123", "321"]
+}, {
+  relations: ["actions"],
+  take: 20,
+  skip: 2
+})
+```
+
+<a id="listorderchanges-parameters" />
+
+## Parameters
+
+**listOrderChanges**
+
+- `filters`: [FilterableOrderChangeProps](/resources/references/order/interfaces/orderFilterableOrderChangeProps) (optional) — The filters to apply on the retrieved order changes.
+  - `$and`: ([FilterableOrderChangeProps](/resources/references/order/interfaces/orderFilterableOrderChangeProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderChangeProps](/resources/references/order/interfaces/orderFilterableOrderChangeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableOrderChangeProps](/resources/references/order/interfaces/orderFilterableOrderChangeProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderChangeProps](/resources/references/order/interfaces/orderFilterableOrderChangeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableOrderChangeProps](/resources/references/order/interfaces/orderFilterableOrderChangeProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderChangeProps](/resources/references/order/interfaces/orderFilterableOrderChangeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — The IDs to filter the order changes by.
+    - `order_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the changes by their associated order's ID.
+    - `return_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the changes by their associated return's ID.
+    - `claim_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the changes by their associated claim's ID.
+    - `exchange_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the changes by their associated exchange's ID.
+    - `status`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their status.
+    - `requested_by`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by who requested them.
+    - `confirmed_by`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by who confirmed them.
+    - `declined_by`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by who declined them.
+    - `canceled_by`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by who canceled them.
+    - `created_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their creation date.
+    - `updated_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their update date.
+    - `deleted_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their deletion date.
+    - `canceled_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their cancelation date.
+  - `$or`: ([FilterableOrderChangeProps](/resources/references/order/interfaces/orderFilterableOrderChangeProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderChangeProps](/resources/references/order/interfaces/orderFilterableOrderChangeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableOrderChangeProps](/resources/references/order/interfaces/orderFilterableOrderChangeProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderChangeProps](/resources/references/order/interfaces/orderFilterableOrderChangeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableOrderChangeProps](/resources/references/order/interfaces/orderFilterableOrderChangeProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderChangeProps](/resources/references/order/interfaces/orderFilterableOrderChangeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — The IDs to filter the order changes by.
+    - `order_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the changes by their associated order's ID.
+    - `return_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the changes by their associated return's ID.
+    - `claim_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the changes by their associated claim's ID.
+    - `exchange_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the changes by their associated exchange's ID.
+    - `status`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their status.
+    - `requested_by`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by who requested them.
+    - `confirmed_by`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by who confirmed them.
+    - `declined_by`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by who declined them.
+    - `canceled_by`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by who canceled them.
+    - `created_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their creation date.
+    - `updated_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their update date.
+    - `deleted_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their deletion date.
+    - `canceled_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their cancelation date.
+  - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — The IDs to filter the order changes by.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `order_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the changes by their associated order's ID.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `return_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the changes by their associated return's ID.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `claim_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the changes by their associated claim's ID.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `exchange_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the changes by their associated exchange's ID.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `status`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their status.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `requested_by`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by who requested them.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `confirmed_by`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by who confirmed them.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `declined_by`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by who declined them.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `canceled_by`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by who canceled them.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their creation date.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their update date.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their deletion date.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `canceled_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the order changes by their cancelation date.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `config`: [FindConfig](/resources/references/order/interfaces/orderFindConfig)\<[OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)> (optional) — The configurations determining how the order exchange is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a order exchange.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/order/types/orderFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/order/types/orderInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/order/types/orderCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listorderchanges-returns" />
+
+## Returns
+
+**listOrderChanges**
+
+- `Promise`: Promise\<[OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)\[]> — The list of order changes.
+  - `OrderChangeDTO[]`: [OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)\[]

@@ -1,0 +1,85 @@
+---
+title: AdminBatchProductVariantRequest
+---
+
+Data to manage in bulk related to a model.
+
+## Properties
+
+**AdminBatchProductVariantRequest**
+
+- `create`: [AdminCreateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariant)\[] (optional) — Records to create in bulk.
+  - `title`: `string` — The variant's title.
+  - `sku`: `null` | `string` (optional) — The variant's SKU.
+  - `ean`: `null` | `string` (optional) — The variant's EAN.
+  - `upc`: `null` | `string` (optional) — The variant's UPC.
+  - `barcode`: `null` | `string` (optional) — The variant's barcode.
+  - `hs_code`: `null` | `string` (optional) — The variant's HS code.
+  - `mid_code`: `null` | `string` (optional) — The variant's MID code.
+  - `allow_backorder`: `boolean` (optional) — Whether the variant can be ordered even if it's out of stock.
+  - `manage_inventory`: `boolean` (optional) — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+  - `variant_rank`: `number` (optional) — The variant's ranking among its sibling variants.
+  - `weight`: `null` | `number` (optional) — The variant's weight.
+  - `length`: `null` | `number` (optional) — The variant's length.
+  - `height`: `null` | `number` (optional) — The variant's height.
+  - `width`: `null` | `number` (optional) — The variant's width.
+  - `origin_country`: `null` | `string` (optional) — The variant's origin country.
+  - `material`: `null` | `string` (optional) — The variant's material.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `prices`: [AdminCreateProductVariantPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantPrice)\[] — The variant's prices.
+    - `currency_code`: `string` — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` — The price's amount.
+    - `min_quantity`: `null` | `number` (optional) — The minimum quantity required in the cart for the price to apply.
+    - `max_quantity`: `null` | `number` (optional) — The maximum quantity required in the cart for the price to apply.
+    - `rules`: `Record<string, string>` (optional) — The price's rules. Currently, only supports a `region_id` key to specify the region that the price applies to.
+
+      Example:
+
+      ```
+      { * "region_id": "region_123" * }
+      ```
+  - `inventory_items`: [AdminCreateProductVariantInventoryKit](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantInventoryKit)\[] (optional) — The variant's inventory items. It's only available if `manage_inventory` is enabled.
+    - `inventory_item_id`: `string`
+    - `required_quantity`: `number`
+  - `options`: `Record<string, string>` (optional) — The variant's values for the associated product's options.
+- `update`: [AdminBatchUpdateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchUpdateProductVariant)\[] (optional) — Records to update in bulk.
+  - `title`: `string` (optional) — The variant's title.
+  - `sku`: `null` | `string` (optional) — The variant's SKU.
+  - `ean`: `null` | `string` (optional) — The variant's EAN.
+  - `upc`: `null` | `string` (optional) — The variant's UPC.
+  - `barcode`: `null` | `string` (optional) — The variant's barcode.
+  - `hs_code`: `null` | `string` (optional) — The variant's HS code.
+  - `mid_code`: `null` | `string` (optional) — The variant's MID code.
+  - `thumbnail`: `null` | `string` (optional) — The variant's thumbnail.
+  - `allow_backorder`: `boolean` (optional) — Whether the variant can be ordered even if it's out of stock.
+  - `manage_inventory`: `boolean` (optional) — Whether Medusa should manage the variant's inventory. If disabled, the variant is always considered in stock.
+  - `variant_rank`: `number` (optional) — The variant's ranking among its sibling variants.
+  - `weight`: `null` | `number` (optional) — The variant's weight.
+  - `length`: `null` | `number` (optional) — The variant's length.
+  - `height`: `null` | `number` (optional) — The variant's height.
+  - `width`: `null` | `number` (optional) — The variant's width.
+  - `origin_country`: `null` | `string` (optional) — The variant's origin country.
+  - `material`: `null` | `string` (optional) — The variant's material.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `prices`: [AdminUpdateProductVariantPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateProductVariantPrice)\[] (optional) — The variant's prices.
+    - `id`: `string` (optional) — The price's ID.
+    - `currency_code`: `string` (optional) — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` (optional) — The price's amount.
+    - `min_quantity`: `null` | `number` (optional) — The minimum quantity required in the cart for the price to apply.
+    - `max_quantity`: `null` | `number` (optional) — The maximum quantity required in the cart for the price to apply.
+    - `rules`: `Record<string, string>` (optional) — The price's rules.
+  - `options`: `Record<string, string>` (optional) — The variant's values for the associated product's options.
+  - `id`: `string` — The ID of the variant to update.
+- `delete`: `string`\[] (optional) — Records to delete in bulk.

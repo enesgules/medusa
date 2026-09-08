@@ -1,0 +1,67 @@
+---
+title: CreateOrderExchangeDTO
+---
+
+The exchange to be created.
+
+**CreateOrderExchangeDTO**
+
+- `order_id`: `string` — The associated order's ID.
+- `return_id`: `string` (optional) — The associated return's ID.
+- `claim_id`: `string` (optional) — The associated claim's ID.
+- `exchange_id`: `string` (optional) — The associated exchange's ID.
+- `description`: `string` (optional) — The description of the action.
+- `internal_note`: `string` (optional) — The internal note of the action.
+- `reference`: `string` (optional) — The name of the data model the action references. For example, `return`.
+- `reference_id`: `string` (optional) — The ID of the record of the data model specified in [reference](/resources/references/order/interfaces/orderBaseOrderBundledActionsDTO#reference). For example, if `reference` is `return`, the value is `return_123`.
+- `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `additional_items`: [BaseOrderBundledItemActionsDTO](/resources/references/order/interfaces/orderBaseOrderBundledItemActionsDTO)\[] (optional) — The items to be sent to the customer.
+  - `id`: `string` — The ID of the item.
+  - `quantity`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The quantity of the item.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `internal_note`: `string` (optional) — The internal note of the item.
+  - `note`: `null` | `string` (optional) — The note of the item.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `shipping_methods`: `string`\[] | Omit\<[CreateOrderShippingMethodDTO](/resources/references/order/interfaces/orderCreateOrderShippingMethodDTO), "order\_id">\[] (optional) — The shipping methods used to send the additional items to the customer.
+- `return_shipping`: `string` | Omit\<[CreateOrderShippingMethodDTO](/resources/references/order/interfaces/orderCreateOrderShippingMethodDTO), "order\_id"> (optional) — The shipping methods used to return items from the customer.
+  - `name`: `string` — The name of the shipping method.
+  - `return_id`: `string` (optional) — The associated return's ID.
+  - `claim_id`: `string` (optional) — The associated claim's ID.
+  - `exchange_id`: `string` (optional) — The associated exchange's ID.
+  - `version`: `number` (optional) — The version of the shipping method.
+  - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The amount of the shipping method.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `is_tax_inclusive`: `boolean` (optional) — Whether the shipping method is tax inclusive.
+  - `shipping_option_id`: `string` (optional) — The associated shipping option's ID.
+  - `data`: `Record<string, unknown>` (optional) — The data of the shipping method.
+  - `tax_lines`: [CreateOrderTaxLineDTO](/resources/references/order/interfaces/orderCreateOrderTaxLineDTO)\[] (optional) — The tax lines of the shipping method.
+    - `description`: `string` (optional) — The description of the tax line.
+    - `tax_rate_id`: `string` (optional) — The associated tax rate's ID.
+    - `code`: `string` — The code of the tax line.
+    - `rate`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The rate of the tax line.
+    - `provider_id`: `string` (optional) — The associated provider's ID.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `data`: `null` | `Record<string, unknown>` (optional) — Holds data returned by the tax provider in key-value pairs.
+  - `adjustments`: [CreateOrderAdjustmentDTO](/resources/references/order/interfaces/orderCreateOrderAdjustmentDTO)\[] (optional) — The adjustments of the shipping method.
+    - `code`: `string` (optional) — The code of the adjustment.
+    - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The amount of the adjustment.
+    - `description`: `string` (optional) — The description of the adjustment.
+    - `promotion_id`: `string` (optional) — The associated promotion's ID.
+    - `provider_id`: `string` (optional) — The associated provider's ID.
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the adjustment is tax inclusive.
+    - `version`: `number` (optional) — The version of the adjustment.
+- `difference_due`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The difference due of the exchange. - If less than `0`, the merchant owes the customer this amount. - If greater than `0`, the customer owes the merchange this amount. - If equal to `0`, no payment is required by either sides.
+  - `value`: `string` | `number`
+  - `numeric`: `number`
+  - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `value`: `string` | `number`
+  - `bigNumber`: `BigNumber` (optional)
+- `allow_backorder`: `boolean` (optional) — Whether backorder is allowed for the exchange's items.
+- `no_notification`: `boolean` (optional) — Whether the customer should receive notifications related to updates on the exchange.
+- `created_by`: `null` | `string` (optional) — The id of the user that creates the order exchange

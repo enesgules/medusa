@@ -1,0 +1,30 @@
+---
+title: CreatePaymentSessionDTO
+---
+
+The payment session to be created.
+
+**CreatePaymentSessionDTO**
+
+- `provider_id`: `string` — The provider's ID.
+- `currency_code`: `string` — The ISO 3 character currency code of the payment session.
+- `amount`: [BigNumberInput](/resources/references/payment/types/paymentBigNumberInput) — The amount to be authorized.
+  - `value`: `string` | `number`
+  - `numeric`: `number`
+  - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+    - `value`: `string` | `number`
+  - `bigNumber`: `BigNumber` (optional)
+- `data`: `Record<string, unknown>` — Necessary data for the associated payment provider to process the payment.
+- `context`: [PaymentProviderContext](/resources/references/payment/interfaces/paymentPaymentProviderContext) (optional) — Necessary context data for the associated payment provider.
+  - `account_holder`: [PaymentAccountHolderDTO](/resources/references/payment/types/paymentPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `data`: `Record<string, unknown>` — Account holder's details as stored in the third-party payment provider.
+  - `customer`: [PaymentCustomerDTO](/resources/references/payment/types/paymentPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `id`: `string` — The ID of the customer in Medusa.
+    - `email`: `string` — The email of the customer.
+    - `company_name`: `string` | `null` (optional) — The customer's company name.
+    - `first_name`: `string` | `null` (optional) — The customer's first name.
+    - `last_name`: `string` | `null` (optional) — The customer's last name.
+    - `phone`: `string` | `null` (optional) — The customer's phone number.
+    - `billing_address`: [PaymentAddressDTO](/resources/references/payment/types/paymentPaymentAddressDTO) | `null` (optional) — The customer's billing address.
+  - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+- `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.

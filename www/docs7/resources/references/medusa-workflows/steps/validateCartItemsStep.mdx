@@ -1,0 +1,106 @@
+---
+title: validateCartItemsStep - Medusa Core Workflows Reference
+sidebarTitle: validateCartItemsStep
+---
+
+This documentation provides a reference to the `validateCartItemsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that a cart has at least one line item before
+completing the cart and placing an order. If the cart has no items,
+the step throws an error.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.14.3](https://github.com/medusajs/medusa/releases/tag/v2.14.3).
+
+## Example
+
+```ts
+validateCartItemsStep({
+  cart
+})
+```
+
+<a id="validatecartitemsstep-input" />
+
+## Input
+
+**validateCartItemsStep**
+
+- `ValidateCartItemsStepInput`: [ValidateCartItemsStepInput](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcValidateCartItemsStepInput)
+  - `cart`: [CartWorkflowDTO](/resources/references/types/interfaces/typesCartWorkflowDTO) — The cart to validate.
+    - `customer`: [CustomerDTO](/resources/references/customer/interfaces/customerCustomerDTO) (optional) — The cart's customer.
+      - `id`: `string` — The ID of the customer.
+      - `email`: `string` — The email of the customer.
+      - `has_account`: `boolean` — A flag indicating if customer has an account or not.
+      - `default_billing_address_id`: `null` | `string` — The associated default billing address's ID.
+      - `default_shipping_address_id`: `null` | `string` — The associated default shipping address's ID.
+      - `company_name`: `null` | `string` — The company name of the customer.
+      - `first_name`: `null` | `string` — The first name of the customer.
+      - `last_name`: `null` | `string` — The last name of the customer.
+      - `addresses`: [CustomerAddressDTO](/resources/references/customer/interfaces/customerCustomerAddressDTO)\[] — The addresses of the customer.
+      - `phone`: `null` | `string` — The phone of the customer.
+      - `groups`: `object`\[] — The groups of the customer.
+      - `metadata`: `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `created_by`: `null` | `string` — Who created the customer.
+      - `deleted_at`: `null` | `string` | `Date` — The deletion date of the customer.
+      - `created_at`: `string` | `Date` — The creation date of the customer.
+      - `updated_at`: `string` | `Date` — The update date of the customer.
+    - `product`: [ProductDTO](/resources/references/product/interfaces/productProductDTO) (optional) — The cart's product to be added.
+      - `id`: `string` — The ID of the product.
+      - `title`: `string` — The title of the product.
+      - `handle`: `string` — The handle of the product. The handle can be used to create slug URL paths.
+      - `subtitle`: `null` | `string` — The subttle of the product.
+      - `description`: `null` | `string` — The description of the product.
+      - `is_giftcard`: `boolean` — Whether the product is a gift card.
+      - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) — The status of the product.
+      - `thumbnail`: `null` | `string` — The URL of the product's thumbnail.
+      - `width`: `null` | `number` — The width of the product.
+      - `weight`: `null` | `number` — The weight of the product.
+      - `length`: `null` | `number` — The length of the product.
+      - `height`: `null` | `number` — The height of the product.
+      - `origin_country`: `null` | `string` — The origin country of the product.
+      - `hs_code`: `null` | `string` — The HS Code of the product.
+      - `mid_code`: `null` | `string` — The MID Code of the product.
+      - `material`: `null` | `string` — The material of the product.
+      - `collection`: `null` | [ProductCollectionDTO](/resources/references/product/interfaces/productProductCollectionDTO) — The associated product collection.
+      - `collection_id`: `null` | `string` — The associated product collection id.
+      - `categories`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] (optional) — The associated product categories.
+      - `type`: `null` | [ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO) — The associated product type.
+      - `type_id`: `null` | `string` — The associated product type id.
+      - `tags`: [ProductTagDTO](/resources/references/product/interfaces/productProductTagDTO)\[] — The associated product tags.
+      - `variants`: [ProductVariantDTO](/resources/references/product/interfaces/productProductVariantDTO)\[] — The associated product variants.
+      - `options`: [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO)\[] — The associated product options.
+      - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+      - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+      - `external_id`: `null` | `string` — The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.
+      - `created_at`: `string` | `Date` — When the product was created.
+      - `updated_at`: `string` | `Date` — When the product was updated.
+      - `deleted_at`: `string` | `Date` — When the product was deleted.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `region`: [RegionDTO](/resources/references/region/interfaces/regionRegionDTO) (optional) — The cart's region.
+      - `id`: `string` — The ID of the region.
+      - `name`: `string` — The name of the region.
+      - `currency_code`: `string` — The currency code of the region.
+      - `automatic_taxes`: `boolean` — Setting to indicate whether taxes need to be applied automatically
+      - `countries`: [RegionCountryDTO](/resources/references/region/interfaces/regionRegionCountryDTO)\[] — The countries of the region.
+      - `payment_providers`: [PaymentProviderDTO](/resources/references/region/interfaces/regionPaymentProviderDTO)\[] — Payment providers available in the region
+      - `metadata`: `Record<string, any>` (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` — The date the region was created.
+      - `updated_at`: `string` — The date the region was updated.
+    - `id`: `string` — The ID of the cart.
+    - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) — The payment collection details.
+      - `id`: `string` — The ID of the payment collection.
+      - `currency_code`: `string` — The ISO 3 character currency code of the payment sessions and payments associated with payment collection.
+      - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The total amount to be authorized and captured.
+      - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount authorized within the associated payment sessions.
+      - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount refunded within the associated payments.
+      - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount captured within the associated payments.
+      - `completed_at`: `string` | `Date` (optional) — When the payment collection was completed.
+      - `created_at`: `string` | `Date` (optional) — When the payment collection was created.
+      - `updated_at`: `string` | `Date` (optional) — When the payment collection was updated.
+      - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+      - `status`: [PaymentCollectionStatus](/resources/references/payment/types/paymentPaymentCollectionStatus) — The status of the payment collection.
+      - `payment_providers`: [PaymentProviderDTO](/resources/references/payment/interfaces/paymentPaymentProviderDTO)\[] — The payment provider used to process the associated payment sessions and payments.
+      - `payment_sessions`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO)\[] (optional) — The associated payment sessions.
+      - `payments`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO)\[] (optional) — The associated payments.

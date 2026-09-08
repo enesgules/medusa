@@ -1,0 +1,175 @@
+---
+title: listAndCountPromotions - Promotion Module Reference
+sidebarTitle: listAndCountPromotions
+---
+
+This documentation provides a reference to the `listAndCountPromotions` method. This belongs to the Promotion Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of promotions along with the total count of available promotions satisfying the provided filters.
+
+## Example
+
+To retrieve a list of promotions using their IDs:
+
+```ts
+const [promotions, count] =
+  await promotionModuleService.listAndCountPromotions({
+    id: ["promo_123", "promo_321"],
+  })
+```
+
+To specify relations that should be retrieved within the promotions:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const [promotions, count] =
+  await promotionModuleService.listAndCountPromotions(
+    {
+      id: ["promo_123", "promo_321"],
+    },
+    {
+      relations: ["application_method"],
+    }
+  )
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const [promotions, count] =
+  await promotionModuleService.listAndCountPromotions(
+    {
+      id: ["promo_123", "promo_321"],
+    },
+    {
+      relations: ["application_method"],
+      take: 20,
+      skip: 2,
+    }
+  )
+```
+
+<a id="listandcountpromotions-parameters" />
+
+## Parameters
+
+**listAndCountPromotions**
+
+- `filters`: [FilterablePromotionProps](/resources/references/promotion/interfaces/promotionFilterablePromotionProps) (optional) — The filters to apply on the retrieved promotions.
+  - `$and`: ([FilterablePromotionProps](/resources/references/promotion/interfaces/promotionFilterablePromotionProps) | [BaseFilterable](/resources/references/promotion/interfaces/promotionBaseFilterable)\<[FilterablePromotionProps](/resources/references/promotion/interfaces/promotionFilterablePromotionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterablePromotionProps](/resources/references/promotion/interfaces/promotionFilterablePromotionProps) | [BaseFilterable](/resources/references/promotion/interfaces/promotionBaseFilterable)\<[FilterablePromotionProps](/resources/references/promotion/interfaces/promotionFilterablePromotionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterablePromotionProps](/resources/references/promotion/interfaces/promotionFilterablePromotionProps) | [BaseFilterable](/resources/references/promotion/interfaces/promotionBaseFilterable)\<[FilterablePromotionProps](/resources/references/promotion/interfaces/promotionFilterablePromotionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — The IDs to filter the promotions by.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the promotions by.
+    - `code`: `string` | `string`\[] | [OperatorMap](/resources/references/promotion/types/promotionOperatorMap)\<string> (optional) — Filter promotions by their code.
+    - `budget_id`: `string`\[] | [OperatorMap](/resources/references/promotion/types/promotionOperatorMap)\<string> (optional) — Filter promotions by the ID of their associated campaign budget.
+    - `is_automatic`: `boolean` (optional) — Filter promotions by whether they're applied automatically.
+    - `type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues)\[] (optional) — Filter promotions by their type.
+    - `status`: [PromotionStatusValues](/resources/references/promotion/types/promotionPromotionStatusValues)\[] (optional) — Filter promotions by their status.
+    - `campaign`: [FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps) (optional) — Filter promotions by their campaign
+  - `$or`: ([FilterablePromotionProps](/resources/references/promotion/interfaces/promotionFilterablePromotionProps) | [BaseFilterable](/resources/references/promotion/interfaces/promotionBaseFilterable)\<[FilterablePromotionProps](/resources/references/promotion/interfaces/promotionFilterablePromotionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterablePromotionProps](/resources/references/promotion/interfaces/promotionFilterablePromotionProps) | [BaseFilterable](/resources/references/promotion/interfaces/promotionBaseFilterable)\<[FilterablePromotionProps](/resources/references/promotion/interfaces/promotionFilterablePromotionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterablePromotionProps](/resources/references/promotion/interfaces/promotionFilterablePromotionProps) | [BaseFilterable](/resources/references/promotion/interfaces/promotionBaseFilterable)\<[FilterablePromotionProps](/resources/references/promotion/interfaces/promotionFilterablePromotionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — The IDs to filter the promotions by.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the promotions by.
+    - `code`: `string` | `string`\[] | [OperatorMap](/resources/references/promotion/types/promotionOperatorMap)\<string> (optional) — Filter promotions by their code.
+    - `budget_id`: `string`\[] | [OperatorMap](/resources/references/promotion/types/promotionOperatorMap)\<string> (optional) — Filter promotions by the ID of their associated campaign budget.
+    - `is_automatic`: `boolean` (optional) — Filter promotions by whether they're applied automatically.
+    - `type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues)\[] (optional) — Filter promotions by their type.
+    - `status`: [PromotionStatusValues](/resources/references/promotion/types/promotionPromotionStatusValues)\[] (optional) — Filter promotions by their status.
+    - `campaign`: [FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps) (optional) — Filter promotions by their campaign
+  - `q`: `string` (optional) — The IDs to filter the promotions by.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the promotions by.
+  - `code`: `string` | `string`\[] | [OperatorMap](/resources/references/promotion/types/promotionOperatorMap)\<string> (optional) — Filter promotions by their code.
+    - `$and`: [Query](/resources/references/promotion/types/promotionQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/promotion/types/promotionQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T> | [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/promotion/types/promotionQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `budget_id`: `string`\[] | [OperatorMap](/resources/references/promotion/types/promotionOperatorMap)\<string> (optional) — Filter promotions by the ID of their associated campaign budget.
+    - `$and`: [Query](/resources/references/promotion/types/promotionQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/promotion/types/promotionQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T> | [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/promotion/types/promotionQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/promotion/types/promotionExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `is_automatic`: `boolean` (optional) — Filter promotions by whether they're applied automatically.
+  - `type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues)\[] (optional) — Filter promotions by their type.
+  - `status`: [PromotionStatusValues](/resources/references/promotion/types/promotionPromotionStatusValues)\[] (optional) — Filter promotions by their status.
+  - `campaign`: [FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps) (optional) — Filter promotions by their campaign
+    - `$and`: ([FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps) | [BaseFilterable](/resources/references/promotion/interfaces/promotionBaseFilterable)\<[FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps) | [BaseFilterable](/resources/references/promotion/interfaces/promotionBaseFilterable)\<[FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Find campaigns by their name or description through this search term.
+    - `id`: `string`\[] (optional) — The IDs to filter the campaigns by.
+    - `campaign_identifier`: `string`\[] (optional) — Filters the campaigns by their campaign identifier.
+- `config`: [FindConfig](/resources/references/promotion/interfaces/promotionFindConfig)\<[PromotionDTO](/resources/references/promotion/interfaces/promotionPromotionDTO)> (optional) — The configurations determining how the promotion is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a promotion.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/promotion/types/promotionFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/promotion/types/promotionInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/promotion/types/promotionCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/promotion/interfaces/promotionContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/promotion/interfaces/promotionIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listandcountpromotions-returns" />
+
+## Returns
+
+**listAndCountPromotions**
+
+- `Promise`: Promise\<\[[PromotionDTO](/resources/references/promotion/interfaces/promotionPromotionDTO)\[], number]> — The list of promotions along with their total count.
+  - `PromotionDTO[]`: [PromotionDTO](/resources/references/promotion/interfaces/promotionPromotionDTO)\[]
+  - `number`: `number`

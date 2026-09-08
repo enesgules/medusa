@@ -1,0 +1,356 @@
+---
+title: listShippingOptions - Fulfillment Module Reference
+sidebarTitle: listShippingOptions
+---
+
+This documentation provides a reference to the `listShippingOptions` method. This belongs to the Fulfillment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of shipping options based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of shipping options using their IDs:
+
+```ts
+const shippingOptions =
+  await fulfillmentModuleService.listShippingOptions({
+    id: ["so_123", "so_321"],
+  })
+```
+
+To specify relations that should be retrieved within the shipping option:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const shippingOptions =
+  await fulfillmentModuleService.listShippingOptions(
+    {
+      id: ["so_123", "so_321"],
+    },
+    {
+      relations: ["fulfillments"],
+    }
+  )
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const shippingOptions =
+  await fulfillmentModuleService.listShippingOptions(
+    {
+      id: ["so_123", "so_321"],
+    },
+    {
+      relations: ["fulfillments"],
+      take: 20,
+      skip: 2,
+    }
+  )
+```
+
+<a id="listshippingoptions-parameters" />
+
+## Parameters
+
+**listShippingOptions**
+
+- `filters`: [FilterableShippingOptionForContextProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionForContextProps) (optional) — The filters to apply on the retrieved shipping options.
+  - `$and`: ([FilterableShippingOptionProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableShippingOptionProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableShippingOptionProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableShippingOptionProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableShippingOptionProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableShippingOptionProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the shipping options by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the shipping options by their name.
+    - `shipping_profile_id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the shipping options by the ID of their associated shipping profile.
+    - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) | [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType)\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<ShippingOptionPriceType | ShippingOptionPriceType\[]> (optional) — Filter the shipping options by their price type.
+    - `service_zone`: [FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) (optional) — The filters to apply on the retrieved service zones.
+    - `shipping_option_type`: [FilterableShippingOptionTypeProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionTypeProps) (optional) — The filters to apply on the retrieved shipping option types.
+    - `rules`: [FilterableShippingOptionRuleProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionRuleProps) (optional) — The filters to apply on the retrieved shipping option rules.
+  - `$or`: ([FilterableShippingOptionProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableShippingOptionProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableShippingOptionProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableShippingOptionProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableShippingOptionProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableShippingOptionProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the shipping options by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the shipping options by their name.
+    - `shipping_profile_id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the shipping options by the ID of their associated shipping profile.
+    - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) | [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType)\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<ShippingOptionPriceType | ShippingOptionPriceType\[]> (optional) — Filter the shipping options by their price type.
+    - `service_zone`: [FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) (optional) — The filters to apply on the retrieved service zones.
+    - `shipping_option_type`: [FilterableShippingOptionTypeProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionTypeProps) (optional) — The filters to apply on the retrieved shipping option types.
+    - `rules`: [FilterableShippingOptionRuleProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionRuleProps) (optional) — The filters to apply on the retrieved shipping option rules.
+  - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the shipping options by.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the shipping options by their name.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `shipping_profile_id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the shipping options by the ID of their associated shipping profile.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) | [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType)\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<ShippingOptionPriceType | ShippingOptionPriceType\[]> (optional) — Filter the shipping options by their price type.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `service_zone`: [FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) (optional) — The filters to apply on the retrieved service zones.
+    - `$and`: ([FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the service zones by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the service zones by their name.
+    - `geo_zones`: [FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps) (optional) — The filters to apply on the associated geo zones.
+    - `fulfillment_set`: [FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps) (optional) — The filters to apply on the associated fulfillment sets.
+  - `shipping_option_type`: [FilterableShippingOptionTypeProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionTypeProps) (optional) — The filters to apply on the retrieved shipping option types.
+    - `$and`: ([FilterableShippingOptionTypeProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionTypeProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableShippingOptionTypeProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionTypeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableShippingOptionTypeProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionTypeProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableShippingOptionTypeProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionTypeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the shipping option types by.
+    - `label`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the shipping option types by their label.
+    - `description`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the shipping option types by their description.
+    - `code`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the shipping option types by their code.
+  - `rules`: [FilterableShippingOptionRuleProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionRuleProps) (optional) — The filters to apply on the retrieved shipping option rules.
+    - `$and`: ([FilterableShippingOptionRuleProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionRuleProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableShippingOptionRuleProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionRuleProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableShippingOptionRuleProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionRuleProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableShippingOptionRuleProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableShippingOptionRuleProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the shipping option rules by.
+    - `attribute`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the shipping option rules by their attribute.
+    - `operator`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the shipping option rules by their operator.
+    - `value`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the shipping option rules by their values.
+  - `fulfillment_set_id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The fulfillment set's ID used in the context.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `fulfillment_set_type`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The fulfillment set's type used in the context.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `address`: `object` (optional) — The address used in the context. It filters the shipping options based on the geo zones of their associated service zone.
+    - `country_code`: `string` (optional) — The ISO 2 character country code.
+    - `province_code`: `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province code.
+    - `city`: `string` (optional) — The city.
+    - `postal_expression`: `string` (optional) — The postal expression
+  - `context`: `Record<string, any>` (optional) — The shipping option's context to filter directly.
+- `config`: [FindConfig](/resources/references/fulfillment/interfaces/fulfillmentFindConfig)\<[ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)> (optional) — The configurations determining how the shipping option is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a shipping option.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/fulfillment/types/fulfillmentFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/fulfillment/types/fulfillmentInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/fulfillment/types/fulfillmentCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/fulfillment/interfaces/fulfillmentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/fulfillment/interfaces/fulfillmentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listshippingoptions-returns" />
+
+## Returns
+
+**listShippingOptions**
+
+- `Promise`: Promise\<[ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[]> — The list of shipping options.
+  - `ShippingOptionDTO[]`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[]
+    - `id`: `string` — The ID of the shipping option.
+    - `name`: `string` — The name of the shipping option.
+    - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The type of the shipping option's price.
+    - `service_zone_id`: `string` — The associated service zone's ID.
+    - `shipping_profile_id`: `string` — The associated shipping profile's ID.
+    - `provider_id`: `string` — The associated fulfillment provider's ID.
+    - `shipping_option_type_id`: `null` | `string` — The associated shipping option type's ID.
+    - `data`: `null` | `Record<string, unknown>` — The data necessary for the associated fulfillment provider to process the shipping option and, later, its associated fulfillments.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `service_zone`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO) — The associated service zone.
+      - `id`: `string` — The ID of the service zone.
+      - `name`: `string` — The name of the service zone.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `fulfillment_set`: [FulfillmentSetDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentSetDTO) — The fulfillment set assoiated with the service zone.
+      - `fulfillment_set_id`: `string` — The fulfillment set id of the service zone.
+      - `geo_zones`: [GeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentGeoZoneDTO)\[] — The geo zones assoiated with the service zone.
+      - `shipping_options`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[] — The shipping options assoiated with the service zone.
+      - `created_at`: `Date` — The creation date of the service zone.
+      - `updated_at`: `Date` — The update date of the service zone.
+      - `deleted_at`: `null` | `Date` — The deletion date of the service zone.
+    - `shipping_profile`: [ShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingProfileDTO) — The associated shipping profile.
+      - `id`: `string` — The ID of the shipping profile.
+      - `name`: `string` — The name of the shipping profile.
+      - `type`: `string` — The type of the shipping profile.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `shipping_options`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[] — The shipping options associated with the shipping profile.
+      - `created_at`: `Date` — The creation date of the shipping profile.
+      - `updated_at`: `Date` — The update date of the shipping profile.
+      - `deleted_at`: `null` | `Date` — The deletion date of the shipping profile.
+    - `fulfillment_provider`: [FulfillmentProviderDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentProviderDTO) — The associated fulfillment provider.
+      - `id`: `string` — The ID of the fulfillment provider.
+      - `name`: `string` — The name of the fulfillment provider.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `shipping_options`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[] — The shipping options associated with the fulfillment provider.
+      - `created_at`: `Date` — The creation date of the fulfillment provider.
+      - `updated_at`: `Date` — The update date of the fulfillment provider.
+      - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment provider.
+    - `type`: [ShippingOptionTypeDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionTypeDTO) — The associated shipping option type.
+      - `id`: `string` — The ID of the shipping option type.
+      - `label`: `string` — The label of the shipping option type.
+      - `description`: `string` — The description of the shipping option type.
+      - `code`: `string` — The code of the shipping option type.
+      - `shipping_option_id`: `string` — The associated shipping option's ID.
+      - `shipping_option`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO) — The associated shipping option.
+      - `created_at`: `Date` — The creation date of the shipping option type.
+      - `updated_at`: `Date` — The update date of the shipping option type.
+      - `deleted_at`: `null` | `Date` — The deletion date of the shipping option type.
+    - `rules`: [ShippingOptionRuleDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionRuleDTO)\[] — The rules associated with the shipping option.
+      - `id`: `string` — The ID of the shipping option rule.
+      - `attribute`: `string` — The attribute of the shipping option rule.
+      - `operator`: `string` — The operator of the shipping option rule.
+
+        Example:
+
+        ```
+        in
+        ```
+      - `value`: `null` | `object` — The values of the shipping option rule.
+      - `shipping_option_id`: `string` — The associated shipping option's ID.
+      - `shipping_option`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO) — The associated shipping option.
+      - `created_at`: `Date` — The creation date of the shipping option rule.
+      - `updated_at`: `Date` — The update date of the shipping option rule.
+      - `deleted_at`: `null` | `Date` — The deletion date of the shipping option rule.
+    - `fulfillments`: [FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO)\[] — The fulfillments associated with the shipping option.
+      - `id`: `string` — The ID of the fulfillment.
+      - `location_id`: `string` — The associated location's ID.
+      - `packed_at`: `null` | `Date` — The date the fulfillment was packed.
+      - `shipped_at`: `null` | `Date` — The date the fulfillment was shipped.
+      - `delivered_at`: `null` | `Date` — The date the fulfillment was delivered.
+      - `canceled_at`: `null` | `Date` — The date the fulfillment was canceled.
+      - `marked_shipped_by`: `null` | `string` (optional) — The id of the user that marked fulfillment as shipped
+      - `created_by`: `null` | `string` (optional) — The id of the user that created the fulfillment
+      - `data`: `null` | `Record<string, unknown>` — The data necessary for the fulfillment provider to process the fulfillment.
+      - `provider_id`: `string` — The associated fulfillment provider's ID.
+      - `shipping_option_id`: `null` | `string` — The associated shipping option's ID.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `shipping_option`: `null` | [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO) — The associated shipping option.
+      - `requires_shipping`: `boolean` — Flag to indidcate whether shipping is required
+      - `provider`: [FulfillmentProviderDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentProviderDTO) — The associated fulfillment provider.
+      - `delivery_address`: [FulfillmentAddressDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentAddressDTO) — The associated fulfillment address used for delivery.
+      - `items`: [FulfillmentItemDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentItemDTO)\[] — The items of the fulfillment.
+      - `labels`: [FulfillmentLabelDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentLabelDTO)\[] — The labels of the fulfillment.
+      - `created_at`: `Date` — The creation date of the fulfillment.
+      - `updated_at`: `Date` — The update date of the fulfillment.
+      - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment.
+    - `created_at`: `Date` — The creation date of the shipping option.
+    - `updated_at`: `Date` — The update date of the shipping option.
+    - `deleted_at`: `null` | `Date` — The deletion date of the shipping option.

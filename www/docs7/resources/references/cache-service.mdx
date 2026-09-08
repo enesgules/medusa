@@ -1,0 +1,129 @@
+---
+title: How to Use Cache Module
+sidebarTitle: Use Cache Module
+---
+
+In this document, you’ll learn about the different methods in the Cache Module's service and how to use them.
+
+> **Deprecation Notice**
+>
+> The Cache Module is deprecated starting from [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0). [Use the Caching Module](/resources/infrastructure-modules/caching) instead.
+
+***
+
+<a id="resolve-cache-module-s-service" />
+
+## Resolve Cache Module's Service
+
+In your workflow's step, you can resolve the Cache Module's service from the Medusa container:
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+import { createStep } from "@medusajs/framework/workflows-sdk"
+
+const step1 = createStep(
+  "step-1",
+  async ({}, { container }) => {
+    const cacheModuleService = container.resolve(
+      Modules.CACHE
+    )
+    
+    // TODO use cacheModuleService
+  } 
+)
+```
+
+This will resolve the service of the configured Cache Module, which is the [In-Memory Cache Module](/resources/infrastructure-modules/cache/in-memory) by default.
+
+You can then use the Cache Module's service's methods in the step. The rest of this guide details these methods.
+
+***
+
+## get
+
+This method retrieves data from the cache.
+
+### Example
+
+```ts
+const data = await cacheModuleService.get("my-key")
+```
+
+<a id="get-type-parameters" />
+
+### Type Parameters
+
+**get**
+
+- `T`: `object` (optional)
+
+<a id="get-parameters" />
+
+### Parameters
+
+**get**
+
+- `key`: `string` — The key of the item to retrieve.
+
+<a id="get-returns" />
+
+### Returns
+
+**get**
+
+- `Promise`: Promise\<null | T> — The item that was stored in the cache. If the item was not found, null is returned.
+  - `null \| T`: `null` | T
+
+## invalidate
+
+This method removes an item from the cache.
+
+### Example
+
+```ts
+await cacheModuleService.invalidate("my-key")
+```
+
+<a id="invalidate-parameters" />
+
+### Parameters
+
+**invalidate**
+
+- `key`: `string` — The key of the item to remove.
+
+<a id="invalidate-returns" />
+
+### Returns
+
+**invalidate**
+
+- `Promise`: Promise\<void> — This method removes an item from the cache.
+
+## set
+
+This method stores data in the cache.
+
+### Example
+
+```ts
+await cacheModuleService.set("my-key", { product_id: "prod_123" }, 60)
+```
+
+<a id="set-parameters" />
+
+### Parameters
+
+**set**
+
+- `key`: `string` — The key of the item to store.
+- `data`: `unknown` — The data to store in the cache.
+- `ttl`: `number` (optional) — The time-to-live (TTL) value in seconds. If not provided, the default TTL value is used. The default value is based on the used Cache Module.
+
+<a id="set-returns" />
+
+### Returns
+
+**set**
+
+- `Promise`: Promise\<void> — This method stores data in the cache.

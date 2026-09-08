@@ -1,0 +1,183 @@
+---
+title: upsertStockLocations - Stock Location Next Module Reference
+sidebarTitle: upsertStockLocations
+---
+
+This documentation provides a reference to the `upsertStockLocations` method. This belongs to the Stock Location Next Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="upsertstocklocations-data-sharedcontext-promisestocklocationdto" />
+
+## upsertStockLocations(data, sharedContext?): Promise\<[StockLocationDTO](/resources/references/stock_location_next/types/stock_location_nextStockLocationDTO)\[]>
+
+This method updates or creates stock location service nexts if they don't exist.
+
+### Example
+
+```ts
+{example-code}
+```
+
+<a id="upsertstocklocations-parameters" />
+
+### Parameters
+
+**upsertStockLocations**
+
+- `data`: [UpsertStockLocationInput](/resources/references/stock_location_next/interfaces/stock_location_nextUpsertStockLocationInput)\[] — The list of Make all properties in t optional
+  - `name`: `string` (optional) — The name of the stock location.
+  - `address_id`: `null` | `string` (optional) — The associated address's ID.
+  - `address`: [StockLocationAddressInput](/resources/references/stock_location_next/types/stock_location_nextStockLocationAddressInput) (optional) — The associated address's details.
+    - `address_1`: `string` — The first line of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The second line of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/stock_location_next/types/stock_location_nextMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `metadata`: [MetadataType](/resources/references/stock_location_next/types/stock_location_nextMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `id`: `string` (optional) — The ID of the stock location, if updating.
+- `sharedContext`: [Context](/resources/references/stock_location_next/interfaces/stock_location_nextContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/stock_location_next/interfaces/stock_location_nextIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="upsertstocklocations-returns" />
+
+### Returns
+
+**upsertStockLocations**
+
+- `Promise`: Promise\<[StockLocationDTO](/resources/references/stock_location_next/types/stock_location_nextStockLocationDTO)\[]> — The created or updated stock location service nexts.
+  - `StockLocationDTO[]`: [StockLocationDTO](/resources/references/stock_location_next/types/stock_location_nextStockLocationDTO)\[]
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `Record<string, unknown>` | `null` — Holds custom data in key-value pairs.
+    - `address_id`: `string` — The associated address's ID.
+    - `address`: [StockLocationAddressDTO](/resources/references/stock_location_next/types/stock_location_nextStockLocationAddressDTO) (optional) — The address of the stock location.
+      - `id`: `string` (optional) — The ID of the stock location address.
+      - `address_1`: `string` — The address 1 of the stock location address.
+      - `address_2`: `string` | `null` (optional) — The address 2 of the stock location address.
+      - `company`: `string` | `null` (optional) — The company of the stock location address.
+      - `country_code`: `string` — The country code of the stock location address.
+      - `city`: `string` | `null` (optional) — The city of the stock location address.
+      - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+      - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+      - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+      - `metadata`: [MetadataType](/resources/references/stock_location_next/types/stock_location_nextMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — The creation date of the stock location address.
+      - `updated_at`: `string` | `Date` — The update date of the stock location address.
+      - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location address.
+    - `fulfillment_sets`: [FulfillmentSetDTO](/resources/references/stock_location_next/interfaces/stock_location_nextFulfillmentSetDTO)\[] — Fulfillment sets for the location
+      - `id`: `string` — The ID of the fulfillment set.
+      - `name`: `string` — The name of the fulfillment set.
+      - `type`: `string` — The type of the fulfillment set.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `service_zones`: [ServiceZoneDTO](/resources/references/stock_location_next/interfaces/stock_location_nextServiceZoneDTO)\[] — The service zones associated with the fulfillment set.
+      - `created_at`: `Date` — The creation date of the fulfillment set.
+      - `updated_at`: `Date` — The update date of the fulfillment set.
+      - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment set.
+    - `created_at`: `string` | `Date` — The creation date of the stock location.
+    - `updated_at`: `string` | `Date` — The update date of the stock location.
+    - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location.
+
+<a id="upsertstocklocations-data-sharedcontext-promisestocklocationdto-1" />
+
+## upsertStockLocations(data, sharedContext?): Promise\<[StockLocationDTO](/resources/references/stock_location_next/types/stock_location_nextStockLocationDTO)>
+
+This method updates or creates a stock location service next if it doesn't exist.
+
+### Example
+
+```ts
+{example-code}
+```
+
+<a id="upsertstocklocations-parameters-1" />
+
+### Parameters
+
+**upsertStockLocations**
+
+- `data`: [UpsertStockLocationInput](/resources/references/stock_location_next/interfaces/stock_location_nextUpsertStockLocationInput) — Make all properties in T optional
+  - `name`: `string` (optional) — The name of the stock location.
+  - `address_id`: `null` | `string` (optional) — The associated address's ID.
+  - `address`: [StockLocationAddressInput](/resources/references/stock_location_next/types/stock_location_nextStockLocationAddressInput) (optional) — The associated address's details.
+    - `address_1`: `string` — The first line of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The second line of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/stock_location_next/types/stock_location_nextMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `metadata`: [MetadataType](/resources/references/stock_location_next/types/stock_location_nextMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `id`: `string` (optional) — The ID of the stock location, if updating.
+- `sharedContext`: [Context](/resources/references/stock_location_next/interfaces/stock_location_nextContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/stock_location_next/interfaces/stock_location_nextIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="upsertstocklocations-returns-1" />
+
+### Returns
+
+**upsertStockLocations**
+
+- `Promise`: Promise\<[StockLocationDTO](/resources/references/stock_location_next/types/stock_location_nextStockLocationDTO)> — The created or updated stock location service next.
+  - `id`: `string` — The ID of the stock location.
+  - `name`: `string` — The name of the stock location.
+  - `metadata`: `Record<string, unknown>` | `null` — Holds custom data in key-value pairs.
+  - `address_id`: `string` — The associated address's ID.
+  - `address`: [StockLocationAddressDTO](/resources/references/stock_location_next/types/stock_location_nextStockLocationAddressDTO) (optional) — The address of the stock location.
+    - `id`: `string` (optional) — The ID of the stock location address.
+    - `address_1`: `string` — The address 1 of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The address 2 of the stock location address.
+    - `company`: `string` | `null` (optional) — The company of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/stock_location_next/types/stock_location_nextMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — The creation date of the stock location address.
+    - `updated_at`: `string` | `Date` — The update date of the stock location address.
+    - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location address.
+  - `fulfillment_sets`: [FulfillmentSetDTO](/resources/references/stock_location_next/interfaces/stock_location_nextFulfillmentSetDTO)\[] — Fulfillment sets for the location
+    - `id`: `string` — The ID of the fulfillment set.
+    - `name`: `string` — The name of the fulfillment set.
+    - `type`: `string` — The type of the fulfillment set.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `service_zones`: [ServiceZoneDTO](/resources/references/stock_location_next/interfaces/stock_location_nextServiceZoneDTO)\[] — The service zones associated with the fulfillment set.
+    - `created_at`: `Date` — The creation date of the fulfillment set.
+    - `updated_at`: `Date` — The update date of the fulfillment set.
+    - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment set.
+  - `created_at`: `string` | `Date` — The creation date of the stock location.
+  - `updated_at`: `string` | `Date` — The update date of the stock location.
+  - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location.

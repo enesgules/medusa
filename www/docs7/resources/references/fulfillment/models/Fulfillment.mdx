@@ -1,0 +1,384 @@
+---
+title: Fulfillment - Fulfillment Module Data Models Reference
+sidebarTitle: Fulfillment
+---
+
+This documentation provides a reference to the Fulfillment data model. It belongs to the Fulfillment Module.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/fulfillment/src/models/fulfillment.ts#L9)
+
+**Fulfillment**
+
+- `id`: PrimaryKeyModifier\<IdProperty> — The ID of the fulfillment.
+- `location_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the location to fulfill items from.
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `packed_at`: `DateTimeProperty` (optional) — The date the fulfillment items were packed.
+- `shipped_at`: `DateTimeProperty` (optional) — The date the fulfillment items were shipped.
+- `marked_shipped_by`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the user that marked this fulfillment as shipped.
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `created_by`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the user that created this fulfillment.
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `delivered_at`: `DateTimeProperty` (optional) — The date the fulfillment items were delivered.
+- `canceled_at`: `DateTimeProperty` (optional) — The date the fulfillment was canceled.
+- `data`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The data of the fulfillment useful for the associated fulfillment provider. Learn more in [this documentation](/resources/commerce-modules/fulfillment/item-fulfillment)
+- `requires_shipping`: [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) — Whether the fulfillment item requires shipping.
+  - `$dataType`: `boolean` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"boolean"`
+    - `options`: `Record<string, any>` (optional)
+- `items`: HasMany\<[FulfillmentItem](/resources/references/fulfillment/models/FulfillmentItem)> — The associated items.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the fulfillment item.
+  - `title`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The title of the fulfillment item
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `sku`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The SKU of the fulfillment item
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `barcode`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The barcode of the fulfillment item
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `quantity`: `BigNumberProperty` — The quantity of the fulfillment item
+  - `line_item_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID the line item being fulfilled.
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `inventory_item_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the inventory item being fulfilled.
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `fulfillment`: BelongsTo\<[Fulfillment](/resources/references/fulfillment/models/Fulfillment)> — The associated fulfillment.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the fulfillment.
+    - `location_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the location to fulfill items from.
+    - `packed_at`: `DateTimeProperty` (optional) — The date the fulfillment items were packed.
+    - `shipped_at`: `DateTimeProperty` (optional) — The date the fulfillment items were shipped.
+    - `marked_shipped_by`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the user that marked this fulfillment as shipped.
+    - `created_by`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the user that created this fulfillment.
+    - `delivered_at`: `DateTimeProperty` (optional) — The date the fulfillment items were delivered.
+    - `canceled_at`: `DateTimeProperty` (optional) — The date the fulfillment was canceled.
+    - `data`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The data of the fulfillment useful for the associated fulfillment provider. Learn more in [this documentation](/resources/commerce-modules/fulfillment/item-fulfillment)
+    - `requires_shipping`: [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) — Whether the fulfillment item requires shipping.
+    - `items`: HasMany\<[FulfillmentItem](/resources/references/fulfillment/models/FulfillmentItem)> — The associated items.
+    - `labels`: HasMany\<[FulfillmentLabel](/resources/references/fulfillment/models/FulfillmentLabel)> — The associated labels.
+    - `provider`: HasOneWithForeignKey\<[FulfillmentProvider](/resources/references/fulfillment/models/FulfillmentProvider)> (optional) — The associated provider.
+    - `shipping_option`: BelongsTo\<[ShippingOption](/resources/references/fulfillment/models/ShippingOption)> (optional) — The associated shipping option.
+    - `delivery_address`: HasOneWithForeignKey\<[FulfillmentAddress](/resources/references/fulfillment/models/FulfillmentAddress)> (optional) — The associated delivery address.
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+- `labels`: HasMany\<[FulfillmentLabel](/resources/references/fulfillment/models/FulfillmentLabel)> — The associated labels.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the fulfillment label.
+  - `tracking_number`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The tracking number of the fulfillment label
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `tracking_url`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The tracking URL of the fulfillment label
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `label_url`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The label URL of the fulfillment label
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `fulfillment`: BelongsTo\<[Fulfillment](/resources/references/fulfillment/models/Fulfillment)> — The associated fulfillment.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the fulfillment.
+    - `location_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the location to fulfill items from.
+    - `packed_at`: `DateTimeProperty` (optional) — The date the fulfillment items were packed.
+    - `shipped_at`: `DateTimeProperty` (optional) — The date the fulfillment items were shipped.
+    - `marked_shipped_by`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the user that marked this fulfillment as shipped.
+    - `created_by`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the user that created this fulfillment.
+    - `delivered_at`: `DateTimeProperty` (optional) — The date the fulfillment items were delivered.
+    - `canceled_at`: `DateTimeProperty` (optional) — The date the fulfillment was canceled.
+    - `data`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The data of the fulfillment useful for the associated fulfillment provider. Learn more in [this documentation](/resources/commerce-modules/fulfillment/item-fulfillment)
+    - `requires_shipping`: [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) — Whether the fulfillment item requires shipping.
+    - `items`: HasMany\<[FulfillmentItem](/resources/references/fulfillment/models/FulfillmentItem)> — The associated items.
+    - `labels`: HasMany\<[FulfillmentLabel](/resources/references/fulfillment/models/FulfillmentLabel)> — The associated labels.
+    - `provider`: HasOneWithForeignKey\<[FulfillmentProvider](/resources/references/fulfillment/models/FulfillmentProvider)> (optional) — The associated provider.
+    - `shipping_option`: BelongsTo\<[ShippingOption](/resources/references/fulfillment/models/ShippingOption)> (optional) — The associated shipping option.
+    - `delivery_address`: HasOneWithForeignKey\<[FulfillmentAddress](/resources/references/fulfillment/models/FulfillmentAddress)> (optional) — The associated delivery address.
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+- `provider`: HasOneWithForeignKey\<[FulfillmentProvider](/resources/references/fulfillment/models/FulfillmentProvider)> (optional) — The associated provider.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the fulfillment provider.
+  - `is_enabled`: [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) — Whether the fulfillment provider is enabled.
+    - `$dataType`: `boolean` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+- `shipping_option`: BelongsTo\<[ShippingOption](/resources/references/fulfillment/models/ShippingOption)> (optional) — The associated shipping option.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the shipping option.
+  - `name`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The name of the shipping option
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `price_type`: EnumProperty\<typeof [ShippingOptionPriceType](/resources/references/utils/FulfillmentUtils/enums/utilsFulfillmentUtilsShippingOptionPriceType)> — The price type of the shipping option
+  - `data`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The data of the shipping option useful for the associated fulfillment provider. Learn more in [this documentation](/resources/commerce-modules/fulfillment/shipping-option#data-property)
+  - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+  - `service_zone`: BelongsTo\<[ServiceZone](/resources/references/fulfillment/models/ServiceZone)> — The associated service zone.
+    - `id`: PrimaryKeyModifier\<IdProperty>
+    - `name`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — text / keyword — the only kinds an engine can match as free text.
+    - `fulfillment_set`: BelongsTo\<[FulfillmentSet](/resources/references/fulfillment/models/FulfillmentSet)>
+    - `geo_zones`: HasMany\<[GeoZone](/resources/references/fulfillment/models/GeoZone)>
+    - `shipping_options`: HasMany\<[ShippingOption](/resources/references/fulfillment/models/ShippingOption)>
+    - `metadata`: `JSONProperty` (optional)
+  - `shipping_profile`: BelongsTo\<[ShippingProfile](/resources/references/fulfillment/models/ShippingProfile)> (optional) — The associated shipping profile.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the shipping profile.
+    - `name`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The name of the shipping profile
+    - `type`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The type of the shipping profile
+    - `shipping_options`: HasMany\<[ShippingOption](/resources/references/fulfillment/models/ShippingOption)> — The associated shipping options.
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+  - `provider`: BelongsTo\<[FulfillmentProvider](/resources/references/fulfillment/models/FulfillmentProvider)> (optional) — The associated provider.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the fulfillment provider.
+    - `is_enabled`: [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) — Whether the fulfillment provider is enabled.
+  - `type`: BelongsTo\<[ShippingOptionType](/resources/references/fulfillment/models/ShippingOptionType)> — The associated type.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the shipping option type.
+    - `label`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The label of the shipping option type
+    - `description`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The description of the shipping option type
+    - `code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The code of the shipping option type
+    - `shipping_options`: HasMany\<[ShippingOption](/resources/references/fulfillment/models/ShippingOption)> — The associated shipping options.
+  - `rules`: HasMany\<[ShippingOptionRule](/resources/references/fulfillment/models/ShippingOptionRule)> — The associated rules.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the shipping option rule.
+    - `attribute`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The name of a property or table that the rule applies to.
+
+      Example:
+
+      ```
+      customer_group
+      ```
+    - `operator`: EnumProperty\<typeof RuleOperator> — The operator used in the condition.
+
+      Example:
+
+      ```
+      eq
+      ```
+    - `value`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The value of the shipping option rule
+    - `shipping_option`: BelongsTo\<[ShippingOption](/resources/references/fulfillment/models/ShippingOption)> — The associated shipping option.
+  - `fulfillments`: HasMany\<[Fulfillment](/resources/references/fulfillment/models/Fulfillment)> — The associated fulfillments.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the fulfillment.
+    - `location_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the location to fulfill items from.
+    - `packed_at`: `DateTimeProperty` (optional) — The date the fulfillment items were packed.
+    - `shipped_at`: `DateTimeProperty` (optional) — The date the fulfillment items were shipped.
+    - `marked_shipped_by`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the user that marked this fulfillment as shipped.
+    - `created_by`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the user that created this fulfillment.
+    - `delivered_at`: `DateTimeProperty` (optional) — The date the fulfillment items were delivered.
+    - `canceled_at`: `DateTimeProperty` (optional) — The date the fulfillment was canceled.
+    - `data`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The data of the fulfillment useful for the associated fulfillment provider. Learn more in [this documentation](/resources/commerce-modules/fulfillment/item-fulfillment)
+    - `requires_shipping`: [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) — Whether the fulfillment item requires shipping.
+    - `items`: HasMany\<[FulfillmentItem](/resources/references/fulfillment/models/FulfillmentItem)> — The associated items.
+    - `labels`: HasMany\<[FulfillmentLabel](/resources/references/fulfillment/models/FulfillmentLabel)> — The associated labels.
+    - `provider`: HasOneWithForeignKey\<[FulfillmentProvider](/resources/references/fulfillment/models/FulfillmentProvider)> (optional) — The associated provider.
+    - `shipping_option`: BelongsTo\<[ShippingOption](/resources/references/fulfillment/models/ShippingOption)> (optional) — The associated shipping option.
+    - `delivery_address`: HasOneWithForeignKey\<[FulfillmentAddress](/resources/references/fulfillment/models/FulfillmentAddress)> (optional) — The associated delivery address.
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+- `delivery_address`: HasOneWithForeignKey\<[FulfillmentAddress](/resources/references/fulfillment/models/FulfillmentAddress)> (optional) — The associated delivery address.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the fulfillment address.
+  - `company`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The company of the fulfillment address
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `first_name`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The first name of the fulfillment address
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `last_name`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The last name of the fulfillment address
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `address_1`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The first line of the fulfillment address
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `address_2`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The second line of the fulfillment address
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `city`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The city of the fulfillment address
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `country_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The country code of the fulfillment address.
+
+    Example:
+
+    ```
+    us
+    ```
+
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `province`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The province of the fulfillment address
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `postal_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The postal code of the fulfillment address
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `phone`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The phone of the fulfillment address
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+- `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.

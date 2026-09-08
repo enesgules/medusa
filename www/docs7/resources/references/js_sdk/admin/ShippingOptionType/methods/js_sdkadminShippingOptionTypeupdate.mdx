@@ -1,0 +1,51 @@
+---
+title: update
+---
+
+This method updates a shipping option type. It sends a request to the
+[Update Shipping Option Type](/api/admin/shipping-option-types/update-a-shipping-option-type)
+API route.
+
+## Example
+
+```ts
+sdk.admin.shippingOptionType.update("sotype_123", {
+  code: "express"
+})
+.then(({ shipping_option_type }) => {
+  console.log(shipping_option_type)
+})
+```
+
+<a id="update-parameters" />
+
+## Parameters
+
+**update**
+
+- `id`: `string` — The shipping option type's ID.
+- `body`: [AdminUpdateShippingOptionType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateShippingOptionType) — The data to update in the shipping option type.
+  - `code`: `string` (optional)
+  - `label`: `string` (optional)
+  - `description`: `string` (optional)
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the shipping option type.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+## Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminShippingOptionTypeResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeResponse)> — The shipping option type's details.
+  - `shipping_option_type`: [AdminShippingOptionType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionType) — The shipping option type's details.
+    - `id`: `string` — The ID of the shipping option type.
+    - `label`: `string` — The label of the shipping option type.
+    - `description`: `string` — The description of the shipping option type.
+    - `code`: `string` — The code of the shipping option type.
+    - `shipping_option_id`: `string` — The ID of the shipping option that this type is created for.
+    - `created_at`: `string` — The date when the shipping option type was created.
+    - `updated_at`: `string` — The date when the shipping option type was updated.
+    - `deleted_at`: `null` | `string` — The date when the shipping option type was deleted.

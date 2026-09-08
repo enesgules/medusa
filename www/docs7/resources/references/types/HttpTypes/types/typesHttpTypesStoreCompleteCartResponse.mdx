@@ -1,0 +1,105 @@
+---
+title: StoreCompleteCartResponse
+---
+
+- `StoreCompleteCartResponse`: `object` | `object`
+  - `type`: `"cart"` — The response's type. If `cart`, then an error has occurred.
+  - `cart`: [StoreCart](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCart) — The cart's details.
+    - `id`: `string` — The ID of the cart.
+    - `region_id`: `string` (optional) — The ID of the region the cart belongs to.
+    - `customer_id`: `string` (optional) — The ID of the associated customer
+    - `sales_channel_id`: `string` (optional) — The ID of the sales channel the cart belongs to.
+    - `email`: `string` (optional) — The email of the customer that owns the cart.
+    - `currency_code`: `string` — The currency of the cart
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — When the cart was created.
+    - `updated_at`: `string` | `Date` (optional) — When the cart was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `original_total`: `number` — The cart's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The cart's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The cart's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the cart, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the cart's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The gift card total of the cart.
+    - `gift_card_tax_total`: `number` — The gift card tax total of the cart.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `completed_at`: `string` | `Date` (optional) — The date the cart was completed.
+    - `shipping_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's shipping address.
+    - `billing_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's billing address.
+    - `items`: [StoreCartLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartLineItem)\[] (optional) — The cart's items.
+    - `shipping_methods`: [StoreCartShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartShippingMethod)\[] (optional) — The cart's shipping methods.
+    - `payment_collection`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection) (optional) — The cart's payment collection.
+    - `region`: [StoreRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreRegion) (optional) — The cart's region
+    - `promotions`: [StoreCartPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartPromotion)\[] — The promotions applied to the cart.
+  - `error`: `object` — The error that occurred while completing the cart.
+    - `message`: `string` — The error message.
+    - `name`: `string` — The error name.
+    - `type`: `string` — The error type.
+  - `order`: [StoreOrder](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrder) — The order's details.
+    - `id`: `string` — The order's ID.
+    - `region_id`: `null` | `string` — The ID of the associated region.
+    - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+    - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+    - `email`: `null` | `string` — The email of the customer that placed the order.
+    - `currency_code`: `string` — The order's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `display_id`: `number` (optional) — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `status`: `string` — The order's status.
+    - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+    - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the order was created.
+    - `updated_at`: `string` | `Date` — The date the order was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+    - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The total gift card amount.
+    - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+    - `shipping_address`: `null` | [StoreOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderAddress) (optional) — The order's shipping address.
+    - `billing_address`: `null` | [StoreOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderAddress) (optional) — The order's billing address.
+    - `items`: `null` | [StoreOrderLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderLineItem)\[] — The order's items.
+    - `shipping_methods`: `null` | [StoreOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderShippingMethod)\[] — The order's shipping methods.
+    - `payment_collections`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection)\[] (optional) — The order's payment collections.
+    - `fulfillments`: [StoreOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `customer`: [StoreCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomer) (optional) — The customer that placed the order.

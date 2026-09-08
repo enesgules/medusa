@@ -1,0 +1,33 @@
+---
+title: cascades Method - DML Reference
+sidebarTitle: cascades
+---
+
+This method configures which related data models an operation, such as deletion,
+should be cascaded to.
+
+For example, if a store is deleted, its product should also be deleted.
+
+## Example
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const Store = model.define("store", {
+  id: model.id(),
+  products: model.hasMany(() => Product),
+})
+.cascades({
+  delete: ["products"],
+})
+```
+
+<a id="cascades-parameters" />
+
+## Parameters
+
+**cascades**
+
+- `options`: [EntityCascades](/resources/references/types/DmlTypes/types/typesDmlTypesEntityCascades)\<[ExtractEntityRelations](/resources/references/types/DmlTypes/types/typesDmlTypesExtractEntityRelations)\<Schema, "hasOne" | "hasOneWithFK" | "hasMany">, [ExtractEntityRelations](/resources/references/types/DmlTypes/types/typesDmlTypesExtractEntityRelations)\<Schema, "manyToMany">> — The cascades configurations. They object's keys are the names of the actions, such as `deleted`, and the value is an array of relations that the action should be cascaded to.
+  - `delete`: DeletableRelationships (optional) — The related models to delete when a record of this data model is deleted.
+  - `detach`: DetachableRelationships (optional)

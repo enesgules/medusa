@@ -1,0 +1,32 @@
+---
+title: validatePaymentProviderInRegionStep - Medusa Core Workflows Reference
+sidebarTitle: validatePaymentProviderInRegionStep
+---
+
+This documentation provides a reference to the `validatePaymentProviderInRegionStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that a payment provider can be used for a payment collection.
+If the payment collection belongs to an active (not yet completed) cart, the payment
+provider must be enabled in the cart's region. If not, the step throws an error.
+
+Payment collections that aren't linked to an active cart, such as those of an order,
+aren't affected by this validation.
+
+## Example
+
+```ts
+const data = validatePaymentProviderInRegionStep({
+  payment_collection_id: "paycol_123",
+  provider_id: "pp_stripe_stripe"
+})
+```
+
+<a id="validatepaymentproviderinregionstep-input" />
+
+## Input
+
+**validatePaymentProviderInRegionStep**
+
+- `ValidatePaymentProviderInRegionStepInput`: [ValidatePaymentProviderInRegionStepInput](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcValidatePaymentProviderInRegionStepInput)
+  - `payment_collection_id`: `string` — The ID of the payment collection that the payment session is created for.
+  - `provider_id`: `string` — The ID of the payment provider to validate.

@@ -1,0 +1,225 @@
+---
+title: locale - JS SDK Admin Reference
+sidebarTitle: locale
+---
+
+This documentation provides a reference to the `sdk.admin.locale` set of methods used to send requests to Medusa's Admin API routes.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.12.3](https://github.com/medusajs/medusa/releases/tag/v2.12.3).
+
+## list
+
+This method retrieves a paginated list of locales. It sends a request to the
+[List Locales](/api/admin/locales/list-locales)
+API route.
+
+### Example
+
+To retrieve the list of locales:
+
+```ts
+sdk.admin.locale.list()
+.then(({ locales, count, limit, offset }) => {
+  console.log(locales)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.locale.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ locales, count, limit, offset }) => {
+  console.log(locales)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each locale:
+
+```ts
+sdk.admin.locale.list({
+  fields: "code,name"
+})
+.then(({ locales, count, limit, offset }) => {
+  console.log(locales)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [AdminLocaleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleListParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminLocaleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminLocaleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminLocaleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminLocaleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminLocaleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminLocaleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keyword to search the locale's searchable fields.
+    - `code`: `string` | `string`\[] (optional) — Filter by locale code(s) in BCP 47 format.
+
+      Example:
+
+      ```
+      "en-US"
+      ```
+  - `$or`: ([AdminLocaleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminLocaleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminLocaleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminLocaleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminLocaleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminLocaleListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keyword to search the locale's searchable fields.
+    - `code`: `string` | `string`\[] (optional) — Filter by locale code(s) in BCP 47 format.
+
+      Example:
+
+      ```
+      "en-US"
+      ```
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keyword to search the locale's searchable fields.
+  - `code`: `string` | `string`\[] (optional) — Filter by locale code(s) in BCP 47 format.
+
+    Example:
+
+    ```
+    "en-US"
+    ```
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminLocaleListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleListResponse)> — The paginated list of locales.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `locales`: [AdminLocale](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocale)\[] — The list of locales.
+    - `code`: `string` — The locale's code.
+
+      Example:
+
+      ```
+      en-US
+      ```
+    - `name`: `string` — The locale's display name.
+
+      Example:
+
+      ```
+      English (United States)
+      ```
+    - `created_at`: `string` — The date the locale was created.
+    - `updated_at`: `string` — The date the locale was updated.
+    - `deleted_at`: `null` | `string` — The date the locale was deleted.
+
+## retrieve
+
+This method retrieves a locale by its code. It sends a request to the
+[Get Locale](/api/admin/locales/get-locale) API route.
+
+### Example
+
+To retrieve a locale by its code:
+
+```ts
+sdk.admin.locale.retrieve("en-US")
+.then(({ locale }) => {
+  console.log(locale)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.locale.retrieve("en-US", {
+  fields: "code,name"
+})
+.then(({ locale }) => {
+  console.log(locale)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `code`: `string` — The locale's code in BCP 47 format.
+- `query`: [AdminLocaleParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleParams) (optional) — Configure the fields to retrieve in the locale.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminLocaleResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleResponse)> — The locale's details.
+  - `locale`: [AdminLocale](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocale) — The locale's details.
+    - `code`: `string` — The locale's code.
+
+      Example:
+
+      ```
+      en-US
+      ```
+    - `name`: `string` — The locale's display name.
+
+      Example:
+
+      ```
+      English (United States)
+      ```
+    - `created_at`: `string` — The date the locale was created.
+    - `updated_at`: `string` — The date the locale was updated.
+    - `deleted_at`: `null` | `string` — The date the locale was deleted.

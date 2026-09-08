@@ -1,0 +1,68 @@
+---
+title: retrieve
+---
+
+This method retrieves a return by ID. It sends a request to the
+[Get Return](/api/admin/returns/get-a-return)
+API route.
+
+## Example
+
+To retrieve a return by its ID:
+
+```ts
+sdk.admin.return.retrieve("return_123")
+.then(({ return }) => {
+  console.log(return)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.return.retrieve("return_123", {
+  fields: "id,*items"
+})
+.then(({ return }) => {
+  console.log(return)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The ID of the return to retrieve.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the return.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminReturnResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturnResponse)> — The return's details.
+  - `return`: [AdminReturn](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturn) — The return's details.
+    - `items`: [AdminReturnItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturnItem)\[] — The return's items.
+    - `id`: `string` — The return's ID.
+    - `order_id`: `string` — The ID of the order that the return belongs to.
+    - `status`: [ReturnStatus](/resources/references/order/types/orderReturnStatus) (optional) — The return's status.
+    - `exchange_id`: `string` (optional) — The ID of the exchange that the return belongs to, if available.
+    - `location_id`: `string` (optional) — The ID of the stock location that the items are returned to.
+    - `claim_id`: `string` (optional) — The ID of the claim that the return belongs to, if available.
+    - `order_version`: `number` — The order's version once the return is applied.
+    - `display_id`: `number` — The display ID of the return.
+    - `no_notification`: `boolean` (optional) — Whether to send the customers notifications about return updates.
+    - `refund_amount`: `number` (optional) — The amount that is to be refunded to the customer.
+    - `received_at`: `string` — The date when the return was received.
+    - `created_at`: `string` — The date when the return was created.
+    - `created_by`: `string` — The ID of the user that created the return.
+    - `canceled_at`: `string` — The date when the return was canceled.
+    - `requested_at`: `string`

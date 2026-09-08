@@ -1,0 +1,240 @@
+---
+title: listAndCountCarts - Cart Module Reference
+sidebarTitle: listAndCountCarts
+---
+
+This documentation provides a reference to the `listAndCountCarts` method. This belongs to the Cart Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of carts along with the total count of available carts satisfying the provided filters.
+
+## Example
+
+To retrieve a list of carts using their IDs:
+
+```ts
+const [carts, count] = await cartModuleService.listAndCountCarts({
+  id: ["cart_123", "cart_321"],
+})
+```
+
+To specify relations that should be retrieved within the carts:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const [carts, count] = await cartModuleService.listAndCountCarts(
+  {
+    id: ["cart_123", "cart_321"],
+  },
+  {
+    relations: ["shipping_address"],
+  }
+)
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const [carts, count] = await cartModuleService.listAndCountCarts(
+  {
+    id: ["cart_123", "cart_321"],
+  },
+  {
+    relations: ["shipping_address"],
+    take: 20,
+    skip: 2,
+  }
+)
+```
+
+<a id="listandcountcarts-parameters" />
+
+## Parameters
+
+**listAndCountCarts**
+
+- `filters`: [FilterableCartProps](/resources/references/cart/interfaces/cartFilterableCartProps) (optional) — The filters to apply on the retrieved carts.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the carts by.
+  - `sales_channel_id`: `string` | `string`\[] | [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by the ID of their associated sales channel.
+    - `$and`: [Query](/resources/references/cart/types/cartQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/cart/types/cartQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> | [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/cart/types/cartQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `customer_id`: `string` | `string`\[] | [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by the ID of their associated customer.
+    - `$and`: [Query](/resources/references/cart/types/cartQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/cart/types/cartQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> | [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/cart/types/cartQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `region_id`: `string` | `string`\[] | [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by the ID of their associated region.
+    - `$and`: [Query](/resources/references/cart/types/cartQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/cart/types/cartQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> | [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/cart/types/cartQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_at`: [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by their creation date.
+    - `$and`: [Query](/resources/references/cart/types/cartQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/cart/types/cartQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> | [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/cart/types/cartQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by their update date.
+    - `$and`: [Query](/resources/references/cart/types/cartQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/cart/types/cartQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> | [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/cart/types/cartQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `completed_at`: [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by their completion date.
+    - `$and`: [Query](/resources/references/cart/types/cartQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/cart/types/cartQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> | [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/cart/types/cartQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/cart/types/cartExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `$and`: ([FilterableCartProps](/resources/references/cart/interfaces/cartFilterableCartProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableCartProps](/resources/references/cart/interfaces/cartFilterableCartProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the carts by.
+    - `sales_channel_id`: `string` | `string`\[] | [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by the ID of their associated sales channel.
+    - `customer_id`: `string` | `string`\[] | [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by the ID of their associated customer.
+    - `region_id`: `string` | `string`\[] | [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by the ID of their associated region.
+    - `created_at`: [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by their creation date.
+    - `updated_at`: [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by their update date.
+    - `completed_at`: [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by their completion date.
+    - `$and`: ([FilterableCartProps](/resources/references/cart/interfaces/cartFilterableCartProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableCartProps](/resources/references/cart/interfaces/cartFilterableCartProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableCartProps](/resources/references/cart/interfaces/cartFilterableCartProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableCartProps](/resources/references/cart/interfaces/cartFilterableCartProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `$or`: ([FilterableCartProps](/resources/references/cart/interfaces/cartFilterableCartProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableCartProps](/resources/references/cart/interfaces/cartFilterableCartProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the carts by.
+    - `sales_channel_id`: `string` | `string`\[] | [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by the ID of their associated sales channel.
+    - `customer_id`: `string` | `string`\[] | [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by the ID of their associated customer.
+    - `region_id`: `string` | `string`\[] | [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by the ID of their associated region.
+    - `created_at`: [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by their creation date.
+    - `updated_at`: [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by their update date.
+    - `completed_at`: [OperatorMap](/resources/references/cart/types/cartOperatorMap)\<string> (optional) — Filter the carts by their completion date.
+    - `$and`: ([FilterableCartProps](/resources/references/cart/interfaces/cartFilterableCartProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableCartProps](/resources/references/cart/interfaces/cartFilterableCartProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableCartProps](/resources/references/cart/interfaces/cartFilterableCartProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableCartProps](/resources/references/cart/interfaces/cartFilterableCartProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+- `config`: [FindConfig](/resources/references/cart/interfaces/cartFindConfig)\<[CartDTO](/resources/references/cart/interfaces/cartCartDTO)> (optional) — The configurations determining how the cart is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a cart.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/cart/types/cartFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/cart/types/cartInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/cart/types/cartCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/cart/interfaces/cartContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/cart/interfaces/cartIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listandcountcarts-returns" />
+
+## Returns
+
+**listAndCountCarts**
+
+- `Promise`: Promise\<\[[CartDTO](/resources/references/cart/interfaces/cartCartDTO)\[], number]> — The list of carts along with their total count.
+  - `CartDTO[]`: [CartDTO](/resources/references/cart/interfaces/cartCartDTO)\[]
+  - `number`: `number`

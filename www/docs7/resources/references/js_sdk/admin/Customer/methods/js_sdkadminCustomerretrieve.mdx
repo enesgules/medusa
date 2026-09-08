@@ -1,0 +1,68 @@
+---
+title: retrieve
+---
+
+This method retrieves a customer by its ID. It sends a request to the
+[Get Customer](/api/admin/customers/get-a-customer)
+API route.
+
+## Example
+
+To retrieve a customer by its ID:
+
+```ts
+sdk.admin.customer.retrieve("cus_123")
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.customer.retrieve("cus_123", {
+  fields: "id,*groups"
+})
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The customer's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the customer.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerResponse)> — The customer's details.
+  - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) — The customer's details.
+    - `has_account`: `boolean` — Whether the customer is a guest.
+    - `groups`: [AdminCustomerGroup](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerGroup)\[] (optional) — The groups the customer is in.
+    - `addresses`: [AdminCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerAddress)\[] — The customer's addresses.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_by`: `null` | `string` (optional) — The ID of the user that created the customer.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.

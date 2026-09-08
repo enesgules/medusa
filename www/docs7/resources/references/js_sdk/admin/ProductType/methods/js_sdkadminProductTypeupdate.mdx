@@ -1,0 +1,51 @@
+---
+title: update
+---
+
+This method updates a product type. It sends a request to the
+[Update Product Type](/api/admin/product-types/update-a-product-type)
+API route.
+
+## Example
+
+```ts
+sdk.admin.productType.update("ptyp_123", {
+  value: "Clothes"
+})
+.then(({ product_type }) => {
+  console.log(product_type)
+})
+```
+
+<a id="update-parameters" />
+
+## Parameters
+
+**update**
+
+- `id`: `string` — The product type's ID.
+- `body`: [AdminUpdateProductType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateProductType) — The data to update in the product type.
+  - `value`: `string` (optional) — The type's value.
+  - `external_id`: `null` | `string` (optional) — An external ID for the product type.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the product type.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+## Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminProductTypeResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductTypeResponse)> — The product type's details.
+  - `product_type`: [AdminProductType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductType) — The product type's details.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product type's translations.
+    - `id`: `string` — The product type's ID.
+    - `value`: `string` — The product type's value.
+    - `created_at`: `string` — The date the product type was created.
+    - `updated_at`: `string` — The date the product type was updated.
+    - `deleted_at`: `null` | `string` (optional) — The date the product type was deleted.
+    - `external_id`: `null` | `string` (optional) — An external ID for the product type.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.

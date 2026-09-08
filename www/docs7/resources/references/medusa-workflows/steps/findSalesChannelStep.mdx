@@ -1,0 +1,53 @@
+---
+title: findSalesChannelStep - Medusa Core Workflows Reference
+sidebarTitle: findSalesChannelStep
+---
+
+This documentation provides a reference to the `findSalesChannelStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step either retrieves a sales channel either using the ID provided as an input, or, if no ID
+is provided, the default sales channel of the first store.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { findSalesChannelStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = findSalesChannelStep({})
+  }
+)
+```
+
+<a id="findsaleschannelstep-input" />
+
+## Input
+
+**findSalesChannelStep**
+
+- `FindSalesChannelStepInput`: [FindSalesChannelStepInput](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcFindSalesChannelStepInput)
+  - `salesChannelId`: `null` | `string` (optional) — The ID of the sales channel to find.
+
+<a id="findsaleschannelstep-output" />
+
+## Output
+
+**findSalesChannelStep**
+
+- `SalesChannelDTO`: [SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO) — The sales channel details.
+  - `id`: `string` — The ID of the sales channel.
+  - `name`: `string` — The name of the sales channel.
+  - `description`: `null` | `string` — The description of the sales channel.
+  - `is_disabled`: `boolean` — Whether the sales channel is disabled.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `locations`: [SalesChannelLocationDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelLocationDTO)\[] (optional) — The locations of the sales channel.
+    - `sales_channel_id`: `string` — The associated sales channel's ID.
+    - `location_id`: `string` — The associated location's ID.
+    - `sales_channel`: [SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO) — The associated sales channel.
+      - `id`: `string` — The ID of the sales channel.
+      - `name`: `string` — The name of the sales channel.
+      - `description`: `null` | `string` — The description of the sales channel.
+      - `is_disabled`: `boolean` — Whether the sales channel is disabled.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `locations`: [SalesChannelLocationDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelLocationDTO)\[] (optional) — The locations of the sales channel.

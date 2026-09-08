@@ -1,0 +1,298 @@
+---
+title: How to Use Locking Module
+sidebarTitle: Use Locking Module
+---
+
+In this guide, you’ll learn about the different methods in the Locking Module's service and how to use them.
+
+***
+
+<a id="resolve-locking-module-s-service" />
+
+## Resolve Locking Module's Service
+
+In your workflow's step, you can resolve the Locking Module's service from the Medusa container:
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+import { createStep } from "@medusajs/framework/workflows-sdk"
+
+const step1 = createStep(
+  "step-1",
+  async ({}, { container }) => {
+    const lockingModuleService = container.resolve(
+      Modules.LOCKING
+    )
+    
+    // TODO use lockingModuleService
+  } 
+)
+```
+
+You can then use the Locking Module's service's methods in the step. The rest of this guide details these methods.
+
+***
+
+## acquire
+
+This method acquires a lock on the given keys. You can optionally pass a provider name to be used for locking.
+If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
+
+You can pass an owner for the lock, which limits who can extend or release the acquired lock. Then, if you use this method again
+passing the same owner, the lock's expiration time is extended with the value passed in the `expire` argument. Otherwise, if you pass a
+different owner, the method throws an error.
+
+### Example
+
+For example, to acquire a lock on a product with ID `prod_123` for a user with ID `user_123`:
+
+```ts
+await lockingModuleService.acquire("prod_123", {
+  ownerId: "user_123",
+  expire: 60
+})
+```
+
+In this example, you acquire a lock on the product with ID `prod_123` for the user with ID `user_123`. You extend the
+lock's expiration time by `60` seconds.
+
+To specify the provider to use for locking, you can pass the provider name in the `args` argument:
+
+```ts
+await lockingModuleService.acquire("prod_123", {
+  ownerId: "user_123",
+  expire: 60,
+  provider: "lp_my-lock"
+})
+```
+
+<a id="acquire-parameters" />
+
+### Parameters
+
+**acquire**
+
+- `keys`: `string` | `string`\[] — The keys to acquire the lock on.
+- `args`: `object` (optional) — Additional arguments for acquiring the lock.
+  - `ownerId`: `null` | `string` (optional) — The owner ID for the lock. If specified, only the owner can release the lock or extend its expiration time.
+  - `expire`: `number` (optional) — The expiration time (in seconds) for the lock. If the lock is already acquired and the owner is the same, the expiration time is extended by the value passed. If not specified, the lock does not expire.
+  - `provider`: `string` (optional) — The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="acquire-returns" />
+
+### Returns
+
+**acquire**
+
+- `Promise`: Promise\<void> — Resolves when the lock is acquired.
+
+## execute
+
+This method executes a giuven asynchronous job with a lock on the given keys. You can optionally pass a
+provider name to be used for locking. If no provider is passed, the default provider (in-memory or the
+provider configuerd in `medusa-config.ts`) will be used.
+
+### Example
+
+For example, to use the lock module when deleting a product:
+
+```ts
+await lockingModuleService.execute("prod_123", async () => {
+   // assuming you've resolved the product service from the container
+   await productModuleService.delete("prod_123")
+})
+```
+
+In the above example, the product of ID `prod_123` is locked while it's being deleted.
+
+To specify the provider to use for locking, you can pass the provider name in the `args` argument:
+
+```ts
+await lockingModuleService.execute("prod_123", async () => {
+  // assuming you've resolved the product service from the container
+  await productModuleService.delete("prod_123")
+}, {
+  provider: "lp_my-lock"
+})
+```
+
+<a id="execute-type-parameters" />
+
+### Type Parameters
+
+**execute**
+
+- `T`: `object` (optional) — The type of the job's result.
+
+<a id="execute-parameters" />
+
+### Parameters
+
+**execute**
+
+- `keys`: `string` | `string`\[] — The keys to lock durng the job's execution.
+- `job`: () => Promise\<T> — The asynchronous job to execute while the keys are locked.
+- `args`: `object` (optional) — Additional arguments for the job execution.
+  - `timeout`: `number` (optional) — The timeout (in seconds) for acquiring the lock. If the time out is passed, the job is canceled and the lock is released. Its value defaults to `5` seconds if no value is passed or if you pass a value less than `1`.
+  - `provider`: `string` (optional) — The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="execute-returns" />
+
+### Returns
+
+**execute**
+
+- `Promise`: Promise\<T> — The result of the job execution.
+
+## release
+
+This method releases a lock on the given keys. You can optionally pass a provider name to be used for locking.
+If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
+
+If the lock has an owner, you must pass the same owner to release the lock.
+
+### Example
+
+For example, to release a lock on a product with ID `prod_123` for a user with ID `user_123`:
+
+```ts
+await lockingModuleService.release("prod_123", {
+  ownerId: "user_123"
+})
+```
+
+In this example, you release the lock on the product with ID `prod_123` for the user with ID `user_123`.
+
+To specify the provider to use for locking, you can pass the provider name in the `args` argument:
+
+```ts
+await lockingModuleService.release("prod_123", {
+  ownerId: "user_123",
+  provider: "lp_my-lock"
+})
+```
+
+<a id="release-parameters" />
+
+### Parameters
+
+**release**
+
+- `keys`: `string` | `string`\[] — The keys to release the lock from.
+- `args`: `object` (optional) — Additional arguments for releasing the lock.
+  - `ownerId`: `null` | `string` (optional) — The ID of the lock's owner. The lock can be released either if it doesn't have an owner, or if its owner ID matches the one passed in this property.
+  - `provider`: `string` (optional) — The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="release-returns" />
+
+### Returns
+
+**release**
+
+- `Promise`: Promise\<boolean> — Whether the lock was successfully released. If the lock has a different owner than the one passed, the method returns `false`.
+  - `boolean`: `boolean`
+
+## releaseAll
+
+This method releases all locks. If you specify an owner ID, then all locks that the owner has acquired are released.
+
+You can also pass a provider name to be used for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
+
+### Example
+
+For example, to release all locks for a user with ID `user_123`:
+
+```ts
+await lockingModuleService.releaseAll({
+  ownerId: "user_123"
+})
+```
+
+In this example, you release all locks for the user with ID `user_123`.
+
+To specify the provider to use for locking, you can pass the provider name in the `args` argument:
+
+```ts
+await lockingModuleService.releaseAll({
+  ownerId: "user_123",
+  provider: "lp_my-lock"
+})
+```
+
+<a id="releaseall-parameters" />
+
+### Parameters
+
+**releaseAll**
+
+- `args`: `object` (optional) — Additional arguments for releasing the locks.
+  - `ownerId`: `null` | `string` (optional) — The ID of a lock owner. If specified, all locks that the owner has acquired are released.
+  - `provider`: `string` (optional) — The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="releaseall-returns" />
+
+### Returns
+
+**releaseAll**
+
+- `Promise`: Promise\<void> — This method releases all locks. If you specify an owner ID, then all locks that the owner has acquired are released. You can also pass a provider name to be used for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.

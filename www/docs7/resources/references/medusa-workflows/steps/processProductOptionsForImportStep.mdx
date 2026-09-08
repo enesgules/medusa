@@ -1,0 +1,115 @@
+---
+title: processProductOptionsForImportStep - Medusa Core Workflows Reference
+sidebarTitle: processProductOptionsForImportStep
+---
+
+This documentation provides a reference to the `processProductOptionsForImportStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step processes products with options during import. It performs the following actions:
+
+1. Links products to existing options when an `id` is provided on the option entry.
+2. Creates new options for entries without an `id`, defaulting to `is_exclusive: true` unless the entry specifies otherwise.
+3. Transforms `product.options` in the input to `product.option_ids`.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+## Example
+
+```ts
+const data = processProductOptionsForImportStep({
+  products: [
+    {
+      title: "T-Shirt",
+      options: [
+        // Reuse an existing (typically global) option:
+        { id: "opt_existing", title: "Size", values: ["S", "M", "L"] },
+        // Or create a new exclusive option (the default):
+        { title: "Color", values: ["Red", "Blue"] },
+      ],
+      variants: [
+        {
+          title: "T-Shirt - Small / Red",
+          options: { Size: "S", Color: "Red" }
+        }
+      ]
+    }
+  ]
+})
+```
+
+<a id="processproductoptionsforimportstep-input" />
+
+## Input
+
+**processProductOptionsForImportStep**
+
+- `ProcessProductOptionsForImportInput`: [ProcessProductOptionsForImportInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcProcessProductOptionsForImportInput)
+  - `products`: Omit\<[UpdateProductWorkflowInputDTO](/resources/references/types/types/typesUpdateProductWorkflowInputDTO), "option\_ids"> & `object`\[] — The products to process. Each product can optionally have an `options` field referencing existing options by id or describing new options to create.
+    - `options`: [ImportProductOptionInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcImportProductOptionInput)\[] (optional) — The product options to attach (when `id` is set) or create (when `id` is absent) for the product.
+      - `title`: `string` — The product option's title.
+      - `values`: `string`\[] — The product option values.
+      - `ranks`: `Record<string, number>` (optional) — The rank for each option value. The key is the option value, and the value is the rank.
+      - `is_exclusive`: `boolean` (optional) — Whether the product option is exclusive to a product or shared across products.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — The metadata of the product option.
+      - `id`: `string` (optional)
+
+<a id="processproductoptionsforimportstep-output" />
+
+## Output
+
+**processProductOptionsForImportStep**
+
+- `UpdateProductWorkflowInputDTO[]`: [UpdateProductWorkflowInputDTO](/resources/references/types/types/typesUpdateProductWorkflowInputDTO)\[]
+  - `id`: `string` (optional) — The ID of the product to update. If not provided, a product is created instead. In that case, the `title` property is required.
+  - `title`: `string` (optional) — The title of the product.
+  - `subtitle`: `null` | `string` (optional) — The subttle of the product.
+  - `description`: `null` | `string` (optional) — The description of the product.
+  - `is_giftcard`: `boolean` (optional) — Whether the product is a gift card.
+  - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+  - `thumbnail`: `null` | `string` (optional) — The URL of the product's thumbnail.
+  - `handle`: `string` (optional) — The handle of the product. The handle can be used to create slug URL paths. If not supplied, the value of the `handle` attribute of the product is set to the slug version of the `title` attribute.
+  - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) (optional) — The status of the product.
+  - `images`: [UpsertProductImageDTO](/resources/references/product/interfaces/productUpsertProductImageDTO)\[] (optional) — The associated images to create or update.
+    - `id`: `string` (optional) — The product image's ID. If not provided, the image is created. In that case, the `url` property is required.
+    - `url`: `string` (optional) — The new URL of the product image.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `external_id`: `null` | `string` (optional) — The id of the product in an external system
+  - `type_id`: `null` | `string` (optional) — The product type to associate with the product.
+  - `collection_id`: `null` | `string` (optional) — The product collection to associate with the product.
+  - `tag_ids`: `string`\[] (optional) — The tags to associate with the product
+  - `category_ids`: `string`\[] (optional) — The product categories to associate with the product.
+  - `option_ids`: `string`\[] (optional) — The product options to associate with the product.
+  - `variants`: [UpsertProductVariantDTO](/resources/references/product/interfaces/productUpsertProductVariantDTO)\[] (optional) — The product variants to be created and associated with the product. You can also update existing product variants associated with the product.
+    - `id`: `string` (optional) — The ID of the product variant to update.
+    - `title`: `string` (optional) — The tile of the product variant.
+    - `sku`: `null` | `string` (optional) — The SKU of the product variant.
+    - `barcode`: `null` | `string` (optional) — The barcode of the product variant.
+    - `ean`: `null` | `string` (optional) — The EAN of the product variant.
+    - `upc`: `null` | `string` (optional) — The UPC of the product variant.
+    - `thumbnail`: `null` | `string` (optional) — The thumbnail of the product variant.
+    - `allow_backorder`: `boolean` (optional) — Whether the product variant can be ordered when it's out of stock.
+    - `manage_inventory`: `boolean` (optional) — Whether the product variant's inventory should be managed by the core system.
+    - `hs_code`: `null` | `string` (optional) — The HS Code of the product variant.
+    - `origin_country`: `null` | `string` (optional) — The origin country of the product variant.
+    - `mid_code`: `null` | `string` (optional) — The MID Code of the product variant.
+    - `material`: `null` | `string` (optional) — The material of the product variant.
+    - `weight`: `null` | `number` (optional) — The weight of the product variant.
+    - `length`: `null` | `number` (optional) — The length of the product variant.
+    - `height`: `null` | `number` (optional) — The height of the product variant.
+    - `width`: `null` | `number` (optional) — The width of the product variant.
+    - `options`: `Record<string, string>` (optional) — The product variant options to associate with the product variant.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `width`: `null` | `number` (optional) — The width of the product.
+  - `height`: `null` | `number` (optional) — The height of the product.
+  - `length`: `null` | `number` (optional) — The length of the product.
+  - `weight`: `null` | `number` (optional) — The weight of the product.
+  - `origin_country`: `null` | `string` (optional) — The origin country of the product.
+  - `hs_code`: `null` | `string` (optional) — The HS Code of the product.
+  - `material`: `null` | `string` (optional) — The material of the product.
+  - `mid_code`: `null` | `string` (optional) — The MID Code of the product.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `sales_channels`: `object`\[] (optional)
+    - `id`: `string`
+  - `shipping_profile_id`: `string` | `null` (optional)

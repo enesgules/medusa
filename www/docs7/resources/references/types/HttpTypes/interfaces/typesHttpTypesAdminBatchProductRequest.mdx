@@ -1,0 +1,131 @@
+---
+title: AdminBatchProductRequest
+---
+
+Data to manage in bulk related to a model.
+
+## Properties
+
+**AdminBatchProductRequest**
+
+- `create`: [AdminCreateProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProduct)\[] (optional) — Records to create in bulk.
+  - `title`: `string` — The product's title.
+  - `subtitle`: `null` | `string` (optional) — The product's subtitle.
+  - `description`: `null` | `string` (optional) — The product's description.
+  - `is_giftcard`: `boolean` (optional) — Whether the product is a gift card.
+  - `discountable`: `boolean` (optional) — Whether discounts can be applied on the product.
+  - `images`: `object`\[] (optional) — The product's images.
+    - `url`: `string` — The image's URL.
+  - `thumbnail`: `null` | `string` (optional) — The product's thumbnail URL.
+  - `handle`: `null` | `string` (optional) — The product's handle.
+  - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) (optional) — The product's status.
+  - `type_id`: `null` | `string` (optional) — The ID of the product's type.
+  - `external_id`: `null` | `string` (optional) — The ID of the product in an external or third-party system.
+  - `collection_id`: `null` | `string` (optional) — The ID of the product's collection.
+  - `shipping_profile_id`: `string` (optional) — The ID of the product's shipping profile.
+  - `categories`: `object`\[] (optional) — The product's categories.
+    - `id`: `string` — The ID of a product category that the product belongs to.
+  - `tags`: `object`\[] (optional) — The product's tags.
+    - `id`: `string` — The ID of the associated product tag.
+  - `options`: ([AdminCreateProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductOption) | [AdminProductCreateLinkProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCreateLinkProductOption))\[] (optional) — The product's options.
+    - `title`: `string` — The option's title.
+    - `values`: `string`\[] — The option's values.
+    - `ranks`: `Record<string, number>` (optional) — The rank for each option value. The keys are the option values, and the values are their respective ranks.
+
+      Example:
+
+      ```
+      { * "Small": 1, * "Medium": 2, * "Large": 3 * }
+      ```
+    - `is_exclusive`: `boolean` (optional) — Whether the option is exclusive to a specific product, or can be shared across multiple products.
+    - `id`: `string` — The ID of the product option to link.
+    - `value_ids`: `string`\[] (optional) — The IDs of specific option values to link. If undefined, every value will be linked by default.
+  - `variants`: [AdminCreateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariant)\[] (optional) — The product's variants.
+    - `title`: `string` — The variant's title.
+    - `sku`: `null` | `string` (optional) — The variant's SKU.
+    - `ean`: `null` | `string` (optional) — The variant's EAN.
+    - `upc`: `null` | `string` (optional) — The variant's UPC.
+    - `barcode`: `null` | `string` (optional) — The variant's barcode.
+    - `hs_code`: `null` | `string` (optional) — The variant's HS code.
+    - `mid_code`: `null` | `string` (optional) — The variant's MID code.
+    - `allow_backorder`: `boolean` (optional) — Whether the variant can be ordered even if it's out of stock.
+    - `manage_inventory`: `boolean` (optional) — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+    - `variant_rank`: `number` (optional) — The variant's ranking among its sibling variants.
+    - `weight`: `null` | `number` (optional) — The variant's weight.
+    - `length`: `null` | `number` (optional) — The variant's length.
+    - `height`: `null` | `number` (optional) — The variant's height.
+    - `width`: `null` | `number` (optional) — The variant's width.
+    - `origin_country`: `null` | `string` (optional) — The variant's origin country.
+    - `material`: `null` | `string` (optional) — The variant's material.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `prices`: [AdminCreateProductVariantPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantPrice)\[] — The variant's prices.
+    - `inventory_items`: [AdminCreateProductVariantInventoryKit](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantInventoryKit)\[] (optional) — The variant's inventory items. It's only available if `manage_inventory` is enabled.
+    - `options`: `Record<string, string>` (optional) — The variant's values for the associated product's options.
+  - `sales_channels`: `object`\[] (optional) — The sales channels that the product is available in.
+    - `id`: `string` — The ID of a sales channel that the product is available in.
+  - `weight`: `null` | `number` (optional) — The product's weight.
+  - `length`: `null` | `number` (optional) — The product's length.
+  - `height`: `null` | `number` (optional) — The product's height.
+  - `width`: `null` | `number` (optional) — The product's width.
+  - `hs_code`: `null` | `string` (optional) — The product's HS code.
+  - `mid_code`: `null` | `string` (optional) — The product's MID code.
+  - `origin_country`: `null` | `string` (optional) — The product's origin country.
+  - `material`: `null` | `string` (optional) — The product's material.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `update`: [AdminBatchUpdateProduct](/resources/references/types/interfaces/typesAdminBatchUpdateProduct)\[] (optional) — Records to update in bulk.
+  - `id`: `string` — The ID of the product to update.
+  - `title`: `string` (optional) — The product's title.
+  - `subtitle`: `null` | `string` (optional) — The product's subtitle.
+  - `description`: `null` | `string` (optional) — The product's description.
+  - `is_giftcard`: `boolean` (optional) — Whether the product is a gift card.
+  - `discountable`: `boolean` (optional) — Whether discounts can be applied on the product.
+  - `images`: `object`\[] (optional) — The product's images.
+    - `id`: `string` (optional) — The ID of the image to update or set for existing images.
+    - `url`: `string` — The image's URL.
+  - `thumbnail`: `null` | `string` (optional) — The product's thumbnail URL.
+  - `handle`: `string` (optional) — The product's handle.
+  - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) (optional) — The product's status.
+  - `type_id`: `null` | `string` (optional) — The ID of the associated product type.
+  - `external_id`: `null` | `string` (optional) — The ID of the product in an external or third-party system.
+  - `collection_id`: `null` | `string` (optional) — The ID of the associated product collection.
+  - `categories`: `object`\[] (optional) — The product's categories.
+    - `id`: `string` — The ID of the category that the product belongs to.
+  - `tags`: `object`\[] (optional) — The product's tags.
+    - `id`: `string` — The ID of a tag that the product is associated with.
+  - `option_ids`: `string`\[] (optional) — The IDs of the associated product options.
+  - `variants`: ([AdminCreateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariant) | [AdminUpdateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateProductVariant))\[] (optional) — The product's variants.
+    - `title`: `string` — The variant's title.
+    - `sku`: `null` | `string` (optional) — The variant's SKU.
+    - `ean`: `null` | `string` (optional) — The variant's EAN.
+    - `upc`: `null` | `string` (optional) — The variant's UPC.
+    - `barcode`: `null` | `string` (optional) — The variant's barcode.
+    - `hs_code`: `null` | `string` (optional) — The variant's HS code.
+    - `mid_code`: `null` | `string` (optional) — The variant's MID code.
+    - `allow_backorder`: `boolean` (optional) — Whether the variant can be ordered even if it's out of stock.
+    - `manage_inventory`: `boolean` (optional) — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+    - `variant_rank`: `number` (optional) — The variant's ranking among its sibling variants.
+    - `weight`: `null` | `number` (optional) — The variant's weight.
+    - `length`: `null` | `number` (optional) — The variant's length.
+    - `height`: `null` | `number` (optional) — The variant's height.
+    - `width`: `null` | `number` (optional) — The variant's width.
+    - `origin_country`: `null` | `string` (optional) — The variant's origin country.
+    - `material`: `null` | `string` (optional) — The variant's material.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `prices`: [AdminCreateProductVariantPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantPrice)\[] — The variant's prices.
+    - `inventory_items`: [AdminCreateProductVariantInventoryKit](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantInventoryKit)\[] (optional) — The variant's inventory items. It's only available if `manage_inventory` is enabled.
+    - `options`: `Record<string, string>` (optional) — The variant's values for the associated product's options.
+    - `id`: `string` (optional) — The variant's ID.
+    - `thumbnail`: `null` | `string` (optional) — The variant's thumbnail.
+  - `sales_channels`: `object`\[] (optional) — The sales channels that the product is available in.
+    - `id`: `string` — The ID of a sales channel that the product is available in.
+  - `shipping_profile_id`: `null` | `string` (optional) — The ID of the product's shipping profile.
+  - `weight`: `null` | `number` (optional) — The product's weight.
+  - `length`: `null` | `number` (optional) — The product's length.
+  - `height`: `null` | `number` (optional) — The product's height.
+  - `width`: `null` | `number` (optional) — The product's width.
+  - `hs_code`: `null` | `string` (optional) — The product's HS code.
+  - `mid_code`: `null` | `string` (optional) — The product's MID code.
+  - `origin_country`: `null` | `string` (optional) — The product's origin country.
+  - `material`: `null` | `string` (optional) — The product's material.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `delete`: `string`\[] (optional) — Records to delete in bulk.

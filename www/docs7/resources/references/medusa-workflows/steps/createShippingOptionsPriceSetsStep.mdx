@@ -1,0 +1,63 @@
+---
+title: createShippingOptionsPriceSetsStep - Medusa Core Workflows Reference
+sidebarTitle: createShippingOptionsPriceSetsStep
+---
+
+This documentation provides a reference to the `createShippingOptionsPriceSetsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates price sets for one or more shipping options.
+
+> **Note**
+>
+> Learn more about adding rules to the shipping option's prices in the Pricing Module's
+> [Price Rules](/resources/commerce-modules/pricing/price-rules) documentation.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { createShippingOptionsPriceSetsStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = createShippingOptionsPriceSetsStep({
+      "id": "id_x3SYHsuWb3OIxyM",
+      "prices": [{
+        "currency_code": "cdf",
+        "amount": 11
+      }]
+    })
+  }
+)
+```
+
+<a id="createshippingoptionspricesetsstep-input" />
+
+## Input
+
+**createShippingOptionsPriceSetsStep**
+
+- `CreateShippingOptionsPriceSetsStepInput`: [CreateShippingOptionsPriceSetsStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcCreateShippingOptionsPriceSetsStepInput)
+  - `id`: `string` — The ID of the shipping option.
+  - `prices`: ([ShippingOptionsPriceCurrencyCode](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcShippingOptionsPriceCurrencyCode) | `ShippingOptionsPriceRegionId`)\[] — The prices to create for the shipping option.
+    - `currency_code`: `string` — The currency code of the price.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` — The amount of the price.
+    - `rules`: [PriceRule](/resources/references/pricing/models/PriceRule)\[] (optional) — The rules of the price.
+      - `[IsDmlEntity]`: `boolean` (default: true)
+      - `name`: [InferDmlEntityNameFromConfig](/resources/references/types/DmlTypes/types/typesDmlTypesInferDmlEntityNameFromConfig)\<TConfig>
+      - `schema`: Schema
+
+<a id="createshippingoptionspricesetsstep-output" />
+
+## Output
+
+**createShippingOptionsPriceSetsStep**
+
+- `object[]`: `object`\[]
+  - `id`: `string` — The ID of the shipping option.
+  - `priceSetId`: `string` — The ID of the price set.

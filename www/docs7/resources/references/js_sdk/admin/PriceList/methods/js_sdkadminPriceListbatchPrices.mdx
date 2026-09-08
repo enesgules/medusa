@@ -1,0 +1,120 @@
+---
+title: batchPrices
+---
+
+This method manages the prices of a price list to create, update, or delete them.
+It sends a request to the [Manage Prices](/api/admin/price-lists/manage-prices)
+API route.
+
+## Example
+
+```ts
+sdk.admin.priceList.batchPrices("plist_123", {
+  create: [{
+    variant_id: "variant_123",
+    currency_code: "usd",
+    amount: 10,
+    rules: {
+      region_id: "reg_123"
+    }
+  }],
+  update: [{
+    id: "price_123",
+    variant_id: "variant_123",
+    amount: 20,
+  }],
+  delete: ["price_123"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+<a id="batchprices-parameters" />
+
+## Parameters
+
+**batchPrices**
+
+- `id`: `string` — The price list's ID.
+- `body`: [AdminBatchPriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchPriceListPrice) — The prices to create, update, or delete.
+  - `create`: [AdminCreatePriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreatePriceListPrice)\[] (optional) — The prices to create and add to the price list.
+    - `currency_code`: `string` — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` — The price's amount.
+    - `variant_id`: `string` — The ID of the variant this price applies to.
+    - `min_quantity`: `null` | `number` (optional) — The minimum quantity that must be available in the cart for the price to be applied.
+    - `max_quantity`: `null` | `number` (optional) — The maximum quantity allowed to be available in the cart for the price to be applied.
+    - `rules`: `Record<string, string>` (optional) — The price's rules.
+  - `update`: [AdminUpdatePriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdatePriceListPrice)\[] (optional) — The prices to update in the price list.
+    - `id`: `string` — The ID of the price to update.
+    - `currency_code`: `string` (optional) — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` (optional) — The price's amount.
+    - `variant_id`: `string` — The ID of the variant this price applies to.
+    - `min_quantity`: `null` | `number` (optional) — The minimum quantity that must be available in the cart for the price to be applied.
+    - `max_quantity`: `null` | `number` (optional) — The maximum quantity allowed to be available in the cart for the price to be applied.
+    - `rules`: `Record<string, string>` (optional) — The price's rules.
+  - `delete`: `string`\[] (optional) — The prices to delete from the price list.
+- `query`: [AdminPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListParams) (optional) — Configure the fields to retrieve in the price list.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchprices-returns" />
+
+## Returns
+
+**batchPrices**
+
+- `Promise`: Promise\<[AdminPriceListBatchResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListBatchResponse)> — The price list's details.
+  - `created`: [AdminPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPrice)\[] — The created prices.
+    - `id`: `string` — The price's ID.
+    - `title`: `string` — The price's title.
+    - `currency_code`: `string` — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` — The price's amount.
+    - `raw_amount`: `Record<string, unknown>` — The price's raw amount.
+    - `min_quantity`: `null` | `number` — The minimum quantity that must be available in the cart for the price to be applied.
+    - `max_quantity`: `null` | `number` — The maximum quantity allowed to be available in the cart for the price to be applied.
+    - `price_set_id`: `string` — The ID of the price set this price belongs to.
+    - `created_at`: `string` — The date the price was created.
+    - `updated_at`: `string` — The date the price was updated.
+    - `deleted_at`: `null` | `string` — The date the price was deleted.
+  - `updated`: [AdminPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPrice)\[] — The updated prices.
+    - `id`: `string` — The price's ID.
+    - `title`: `string` — The price's title.
+    - `currency_code`: `string` — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` — The price's amount.
+    - `raw_amount`: `Record<string, unknown>` — The price's raw amount.
+    - `min_quantity`: `null` | `number` — The minimum quantity that must be available in the cart for the price to be applied.
+    - `max_quantity`: `null` | `number` — The maximum quantity allowed to be available in the cart for the price to be applied.
+    - `price_set_id`: `string` — The ID of the price set this price belongs to.
+    - `created_at`: `string` — The date the price was created.
+    - `updated_at`: `string` — The date the price was updated.
+    - `deleted_at`: `null` | `string` — The date the price was deleted.
+  - `deleted`: `object` — Details about the deleted prices.
+    - `ids`: `string`\[]
+    - `object`: `"price"`
+    - `deleted`: `boolean`

@@ -1,0 +1,196 @@
+---
+title: list
+---
+
+This method retrieves a paginated list of shipping option types. It sends a request to the
+[List Shipping Option Types](/api/admin/shipping-option-types/list-shipping-option-types) API route.
+
+## Example
+
+To retrieve the list of shipping option types:
+
+```ts
+sdk.admin.shippingOptionType.list()
+.then(({ shipping_option_types, count, limit, offset }) => {
+  console.log(shipping_option_types)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.shippingOptionType.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ shipping_option_types, count, limit, offset }) => {
+  console.log(shipping_option_types)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each shipping option type:
+
+```ts
+sdk.admin.shippingOptionType.list({
+  fields: "id,*shippingOptions"
+})
+.then(({ shipping_option_types, count, limit, offset }) => {
+  console.log(shipping_option_types)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+## Parameters
+
+**list**
+
+- `query`: [AdminShippingOptionTypeListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeListParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminShippingOptionTypeListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminShippingOptionTypeListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminShippingOptionTypeListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminShippingOptionTypeListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminShippingOptionTypeListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminShippingOptionTypeListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Search term to filter shipping option types by.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the shipping option types by.
+    - `label`: `string` | `string`\[] (optional) — The labels to filter the shipping option types by.
+    - `code`: `string` | `string`\[] (optional) — The codes to filter the shipping option types by.
+    - `description`: `string` | `string`\[] (optional) — The descriptions to filter the shipping option types by.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The creation date to filter the shipping option types by.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The update date to filter the shipping option types by.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The deletion date to filter the shipping option types by.
+  - `$or`: ([AdminShippingOptionTypeListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminShippingOptionTypeListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminShippingOptionTypeListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminShippingOptionTypeListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminShippingOptionTypeListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminShippingOptionTypeListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Search term to filter shipping option types by.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the shipping option types by.
+    - `label`: `string` | `string`\[] (optional) — The labels to filter the shipping option types by.
+    - `code`: `string` | `string`\[] (optional) — The codes to filter the shipping option types by.
+    - `description`: `string` | `string`\[] (optional) — The descriptions to filter the shipping option types by.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The creation date to filter the shipping option types by.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The update date to filter the shipping option types by.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The deletion date to filter the shipping option types by.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Search term to filter shipping option types by.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the shipping option types by.
+  - `label`: `string` | `string`\[] (optional) — The labels to filter the shipping option types by.
+  - `code`: `string` | `string`\[] (optional) — The codes to filter the shipping option types by.
+  - `description`: `string` | `string`\[] (optional) — The descriptions to filter the shipping option types by.
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The creation date to filter the shipping option types by.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The update date to filter the shipping option types by.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The deletion date to filter the shipping option types by.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+## Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminShippingOptionTypeListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionTypeListResponse)> — The paginated list of shipping option types.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `shipping_option_types`: [AdminShippingOptionType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionType)\[] — The list of shipping option types.
+    - `id`: `string` — The ID of the shipping option type.
+    - `label`: `string` — The label of the shipping option type.
+    - `description`: `string` — The description of the shipping option type.
+    - `code`: `string` — The code of the shipping option type.
+    - `shipping_option_id`: `string` — The ID of the shipping option that this type is created for.
+    - `created_at`: `string` — The date when the shipping option type was created.
+    - `updated_at`: `string` — The date when the shipping option type was updated.
+    - `deleted_at`: `null` | `string` — The date when the shipping option type was deleted.

@@ -1,0 +1,489 @@
+---
+title: Upload Files
+---
+
+`POST /admin/uploads`
+
+Upload files to the configured File Module Provider.
+
+## Base URLs
+
+- `http://localhost:9000`
+
+- `https://api.medusajs.com`
+
+## Authentication
+
+```json
+{
+  "api_token": {
+    "type": "http",
+    "x-displayName": "API Token",
+    "scheme": "basic"
+  }
+}
+```
+
+```json
+{
+  "cookie_auth": {
+    "type": "apiKey",
+    "in": "cookie",
+    "name": "connect.sid",
+    "x-displayName": "Cookie Session ID"
+  }
+}
+```
+
+```json
+{
+  "jwt_token": {
+    "type": "http",
+    "x-displayName": "JWT Token",
+    "scheme": "bearer"
+  }
+}
+```
+
+[Authentication guide](/api/admin/authentication)
+
+## Request body
+
+Optional.
+
+### application/json
+
+```json
+{
+  "schema": {
+    "oneOf": [
+      {
+        "type": "object",
+        "description": "The files to upload",
+        "required": [
+          "files"
+        ],
+        "properties": {
+          "files": {
+            "type": "array",
+            "description": "The upload's files.",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "description": "The file's files.",
+                  "required": [
+                    "name",
+                    "content"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "name",
+                      "description": "The file's name."
+                    },
+                    "content": {
+                      "type": "string",
+                      "title": "content",
+                      "description": "The file's content."
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "description": "A File to upload.",
+                  "externalDocs": {
+                    "url": "https://developer.mozilla.org/en-US/docs/Web/API/File",
+                    "description": "Learn more about the File API"
+                  },
+                  "title": "files"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "type": "array",
+        "description": "list of files to upload.",
+        "items": {
+          "type": "object",
+          "description": "A File to upload.",
+          "externalDocs": {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/API/File",
+            "description": "Learn more about the File API"
+          }
+        },
+        "title": "FileList"
+      }
+    ],
+    "description": "The files to upload."
+  }
+}
+```
+
+## Responses
+
+<Accordion title="200 — OK">
+  OK
+
+  ```json
+  {
+    "description": "OK",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/AdminFileListResponse"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminFileListResponse](/api/schemas/admin-file-list-response)
+</Accordion>
+
+<Accordion title="400 — Client Error">
+  Client Error
+
+  ```json
+  {
+    "description": "Client Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "not_allowed": {
+            "$ref": "#/components/examples/not_allowed_error"
+          },
+          "invalid_data": {
+            "$ref": "#/components/examples/invalid_data_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="401 — User is not authorized. Must log in first">
+  User is not authorized. Must log in first
+
+  ```json
+  {
+    "description": "User is not authorized. Must log in first",
+    "content": {
+      "text/plain": {
+        "schema": {
+          "type": "string",
+          "default": "Unauthorized",
+          "example": "Unauthorized"
+        }
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Not Found Error">
+  Not Found Error
+
+  ```json
+  {
+    "description": "Not Found Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "message": "Entity with id 1 was not found",
+          "type": "not_found"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="409 — Invalid State Error">
+  Invalid State Error
+
+  ```json
+  {
+    "description": "Invalid State Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "unknown_error",
+          "message": "The request conflicted with another request. You may retry the request with the provided Idempotency-Key.",
+          "type": "QueryRunnerAlreadyReleasedError"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="422 — Invalid Request Error">
+  Invalid Request Error
+
+  ```json
+  {
+    "description": "Invalid Request Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "invalid_request_error",
+          "message": "Discount with code TEST already exists.",
+          "type": "duplicate_error"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="500 — Server Error">
+  Server Error
+
+  ```json
+  {
+    "description": "Server Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "database": {
+            "$ref": "#/components/examples/database_error"
+          },
+          "unexpected_state": {
+            "$ref": "#/components/examples/unexpected_state_error"
+          },
+          "invalid_argument": {
+            "$ref": "#/components/examples/invalid_argument_error"
+          },
+          "default_error": {
+            "$ref": "#/components/examples/default_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+## Examples
+
+### JS SDK
+
+```js
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+  debug: import.meta.env.DEV,
+  auth: {
+    type: "session",
+  },
+})
+
+sdk.admin.upload.create(
+  {
+    files: [
+       // file uploaded as a binary string
+      {
+        name: "test.txt",
+        content: "test", // Should be the binary string of the file
+      },
+      // file uploaded as a File object
+      new File(["test"], "test.txt", { type: "text/plain" })
+    ],
+  }
+)
+.then(({ files }) => {
+  console.log(files)
+})
+```
+
+### cURL
+
+```bash
+curl -X POST '{backend_url}/admin/uploads' \
+-H 'Authorization: Bearer {jwt_token}'
+```
+
+<Accordion title="OpenAPI operation">
+  ```json
+  {
+    "operationId": "PostUploads",
+    "summary": "Upload Files",
+    "description": "Upload files to the configured File Module Provider.",
+    "x-authenticated": true,
+    "security": [
+      {
+        "api_token": []
+      },
+      {
+        "cookie_auth": []
+      },
+      {
+        "jwt_token": []
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "The files to upload",
+                "required": [
+                  "files"
+                ],
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "description": "The upload's files.",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "description": "The file's files.",
+                          "required": [
+                            "name",
+                            "content"
+                          ],
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "title": "name",
+                              "description": "The file's name."
+                            },
+                            "content": {
+                              "type": "string",
+                              "title": "content",
+                              "description": "The file's content."
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "description": "A File to upload.",
+                          "externalDocs": {
+                            "url": "https://developer.mozilla.org/en-US/docs/Web/API/File",
+                            "description": "Learn more about the File API"
+                          },
+                          "title": "files"
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "description": "list of files to upload.",
+                "items": {
+                  "type": "object",
+                  "description": "A File to upload.",
+                  "externalDocs": {
+                    "url": "https://developer.mozilla.org/en-US/docs/Web/API/File",
+                    "description": "Learn more about the File API"
+                  }
+                },
+                "title": "FileList"
+              }
+            ],
+            "description": "The files to upload."
+          }
+        }
+      }
+    },
+    "x-codeSamples": [
+      {
+        "lang": "JavaScript",
+        "label": "JS SDK",
+        "source": "import Medusa from \"@medusajs/js-sdk\"\n\nexport const sdk = new Medusa({\n  baseUrl: import.meta.env.VITE_BACKEND_URL || \"/\",\n  debug: import.meta.env.DEV,\n  auth: {\n    type: \"session\",\n  },\n})\n\nsdk.admin.upload.create(\n  {\n    files: [\n       // file uploaded as a binary string\n      {\n        name: \"test.txt\",\n        content: \"test\", // Should be the binary string of the file\n      },\n      // file uploaded as a File object\n      new File([\"test\"], \"test.txt\", { type: \"text/plain\" })\n    ],\n  }\n)\n.then(({ files }) => {\n  console.log(files)\n})"
+      },
+      {
+        "lang": "Shell",
+        "label": "cURL",
+        "source": "curl -X POST '{backend_url}/admin/uploads' \\\n-H 'Authorization: Bearer {jwt_token}'"
+      }
+    ],
+    "tags": [
+      "Uploads"
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AdminFileListResponse"
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/400_error"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "404": {
+        "$ref": "#/components/responses/not_found_error"
+      },
+      "409": {
+        "$ref": "#/components/responses/invalid_state_error"
+      },
+      "422": {
+        "$ref": "#/components/responses/invalid_request_error"
+      },
+      "500": {
+        "$ref": "#/components/responses/500_error"
+      }
+    },
+    "x-workflow": "uploadFilesWorkflow",
+    "x-events": []
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminFileListResponse](/api/schemas/admin-file-list-response)
+</Accordion>

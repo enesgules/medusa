@@ -1,0 +1,314 @@
+---
+title: SearchBuilder
+---
+
+Builder that exposes the search fields DSL — analogous to DML's EntityBuilder,
+but only for index field schemas (registration stays on `defineSearchIndex`).
+
+## constructor
+
+## Methods
+
+### define
+
+Define a search fields schema. Pass the result as `fields` to
+`defineSearchIndex`. Does not register anything.
+
+#### Example
+
+```ts
+defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable({ weight: 3 }),
+  }),
+  async *seed() {},
+})
+```
+
+<a id="define-type-parameters" />
+
+#### Type Parameters
+
+**define**
+
+- `Schema`: [SearchSchema](/resources/references/types/SearchTypes/types/typesSearchTypesSearchSchema) (optional)
+  - `$dataType`: T
+  - `$dataType`: T
+
+<a id="define-parameters" />
+
+#### Parameters
+
+**define**
+
+- `schema`: Schema
+
+<a id="define-returns" />
+
+#### Returns
+
+**define**
+
+- `SearchFieldsSchema`: [SearchFieldsSchema](/resources/references/utils/SearchUtils/classes/utilsSearchUtilsSearchFieldsSchema)\<Schema> — Define a search fields schema. Pass the result as `fields` to `defineSearchIndex`. Does not register anything.
+
+### keyword
+
+<a id="keyword-returns" />
+
+#### Returns
+
+**keyword**
+
+- `constructor`: () => [KeywordProperty](/resources/references/utils/classes/utilsKeywordProperty)
+- `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+- `#retrievable`: `boolean` (optional)
+- `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+- `retrievable`: (`value`: `boolean`) => [KeywordProperty](/resources/references/utils/classes/utilsKeywordProperty)
+- `providerOptions`: (`options`: `Record<string, Record<string, unknown>>`) => [KeywordProperty](/resources/references/utils/classes/utilsKeywordProperty)
+- `#filterable`: `boolean` (optional)
+- `#sortable`: `boolean` (optional)
+- `#facetable`: `boolean` | `object` (optional)
+  - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+- `#array`: `boolean` (optional)
+- `filterable`: (`value`: `boolean`) => [KeywordProperty](/resources/references/utils/classes/utilsKeywordProperty)
+- `sortable`: (`value`: `boolean`) => [KeywordProperty](/resources/references/utils/classes/utilsKeywordProperty)
+- `facetable`: (`value`: `boolean`) => [KeywordProperty](/resources/references/utils/classes/utilsKeywordProperty)
+- `setFacetable`: (`value`: `boolean` | `{ types?: [SearchFacetKind](/references/types/SearchTypes/types/types.SearchTypes.SearchFacetKind)[]  }`) => `void`
+- `array`: () => [KeywordProperty](/resources/references/utils/classes/utilsKeywordProperty) & [SearchArrayMarker](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchArrayMarker)
+- `#searchable`: `boolean` | `object` (optional)
+  - `weight`: `number` (optional)
+- `searchable`: (`value`: `boolean` | `{ weight?: number  }`) => [KeywordProperty](/resources/references/utils/classes/utilsKeywordProperty)
+- `parse`: (`fieldName`: `string`) => [SearchPropertyMetadata](/resources/references/types/SearchTypes/types/typesSearchTypesSearchPropertyMetadata)\<string>
+- `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `name`: `"keyword"`
+  - `options`: `Record<string, any>` (optional)
+
+### text
+
+<a id="text-returns" />
+
+#### Returns
+
+**text**
+
+- `constructor`: () => [TextProperty](/resources/references/utils/classes/utilsTextProperty)
+- `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+- `#retrievable`: `boolean` (optional)
+- `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+- `retrievable`: (`value`: `boolean`) => [TextProperty](/resources/references/utils/classes/utilsTextProperty)
+- `providerOptions`: (`options`: `Record<string, Record<string, unknown>>`) => [TextProperty](/resources/references/utils/classes/utilsTextProperty)
+- `#filterable`: `boolean` (optional)
+- `#sortable`: `boolean` (optional)
+- `#facetable`: `boolean` | `object` (optional)
+  - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+- `#array`: `boolean` (optional)
+- `filterable`: (`value`: `boolean`) => [TextProperty](/resources/references/utils/classes/utilsTextProperty)
+- `sortable`: (`value`: `boolean`) => [TextProperty](/resources/references/utils/classes/utilsTextProperty)
+- `facetable`: (`value`: `boolean`) => [TextProperty](/resources/references/utils/classes/utilsTextProperty)
+- `setFacetable`: (`value`: `boolean` | `{ types?: [SearchFacetKind](/references/types/SearchTypes/types/types.SearchTypes.SearchFacetKind)[]  }`) => `void`
+- `array`: () => [TextProperty](/resources/references/utils/classes/utilsTextProperty) & [SearchArrayMarker](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchArrayMarker)
+- `#searchable`: `boolean` | `object` (optional)
+  - `weight`: `number` (optional)
+- `searchable`: (`value`: `boolean` | `{ weight?: number  }`) => [TextProperty](/resources/references/utils/classes/utilsTextProperty)
+- `parse`: (`fieldName`: `string`) => [SearchPropertyMetadata](/resources/references/types/SearchTypes/types/typesSearchTypesSearchPropertyMetadata)\<string>
+- `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `name`: `"text"`
+  - `options`: `Record<string, any>` (optional)
+
+### integer
+
+<a id="integer-returns" />
+
+#### Returns
+
+**integer**
+
+- `constructor`: () => [IntegerProperty](/resources/references/utils/classes/utilsIntegerProperty)
+- `$dataType`: `number` — A type-only property to infer the JavaScript data-type of the schema property
+- `#retrievable`: `boolean` (optional)
+- `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+- `retrievable`: (`value`: `boolean`) => [IntegerProperty](/resources/references/utils/classes/utilsIntegerProperty)
+- `providerOptions`: (`options`: `Record<string, Record<string, unknown>>`) => [IntegerProperty](/resources/references/utils/classes/utilsIntegerProperty)
+- `#filterable`: `boolean` (optional)
+- `#sortable`: `boolean` (optional)
+- `#facetable`: `boolean` | `object` (optional)
+  - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+- `#array`: `boolean` (optional)
+- `filterable`: (`value`: `boolean`) => [IntegerProperty](/resources/references/utils/classes/utilsIntegerProperty)
+- `sortable`: (`value`: `boolean`) => [IntegerProperty](/resources/references/utils/classes/utilsIntegerProperty)
+- `setFacetable`: (`value`: `boolean` | `{ types?: [SearchFacetKind](/references/types/SearchTypes/types/types.SearchTypes.SearchFacetKind)[]  }`) => `void`
+- `array`: () => [IntegerProperty](/resources/references/utils/classes/utilsIntegerProperty) & [SearchArrayMarker](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchArrayMarker)
+- `parse`: (`fieldName`: `string`) => [SearchPropertyMetadata](/resources/references/types/SearchTypes/types/typesSearchTypesSearchPropertyMetadata)\<number>
+- `facetable`: (`value`: `boolean` | `{ types?: [SearchFacetKind](/references/types/SearchTypes/types/types.SearchTypes.SearchFacetKind)[]  }`) => [IntegerProperty](/resources/references/utils/classes/utilsIntegerProperty)
+- `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `name`: `"integer"`
+  - `options`: `Record<string, any>` (optional)
+
+### float
+
+<a id="float-returns" />
+
+#### Returns
+
+**float**
+
+- `constructor`: () => [FloatProperty](/resources/references/utils/classes/utilsFloatProperty)
+- `$dataType`: `number` — A type-only property to infer the JavaScript data-type of the schema property
+- `#retrievable`: `boolean` (optional)
+- `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+- `retrievable`: (`value`: `boolean`) => [FloatProperty](/resources/references/utils/classes/utilsFloatProperty)
+- `providerOptions`: (`options`: `Record<string, Record<string, unknown>>`) => [FloatProperty](/resources/references/utils/classes/utilsFloatProperty)
+- `#filterable`: `boolean` (optional)
+- `#sortable`: `boolean` (optional)
+- `#facetable`: `boolean` | `object` (optional)
+  - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+- `#array`: `boolean` (optional)
+- `filterable`: (`value`: `boolean`) => [FloatProperty](/resources/references/utils/classes/utilsFloatProperty)
+- `sortable`: (`value`: `boolean`) => [FloatProperty](/resources/references/utils/classes/utilsFloatProperty)
+- `setFacetable`: (`value`: `boolean` | `{ types?: [SearchFacetKind](/references/types/SearchTypes/types/types.SearchTypes.SearchFacetKind)[]  }`) => `void`
+- `array`: () => [FloatProperty](/resources/references/utils/classes/utilsFloatProperty) & [SearchArrayMarker](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchArrayMarker)
+- `parse`: (`fieldName`: `string`) => [SearchPropertyMetadata](/resources/references/types/SearchTypes/types/typesSearchTypesSearchPropertyMetadata)\<number>
+- `facetable`: (`value`: `boolean` | `{ types?: [SearchFacetKind](/references/types/SearchTypes/types/types.SearchTypes.SearchFacetKind)[]  }`) => [FloatProperty](/resources/references/utils/classes/utilsFloatProperty)
+- `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `name`: `"float"`
+  - `options`: `Record<string, any>` (optional)
+
+### boolean
+
+<a id="boolean-returns" />
+
+#### Returns
+
+**boolean**
+
+- `constructor`: () => [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty)
+- `$dataType`: `boolean` — A type-only property to infer the JavaScript data-type of the schema property
+- `#retrievable`: `boolean` (optional)
+- `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+- `retrievable`: (`value`: `boolean`) => [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty)
+- `providerOptions`: (`options`: `Record<string, Record<string, unknown>>`) => [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty)
+- `#filterable`: `boolean` (optional)
+- `#sortable`: `boolean` (optional)
+- `#facetable`: `boolean` | `object` (optional)
+  - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+- `#array`: `boolean` (optional)
+- `filterable`: (`value`: `boolean`) => [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty)
+- `sortable`: (`value`: `boolean`) => [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty)
+- `facetable`: (`value`: `boolean`) => [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty)
+- `setFacetable`: (`value`: `boolean` | `{ types?: [SearchFacetKind](/references/types/SearchTypes/types/types.SearchTypes.SearchFacetKind)[]  }`) => `void`
+- `array`: () => [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) & [SearchArrayMarker](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchArrayMarker)
+- `parse`: (`fieldName`: `string`) => [SearchPropertyMetadata](/resources/references/types/SearchTypes/types/typesSearchTypesSearchPropertyMetadata)\<boolean>
+- `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `name`: `"boolean"`
+  - `options`: `Record<string, any>` (optional)
+
+### date
+
+<a id="date-returns" />
+
+#### Returns
+
+**date**
+
+- `constructor`: () => [DateProperty](/resources/references/utils/classes/utilsDateProperty)
+- `$dataType`: `string` | `Date` — A type-only property to infer the JavaScript data-type of the schema property
+- `#retrievable`: `boolean` (optional)
+- `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+- `retrievable`: (`value`: `boolean`) => [DateProperty](/resources/references/utils/classes/utilsDateProperty)
+- `providerOptions`: (`options`: `Record<string, Record<string, unknown>>`) => [DateProperty](/resources/references/utils/classes/utilsDateProperty)
+- `#filterable`: `boolean` (optional)
+- `#sortable`: `boolean` (optional)
+- `#facetable`: `boolean` | `object` (optional)
+  - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+- `#array`: `boolean` (optional)
+- `filterable`: (`value`: `boolean`) => [DateProperty](/resources/references/utils/classes/utilsDateProperty)
+- `sortable`: (`value`: `boolean`) => [DateProperty](/resources/references/utils/classes/utilsDateProperty)
+- `setFacetable`: (`value`: `boolean` | `{ types?: [SearchFacetKind](/references/types/SearchTypes/types/types.SearchTypes.SearchFacetKind)[]  }`) => `void`
+- `array`: () => [DateProperty](/resources/references/utils/classes/utilsDateProperty) & [SearchArrayMarker](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchArrayMarker)
+- `parse`: (`fieldName`: `string`) => [SearchPropertyMetadata](/resources/references/types/SearchTypes/types/typesSearchTypesSearchPropertyMetadata)\<string | Date>
+- `facetable`: (`value`: `boolean` | `{ types?: [SearchFacetKind](/references/types/SearchTypes/types/types.SearchTypes.SearchFacetKind)[]  }`) => [DateProperty](/resources/references/utils/classes/utilsDateProperty)
+- `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `name`: `"date"`
+  - `options`: `Record<string, any>` (optional)
+
+### geo
+
+<a id="geo-returns" />
+
+#### Returns
+
+**geo**
+
+- `constructor`: () => [GeoProperty](/resources/references/utils/classes/utilsGeoProperty)
+- `$dataType`: `object` — A type-only property to infer the JavaScript data-type of the schema property
+  - `lat`: `number`
+  - `lng`: `number`
+- `#retrievable`: `boolean` (optional)
+- `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+- `retrievable`: (`value`: `boolean`) => [GeoProperty](/resources/references/utils/classes/utilsGeoProperty)
+- `providerOptions`: (`options`: `Record<string, Record<string, unknown>>`) => [GeoProperty](/resources/references/utils/classes/utilsGeoProperty)
+- `#filterable`: `boolean` (optional)
+- `#sortable`: `boolean` (optional)
+- `#facetable`: `boolean` | `object` (optional)
+  - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+- `#array`: `boolean` (optional)
+- `filterable`: (`value`: `boolean`) => [GeoProperty](/resources/references/utils/classes/utilsGeoProperty)
+- `sortable`: (`value`: `boolean`) => [GeoProperty](/resources/references/utils/classes/utilsGeoProperty)
+- `facetable`: (`value`: `boolean`) => [GeoProperty](/resources/references/utils/classes/utilsGeoProperty)
+- `setFacetable`: (`value`: `boolean` | `{ types?: [SearchFacetKind](/references/types/SearchTypes/types/types.SearchTypes.SearchFacetKind)[]  }`) => `void`
+- `array`: () => [GeoProperty](/resources/references/utils/classes/utilsGeoProperty) & [SearchArrayMarker](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchArrayMarker)
+- `parse`: (`fieldName`: `string`) => [SearchPropertyMetadata](/resources/references/types/SearchTypes/types/typesSearchTypesSearchPropertyMetadata)\<\{ lat: number ; lng: number  }>
+- `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `name`: `"geo"`
+  - `options`: `Record<string, any>` (optional)
+
+### object
+
+<a id="object-type-parameters" />
+
+#### Type Parameters
+
+**object**
+
+- `Schema`: [SearchSchema](/resources/references/types/SearchTypes/types/typesSearchTypesSearchSchema) (optional)
+  - `$dataType`: T
+  - `$dataType`: T
+
+<a id="object-parameters" />
+
+#### Parameters
+
+**object**
+
+- `schema`: Schema
+
+<a id="object-returns" />
+
+#### Returns
+
+**object**
+
+- `ObjectProperty`: [ObjectProperty](/resources/references/utils/classes/utilsObjectProperty)\<Schema>
+
+### vector
+
+<a id="vector-parameters" />
+
+#### Parameters
+
+**vector**
+
+- `dimensions`: `number`
+
+<a id="vector-returns" />
+
+#### Returns
+
+**vector**
+
+- `VectorProperty`: [VectorProperty](/resources/references/utils/classes/utilsVectorProperty)\<number\[]>
+  - `number[]`: `number`\[]
+    - `number`: `number`

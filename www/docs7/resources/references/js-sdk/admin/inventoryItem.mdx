@@ -1,0 +1,1111 @@
+---
+title: inventoryItem - JS SDK Admin Reference
+sidebarTitle: inventoryItem
+---
+
+This documentation provides a reference to the `sdk.admin.inventoryItem` set of methods used to send requests to Medusa's Admin API routes.
+
+## create
+
+This method creates an inventory item. It sends a request to the
+[Create Inventory Item](/api/admin/inventory-items/create-inventory-item)
+API route.
+
+### Example
+
+```ts
+sdk.admin.inventoryItem.create({
+  sku: "SHIRT"
+})
+.then(({ inventory_item }) => {
+  console.log(inventory_item)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [AdminCreateInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateInventoryItem) — The inventory item's details.
+  - `sku`: `null` | `string` (optional) — The inventory item's SKU.
+  - `hs_code`: `null` | `string` (optional) — The inventory item's HS code.
+  - `weight`: `null` | `number` (optional) — The inventory item's weight.
+  - `length`: `null` | `number` (optional) — The inventory item's length.
+  - `height`: `null` | `number` (optional) — The inventory item's height.
+  - `width`: `null` | `number` (optional) — The inventory item's width.
+  - `origin_country`: `null` | `string` (optional) — The inventory item's origin country.
+  - `mid_code`: `null` | `string` (optional) — The inventory item's MID code.
+  - `material`: `null` | `string` (optional) — The inventory item's material.
+  - `unit_of_measure`: `null` | `string` (optional) — The unit of measure of the inventory item's quantities, such as `lb` or `kg`.
+  - `title`: `null` | `string` (optional) — The inventory item's title.
+  - `description`: `null` | `string` (optional) — The inventory item's description.
+  - `requires_shipping`: `boolean` (optional) — Whether the inventory item requires shipping.
+  - `thumbnail`: `null` | `string` (optional) — The inventory item's thumbnail URL.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `location_levels`: [AdminBatchCreateInventoryItemLocationLevels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchCreateInventoryItemLocationLevels)\[] (optional) — The inventory item's location levels.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` (optional) — The associated inventory item's stocked quantity in the associated stock location.
+    - `incoming_quantity`: `number` (optional) — The associated inventory item's incoming quantity in the associated stock location.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the inventory item.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminInventoryItemResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemResponse)> — The inventory item's details.
+
+  Deprecated: Use `batchInventoryItemLocationLevels` instead.
+
+  - `inventory_item`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem) — The inventory item's details.
+    - `id`: `string` — The inventory item's ID.
+    - `sku`: `null` | `string` (optional) — The inventory item's SKU.
+    - `origin_country`: `null` | `string` (optional) — The inventory item's origin country.
+    - `hs_code`: `null` | `string` (optional) — The inventory item's HS code.
+    - `requires_shipping`: `boolean` — Whether the item requires shipping.
+    - `mid_code`: `null` | `string` (optional) — The inventory item's MID code.
+    - `material`: `null` | `string` (optional) — The inventory item's material.
+    - `unit_of_measure`: `null` | `string` (optional) — The unit of measure of the inventory item's quantities, such as `lb` or `kg`.
+    - `weight`: `null` | `number` (optional) — The inventory item's weight.
+    - `length`: `null` | `number` (optional) — The inventory item's length.
+    - `height`: `null` | `number` (optional) — The inventory item's height.
+    - `width`: `null` | `number` (optional) — The inventory item's width.
+    - `title`: `null` | `string` (optional) — The inventory item's title.
+    - `description`: `null` | `string` (optional) — The inventory item's description.
+    - `thumbnail`: `null` | `string` (optional) — The inventory item's thumbnail URL.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `location_levels`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The item's associated inventory levels.
+    - `stocked_quantity`: `number` — The total quantity of the inventory item that is stocked across all locations.
+    - `reserved_quantity`: `number` — The total quantity of the inventory item that is reserved across all locations.
+
+## update
+
+This method updates an inventory level. It sends a request to the
+[Update Inventory Item](/api/admin/inventory-items/update-an-inventory-item)
+API route.
+
+### Example
+
+```ts
+sdk.admin.inventoryItem.update("iitem_123", {
+  sku: "SHIRT"
+})
+.then(({ inventory_item }) => {
+  console.log(inventory_item)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `id`: `string` — The inventory item's ID.
+- `body`: [AdminUpdateInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateInventoryItem) — The data to update.
+  - `sku`: `null` | `string` (optional) — The inventory item's SKU.
+  - `hs_code`: `null` | `string` (optional) — The inventory item's HS code.
+  - `weight`: `null` | `number` (optional) — The inventory item's weight.
+  - `length`: `null` | `number` (optional) — The inventory item's length.
+  - `height`: `null` | `number` (optional) — The inventory item's height.
+  - `width`: `null` | `number` (optional) — The inventory item's width.
+  - `origin_country`: `null` | `string` (optional) — The inventory item's origin country.
+  - `mid_code`: `null` | `string` (optional) — The inventory item's MID code.
+  - `material`: `null` | `string` (optional) — The inventory item's material.
+  - `unit_of_measure`: `null` | `string` (optional) — The unit of measure of the inventory item's quantities, such as `lb` or `kg`.
+  - `title`: `null` | `string` (optional) — The inventory item's title.
+  - `description`: `null` | `string` (optional) — The inventory item's description.
+  - `requires_shipping`: `boolean` (optional) — Whether the inventory item requires shipping.
+  - `thumbnail`: `null` | `string` (optional) — The inventory item's thumbnail URL.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the inventory item.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminInventoryItemResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemResponse)> — The inventory item's details.
+  - `inventory_item`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem) — The inventory item's details.
+    - `id`: `string` — The inventory item's ID.
+    - `sku`: `null` | `string` (optional) — The inventory item's SKU.
+    - `origin_country`: `null` | `string` (optional) — The inventory item's origin country.
+    - `hs_code`: `null` | `string` (optional) — The inventory item's HS code.
+    - `requires_shipping`: `boolean` — Whether the item requires shipping.
+    - `mid_code`: `null` | `string` (optional) — The inventory item's MID code.
+    - `material`: `null` | `string` (optional) — The inventory item's material.
+    - `unit_of_measure`: `null` | `string` (optional) — The unit of measure of the inventory item's quantities, such as `lb` or `kg`.
+    - `weight`: `null` | `number` (optional) — The inventory item's weight.
+    - `length`: `null` | `number` (optional) — The inventory item's length.
+    - `height`: `null` | `number` (optional) — The inventory item's height.
+    - `width`: `null` | `number` (optional) — The inventory item's width.
+    - `title`: `null` | `string` (optional) — The inventory item's title.
+    - `description`: `null` | `string` (optional) — The inventory item's description.
+    - `thumbnail`: `null` | `string` (optional) — The inventory item's thumbnail URL.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `location_levels`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The item's associated inventory levels.
+    - `stocked_quantity`: `number` — The total quantity of the inventory item that is stocked across all locations.
+    - `reserved_quantity`: `number` — The total quantity of the inventory item that is reserved across all locations.
+
+## export
+
+This method exports inventory items to a CSV file. The CSV file includes the
+inventory levels of each item per stock location. It sends a request to the
+[Export Inventory Items](/api/admin/inventory-items/export-inventory-items)
+API route.
+
+The export is processed asynchronously. Once it's done, admin users receive
+a notification with the URL to download the exported file.
+
+### Example
+
+```ts
+sdk.admin.inventoryItem.export({})
+.then(({ transaction_id }) => {
+  console.log(transaction_id)
+})
+```
+
+<a id="export-parameters" />
+
+### Parameters
+
+**export**
+
+- `body`: [AdminExportInventoryItemRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminExportInventoryItemRequest) — The export's details.
+- `query`: [AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) (optional) — Filters to select which inventory items to export.
+  - `$and`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by inventory item ID(s).
+    - `q`: `string` (optional) — Query or keywords to search the inventory item's searchable fields.
+    - `sku`: `string` | `string`\[] (optional) — Filter by SKU(s).
+    - `origin_country`: `string` | `string`\[] (optional) — Filter by origin countries.
+    - `mid_code`: `string` | `string`\[] (optional) — Filter by MID code(s).
+    - `hs_code`: `string` | `string`\[] (optional) — Filter by HS code(s).
+    - `material`: `string` | `string`\[] (optional) — Filter by material(s).
+    - `requires_shipping`: `boolean` (optional) — Filter by whether the item requires shipping.
+    - `weight`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by weight(s).
+    - `length`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by length(s).
+    - `height`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by height(s).
+    - `width`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by width(s).
+    - `location_levels`: `object` (optional) — Filter by stock location IDs to retrieve inventory items that have inventory levels associated with the locations.
+  - `$or`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by inventory item ID(s).
+    - `q`: `string` (optional) — Query or keywords to search the inventory item's searchable fields.
+    - `sku`: `string` | `string`\[] (optional) — Filter by SKU(s).
+    - `origin_country`: `string` | `string`\[] (optional) — Filter by origin countries.
+    - `mid_code`: `string` | `string`\[] (optional) — Filter by MID code(s).
+    - `hs_code`: `string` | `string`\[] (optional) — Filter by HS code(s).
+    - `material`: `string` | `string`\[] (optional) — Filter by material(s).
+    - `requires_shipping`: `boolean` (optional) — Filter by whether the item requires shipping.
+    - `weight`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by weight(s).
+    - `length`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by length(s).
+    - `height`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by height(s).
+    - `width`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by width(s).
+    - `location_levels`: `object` (optional) — Filter by stock location IDs to retrieve inventory items that have inventory levels associated with the locations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `id`: `string` | `string`\[] (optional) — Filter by inventory item ID(s).
+  - `q`: `string` (optional) — Query or keywords to search the inventory item's searchable fields.
+  - `sku`: `string` | `string`\[] (optional) — Filter by SKU(s).
+  - `origin_country`: `string` | `string`\[] (optional) — Filter by origin countries.
+  - `mid_code`: `string` | `string`\[] (optional) — Filter by MID code(s).
+  - `hs_code`: `string` | `string`\[] (optional) — Filter by HS code(s).
+  - `material`: `string` | `string`\[] (optional) — Filter by material(s).
+  - `requires_shipping`: `boolean` (optional) — Filter by whether the item requires shipping.
+  - `weight`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by weight(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `length`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by length(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `height`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by height(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `width`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by width(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `location_levels`: `object` (optional) — Filter by stock location IDs to retrieve inventory items that have inventory levels associated with the locations.
+    - `location_id`: `string` | `string`\[] (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="export-returns" />
+
+### Returns
+
+**export**
+
+- `Promise`: Promise\<[AdminExportInventoryItemResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminExportInventoryItemResponse)> — The ID of the workflow transaction processing the export.
+  - `transaction_id`: `string` — The ID of the export inventory items workflow's transaction.
+
+## list
+
+This method retrieves a paginated list of inventory items. It sends a request to the
+[List Inventory Items](/api/admin/inventory-items/list-inventory-items)
+API route.
+
+### Example
+
+To retrieve the list of inventory items:
+
+```ts
+sdk.admin.inventoryItem.list()
+.then(({ inventory_items, count, limit, offset }) => {
+  console.log(inventory_items)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.inventoryItem.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ inventory_items, count, limit, offset }) => {
+  console.log(inventory_items)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each inventory item:
+
+```ts
+sdk.admin.inventoryItem.list({
+  fields: "id,*location_levels"
+})
+.then(({ inventory_items, count, limit, offset }) => {
+  console.log(inventory_items)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by inventory item ID(s).
+    - `q`: `string` (optional) — Query or keywords to search the inventory item's searchable fields.
+    - `sku`: `string` | `string`\[] (optional) — Filter by SKU(s).
+    - `origin_country`: `string` | `string`\[] (optional) — Filter by origin countries.
+    - `mid_code`: `string` | `string`\[] (optional) — Filter by MID code(s).
+    - `hs_code`: `string` | `string`\[] (optional) — Filter by HS code(s).
+    - `material`: `string` | `string`\[] (optional) — Filter by material(s).
+    - `requires_shipping`: `boolean` (optional) — Filter by whether the item requires shipping.
+    - `weight`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by weight(s).
+    - `length`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by length(s).
+    - `height`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by height(s).
+    - `width`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by width(s).
+    - `location_levels`: `object` (optional) — Filter by stock location IDs to retrieve inventory items that have inventory levels associated with the locations.
+  - `$or`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminInventoryItemsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by inventory item ID(s).
+    - `q`: `string` (optional) — Query or keywords to search the inventory item's searchable fields.
+    - `sku`: `string` | `string`\[] (optional) — Filter by SKU(s).
+    - `origin_country`: `string` | `string`\[] (optional) — Filter by origin countries.
+    - `mid_code`: `string` | `string`\[] (optional) — Filter by MID code(s).
+    - `hs_code`: `string` | `string`\[] (optional) — Filter by HS code(s).
+    - `material`: `string` | `string`\[] (optional) — Filter by material(s).
+    - `requires_shipping`: `boolean` (optional) — Filter by whether the item requires shipping.
+    - `weight`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by weight(s).
+    - `length`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by length(s).
+    - `height`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by height(s).
+    - `width`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by width(s).
+    - `location_levels`: `object` (optional) — Filter by stock location IDs to retrieve inventory items that have inventory levels associated with the locations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `id`: `string` | `string`\[] (optional) — Filter by inventory item ID(s).
+  - `q`: `string` (optional) — Query or keywords to search the inventory item's searchable fields.
+  - `sku`: `string` | `string`\[] (optional) — Filter by SKU(s).
+  - `origin_country`: `string` | `string`\[] (optional) — Filter by origin countries.
+  - `mid_code`: `string` | `string`\[] (optional) — Filter by MID code(s).
+  - `hs_code`: `string` | `string`\[] (optional) — Filter by HS code(s).
+  - `material`: `string` | `string`\[] (optional) — Filter by material(s).
+  - `requires_shipping`: `boolean` (optional) — Filter by whether the item requires shipping.
+  - `weight`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by weight(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `length`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by length(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `height`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by height(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `width`: `number` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<number> (optional) — Filter by width(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `location_levels`: `object` (optional) — Filter by stock location IDs to retrieve inventory items that have inventory levels associated with the locations.
+    - `location_id`: `string` | `string`\[] (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminInventoryItemListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminInventoryItemListResponse)> — The paginated list of inventory items.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## retrieve
+
+This method retrieves an inventory item by its ID. It sends a request to the
+[Get Inventory Item](/api/admin/inventory-items/get-a-inventory-item) API route.
+
+### Example
+
+To retrieve an inventory item by its ID:
+
+```ts
+sdk.admin.inventoryItem.retrieve("iitem_123")
+.then(({ inventory_item }) => {
+  console.log(inventory_item)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.inventoryItem.retrieve("iitem_123", {
+  fields: "id,*location_levels"
+})
+.then(({ inventory_item }) => {
+  console.log(inventory_item)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The inventory item's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the inventory item.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminInventoryItemResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemResponse)> — The inventory item's details.
+  - `inventory_item`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem) — The inventory item's details.
+    - `id`: `string` — The inventory item's ID.
+    - `sku`: `null` | `string` (optional) — The inventory item's SKU.
+    - `origin_country`: `null` | `string` (optional) — The inventory item's origin country.
+    - `hs_code`: `null` | `string` (optional) — The inventory item's HS code.
+    - `requires_shipping`: `boolean` — Whether the item requires shipping.
+    - `mid_code`: `null` | `string` (optional) — The inventory item's MID code.
+    - `material`: `null` | `string` (optional) — The inventory item's material.
+    - `unit_of_measure`: `null` | `string` (optional) — The unit of measure of the inventory item's quantities, such as `lb` or `kg`.
+    - `weight`: `null` | `number` (optional) — The inventory item's weight.
+    - `length`: `null` | `number` (optional) — The inventory item's length.
+    - `height`: `null` | `number` (optional) — The inventory item's height.
+    - `width`: `null` | `number` (optional) — The inventory item's width.
+    - `title`: `null` | `string` (optional) — The inventory item's title.
+    - `description`: `null` | `string` (optional) — The inventory item's description.
+    - `thumbnail`: `null` | `string` (optional) — The inventory item's thumbnail URL.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `location_levels`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The item's associated inventory levels.
+    - `stocked_quantity`: `number` — The total quantity of the inventory item that is stocked across all locations.
+    - `reserved_quantity`: `number` — The total quantity of the inventory item that is reserved across all locations.
+
+## delete
+
+This method deletes an inventory item. This sends a request to the
+[Delete Inventory Item](/api/admin/inventory-items/delete-inventory-item)
+API route.
+
+### Example
+
+```ts
+sdk.admin.inventoryItem.delete("iitem_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The inventory item's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminInventoryItemDeleteResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminInventoryItemDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: TObject — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## listLevels
+
+This method retrieves a paginated list of inventory levels that belong to an inventory item.
+It sends a request to the [List Inventory Items](/api/admin/inventory-items/list-inventory-items)
+API route.
+
+### Example
+
+To retrieve the list of inventory levels:
+
+```ts
+sdk.admin.inventoryItem.listLevels("iitem_123")
+.then(({ inventory_levels, count, limit, offset }) => {
+  console.log(inventory_levels)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.inventoryItem.listLevels("iitem_123", {
+  limit: 10,
+  offset: 10
+})
+.then(({ inventory_levels, count, limit, offset }) => {
+  console.log(inventory_levels)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each inventory level:
+
+```ts
+sdk.admin.inventoryItem.listLevels("iitem_123", {
+  fields: "id,*inventory_item"
+})
+.then(({ inventory_levels, count, limit, offset }) => {
+  console.log(inventory_levels)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="listlevels-parameters" />
+
+### Parameters
+
+**listLevels**
+
+- `id`: `string` — The inventory item's ID.
+- `query`: [AdminInventoryLevelFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevelFilters) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `location_id`: `string` | `string`\[] (optional) — Filter by stock location IDs to retrieve their associated inventory levels.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listlevels-returns" />
+
+### Returns
+
+**listLevels**
+
+- `Promise`: Promise\<[AdminInventoryLevelListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminInventoryLevelListResponse)> — The paginated list of inventory levels.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## updateLevel
+
+This method updates the inventory level of the specified inventory item and
+stock location.
+
+This method sends a request to the
+[Update Inventory Level](/api/admin/inventory-items/update-inventory-level)
+API route.
+
+### Example
+
+```ts
+sdk.admin.inventoryItem.updateLevel(
+  "iitem_123",
+  "sloc_123",
+  {
+    stocked_quantity: 10
+  }
+)
+.then(({ inventory_item }) => {
+  console.log(inventory_item)
+})
+```
+
+<a id="updatelevel-parameters" />
+
+### Parameters
+
+**updateLevel**
+
+- `id`: `string` — The inventory item's ID.
+- `locationId`: `string` — The stock location's ID.
+- `body`: [AdminUpdateInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateInventoryLevel) — The details to update.
+  - `stocked_quantity`: `number` (optional) — The associated inventory item's stocked quantity in the associated stock location.
+  - `incoming_quantity`: `number` (optional) — The associated inventory item's incoming quantity in the associated stock location.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the inventory item.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updatelevel-returns" />
+
+### Returns
+
+**updateLevel**
+
+- `Promise`: Promise\<[AdminInventoryItemResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemResponse)> — The inventory item's details.
+  - `inventory_item`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem) — The inventory item's details.
+    - `id`: `string` — The inventory item's ID.
+    - `sku`: `null` | `string` (optional) — The inventory item's SKU.
+    - `origin_country`: `null` | `string` (optional) — The inventory item's origin country.
+    - `hs_code`: `null` | `string` (optional) — The inventory item's HS code.
+    - `requires_shipping`: `boolean` — Whether the item requires shipping.
+    - `mid_code`: `null` | `string` (optional) — The inventory item's MID code.
+    - `material`: `null` | `string` (optional) — The inventory item's material.
+    - `unit_of_measure`: `null` | `string` (optional) — The unit of measure of the inventory item's quantities, such as `lb` or `kg`.
+    - `weight`: `null` | `number` (optional) — The inventory item's weight.
+    - `length`: `null` | `number` (optional) — The inventory item's length.
+    - `height`: `null` | `number` (optional) — The inventory item's height.
+    - `width`: `null` | `number` (optional) — The inventory item's width.
+    - `title`: `null` | `string` (optional) — The inventory item's title.
+    - `description`: `null` | `string` (optional) — The inventory item's description.
+    - `thumbnail`: `null` | `string` (optional) — The inventory item's thumbnail URL.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `location_levels`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The item's associated inventory levels.
+    - `stocked_quantity`: `number` — The total quantity of the inventory item that is stocked across all locations.
+    - `reserved_quantity`: `number` — The total quantity of the inventory item that is reserved across all locations.
+
+## deleteLevel
+
+This method deletes an inventory level associated with an inventory item
+and a stock location.
+
+This method sends a request to the
+[Remove Inventory Level](/api/admin/inventory-items/remove-inventory-level)
+API route.
+
+### Example
+
+```ts
+sdk.admin.inventoryItem.deleteLevel(
+  "iitem_123",
+  "sloc_123",
+)
+.then(({ deleted, parent: inventoryItem }) => {
+  console.log(deleted, inventoryItem)
+})
+```
+
+<a id="deletelevel-parameters" />
+
+### Parameters
+
+**deleteLevel**
+
+- `id`: `string` — The inventory item's ID.
+- `locationId`: `string` — The stock location's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="deletelevel-returns" />
+
+### Returns
+
+**deleteLevel**
+
+- `Promise`: Promise\<[AdminInventoryLevelDeleteResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminInventoryLevelDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: TObject — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+  - `parent`: TParent (optional) — The parent resource of the item that was deleted, if applicable.
+
+## batchUpdateLevels
+
+This method manages the inventory levels of an inventory item. It sends a request to the
+[Manage Inventory Levels](/api/admin/inventory-items/manage-inventory-levels-2)
+API route.
+
+### Example
+
+```ts
+sdk.admin.inventoryItem.batchUpdateLevels("iitem_123", {
+  create: [{
+    location_id: "sloc_123",
+    stocked_quantity: 10
+  }],
+  delete: ["ilvl_123"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+<a id="batchupdatelevels-parameters" />
+
+### Parameters
+
+**batchUpdateLevels**
+
+- `id`: `string` — The inventory item's ID.
+- `body`: [AdminBatchInventoryItemLocationLevels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchInventoryItemLocationLevels) — The inventory levels to create or delete.
+  - `update`: [AdminBatchUpdateInventoryItemLocationLevels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchUpdateInventoryItemLocationLevels)\[] (optional) — A list of inventory levels to update.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` (optional) — The associated inventory item's stocked quantity in the associated stock location.
+    - `incoming_quantity`: `number` (optional) — The associated inventory item's incoming quantity in the associated stock location.
+    - `id`: `string` (optional) — The ID of the inventory level to update.
+  - `create`: [AdminBatchCreateInventoryItemLocationLevels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchCreateInventoryItemLocationLevels)\[] (optional) — A list of inventory levels to create.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` (optional) — The associated inventory item's stocked quantity in the associated stock location.
+    - `incoming_quantity`: `number` (optional) — The associated inventory item's incoming quantity in the associated stock location.
+  - `delete`: `string`\[] (optional) — A list of location IDs to delete their associated inventory levels of the inventory item.
+  - `force`: `boolean` (optional) — Whether to force the deletion of the inventory levels, even if the location has stocked quantity.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the inventory item.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchupdatelevels-returns" />
+
+### Returns
+
+**batchUpdateLevels**
+
+- `Promise`: Promise\<[AdminBatchInventoryItemLocationLevelsResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchInventoryItemLocationLevelsResponse)> (deprecated) — The inventory item's details.
+  - `created`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The created inventory levels.
+    - `id`: `string` — The inventory level's ID.
+    - `created_at`: `Date` — The date the inventory level was created.
+    - `updated_at`: `Date` — The date the inventory level was updated.
+    - `deleted_at`: `null` | `Date` — The date the inventory level was deleted.
+    - `inventory_item_id`: `string` — The ID of the associated inventory item.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` — The associated inventory item's stocked quantity in the associated location.
+    - `reserved_quantity`: `number` — The associated inventory item's reserved quantity in the associated location.
+    - `incoming_quantity`: `number` — The associated inventory item's incoming quantity in the associated location.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `inventory_item`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem) (optional) — The associated inventory item.
+    - `available_quantity`: `null` | `number` — The associated inventory item's available quantity in the associated location.
+  - `updated`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The updated inventory levels.
+    - `id`: `string` — The inventory level's ID.
+    - `created_at`: `Date` — The date the inventory level was created.
+    - `updated_at`: `Date` — The date the inventory level was updated.
+    - `deleted_at`: `null` | `Date` — The date the inventory level was deleted.
+    - `inventory_item_id`: `string` — The ID of the associated inventory item.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` — The associated inventory item's stocked quantity in the associated location.
+    - `reserved_quantity`: `number` — The associated inventory item's reserved quantity in the associated location.
+    - `incoming_quantity`: `number` — The associated inventory item's incoming quantity in the associated location.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `inventory_item`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem) (optional) — The associated inventory item.
+    - `available_quantity`: `null` | `number` — The associated inventory item's available quantity in the associated location.
+  - `deleted`: `string`\[] (optional) — The IDs of the deleted inventory levels.
+
+> **Deprecated**
+>
+> Use `batchInventoryItemLocationLevels` instead.
+
+## batchInventoryItemLocationLevels
+
+This method manages the inventory levels of an inventory item. It sends a request to the
+[Manage Inventory Levels](/api/admin/inventory-items/manage-inventory-levels-2)
+API route.
+
+### Example
+
+```ts
+sdk.admin.inventoryItem.batchInventoryItemLocationLevels("iitem_123", {
+  create: [{
+    location_id: "sloc_123",
+    stocked_quantity: 10
+  }],
+  delete: ["ilvl_123"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+<a id="batchinventoryitemlocationlevels-parameters" />
+
+### Parameters
+
+**batchInventoryItemLocationLevels**
+
+- `id`: `string` — The inventory item's ID.
+- `body`: [AdminBatchInventoryItemLocationLevels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchInventoryItemLocationLevels) — The inventory levels to create, update or delete, and an optional `force` flag.
+  - `update`: [AdminBatchUpdateInventoryItemLocationLevels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchUpdateInventoryItemLocationLevels)\[] (optional) — A list of inventory levels to update.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` (optional) — The associated inventory item's stocked quantity in the associated stock location.
+    - `incoming_quantity`: `number` (optional) — The associated inventory item's incoming quantity in the associated stock location.
+    - `id`: `string` (optional) — The ID of the inventory level to update.
+  - `create`: [AdminBatchCreateInventoryItemLocationLevels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchCreateInventoryItemLocationLevels)\[] (optional) — A list of inventory levels to create.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` (optional) — The associated inventory item's stocked quantity in the associated stock location.
+    - `incoming_quantity`: `number` (optional) — The associated inventory item's incoming quantity in the associated stock location.
+  - `delete`: `string`\[] (optional) — A list of location IDs to delete their associated inventory levels of the inventory item.
+  - `force`: `boolean` (optional) — Whether to force the deletion of the inventory levels, even if the location has stocked quantity.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchinventoryitemlocationlevels-returns" />
+
+### Returns
+
+**batchInventoryItemLocationLevels**
+
+- `Promise`: Promise\<[AdminBatchInventoryItemLocationLevelsResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchInventoryItemLocationLevelsResponse)> — The inventory item's details.
+  - `created`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The created inventory levels.
+    - `id`: `string` — The inventory level's ID.
+    - `created_at`: `Date` — The date the inventory level was created.
+    - `updated_at`: `Date` — The date the inventory level was updated.
+    - `deleted_at`: `null` | `Date` — The date the inventory level was deleted.
+    - `inventory_item_id`: `string` — The ID of the associated inventory item.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` — The associated inventory item's stocked quantity in the associated location.
+    - `reserved_quantity`: `number` — The associated inventory item's reserved quantity in the associated location.
+    - `incoming_quantity`: `number` — The associated inventory item's incoming quantity in the associated location.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `inventory_item`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem) (optional) — The associated inventory item.
+    - `available_quantity`: `null` | `number` — The associated inventory item's available quantity in the associated location.
+  - `updated`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The updated inventory levels.
+    - `id`: `string` — The inventory level's ID.
+    - `created_at`: `Date` — The date the inventory level was created.
+    - `updated_at`: `Date` — The date the inventory level was updated.
+    - `deleted_at`: `null` | `Date` — The date the inventory level was deleted.
+    - `inventory_item_id`: `string` — The ID of the associated inventory item.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` — The associated inventory item's stocked quantity in the associated location.
+    - `reserved_quantity`: `number` — The associated inventory item's reserved quantity in the associated location.
+    - `incoming_quantity`: `number` — The associated inventory item's incoming quantity in the associated location.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `inventory_item`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem) (optional) — The associated inventory item.
+    - `available_quantity`: `null` | `number` — The associated inventory item's available quantity in the associated location.
+  - `deleted`: `string`\[] (optional) — The IDs of the deleted inventory levels.
+
+## batchInventoryItemsLocationLevels
+
+This method manages the inventory levels of multiple inventory items.
+
+### Example
+
+```ts
+sdk.admin.inventoryItem.batchInventoryItemsLocationLevels({
+  create: [{
+    inventory_item_id: "iitem_123",
+    location_id: "sloc_123",
+    stocked_quantity: 10
+  }],
+  delete: ["ilvl_123"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+<a id="batchinventoryitemslocationlevels-parameters" />
+
+### Parameters
+
+**batchInventoryItemsLocationLevels**
+
+- `body`: [AdminBatchInventoryItemsLocationLevels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchInventoryItemsLocationLevels) — The inventory levels to create, update or delete, and an optional `force` flag.
+  - `create`: [AdminBatchCreateInventoryItemsLocationLevels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchCreateInventoryItemsLocationLevels)\[] (optional) — The inventory levels to create.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `inventory_item_id`: `string` — The ID of the associated inventory item.
+    - `stocked_quantity`: `number` (optional) — The associated inventory item's stocked quantity in the associated stock location.
+    - `incoming_quantity`: `number` (optional) — The associated inventory item's incoming quantity in the associated stock location.
+  - `update`: [AdminBatchUpdateInventoryItemsLocationLevels](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchUpdateInventoryItemsLocationLevels)\[] (optional) — The inventory levels to update.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `inventory_item_id`: `string` — The ID of the associated inventory item.
+    - `stocked_quantity`: `number` (optional) — The associated inventory item's stocked quantity in the associated stock location.
+    - `incoming_quantity`: `number` (optional) — The associated inventory item's incoming quantity in the associated stock location.
+    - `id`: `string` (optional) — The ID of the inventory level to update.
+  - `delete`: `string`\[] (optional) — The IDs of the inventory levels to delete.
+  - `force`: `boolean` (optional) — If enabled, the inventory levels will be deleted even if they have stocked quantity.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchinventoryitemslocationlevels-returns" />
+
+### Returns
+
+**batchInventoryItemsLocationLevels**
+
+- `Promise`: Promise\<[AdminBatchInventoryItemsLocationLevelsResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchInventoryItemsLocationLevelsResponse)> — The inventory item's details.
+  - `created`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The created inventory levels.
+    - `id`: `string` — The inventory level's ID.
+    - `created_at`: `Date` — The date the inventory level was created.
+    - `updated_at`: `Date` — The date the inventory level was updated.
+    - `deleted_at`: `null` | `Date` — The date the inventory level was deleted.
+    - `inventory_item_id`: `string` — The ID of the associated inventory item.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` — The associated inventory item's stocked quantity in the associated location.
+    - `reserved_quantity`: `number` — The associated inventory item's reserved quantity in the associated location.
+    - `incoming_quantity`: `number` — The associated inventory item's incoming quantity in the associated location.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `inventory_item`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem) (optional) — The associated inventory item.
+    - `available_quantity`: `null` | `number` — The associated inventory item's available quantity in the associated location.
+  - `updated`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The updated inventory levels.
+    - `id`: `string` — The inventory level's ID.
+    - `created_at`: `Date` — The date the inventory level was created.
+    - `updated_at`: `Date` — The date the inventory level was updated.
+    - `deleted_at`: `null` | `Date` — The date the inventory level was deleted.
+    - `inventory_item_id`: `string` — The ID of the associated inventory item.
+    - `location_id`: `string` — The ID of the associated stock location.
+    - `stocked_quantity`: `number` — The associated inventory item's stocked quantity in the associated location.
+    - `reserved_quantity`: `number` — The associated inventory item's reserved quantity in the associated location.
+    - `incoming_quantity`: `number` — The associated inventory item's incoming quantity in the associated location.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `inventory_item`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem) (optional) — The associated inventory item.
+    - `available_quantity`: `null` | `number` — The associated inventory item's available quantity in the associated location.
+  - `deleted`: `string`\[] (optional) — The IDs of the deleted inventory levels.

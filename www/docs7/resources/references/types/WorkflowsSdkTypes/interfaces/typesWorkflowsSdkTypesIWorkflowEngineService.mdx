@@ -1,0 +1,772 @@
+---
+title: IWorkflowEngineService
+---
+
+## Methods
+
+### retrieveWorkflowExecution
+
+<a id="retrieveworkflowexecution-parameters" />
+
+#### Parameters
+
+**retrieveWorkflowExecution**
+
+- `idOrObject`: `string` | `object`
+  - `workflow_id`: `string`
+  - `transaction_id`: `string`
+- `config`: [FindConfig](/resources/references/types/CommonTypes/interfaces/typesCommonTypesFindConfig)\<[WorkflowExecutionDTO](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesWorkflowExecutionDTO)> (optional) — An object that is used to configure how an entity is retrieved from the database. It accepts as a typed parameter an `Entity` class, which provides correct typing of field names in its properties.
+  - `select`: (`string` & `object` | keyof Entity)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/types/CommonTypes/types/typesCommonTypesFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="retrieveworkflowexecution-returns" />
+
+#### Returns
+
+**retrieveWorkflowExecution**
+
+- `Promise`: Promise\<[WorkflowExecutionDTO](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesWorkflowExecutionDTO)>
+  - `id`: `string`
+  - `workflow_id`: `string`
+  - `transaction_id`: `string`
+  - `execution`: `null` | `Record<string, any>`
+  - `context`: `null` | `Record<string, any>`
+  - `state`: [TransactionState](/resources/references/types/HttpTypes/types/typesHttpTypesTransactionState)
+  - `created_at`: `Date`
+  - `updated_at`: `Date`
+  - `deleted_at`: `null` | `Date`
+
+### listWorkflowExecutions
+
+<a id="listworkflowexecutions-parameters" />
+
+#### Parameters
+
+**listWorkflowExecutions**
+
+- `filters`: [FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps) (optional)
+  - `$and`: ([FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional)
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `workflow_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `transaction_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `state`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `created_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `updated_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+  - `$or`: ([FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional)
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `workflow_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `transaction_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `state`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `created_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `updated_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+  - `q`: `string` (optional)
+  - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `workflow_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `transaction_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `state`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `config`: [FindConfig](/resources/references/types/CommonTypes/interfaces/typesCommonTypesFindConfig)\<[WorkflowExecutionDTO](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesWorkflowExecutionDTO)> (optional) — An object that is used to configure how an entity is retrieved from the database. It accepts as a typed parameter an `Entity` class, which provides correct typing of field names in its properties.
+  - `select`: (`string` & `object` | keyof Entity)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/types/CommonTypes/types/typesCommonTypesFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listworkflowexecutions-returns" />
+
+#### Returns
+
+**listWorkflowExecutions**
+
+- `Promise`: Promise\<[WorkflowExecutionDTO](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesWorkflowExecutionDTO)\[]>
+  - `WorkflowExecutionDTO[]`: [WorkflowExecutionDTO](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesWorkflowExecutionDTO)\[]
+    - `id`: `string`
+    - `workflow_id`: `string`
+    - `transaction_id`: `string`
+    - `execution`: `null` | `Record<string, any>`
+    - `context`: `null` | `Record<string, any>`
+    - `state`: [TransactionState](/resources/references/types/HttpTypes/types/typesHttpTypesTransactionState)
+    - `created_at`: `Date`
+    - `updated_at`: `Date`
+    - `deleted_at`: `null` | `Date`
+
+### listAndCountWorkflowExecutions
+
+<a id="listandcountworkflowexecutions-parameters" />
+
+#### Parameters
+
+**listAndCountWorkflowExecutions**
+
+- `filters`: [FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps) (optional)
+  - `$and`: ([FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional)
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `workflow_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `transaction_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `state`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `created_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `updated_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+  - `$or`: ([FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableWorkflowExecutionProps](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesFilterableWorkflowExecutionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional)
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `workflow_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `transaction_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `state`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `created_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `updated_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+  - `q`: `string` (optional)
+  - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `workflow_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `transaction_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `state`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional)
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `config`: [FindConfig](/resources/references/types/CommonTypes/interfaces/typesCommonTypesFindConfig)\<[WorkflowExecutionDTO](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesWorkflowExecutionDTO)> (optional) — An object that is used to configure how an entity is retrieved from the database. It accepts as a typed parameter an `Entity` class, which provides correct typing of field names in its properties.
+  - `select`: (`string` & `object` | keyof Entity)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/types/CommonTypes/types/typesCommonTypesFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listandcountworkflowexecutions-returns" />
+
+#### Returns
+
+**listAndCountWorkflowExecutions**
+
+- `Promise`: Promise\<\[[WorkflowExecutionDTO](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesWorkflowExecutionDTO)\[], number]>
+  - `WorkflowExecutionDTO[]`: [WorkflowExecutionDTO](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesWorkflowExecutionDTO)\[]
+  - `number`: `number`
+
+### run
+
+<a id="run-parameters" />
+
+#### Parameters
+
+**run**
+
+- `workflowId`: `string`
+- `options`: [WorkflowOrchestratorRunDTO](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesWorkflowOrchestratorRunDTO)\<unknown> (optional)
+  - `input`: T (optional)
+  - `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+    - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+    - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+    - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+    - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+    - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+    - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+    - `runId`: `string` (optional) — A string indicating the ID of the current run.
+    - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+    - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+    - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+    - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+    - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+    - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+    - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+  - `resultFrom`: `string` | `string`\[] | `Symbol` (optional)
+  - `throwOnError`: `boolean` (optional)
+  - `logOnError`: `boolean` (optional)
+  - `events`: `Record<string, Function>` (optional)
+  - `transactionId`: `string` (optional)
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="run-returns" />
+
+#### Returns
+
+**run**
+
+- `any`: `any`
+
+### getRunningTransaction
+
+<a id="getrunningtransaction-parameters" />
+
+#### Parameters
+
+**getRunningTransaction**
+
+- `workflowId`: `string`
+- `transactionId`: `string`
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="getrunningtransaction-returns" />
+
+#### Returns
+
+**getRunningTransaction**
+
+- `Promise`: Promise\<unknown>
+  - `unknown`: `unknown`
+
+### setStepSuccess
+
+<a id="setstepsuccess-parameters" />
+
+#### Parameters
+
+**setStepSuccess**
+
+- `__namedParameters`: `object`
+  - `idempotencyKey`: `string` | [IdempotencyKeyParts](/resources/references/types/WorkflowsSdkTypes/types/typesWorkflowsSdkTypesIdempotencyKeyParts)
+    - `workflowId`: `string`
+    - `transactionId`: `string`
+    - `stepId`: `string`
+    - `action`: `"invoke"` | `"compensate"`
+  - `stepResponse`: `unknown`
+  - `options`: `Record<string, any>` (optional)
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="setstepsuccess-returns" />
+
+#### Returns
+
+**setStepSuccess**
+
+- `any`: `any`
+
+### setStepFailure
+
+<a id="setstepfailure-parameters" />
+
+#### Parameters
+
+**setStepFailure**
+
+- `__namedParameters`: `object`
+  - `idempotencyKey`: `string` | [IdempotencyKeyParts](/resources/references/types/WorkflowsSdkTypes/types/typesWorkflowsSdkTypesIdempotencyKeyParts)
+    - `workflowId`: `string`
+    - `transactionId`: `string`
+    - `stepId`: `string`
+    - `action`: `"invoke"` | `"compensate"`
+  - `stepResponse`: `unknown`
+  - `options`: `Record<string, any>` (optional)
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="setstepfailure-returns" />
+
+#### Returns
+
+**setStepFailure**
+
+- `any`: `any`
+
+### retryStep
+
+<a id="retrystep-parameters" />
+
+#### Parameters
+
+**retryStep**
+
+- `__namedParameters`: `object`
+  - `idempotencyKey`: `string` | [IdempotencyKeyParts](/resources/references/types/WorkflowsSdkTypes/types/typesWorkflowsSdkTypesIdempotencyKeyParts)
+    - `workflowId`: `string`
+    - `transactionId`: `string`
+    - `stepId`: `string`
+    - `action`: `"invoke"` | `"compensate"`
+  - `options`: `Record<string, any>` (optional)
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="retrystep-returns" />
+
+#### Returns
+
+**retryStep**
+
+- `any`: `any`
+
+### subscribe
+
+<a id="subscribe-parameters" />
+
+#### Parameters
+
+**subscribe**
+
+- `args`: `object`
+  - `workflowId`: `string`
+  - `transactionId`: `string` (optional)
+  - `subscriber`: `Function`
+  - `subscriberId`: `string` (optional)
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="subscribe-returns" />
+
+#### Returns
+
+**subscribe**
+
+- `Promise`: Promise\<void>
+
+### unsubscribe
+
+<a id="unsubscribe-parameters" />
+
+#### Parameters
+
+**unsubscribe**
+
+- `args`: `object`
+  - `workflowId`: `string`
+  - `transactionId`: `string` (optional)
+  - `subscriberOrId`: `string` | `Function`
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="unsubscribe-returns" />
+
+#### Returns
+
+**unsubscribe**
+
+- `any`: `any`
+
+### cancel
+
+<a id="cancel-parameters" />
+
+#### Parameters
+
+**cancel**
+
+- `workflowId`: `string`
+- `options`: [WorkflowOrchestratorCancelOptionsDTO](/resources/references/types/WorkflowsSdkTypes/interfaces/typesWorkflowsSdkTypesWorkflowOrchestratorCancelOptionsDTO)
+  - `transactionId`: `string`
+  - `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+    - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+    - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+    - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+    - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+    - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+    - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+    - `runId`: `string` (optional) — A string indicating the ID of the current run.
+    - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+    - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+    - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+    - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+    - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+    - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+    - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+  - `throwOnError`: `boolean` (optional)
+  - `logOnError`: `boolean` (optional)
+  - `events`: `Record<string, Function>` (optional)
+  - `container`: [ContainerLike](/resources/references/types/CommonTypes/types/typesCommonTypesContainerLike) (optional)
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="cancel-returns" />
+
+#### Returns
+
+**cancel**
+
+- `any`: `any`

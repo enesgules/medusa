@@ -1,0 +1,59 @@
+---
+title: validateCustomerAccountCreation - Medusa Core Workflows Reference
+sidebarTitle: validateCustomerAccountCreation
+---
+
+This documentation provides a reference to the `validateCustomerAccountCreation`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates the input data for creating a customer account.
+The step throws an error if:
+
+- The email is missing
+- A customer with the email already exists and has an account
+- A guest customer with the email already exists
+
+## Example
+
+```ts
+const data = validateCustomerAccountCreation({
+  authIdentityId: "au_1234",
+  customerData: {
+    first_name: "John",
+    last_name: "Doe",
+    email: "john.doe@example.com",
+  }
+})
+```
+
+<a id="validatecustomeraccountcreation-input" />
+
+## Input
+
+**validateCustomerAccountCreation**
+
+- `CreateCustomerAccountWorkflowInput`: [CreateCustomerAccountWorkflowInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcCreateCustomerAccountWorkflowInput)
+  - `authIdentityId`: `string` — The ID of the auth identity to attach the customer to.
+  - `customerData`: [CreateCustomerDTO](/resources/references/customer/interfaces/customerCreateCustomerDTO) — The details of the customer to create.
+    - `company_name`: `null` | `string` (optional) — The company name of the customer.
+    - `first_name`: `null` | `string` (optional) — The first name of the customer.
+    - `last_name`: `null` | `string` (optional) — The last name of the customer.
+    - `email`: `null` | `string` (optional) — The email of the customer.
+    - `phone`: `null` | `string` (optional) — The phone of the customer.
+    - `created_by`: `null` | `string` (optional) — Who created the customer.
+    - `has_account`: `boolean` (optional) — Whether the customer has an account.
+    - `addresses`: Omit\<[CreateCustomerAddressDTO](/resources/references/customer/interfaces/customerCreateCustomerAddressDTO), "customer\_id">\[] (optional) — The addresses of the customer.
+      - `address_name`: `null` | `string` (optional) — The address's name.
+      - `is_default_shipping`: `boolean` (optional) — Whether the address is default shipping.
+      - `is_default_billing`: `boolean` (optional) — Whether the address is the default for billing.
+      - `company`: `null` | `string` (optional) — The company.
+      - `first_name`: `null` | `string` (optional) — The first name.
+      - `last_name`: `null` | `string` (optional) — The last name.
+      - `address_1`: `null` | `string` (optional) — The address 1.
+      - `address_2`: `null` | `string` (optional) — The address 2.
+      - `city`: `null` | `string` (optional) — The city.
+      - `country_code`: `null` | `string` (optional) — The country code.
+      - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the address.
+      - `postal_code`: `null` | `string` (optional) — The postal code.
+      - `phone`: `null` | `string` (optional) — The phone.
+      - `metadata`: [MetadataType](/resources/references/customer/types/customerMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `metadata`: [MetadataType](/resources/references/customer/types/customerMetadataType) (optional) — Holds custom data in key-value pairs.

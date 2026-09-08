@@ -1,0 +1,52 @@
+---
+title: locale - JS SDK Store Reference
+sidebarTitle: locale
+---
+
+This documentation provides a reference to the `sdk.store.locale` set of methods used to send requests to Medusa's Store API routes.
+
+## list
+
+This method retrieves the list of supported locales in the store. It sends a request to the
+[List Locales](/api/store/locales/list-locales) API route.
+
+### Example
+
+```ts
+sdk.store.locale.list()
+.then(({ locales }) => {
+  console.log(locales)
+})
+```
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[StoreLocaleListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreLocaleListResponse)> — The list of supported locales.
+  - `locales`: [StoreLocale](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreLocale)\[] — The list of locales.
+    - `code`: `string` — The locale's code.
+
+      Example:
+
+      ```
+      en-US
+      ```
+    - `name`: `string` — The locale's display name.
+
+      Example:
+
+      ```
+      English (United States)
+      ```

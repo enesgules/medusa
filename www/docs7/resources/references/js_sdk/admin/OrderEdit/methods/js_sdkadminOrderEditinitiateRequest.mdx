@@ -1,0 +1,72 @@
+---
+title: initiateRequest
+---
+
+This method creates an order edit request. It sends a HTTP request to the
+[Create Order Edit](/api/admin/order-edits/create-order-edit)
+API route.
+
+## Example
+
+```ts
+sdk.admin.orderEdit.initiateRequest({
+  order_id: "order_123"
+})
+.then(({ order_change }) => {
+  console.log(order_change)
+})
+```
+
+<a id="initiaterequest-parameters" />
+
+## Parameters
+
+**initiateRequest**
+
+- `body`: [AdminInitiateOrderEditRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInitiateOrderEditRequest) — The order edit's details.
+  - `order_id`: `string` — The ID of the order to create the edit for.
+  - `description`: `string` (optional) — The order edit's description.
+  - `internal_note`: `string` (optional) — An internal note viewed by admin users only.
+  - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the order edit.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="initiaterequest-returns" />
+
+## Returns
+
+**initiateRequest**
+
+- `Promise`: Promise\<[AdminOrderEditResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderEditResponse)> — The order edit's details.
+  - `order_change`: [AdminOrderChange](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderChange) — The order edit's details.
+    - `order`: [AdminOrder](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrder) — The order's details.
+    - `claim`: [AdminClaim](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminClaim) — The claim's details.
+    - `return_order`: [AdminReturn](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturn) — The return's details.
+    - `exchange`: [AdminExchange](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminExchange) — The exchange's details.
+    - `actions`: [AdminOrderChangeAction](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderChangeAction)\[] — The order change action's details.
+    - `id`: `string` — The ID of the order change
+    - `version`: `number` — The version of the order change
+    - `change_type`: `"claim"` | `"exchange"` | `"return"` | `"edit"` | `"return_request"` | `"transfer"` | `"update_order"` (optional) — The type of the order change
+    - `order_id`: `string` — The ID of the associated order
+    - `return_id`: `string` — The ID of the associated return order
+    - `exchange_id`: `string` — The ID of the associated exchange order
+    - `claim_id`: `string` — The ID of the associated claim order
+    - `internal_note`: `null` | `string` — An internal note viewed by admin users only.
+    - `carry_over_promotions`: `null` | `boolean` (optional) — Whether to carry over promotions (apply promotions to outbound exchange items).
+    - `no_notification`: `null` | `boolean` (optional) — Whether the customer shouldn't be notified of the order change.
+    - `status`: [OrderChangeStatus](/resources/references/fulfillment/types/fulfillmentOrderChangeStatus) — The status of the order change
+    - `requested_by`: `null` | `string` — The requested by of the order change
+    - `requested_at`: `null` | `Date` — When the order change was requested
+    - `confirmed_by`: `null` | `string` — The confirmed by of the order change
+    - `confirmed_at`: `null` | `Date` — When the order change was confirmed
+    - `declined_by`: `null` | `string` — The declined by of the order change
+    - `declined_reason`: `null` | `string` — The declined reason of the order change
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata of the order change
+    - `declined_at`: `null` | `Date` — When the order change was declined
+    - `canceled_by`: `null` | `string` — The ID of the user that canceled the order change
+    - `canceled_at`: `null` | `Date` — When the order change was canceled
+    - `created_by`: `null` | `string` — The ID of the user that created the order change
+    - `created_at`: `string` | `Date` — When the order change was created
+    - `updated_at`: `string` | `Date` — When the order change was updated

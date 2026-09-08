@@ -1,0 +1,44 @@
+---
+title: list
+---
+
+This method searches across entities. Per entity, results come from the
+Search Module when that entity is indexed; otherwise each entity is queried
+with the same free-text `q` filter the list endpoints support.
+
+Results are grouped per entity and paginated independently.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
+
+## Example
+
+```ts
+sdk.admin.search.list({ q: "shirt", limit: 5 })
+.then(({ results }) => {
+  console.log(results)
+})
+```
+
+<a id="list-parameters" />
+
+## Parameters
+
+**list**
+
+- `query`: [AdminSearchParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSearchParams) (optional) — Search query and pagination parameters.
+  - `q`: `string` (optional) — Applied to every entity searched.
+  - `entity`: `string` | `string`\[] (optional) — The entities / indexes to search, comma-separated. When the Search Module is enabled, defaults to every registered index. Otherwise defaults to the admin fallback entity set. Per entity, an index is used when one exists; otherwise the request falls back to `query.graph` for that entity only.
+  - `limit`: `number` (optional) — Per entity, not across the response — each group paginates on its own.
+  - `offset`: `number` (optional) — The number of items to skip before the results. Used for pagination.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+## Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminSearchResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSearchResponse)\<Record\<string, unknown>>> — The grouped search results.

@@ -1,0 +1,251 @@
+---
+title: createPaymentCollections - Payment Module Reference
+sidebarTitle: createPaymentCollections
+---
+
+This documentation provides a reference to the `createPaymentCollections` method. This belongs to the Payment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createpaymentcollections-data-sharedcontext-promisepaymentcollectiondto" />
+
+## createPaymentCollections(data, sharedContext?): Promise\<[PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO)\[]>
+
+This method creates payment collections.
+
+### Example
+
+```ts
+const paymentCollections =
+  await paymentModuleService.createPaymentCollections([
+    {
+      currency_code: "usd",
+      amount: 3000,
+    },
+    {
+      currency_code: "eur",
+      amount: 2000,
+    },
+  ])
+```
+
+<a id="createpaymentcollections-parameters" />
+
+### Parameters
+
+**createPaymentCollections**
+
+- `data`: [CreatePaymentCollectionDTO](/resources/references/payment/interfaces/paymentCreatePaymentCollectionDTO)\[] — The payment collections to create.
+  - `currency_code`: `string` — The ISO 3 character currency code of the payment collection.
+  - `amount`: [BigNumberInput](/resources/references/payment/types/paymentBigNumberInput) — The amount of the payment collection.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/payment/interfaces/paymentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/payment/interfaces/paymentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createpaymentcollections-returns" />
+
+### Returns
+
+**createPaymentCollections**
+
+- `Promise`: Promise\<[PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO)\[]> — The created payment collections.
+  - `PaymentCollectionDTO[]`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO)\[]
+    - `id`: `string` — The ID of the payment collection.
+    - `currency_code`: `string` — The ISO 3 character currency code of the payment sessions and payments associated with payment collection.
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The total amount to be authorized and captured.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount authorized within the associated payment sessions.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount refunded within the associated payments.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount captured within the associated payments.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `completed_at`: `string` | `Date` (optional) — When the payment collection was completed.
+    - `created_at`: `string` | `Date` (optional) — When the payment collection was created.
+    - `updated_at`: `string` | `Date` (optional) — When the payment collection was updated.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `status`: [PaymentCollectionStatus](/resources/references/payment/types/paymentPaymentCollectionStatus) — The status of the payment collection.
+    - `payment_providers`: [PaymentProviderDTO](/resources/references/payment/interfaces/paymentPaymentProviderDTO)\[] — The payment provider used to process the associated payment sessions and payments.
+      - `id`: `string` — The ID of the payment provider.
+      - `is_enabled`: `boolean` — Whether the payment provider is enabled.
+    - `payment_sessions`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO)\[] (optional) — The associated payment sessions.
+      - `id`: `string` — The ID of the payment session.
+      - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The amount to authorize.
+      - `currency_code`: `string` — The 3 character currency code of the payment session.
+      - `provider_id`: `string` — The ID of the associated payment provider.
+      - `data`: `Record<string, unknown>` — The data necessary for the payment provider to process the payment session.
+      - `context`: `Record<string, unknown>` (optional) — The context necessary for the payment provider.
+      - `status`: [PaymentSessionStatus](/resources/references/payment/types/paymentPaymentSessionStatus) — The status of the payment session.
+      - `authorized_at`: `Date` (optional) — When the payment session was authorized.
+      - `created_at`: `string` | `Date` — When the payment session was created
+      - `updated_at`: `string` | `Date` — When the payment session was updated
+      - `payment_collection_id`: `string` — The ID of the associated payment collection.
+      - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The payment collection the session is associated with.
+      - `payment`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO) (optional) — The payment created from the session.
+      - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `payments`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO)\[] (optional) — The associated payments.
+      - `id`: `string` — The ID of the payment.
+      - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The payment's total amount.
+      - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw amount of the payment.
+      - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The authorized amount of the payment.
+      - `raw_authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw authorized amount of the payment.
+      - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+      - `provider_id`: `string` — The ID of the associated payment provider.
+      - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+      - `created_at`: `string` | `Date` (optional) — When the payment was created.
+      - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+      - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+      - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+      - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' amounts.
+      - `raw_captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' raw amounts.
+      - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' amounts.
+      - `raw_refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' raw amounts.
+      - `captures`: [CaptureDTO](/resources/references/payment/interfaces/paymentCaptureDTO)\[] (optional) — The associated captures.
+      - `refunds`: [RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)\[] (optional) — The associated refunds.
+      - `payment_collection_id`: `string` — The ID of the associated payment collection.
+      - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The associated payment collection.
+      - `payment_session`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO) (optional) — The payment session from which the payment is created.
+
+<a id="createpaymentcollections-data-sharedcontext-promisepaymentcollectiondto-1" />
+
+## createPaymentCollections(data, sharedContext?): Promise\<[PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO)>
+
+This method creates a payment collection.
+
+### Example
+
+```ts
+const paymentCollection =
+  await paymentModuleService.createPaymentCollections({
+    currency_code: "usd",
+    amount: 3000,
+  })
+```
+
+<a id="createpaymentcollections-parameters-1" />
+
+### Parameters
+
+**createPaymentCollections**
+
+- `data`: [CreatePaymentCollectionDTO](/resources/references/payment/interfaces/paymentCreatePaymentCollectionDTO) — The payment collection to create.
+  - `currency_code`: `string` — The ISO 3 character currency code of the payment collection.
+  - `amount`: [BigNumberInput](/resources/references/payment/types/paymentBigNumberInput) — The amount of the payment collection.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/payment/interfaces/paymentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/payment/interfaces/paymentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createpaymentcollections-returns-1" />
+
+### Returns
+
+**createPaymentCollections**
+
+- `Promise`: Promise\<[PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO)> — The created payment collection.
+  - `id`: `string` — The ID of the payment collection.
+  - `currency_code`: `string` — The ISO 3 character currency code of the payment sessions and payments associated with payment collection.
+  - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The total amount to be authorized and captured.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount authorized within the associated payment sessions.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount refunded within the associated payments.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount captured within the associated payments.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `completed_at`: `string` | `Date` (optional) — When the payment collection was completed.
+  - `created_at`: `string` | `Date` (optional) — When the payment collection was created.
+  - `updated_at`: `string` | `Date` (optional) — When the payment collection was updated.
+  - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `status`: [PaymentCollectionStatus](/resources/references/payment/types/paymentPaymentCollectionStatus) — The status of the payment collection.
+  - `payment_providers`: [PaymentProviderDTO](/resources/references/payment/interfaces/paymentPaymentProviderDTO)\[] — The payment provider used to process the associated payment sessions and payments.
+    - `id`: `string` — The ID of the payment provider.
+    - `is_enabled`: `boolean` — Whether the payment provider is enabled.
+  - `payment_sessions`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO)\[] (optional) — The associated payment sessions.
+    - `id`: `string` — The ID of the payment session.
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The amount to authorize.
+    - `currency_code`: `string` — The 3 character currency code of the payment session.
+    - `provider_id`: `string` — The ID of the associated payment provider.
+    - `data`: `Record<string, unknown>` — The data necessary for the payment provider to process the payment session.
+    - `context`: `Record<string, unknown>` (optional) — The context necessary for the payment provider.
+    - `status`: [PaymentSessionStatus](/resources/references/payment/types/paymentPaymentSessionStatus) — The status of the payment session.
+    - `authorized_at`: `Date` (optional) — When the payment session was authorized.
+    - `created_at`: `string` | `Date` — When the payment session was created
+    - `updated_at`: `string` | `Date` — When the payment session was updated
+    - `payment_collection_id`: `string` — The ID of the associated payment collection.
+    - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The payment collection the session is associated with.
+    - `payment`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO) (optional) — The payment created from the session.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `payments`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO)\[] (optional) — The associated payments.
+    - `id`: `string` — The ID of the payment.
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The payment's total amount.
+    - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw amount of the payment.
+    - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The authorized amount of the payment.
+    - `raw_authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw authorized amount of the payment.
+    - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+    - `provider_id`: `string` — The ID of the associated payment provider.
+    - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+    - `created_at`: `string` | `Date` (optional) — When the payment was created.
+    - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+    - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+    - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+    - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' amounts.
+    - `raw_captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' raw amounts.
+    - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' amounts.
+    - `raw_refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' raw amounts.
+    - `captures`: [CaptureDTO](/resources/references/payment/interfaces/paymentCaptureDTO)\[] (optional) — The associated captures.
+    - `refunds`: [RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)\[] (optional) — The associated refunds.
+    - `payment_collection_id`: `string` — The ID of the associated payment collection.
+    - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The associated payment collection.
+    - `payment_session`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO) (optional) — The payment session from which the payment is created.

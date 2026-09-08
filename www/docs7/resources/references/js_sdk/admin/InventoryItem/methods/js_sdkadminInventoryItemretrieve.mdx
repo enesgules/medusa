@@ -1,0 +1,70 @@
+---
+title: retrieve
+---
+
+This method retrieves an inventory item by its ID. It sends a request to the
+[Get Inventory Item](/api/admin/inventory-items/get-a-inventory-item) API route.
+
+## Example
+
+To retrieve an inventory item by its ID:
+
+```ts
+sdk.admin.inventoryItem.retrieve("iitem_123")
+.then(({ inventory_item }) => {
+  console.log(inventory_item)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.inventoryItem.retrieve("iitem_123", {
+  fields: "id,*location_levels"
+})
+.then(({ inventory_item }) => {
+  console.log(inventory_item)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The inventory item's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the inventory item.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminInventoryItemResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItemResponse)> — The inventory item's details.
+  - `inventory_item`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem) — The inventory item's details.
+    - `id`: `string` — The inventory item's ID.
+    - `sku`: `null` | `string` (optional) — The inventory item's SKU.
+    - `origin_country`: `null` | `string` (optional) — The inventory item's origin country.
+    - `hs_code`: `null` | `string` (optional) — The inventory item's HS code.
+    - `requires_shipping`: `boolean` — Whether the item requires shipping.
+    - `mid_code`: `null` | `string` (optional) — The inventory item's MID code.
+    - `material`: `null` | `string` (optional) — The inventory item's material.
+    - `unit_of_measure`: `null` | `string` (optional) — The unit of measure of the inventory item's quantities, such as `lb` or `kg`.
+    - `weight`: `null` | `number` (optional) — The inventory item's weight.
+    - `length`: `null` | `number` (optional) — The inventory item's length.
+    - `height`: `null` | `number` (optional) — The inventory item's height.
+    - `width`: `null` | `number` (optional) — The inventory item's width.
+    - `title`: `null` | `string` (optional) — The inventory item's title.
+    - `description`: `null` | `string` (optional) — The inventory item's description.
+    - `thumbnail`: `null` | `string` (optional) — The inventory item's thumbnail URL.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `location_levels`: [AdminInventoryLevel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevel)\[] (optional) — The item's associated inventory levels.
+    - `stocked_quantity`: `number` — The total quantity of the inventory item that is stocked across all locations.
+    - `reserved_quantity`: `number` — The total quantity of the inventory item that is reserved across all locations.

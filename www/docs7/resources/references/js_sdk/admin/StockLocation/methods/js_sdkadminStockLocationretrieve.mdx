@@ -1,0 +1,60 @@
+---
+title: retrieve
+---
+
+This method retrieves a stock location. It sends a request to the
+[Get Stock Location](/api/admin/stock-locations/get-a-stock-location)
+API route.
+
+## Example
+
+To retrieve a stock location by its ID:
+
+```ts
+sdk.admin.stockLocation.retrieve("sloc_123")
+.then(({ stock_location }) => {
+  console.log(stock_location)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.stockLocation.retrieve("sloc_123", {
+  fields: "id,*sales_channels"
+})
+.then(({ stock_location }) => {
+  console.log(stock_location)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The ID of the stock location to retrieve.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the stock location.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminStockLocationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationResponse)> — The stock location's details.
+  - `stock_location`: [AdminStockLocation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocation) — The stock location's details.
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata associated with the stock location.
+    - `address_id`: `string` — The ID of the address associated with the stock location.
+    - `address`: [AdminStockLocationAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationAddress) (optional) — The address associated with the stock location.
+    - `sales_channels`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels associated with the stock location.
+    - `fulfillment_providers`: [AdminFulfillmentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentProvider)\[] (optional) — The fulfillment providers associated with the stock location.
+    - `fulfillment_sets`: [AdminFulfillmentSet](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentSet)\[] (optional) — The fulfillment sets associated with the stock location.

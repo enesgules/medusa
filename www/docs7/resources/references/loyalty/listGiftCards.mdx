@@ -1,0 +1,133 @@
+---
+title: listGiftCards - Loyalty Module Reference
+sidebarTitle: listGiftCards
+---
+
+This documentation provides a reference to the `listGiftCards` method. This belongs to the Loyalty Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of gift cards based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of gift cards using their IDs:
+
+```ts
+const giftCards = await loyaltyModuleService.listGiftCards({
+  id: ["gc_123", "gc_456"],
+})
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const giftCards = await loyaltyModuleService.listGiftCards(
+  { id: ["gc_123", "gc_456"] },
+  { take: 20, skip: 2 }
+)
+```
+
+<a id="listgiftcards-parameters" />
+
+## Parameters
+
+**listGiftCards**
+
+- `filters`: [ModuleGiftCardFilters](/resources/references/loyalty/interfaces/loyaltyModuleGiftCardFilters) (optional) — The filters to apply on the retrieved gift cards.
+  - `$and`: ([ModuleGiftCardFilters](/resources/references/loyalty/interfaces/loyaltyModuleGiftCardFilters) | [BaseFilterable](/resources/references/loyalty/interfaces/loyaltyBaseFilterable)\<[ModuleGiftCardFilters](/resources/references/loyalty/interfaces/loyaltyModuleGiftCardFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([ModuleGiftCardFilters](/resources/references/loyalty/interfaces/loyaltyModuleGiftCardFilters) | [BaseFilterable](/resources/references/loyalty/interfaces/loyaltyBaseFilterable)\<[ModuleGiftCardFilters](/resources/references/loyalty/interfaces/loyaltyModuleGiftCardFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([ModuleGiftCardFilters](/resources/references/loyalty/interfaces/loyaltyModuleGiftCardFilters) | [BaseFilterable](/resources/references/loyalty/interfaces/loyaltyBaseFilterable)\<[ModuleGiftCardFilters](/resources/references/loyalty/interfaces/loyaltyModuleGiftCardFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — A search term to filter gift cards by.
+    - `id`: `string` | `string`\[] (optional) — Filter by gift card ID(s).
+    - `code`: `string` | `string`\[] (optional) — Filter by gift card code(s).
+    - `reference_id`: `string` | `string`\[] (optional) — Filter by reference resource ID(s).
+    - `reference`: `string` | `string`\[] (optional) — Filter by reference resource type(s).
+    - `status`: `string` | `string`\[] (optional) — Filter by gift card status(es).
+    - `currency_code`: `string` | `string`\[] (optional) — Filter by currency code(s).
+    - `order`: `string` (optional) — The field to order results by.
+  - `$or`: ([ModuleGiftCardFilters](/resources/references/loyalty/interfaces/loyaltyModuleGiftCardFilters) | [BaseFilterable](/resources/references/loyalty/interfaces/loyaltyBaseFilterable)\<[ModuleGiftCardFilters](/resources/references/loyalty/interfaces/loyaltyModuleGiftCardFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([ModuleGiftCardFilters](/resources/references/loyalty/interfaces/loyaltyModuleGiftCardFilters) | [BaseFilterable](/resources/references/loyalty/interfaces/loyaltyBaseFilterable)\<[ModuleGiftCardFilters](/resources/references/loyalty/interfaces/loyaltyModuleGiftCardFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([ModuleGiftCardFilters](/resources/references/loyalty/interfaces/loyaltyModuleGiftCardFilters) | [BaseFilterable](/resources/references/loyalty/interfaces/loyaltyBaseFilterable)\<[ModuleGiftCardFilters](/resources/references/loyalty/interfaces/loyaltyModuleGiftCardFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — A search term to filter gift cards by.
+    - `id`: `string` | `string`\[] (optional) — Filter by gift card ID(s).
+    - `code`: `string` | `string`\[] (optional) — Filter by gift card code(s).
+    - `reference_id`: `string` | `string`\[] (optional) — Filter by reference resource ID(s).
+    - `reference`: `string` | `string`\[] (optional) — Filter by reference resource type(s).
+    - `status`: `string` | `string`\[] (optional) — Filter by gift card status(es).
+    - `currency_code`: `string` | `string`\[] (optional) — Filter by currency code(s).
+    - `order`: `string` (optional) — The field to order results by.
+  - `q`: `string` (optional) — A search term to filter gift cards by.
+  - `id`: `string` | `string`\[] (optional) — Filter by gift card ID(s).
+  - `code`: `string` | `string`\[] (optional) — Filter by gift card code(s).
+  - `reference_id`: `string` | `string`\[] (optional) — Filter by reference resource ID(s).
+  - `reference`: `string` | `string`\[] (optional) — Filter by reference resource type(s).
+  - `status`: `string` | `string`\[] (optional) — Filter by gift card status(es).
+  - `currency_code`: `string` | `string`\[] (optional) — Filter by currency code(s).
+  - `order`: `string` (optional) — The field to order results by.
+- `config`: [FindConfig](/resources/references/loyalty/interfaces/loyaltyFindConfig)\<[ModuleGiftCard](/resources/references/loyalty/types/loyaltyModuleGiftCard)> (optional) — The configurations determining how the gift cards are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a gift card.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/loyalty/types/loyaltyFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+- `sharedContext`: [Context](/resources/references/loyalty/interfaces/loyaltyContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/loyalty/interfaces/loyaltyIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listgiftcards-returns" />
+
+## Returns
+
+**listGiftCards**
+
+- `Promise`: Promise\<[ModuleGiftCard](/resources/references/loyalty/types/loyaltyModuleGiftCard)\[]> — The list of gift cards.
+  - `ModuleGiftCard[]`: [ModuleGiftCard](/resources/references/loyalty/types/loyaltyModuleGiftCard)\[]
+    - `id`: `string` — The gift card's ID.
+    - `code`: `string` — The unique redemption code for the gift card.
+    - `status`: [GiftCardStatus](/resources/references/loyalty/enums/loyaltyGiftCardStatus) — The current status of the gift card.
+      - `PENDING`: `"pending"` (optional)
+      - `REDEEMED`: `"redeemed"` (optional)
+    - `value`: `number` — The monetary value of the gift card.
+    - `currency_code`: `string` — The three-letter ISO currency code of the gift card's value.
+    - `customer_id`: `string` — The ID of the customer who owns this gift card.
+    - `customer`: [CustomerDTO](/resources/references/loyalty/interfaces/loyaltyCustomerDTO) — The customer who owns this gift card.
+      - `id`: `string` — The ID of the customer.
+      - `email`: `string` — The email of the customer.
+      - `has_account`: `boolean` — A flag indicating if customer has an account or not.
+      - `default_billing_address_id`: `null` | `string` — The associated default billing address's ID.
+      - `default_shipping_address_id`: `null` | `string` — The associated default shipping address's ID.
+      - `company_name`: `null` | `string` — The company name of the customer.
+      - `first_name`: `null` | `string` — The first name of the customer.
+      - `last_name`: `null` | `string` — The last name of the customer.
+      - `addresses`: [CustomerAddressDTO](/resources/references/loyalty/interfaces/loyaltyCustomerAddressDTO)\[] — The addresses of the customer.
+      - `phone`: `null` | `string` — The phone of the customer.
+      - `groups`: `object`\[] — The groups of the customer.
+      - `metadata`: `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `created_by`: `null` | `string` — Who created the customer.
+      - `deleted_at`: `null` | `string` | `Date` — The deletion date of the customer.
+      - `created_at`: `string` | `Date` — The creation date of the customer.
+      - `updated_at`: `string` | `Date` — The update date of the customer.
+    - `reference_id`: `string` | `null` — The ID of the resource this gift card was created from (e.g. an order ID).
+    - `note`: `string` | `null` — An optional note about the gift card.
+    - `reference`: `string` | `null` — The resource type this gift card references (e.g. "order").
+    - `expires_at`: `string` | `null` — The date the gift card expires, or null if it does not expire.
+    - `created_at`: `string` — The date the gift card was created.
+    - `updated_at`: `string` — The date the gift card was last updated.

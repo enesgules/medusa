@@ -1,0 +1,54 @@
+---
+title: create
+---
+
+This method creates a new upload. It sends a request to the
+[Upload Files](/api/admin/uploads/upload-files)
+API route.
+
+## Example
+
+```ts
+sdk.admin.upload.create(
+  {
+    files: [
+       // file uploaded as a binary string
+      {
+        name: "test.txt",
+        content: "test", // Should be the binary string of the file
+      },
+      // file uploaded as a File object
+      new File(["test"], "test.txt", { type: "text/plain" })
+    ],
+  }
+)
+.then(({ files }) => {
+  console.log(files)
+})
+```
+
+<a id="create-parameters" />
+
+## Parameters
+
+**create**
+
+- `body`: [BaseUploadFile](/resources/references/types/types/typesBaseUploadFile) — The details of the files to upload.
+  - `files`: (`object` | [File](/resources/references/core_flows/core_flowsFile))\[] — The list of files to upload.
+    - `name`: `string` — The name of the file.
+    - `content`: `string` — The content of the file.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the uploaded files.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+## Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminFileListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFileListResponse)> — The upload files' details.
+  - `files`: [AdminFile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFile)\[] — The list of uploaded files.
+    - `id`: `string` — The ID of the file in the configured File Module Provider. For example, when using the Local File Provider Module (default provider), the ID is the file's path relative to the `static` directory.
+    - `url`: `string` — The URL of the file.

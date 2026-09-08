@@ -1,0 +1,96 @@
+---
+title: hasOne Relationship Method - DML Reference
+sidebarTitle: hasOne
+---
+
+<a id="hasonetypeparameter-t-typeparameter-foreignkeyname-entitybuilder-options-hasonewithforeignkeyt-foreignkeyname" />
+
+## hasOne\<TypeParameter T, TypeParameter ForeignKeyName>(entityBuilder, options): HasOneWithForeignKey\<T, ForeignKeyName>
+
+This method defines a relationship between two data models,
+where the owner of the relationship has one record of the related
+data model.
+
+For example: A user "hasOne" email.
+
+Use the [belongsTo](/resources/references/data-model/relationship-methods/belongsto) method to define the inverse of this relationship in
+the other data model.
+
+### Example
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const User = model.define("user", {
+  id: model.id(),
+  email: model.hasOne(() => Email),
+})
+```
+
+<a id="hasone-type-parameters" />
+
+### Type Parameters
+
+**hasOne**
+
+- `T`: `object` (optional) — The type of the entity builder passed as a first parameter. By default, it's a function returning the related model.
+- `ForeignKeyName`: `undefined` | `string` (optional)
+
+<a id="hasone-parameters" />
+
+### Parameters
+
+**hasOne**
+
+- `entityBuilder`: T — A function that returns the data model this model is related to.
+- `options`: `object` & `Record<string, any>` & `object` — The relationship's options.
+  - `mappedBy`: `string` (optional) — The name of the relationship as defined in the other data model. This is only required by the `belongsTo` and `manyToMany` relationship method.
+  - `foreignKey`: `true`
+  - `foreignKeyName`: ForeignKeyName (optional)
+
+<a id="hasonetypeparameter-t-entitybuilder-options-hasonet" />
+
+## hasOne\<TypeParameter T>(entityBuilder, options?): HasOne\<T>
+
+This method defines a relationship between two data models,
+where the owner of the relationship has one record of the related
+data model.
+
+For example: A user "hasOne" email.
+
+Use the [belongsTo](/resources/references/data-model/relationship-methods/belongsto) method to define the inverse of this relationship in
+the other data model.
+
+### Example
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const User = model.define("user", {
+  id: model.id(),
+  email: model.hasOne(() => Email),
+})
+```
+
+<a id="hasone-type-parameters-1" />
+
+### Type Parameters
+
+**hasOne**
+
+- `T`: `object` (optional) — The type of the entity builder passed as a first parameter. By default, it's a function returning the related model.
+
+<a id="hasone-parameters-1" />
+
+### Parameters
+
+**hasOne**
+
+- `entityBuilder`: T — A function that returns the data model this model is related to.
+- `options`: `object` & `Record<string, any>` & `object` (optional) — The relationship's options.
+  - `mappedBy`: `string` (optional) — The name of the relationship as defined in the other data model. This is only required by the `belongsTo` and `manyToMany` relationship method.
+  - `foreignKey`: `false` (optional)
+
+### Custom Namespace
+
+Relationship Methods

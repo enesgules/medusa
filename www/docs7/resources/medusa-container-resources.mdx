@@ -1,0 +1,262 @@
+---
+title: Medusa and Module Container Resources
+---
+
+This reference provides the list of resources registered in the Medusa container and module containers.
+
+## Medusa Container Resources
+
+The following table lists all resources that you can resolve in your customizations outside a module (such as API routes, workflows, subscribers, and scheduled jobs).
+
+<Note>
+  Refer to the [Medusa Container](/learn/fundamentals/medusa-container) documentation for more information on how to use these resources.
+</Note>
+
+<Note>
+  **Tip**
+
+  You can use the `ContainerRegistrationKeys` enum imported from `@medusajs/framework/utils` where specified.
+</Note>
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Resource
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Registration Name
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        [Medusa Configurations](/learn/configurations/medusa-config)
+      </td>
+
+      <td>
+        The configurations defined in `medusa-config.ts`.
+      </td>
+
+      <td>
+        `configModule` or `ContainerRegistrationKeys.CONFIG_MODULE`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        [Logger](/learn/debugging-and-testing/logging)
+      </td>
+
+      <td>
+        Utility to log messages to the terminal.
+      </td>
+
+      <td>
+        `logger` or `ContainerRegistrationKeys.LOGGER`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        [Query](/learn/fundamentals/module-links/query)
+      </td>
+
+      <td>
+        Query to retrieve data across modules.
+      </td>
+
+      <td>
+        `query` or `ContainerRegistrationKeys.QUERY`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        [Link](/learn/fundamentals/module-links/link)
+      </td>
+
+      <td>
+        Manage links between records of two modules' data models.
+      </td>
+
+      <td>
+        `link` or `ContainerRegistrationKeys.LINK`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Knex
+      </td>
+
+      <td>
+        [Knex query builder](https://knexjs.org/) connected to your application's database. Avoid performing database operations with this query builder and instead use [services](/learn/fundamentals/modules#2-create-service). This is only available for general database connectivity purposes.
+      </td>
+
+      <td>
+        `__pg_connection__` or `ContainerRegistrationKeys.PG_CONNECTION`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Modules' main services
+      </td>
+
+      <td>
+        The main service of every module added in `medusa-config.ts`.
+      </td>
+
+      <td>
+        - For custom modules, the registration name is the first parameter of `Module` exported in the `index.ts` file of the module.
+        - For Medusa's Commerce and Infrastructural Modules, use the `Modules` enum imported from `@medusajs/framework/utils`.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## Module Container Resources
+
+The following table lists all resources that you can resolve in a module's services or loaders.
+
+<Note>
+  Refer to the [Module Container](/learn/fundamentals/modules/container) documentation for more information on how to use these resources.
+</Note>
+
+<Note>
+  Use the `ContainerRegistrationKeys` and `Modules` enums imported from `@medusajs/framework/utils` where specified.
+</Note>
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Resource
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Registration Name
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        [Logger](/learn/debugging-and-testing/logging)
+      </td>
+
+      <td>
+        Utility to log messages to the terminal.
+      </td>
+
+      <td>
+        `logger` or `ContainerRegistrationKeys.LOGGER`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Entity Manager
+      </td>
+
+      <td>
+        An instance of [MikroORM's entity manager](https://mikro-orm.io/api/knex/class/EntityManager).
+      </td>
+
+      <td>
+        `manager` or `ContainerRegistrationKeys.MANAGER`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        [Base Repository](/learn/fundamentals/modules/db-operations#configure-transactions-with-the-base-repository)
+      </td>
+
+      <td>
+        An instance of the base repository, used to run transactions and perform database operations.
+      </td>
+
+      <td>
+        `baseRepository`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        [Medusa Configurations](/learn/configurations/medusa-config)
+      </td>
+
+      <td>
+        The configurations defined in `medusa-config.ts`.
+      </td>
+
+      <td>
+        `configModule` or `ContainerRegistrationKeys.CONFIG_MODULE`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        [Event Module](/resources/infrastructure-modules/event)'s service
+      </td>
+
+      <td>
+        The service of the Event Module, used to emit events.
+      </td>
+
+      <td>
+        `event_bus` or `Modules.EVENT_MODULE`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Services generated by the [service factory](/resources/service-factory-reference)
+      </td>
+
+      <td>
+        The service of every data model passed to the `MedusaService` function that your module's service extends. The service has the methods described in the [service factory reference](/resources/service-factory-reference).
+      </td>
+
+      <td>
+        Each service is registered as the camel-cased name of the data model. For example:
+
+        - `Brand` data model's service is registered as `brandService`.
+        - `DigitalProduct` data model's service is registered as `digitalProductService`.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Module services
+      </td>
+
+      <td>
+        You can resolve the module's services from one another, but not in loaders. Learn more in the [Module Container](/learn/fundamentals/modules/container) documentation.
+      </td>
+
+      <td>
+        Each service is registered as the camel-cased name of the service. For example:
+
+        - `BrandModuleService` is registered as `brandModuleService`.
+        - `CmsService` is registered as `cmsService`.
+      </td>
+    </tr>
+  </tbody>
+</table>

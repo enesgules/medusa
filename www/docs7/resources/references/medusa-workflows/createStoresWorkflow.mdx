@@ -1,0 +1,193 @@
+---
+title: createStoresWorkflow - Medusa Core Workflows Reference
+sidebarTitle: createStoresWorkflow
+---
+
+This documentation provides a reference to the `createStoresWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow creates one or more stores. By default, Medusa uses a single store. This is useful
+if you're building a multi-tenant application or a marketplace where each tenant has its own store.
+
+You can use this workflow within your customizations or your own custom workflows, allowing you to
+create stores within your custom flows.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/store/workflows/create-stores.ts#L54)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { createStoresWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await createStoresWorkflow(req.scope)
+    .run({
+      input: {
+        stores: [{
+          name: "Acme",
+          supported_currencies: [{
+            currency_code: "usd",
+            is_default: true
+          }]
+        }]
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { createStoresWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await createStoresWorkflow(container)
+    .run({
+      input: {
+        stores: [{
+          name: "Acme",
+          supported_currencies: [{
+            currency_code: "usd",
+            is_default: true
+          }]
+        }]
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { createStoresWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await createStoresWorkflow(container)
+    .run({
+      input: {
+        stores: [{
+          name: "Acme",
+          supported_currencies: [{
+            currency_code: "usd",
+            is_default: true
+          }]
+        }]
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { createStoresWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = createStoresWorkflow
+      .runAsStep({
+        input: {
+          stores: [{
+            name: "Acme",
+            supported_currencies: [{
+              currency_code: "usd",
+              is_default: true
+            }]
+          }]
+        }
+      })
+  }
+)
+```
+
+<a id="createstoresworkflow-steps" />
+
+## Steps
+
+- [createStoresStep](/resources/references/medusa-workflows/steps/createStoresStep): This step creates one or more stores.
+  - [updatePricePreferencesAsArrayStep](/resources/references/medusa-workflows/steps/updatePricePreferencesAsArrayStep): This step creates or updates price preferences.
+
+<a id="createstoresworkflow-input" />
+
+## Input
+
+**createStoresWorkflow**
+
+- `CreateStoresWorkflowInput`: [CreateStoresWorkflowInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcCreateStoresWorkflowInput)
+  - `stores`: [CreateStoreWorkflowInput](/resources/references/types/WorkflowTypes/StoreWorkflow/types/typesWorkflowTypesStoreWorkflowCreateStoreWorkflowInput)\[] — The stores to create.
+    - `supported_currencies`: `object`\[] — The supported currencies of the store.
+      - `currency_code`: `string` — The currency ISO 3 code.
+
+        Example:
+
+        ```
+        usd
+        ```
+      - `is_default`: `boolean` (optional) — Whether this currency is the default currency in the store.
+      - `is_tax_inclusive`: `boolean` (optional) — Whether prices in this currency are tax inclusive. Learn more in [this documentation](/resources/commerce-modules/pricing/tax-inclusive-pricing).
+
+<a id="createstoresworkflow-output" />
+
+## Output
+
+**createStoresWorkflow**
+
+- `CreateStoresWorkflowOutput`: [CreateStoresWorkflowOutput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcCreateStoresWorkflowOutput)
+  - `id`: `string` — The ID of the store.
+  - `name`: `string` — The name of the store.
+  - `supported_currencies`: [StoreCurrencyDTO](/resources/references/store/interfaces/storeStoreCurrencyDTO)\[] (optional) — The supported currency codes of the store.
+    - `id`: `string` — The ID of the store currency.
+    - `currency_code`: `string` — The currency code of the store currency.
+    - `is_default`: `boolean` — Whether the currency is the default one for the store.
+    - `store_id`: `string` — The store ID associated with the currency.
+    - `created_at`: `string` — The created date of the currency
+    - `updated_at`: `string` — The updated date of the currency
+    - `deleted_at`: `null` | `string` — The deleted date of the currency
+  - `supported_locales`: [StoreLocaleDTO](/resources/references/store/interfaces/storeStoreLocaleDTO)\[] (optional) — The supported locale codes of the store.
+    - `id`: `string` — The ID of the store locale.
+    - `locale_code`: `string` — The locale code of the store locale.
+    - `store_id`: `string` — The store ID associated with the locale.
+    - `created_at`: `string` — The created date of the locale.
+    - `updated_at`: `string` — The updated date of the locale.
+    - `deleted_at`: `null` | `string` — The deleted date of the locale.
+  - `default_sales_channel_id`: `string` (optional) — The associated default sales channel's ID.
+  - `default_region_id`: `string` (optional) — The associated default region's ID.
+  - `default_location_id`: `string` (optional) — The associated default location's ID.
+  - `metadata`: `null` | `Record<string, any>` — Holds custom data in key-value pairs.
+  - `created_at`: `string` — The created at of the store.
+  - `updated_at`: `string` — The updated at of the store.

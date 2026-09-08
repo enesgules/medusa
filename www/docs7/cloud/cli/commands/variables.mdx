@@ -1,0 +1,994 @@
+---
+title: variables Command - Medusa Cloud CLI Reference
+---
+
+In this guide, you'll learn how to inspect and manage the [environment variables](/cloud/environments/environment-variables) of a Cloud environment using the CLI.
+
+## variables list
+
+List all environment variables for a Cloud environment.
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud variables list \
+      --organization org_123 \
+      --project proj_123 \
+      --environment env_123
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+    mcloud variables list
+    ```
+  </Tab>
+</Tabs>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) that the environment belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-p <id-or-handle>`, `--project <id-or-handle>`
+      </td>
+
+      <td>
+        The [ID or handle of the project](/cloud/cli/commands/projects#find-project-ids-and-handles) that the environment belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-e <handle>`, `--environment <handle>`
+      </td>
+
+      <td>
+        The [handle of the environment](/cloud/cli/commands/environments#find-environment-handles) to list variables from.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the environment in the [active context](/cloud/cli/commands/use), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-t <type>`, `--type <type>`
+      </td>
+
+      <td>
+        The type of variables to list. Accepts `backend` or `storefront`.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `backend`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--reveal`
+      </td>
+
+      <td>
+        Print secret values in plain text instead of masking them.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--include-system`
+      </td>
+
+      <td>
+        Include system variables that Medusa auto-injects into the environment.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--scope <scope>`
+      </td>
+
+      <td>
+        Filter variables by scope. Accepts `build` or `runtime`, and you can pass it multiple times to include more than one scope. By default, both build and runtime variables are included.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Both scopes
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--dotenv`
+      </td>
+
+      <td>
+        Output the variables in `.env` file format (`KEY=VALUE` lines) instead of a table.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## variables get
+
+Retrieve a single variable by its ID (`var_...`) or by its key. Looking up by key requires `--project` and `--environment` (or the equivalent values in the [active context](/cloud/cli/commands/use)) so the CLI knows which environment to search.
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud variables get ADMIN_CORS \
+      --organization org_123 \
+      --project proj_123 \
+      --environment env_123
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+    mcloud variables get ADMIN_CORS
+    ```
+  </Tab>
+</Tabs>
+
+You can also fetch a variable by ID without setting the active environment:
+
+```bash
+mcloud variables get var_01XYZ
+```
+
+This returns the variable's details, similar to the following:
+
+<Tabs>
+  <Tab title="Plaintext">
+    ```bash
+    Key:          ADMIN_CORS
+    Value:        https://admin.mystore.com
+    Secret:       no
+    Scope:        runtime
+    System:       no
+    ID:           var_123
+    Environment:  env_123
+    Updated at:   Feb 17, 2026, 4:15 PM GMT+2
+    ```
+  </Tab>
+
+  <Tab title="JSON (--json)">
+    ```json
+    {
+      "id": "var_123",
+      "environment_id": "env_123",
+      "key": "ADMIN_CORS",
+      "value": "https://admin.mystore.com",
+      "is_secret": false,
+      "is_build": false,
+      "is_runtime": true,
+      "updated_at": "2026-02-17T14:15:00.000Z",
+      "source": "user"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Arguments
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `variable`
+      </td>
+
+      <td>
+        Variable ID (`var_...`) or key. When passing a key, you must also provide `--project` and `--environment` (or set them in the [active context](/cloud/cli/commands/use)).
+      </td>
+
+      <td>
+        Yes
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) that the variable belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-p <id-or-handle>`, `--project <id-or-handle>`
+      </td>
+
+      <td>
+        The [ID or handle of the project](/cloud/cli/commands/projects#find-project-ids-and-handles) that the variable belongs to. Required when looking up by key.
+      </td>
+
+      <td>
+        Conditional
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-e <handle>`, `--environment <handle>`
+      </td>
+
+      <td>
+        The [handle of the environment](/cloud/cli/commands/environments#find-environment-handles) that the variable belongs to. Required when looking up by key.
+      </td>
+
+      <td>
+        Conditional
+      </td>
+
+      <td>
+        Falls back to the environment in the [active context](/cloud/cli/commands/use), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-t <type>`, `--type <type>`
+      </td>
+
+      <td>
+        The type of variable to get. Accepts `backend` or `storefront`.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `backend`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--reveal`
+      </td>
+
+      <td>
+        Print the secret value in plain text instead of masking it.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## variables set
+
+<Note>
+  This command is available since Medusa mcloud CLI v0.1.10.
+</Note>
+
+Create or update one or more environment variables. Pass a single variable and value as arguments, or set multiple variables at once using `--var` or `--env-file`.
+
+The CLI updates a variable when you reference it by ID (`var_...`) or by an existing key, and creates a new variable when the key doesn't exist yet. Creating or looking up a variable by key requires `--project` and `--environment` (or the equivalent values in the [active context](/cloud/cli/commands/use)).
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud variables set API_KEY pk_123 \
+      --organization org_123 \
+      --project proj_123 \
+      --environment env_123
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+    mcloud variables set API_KEY pk_123
+    ```
+  </Tab>
+</Tabs>
+
+To set multiple variables at once, use `--var` for each variable or point to a `.env` file with `--env-file`:
+
+```bash
+mcloud variables set \
+  -v API_KEY=pk_123 \
+  -v CLIENT_ID=my_app
+```
+
+```bash
+mcloud variables set --env-file .env
+```
+
+### Redeploy or Rebuild to Apply Changes
+
+Setting a variable saves it to the environment but doesn't rebuild or redeploy your application. The running deployment keeps using the previous values until you deploy again:
+
+- For a **runtime** variable (`--runtime`), run [`mcloud environments redeploy`](/cloud/cli/commands/environments#environments-redeploy) to re-run the active build with the new value.
+- For a **build** variable (`--build`), run [`mcloud environments trigger-build`](/cloud/cli/commands/environments#environments-trigger-build) to start a new build. A redeploy reuses the existing image and won't pick up build variable changes.
+
+### Arguments
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `variable`
+      </td>
+
+      <td>
+        Variable ID (`var_...`) or key to set. When passing a key, you must also provide `--project` and `--environment` (or set them in the [active context](/cloud/cli/commands/use)). Omit when using `--var` or `--env-file`.
+      </td>
+
+      <td>
+        No
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `value`
+      </td>
+
+      <td>
+        The value to set for the variable. Required when a `variable` argument is passed.
+      </td>
+
+      <td>
+        No
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) that the variable belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-p <id-or-handle>`, `--project <id-or-handle>`
+      </td>
+
+      <td>
+        The [ID or handle of the project](/cloud/cli/commands/projects#find-project-ids-and-handles) that the variable belongs to. Required when setting a variable by key.
+      </td>
+
+      <td>
+        Conditional
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-e <handle>`, `--environment <handle>`
+      </td>
+
+      <td>
+        The [handle of the environment](/cloud/cli/commands/environments#find-environment-handles) that the variable belongs to. Required when setting a variable by key.
+      </td>
+
+      <td>
+        Conditional
+      </td>
+
+      <td>
+        Falls back to the environment in the [active context](/cloud/cli/commands/use), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-t <type>`, `--type <type>`
+      </td>
+
+      <td>
+        The type of variable to set. Accepts `backend` or `storefront`.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `backend`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-v <var>`, `--var <var>`
+      </td>
+
+      <td>
+        A variable to set in the format `ID=VALUE` or `KEY=VALUE`. Pass it multiple times to set more than one variable. Keys require `--project` and `--environment`.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        \-
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--env-file <path>`
+      </td>
+
+      <td>
+        Path to a `.env` file whose variables are set on the environment.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        \-
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--secret`, `--no-secret`
+      </td>
+
+      <td>
+        Whether the variable is a secret. Pass `--no-secret` to explicitly mark it as not secret.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false` for new variables
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--build`, `--no-build`
+      </td>
+
+      <td>
+        Whether the variable is available at build time.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false` for new variables
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--runtime`, `--no-runtime`
+      </td>
+
+      <td>
+        Whether the variable is available at runtime. Pass `--no-runtime` to disable it.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `true` for new variables
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## variables delete
+
+<Note>
+  This command is available since Medusa mcloud CLI v0.1.10.
+</Note>
+
+Delete an environment variable by its ID (`var_...`) or key. Looking up by key requires `--project` and `--environment` (or the equivalent values in the [active context](/cloud/cli/commands/use)).
+
+<Warning>
+  Deleting a variable is irreversible. You can't delete system variables that Medusa auto-injects into the environment.
+</Warning>
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud variables delete API_KEY \
+      --organization org_123 \
+      --project proj_123 \
+      --environment env_123 \
+      --yes
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+    mcloud variables delete API_KEY --yes
+    ```
+  </Tab>
+</Tabs>
+
+Without `--yes`, the CLI prompts you to confirm the deletion. In a non-interactive environment (such as a CI pipeline), you must pass `--yes`, otherwise the command errors out.
+
+### Redeploy or Rebuild to Apply Changes
+
+Like setting a variable, deleting one doesn't rebuild or redeploy your application. Redeploy the environment with [`mcloud environments redeploy`](/cloud/cli/commands/environments#environments-redeploy), or start a new build with [`mcloud environments trigger-build`](/cloud/cli/commands/environments#environments-trigger-build) if the variable was a build variable, for the change to take effect.
+
+### Arguments
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `variable`
+      </td>
+
+      <td>
+        Variable ID (`var_...`) or key to delete. When passing a key, you must also provide `--project` and `--environment` (or set them in the [active context](/cloud/cli/commands/use)).
+      </td>
+
+      <td>
+        Yes
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) that the variable belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-p <id-or-handle>`, `--project <id-or-handle>`
+      </td>
+
+      <td>
+        The [ID or handle of the project](/cloud/cli/commands/projects#find-project-ids-and-handles) that the variable belongs to. Required when deleting by key.
+      </td>
+
+      <td>
+        Conditional
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-e <handle>`, `--environment <handle>`
+      </td>
+
+      <td>
+        The [handle of the environment](/cloud/cli/commands/environments#find-environment-handles) that the variable belongs to. Required when deleting by key.
+      </td>
+
+      <td>
+        Conditional
+      </td>
+
+      <td>
+        Falls back to the environment in the [active context](/cloud/cli/commands/use), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-t <type>`, `--type <type>`
+      </td>
+
+      <td>
+        The type of variable to delete. Accepts `backend` or `storefront`.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `backend`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-y`, `--yes`
+      </td>
+
+      <td>
+        Skip the confirmation prompt and delete the variable. Required in non-interactive environments.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## Reveal Secret Values
+
+By default, the CLI masks values for variables marked as secrets. Pass `--reveal` to print the plaintext value:
+
+<Warning>
+  Avoid `--reveal` on shared terminals or in shell history. The plaintext value is printed to standard output, which is captured by terminal scrollback, log aggregators, and process listings.
+</Warning>
+
+```bash
+mcloud variables get DATABASE_URL --reveal
+```
+
+***
+
+## Export Variables to a `.env` File
+
+Use the `--dotenv` flag with `--reveal` to output the variables in `.env` file format, then write them to a local `.env` file. This is useful for replicating a Cloud environment's variables to a local development environment:
+
+```bash
+mcloud variables list --reveal --dotenv > .env
+```
+
+<Warning>
+  `--reveal` prints secret values in plain text. Avoid running this on shared terminals or storing the resulting `.env` file in version control.
+</Warning>

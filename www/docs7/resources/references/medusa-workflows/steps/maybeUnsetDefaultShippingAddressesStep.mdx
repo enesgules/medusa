@@ -1,0 +1,100 @@
+---
+title: maybeUnsetDefaultShippingAddressesStep - Medusa Core Workflows Reference
+sidebarTitle: maybeUnsetDefaultShippingAddressesStep
+---
+
+This documentation provides a reference to the `maybeUnsetDefaultShippingAddressesStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step unsets the `is_default_billing` property of existing customer addresses
+if the `is_default_billing` property in the addresses in the input is set to `true`.
+
+## Example
+
+```ts
+const data = maybeUnsetDefaultShippingAddressesStep({
+  create: [{
+    customer_id: "cus_123",
+    first_name: "John",
+    last_name: "Doe",
+    address_1: "123 Main St",
+    city: "Anytown",
+    country_code: "US",
+    postal_code: "12345",
+    phone: "555-555-5555",
+    is_default_shipping: true
+  }],
+  update: {
+    selector: {
+      customer_id: "cus_123"
+    },
+    update: {
+      is_default_shipping: true
+    }
+  }
+})
+```
+
+<a id="maybeunsetdefaultshippingaddressesstep-input" />
+
+## Input
+
+**maybeUnsetDefaultShippingAddressesStep**
+
+- `MaybeUnsetDefaultShippingAddressesStepInput`: [MaybeUnsetDefaultShippingAddressesStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcMaybeUnsetDefaultShippingAddressesStepInput)
+  - `create`: [CreateCustomerAddressDTO](/resources/references/customer/interfaces/customerCreateCustomerAddressDTO)\[] (optional) — The addresses being created. If the address has the `is_default_shipping` property set to `true`, the existing default shipping address of the customer will be unset.
+    - `address_name`: `null` | `string` (optional) — The address's name.
+    - `is_default_shipping`: `boolean` (optional) — Whether the address is default shipping.
+    - `is_default_billing`: `boolean` (optional) — Whether the address is the default for billing.
+    - `customer_id`: `string` — The associated customer's ID.
+    - `company`: `null` | `string` (optional) — The company.
+    - `first_name`: `null` | `string` (optional) — The first name.
+    - `last_name`: `null` | `string` (optional) — The last name.
+    - `address_1`: `null` | `string` (optional) — The address 1.
+    - `address_2`: `null` | `string` (optional) — The address 2.
+    - `city`: `null` | `string` (optional) — The city.
+    - `country_code`: `null` | `string` (optional) — The country code.
+    - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the address.
+    - `postal_code`: `null` | `string` (optional) — The postal code.
+    - `phone`: `null` | `string` (optional) — The phone.
+    - `metadata`: [MetadataType](/resources/references/customer/types/customerMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `update`: `object` (optional) — The addresses being updated.
+    - `selector`: [FilterableCustomerAddressProps](/resources/references/customer/interfaces/customerFilterableCustomerAddressProps) — The selector to identify the customers to unset their default shipping address.
+      - `q`: `string` (optional) — Searches for addresses by properties such as name and street using this search term.
+      - `id`: `string` | `string`\[] (optional) — The IDs to filter the customer address by.
+      - `address_name`: `string` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter addresses by name.
+      - `is_default_shipping`: `boolean` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<boolean> (optional) — Filter addresses by whether they're the default for shipping.
+      - `is_default_billing`: `boolean` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<boolean> (optional) — Filter addresses by whether they're the default for billing.
+      - `customer_id`: `string` | `string`\[] (optional) — Filter addresses by the associated customer's ID.
+      - `customer`: `string` | `string`\[] | [FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps) (optional) — Filter addresses by the associated customer.
+      - `company`: `string` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter addresses by company.
+      - `first_name`: `string` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter addresses by first name.
+      - `last_name`: `string` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter addresses by last name.
+      - `address_1`: `string` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter addresses by first address line.
+      - `address_2`: `string` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter addresses by second address line.
+      - `city`: `string` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter addresses by city.
+      - `country_code`: `string` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter addresses by country code.
+      - `province`: `string` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter addresses by lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province.
+      - `postal_code`: `string` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter addresses by postal code.
+      - `phone`: `string` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter addresses by phone number.
+      - `metadata`: `Record<string, unknown>` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<Record\<string, unknown>> (optional) — Holds custom data in key-value pairs.
+      - `created_at`: [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter addresses by created date.
+      - `updated_at`: [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter addresses by updated date.
+      - `$and`: ([FilterableCustomerAddressProps](/resources/references/customer/interfaces/customerFilterableCustomerAddressProps) | [BaseFilterable](/resources/references/customer/interfaces/customerBaseFilterable)\<[FilterableCustomerAddressProps](/resources/references/customer/interfaces/customerFilterableCustomerAddressProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$or`: ([FilterableCustomerAddressProps](/resources/references/customer/interfaces/customerFilterableCustomerAddressProps) | [BaseFilterable](/resources/references/customer/interfaces/customerBaseFilterable)\<[FilterableCustomerAddressProps](/resources/references/customer/interfaces/customerFilterableCustomerAddressProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `update`: [UpdateCustomerAddressDTO](/resources/references/customer/interfaces/customerUpdateCustomerAddressDTO) — The address details to update. The `is_default_shipping` property of existing customer addresses are only unset if the `is_default_shipping` property in this object is set to `true`.
+      - `id`: `string` (optional) — The ID of the address.
+      - `address_name`: `null` | `string` (optional) — The address's name.
+      - `is_default_shipping`: `boolean` (optional) — Whether the address is the default for shipping.
+      - `is_default_billing`: `boolean` (optional) — Whether the address is the default for billing.
+      - `customer_id`: `null` | `string` (optional) — The associated customer's ID.
+      - `company`: `null` | `string` (optional) — The company.
+      - `first_name`: `null` | `string` (optional) — The first name.
+      - `last_name`: `null` | `string` (optional) — The last name.
+      - `address_1`: `null` | `string` (optional) — The address 1.
+      - `address_2`: `null` | `string` (optional) — The address 2.
+      - `city`: `null` | `string` (optional) — The city.
+      - `country_code`: `null` | `string` (optional) — The country code.
+      - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the address.
+      - `postal_code`: `null` | `string` (optional) — The postal code.
+      - `phone`: `null` | `string` (optional) — The phone.
+      - `metadata`: [MetadataType](/resources/references/customer/types/customerMetadataType) (optional) — Holds custom data in key-value pairs.

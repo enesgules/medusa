@@ -1,0 +1,55 @@
+---
+title: validateCustomerStoreCreditAccountStep - Medusa Core Workflows Reference
+sidebarTitle: validateCustomerStoreCreditAccountStep
+---
+
+This documentation provides a reference to the `validateCustomerStoreCreditAccountStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that a customer's store credit account exists and has a positive
+balance. It throws an error if the account is not found or has no balance.
+
+## Example
+
+```ts
+const data = validateCustomerStoreCreditAccountStep({
+  storeCreditAccount: {
+    id: "sca_123",
+    balance: 100,
+    // other store credit account properties...
+  },
+})
+```
+
+<a id="validatecustomerstorecreditaccountstep-input" />
+
+## Input
+
+**validateCustomerStoreCreditAccountStep**
+
+- `ValidateCustomerStoreCreditAccountStepInput`: [ValidateCustomerStoreCreditAccountStepInput](/resources/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flowsplugins_loyalty_src_workflowsValidateCustomerStoreCreditAccountStepInput)
+  - `storeCreditAccount`: [ModuleStoreCreditAccount](/resources/references/store_credit/types/store_creditModuleStoreCreditAccount) — The customer's store credit account to validate.
+    - `id`: `string` — The store credit account's ID.
+    - `customer_id`: `string` (optional) — The ID of the customer who owns this account, if any.
+    - `code`: `string` (optional) — The unique code that identifies this account, used for anonymous or gift card accounts.
+    - `currency_code`: `string` — The three-letter ISO currency code of the account's balance.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `credits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount credited to this account.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `debits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount debited from this account.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `balance`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The current balance of this account (credits minus debits).
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `metadata`: `Record<string, unknown>` — Custom key-value pairs attached to this account.
+    - `created_at`: `string` — The date the account was created.
+    - `updated_at`: `string` — The date the account was last updated.

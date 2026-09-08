@@ -1,0 +1,26 @@
+---
+title: CreateWorkflowComposerContext
+---
+
+- `CreateWorkflowComposerContext`: `object`
+  - `hooks_`: `object`
+    - `declared`: `string`\[]
+    - `registered`: `string`\[]
+  - `hooksCallback_`: `Record<string, [HookHandler](/references/workflows/types/workflows.HookHandler)>`
+  - `workflowId`: `string`
+  - `flow`: [OrchestratorBuilder](/resources/references/workflows/classes/workflowsOrchestratorBuilder)
+    - `steps`: [InternalStep](/resources/references/workflows/interfaces/workflowsInternalStep) — Defines the structure and behavior of a single step within a transaction workflow.
+    - `hasChanges_`: `boolean`
+  - `isAsync`: `boolean`
+  - `handlers`: [WorkflowHandler](/resources/references/workflows/types/workflowsWorkflowHandler)
+    - `invoke`: [WorkflowStepHandler](/resources/references/workflows/types/workflowsWorkflowStepHandler)
+    - `compensate`: [WorkflowStepHandler](/resources/references/workflows/types/workflowsWorkflowStepHandler) (optional)
+  - `overriddenHandler`: [WorkflowHandler](/resources/references/workflows/types/workflowsWorkflowHandler)
+    - `invoke`: [WorkflowStepHandler](/resources/references/workflows/types/workflowsWorkflowStepHandler)
+    - `compensate`: [WorkflowStepHandler](/resources/references/workflows/types/workflowsWorkflowStepHandler) (optional)
+  - `stepBinder`: `<TOutput>`(`fn`: [StepFunctionResult](/resources/references/workflows/types/workflowsStepFunctionResult)) => [WorkflowData](/resources/references/workflows/types/workflowsWorkflowData)\<TOutput>
+  - `hookBinder`: (`name`: `string`, `fn`: () => [HookHandler](/resources/references/workflows/types/workflowsHookHandler)) => `void`
+  - `stepConditions_`: `Record<string, object>`
+    - `condition`: (...`args`: `any`\[]) => `boolean` | [WorkflowData](/resources/references/workflows/types/workflowsWorkflowData)
+    - `input`: `any`
+  - `parallelizeBinder`: `<TOutput>`(`fn`: (`this`: [CreateWorkflowComposerContext](/resources/references/workflows/types/workflowsCreateWorkflowComposerContext)) => TOutput) => TOutput

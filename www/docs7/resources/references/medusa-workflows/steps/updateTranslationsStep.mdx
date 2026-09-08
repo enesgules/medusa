@@ -1,0 +1,219 @@
+---
+title: updateTranslationsStep - Medusa Core Workflows Reference
+sidebarTitle: updateTranslationsStep
+---
+
+This documentation provides a reference to the `updateTranslationsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step updates translations matching the specified filters or by ID.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.12.3](https://github.com/medusajs/medusa/releases/tag/v2.12.3).
+
+## Example
+
+To update translations by their ID:
+
+```ts
+const data = updateTranslationsStep({
+  translations: [
+    { id: "trans_123", translations: { title: "Nouveau titre" } }
+  ]
+})
+```
+
+To update translations matching filters:
+
+```ts
+const data = updateTranslationsStep({
+  selector: {
+    reference_id: "prod_123",
+    locale: "fr-FR"
+  },
+  update: {
+    translations: { title: "Nouveau titre" }
+  }
+})
+```
+
+<a id="updatetranslationsstep-input" />
+
+## Input
+
+**updateTranslationsStep**
+
+- `UpdateTranslationsStepInput`: [UpdateTranslationsStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcUpdateTranslationsStepInput)
+  - `selector`: [FilterableTranslationProps](/resources/references/translation/interfaces/translationFilterableTranslationProps) — The filters to select the translations to update.
+    - `$and`: ([FilterableTranslationProps](/resources/references/translation/interfaces/translationFilterableTranslationProps) | [BaseFilterable](/resources/references/translation/interfaces/translationBaseFilterable)\<[FilterableTranslationProps](/resources/references/translation/interfaces/translationFilterableTranslationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$and`: ([FilterableTranslationProps](/resources/references/translation/interfaces/translationFilterableTranslationProps) | [BaseFilterable](/resources/references/translation/interfaces/translationBaseFilterable)\<[FilterableTranslationProps](/resources/references/translation/interfaces/translationFilterableTranslationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$or`: ([FilterableTranslationProps](/resources/references/translation/interfaces/translationFilterableTranslationProps) | [BaseFilterable](/resources/references/translation/interfaces/translationBaseFilterable)\<[FilterableTranslationProps](/resources/references/translation/interfaces/translationFilterableTranslationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `q`: `string` (optional) — Search through translated content using this search term. This searches within the JSONB translations field values.
+      - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/translation/types/translationOperatorMap)\<string | string\[]> (optional) — The IDs to filter the translations by.
+      - `reference_id`: `string` | `string`\[] | [OperatorMap](/resources/references/translation/types/translationOperatorMap)\<string> (optional) — Filter translations by entity ID.
+      - `reference`: `string` | `string`\[] | [OperatorMap](/resources/references/translation/types/translationOperatorMap)\<string> (optional) — Filter translations by entity type.
+      - `locale_code`: `string` | `string`\[] | [OperatorMap](/resources/references/translation/types/translationOperatorMap)\<string> (optional) — Filter translations by locale code.
+    - `$or`: ([FilterableTranslationProps](/resources/references/translation/interfaces/translationFilterableTranslationProps) | [BaseFilterable](/resources/references/translation/interfaces/translationBaseFilterable)\<[FilterableTranslationProps](/resources/references/translation/interfaces/translationFilterableTranslationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `$and`: ([FilterableTranslationProps](/resources/references/translation/interfaces/translationFilterableTranslationProps) | [BaseFilterable](/resources/references/translation/interfaces/translationBaseFilterable)\<[FilterableTranslationProps](/resources/references/translation/interfaces/translationFilterableTranslationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$or`: ([FilterableTranslationProps](/resources/references/translation/interfaces/translationFilterableTranslationProps) | [BaseFilterable](/resources/references/translation/interfaces/translationBaseFilterable)\<[FilterableTranslationProps](/resources/references/translation/interfaces/translationFilterableTranslationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `q`: `string` (optional) — Search through translated content using this search term. This searches within the JSONB translations field values.
+      - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/translation/types/translationOperatorMap)\<string | string\[]> (optional) — The IDs to filter the translations by.
+      - `reference_id`: `string` | `string`\[] | [OperatorMap](/resources/references/translation/types/translationOperatorMap)\<string> (optional) — Filter translations by entity ID.
+      - `reference`: `string` | `string`\[] | [OperatorMap](/resources/references/translation/types/translationOperatorMap)\<string> (optional) — Filter translations by entity type.
+      - `locale_code`: `string` | `string`\[] | [OperatorMap](/resources/references/translation/types/translationOperatorMap)\<string> (optional) — Filter translations by locale code.
+    - `q`: `string` (optional) — Search through translated content using this search term. This searches within the JSONB translations field values.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/translation/types/translationOperatorMap)\<string | string\[]> (optional) — The IDs to filter the translations by.
+      - `$and`: [Query](/resources/references/translation/types/translationQuery)\<T>\[] (optional)
+      - `$or`: [Query](/resources/references/translation/types/translationQuery)\<T>\[] (optional)
+      - `$eq`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> | [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T>\[] (optional)
+      - `$ne`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$in`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T>\[] (optional)
+      - `$nin`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T>\[] (optional)
+      - `$not`: [Query](/resources/references/translation/types/translationQuery)\<T> (optional)
+      - `$gt`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$gte`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$lt`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$lte`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`\[] (optional)
+      - `$contains`: `string`\[] (optional)
+      - `$contained`: `string`\[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `reference_id`: `string` | `string`\[] | [OperatorMap](/resources/references/translation/types/translationOperatorMap)\<string> (optional) — Filter translations by entity ID.
+      - `$and`: [Query](/resources/references/translation/types/translationQuery)\<T>\[] (optional)
+      - `$or`: [Query](/resources/references/translation/types/translationQuery)\<T>\[] (optional)
+      - `$eq`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> | [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T>\[] (optional)
+      - `$ne`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$in`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T>\[] (optional)
+      - `$nin`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T>\[] (optional)
+      - `$not`: [Query](/resources/references/translation/types/translationQuery)\<T> (optional)
+      - `$gt`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$gte`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$lt`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$lte`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`\[] (optional)
+      - `$contains`: `string`\[] (optional)
+      - `$contained`: `string`\[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `reference`: `string` | `string`\[] | [OperatorMap](/resources/references/translation/types/translationOperatorMap)\<string> (optional) — Filter translations by entity type.
+      - `$and`: [Query](/resources/references/translation/types/translationQuery)\<T>\[] (optional)
+      - `$or`: [Query](/resources/references/translation/types/translationQuery)\<T>\[] (optional)
+      - `$eq`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> | [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T>\[] (optional)
+      - `$ne`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$in`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T>\[] (optional)
+      - `$nin`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T>\[] (optional)
+      - `$not`: [Query](/resources/references/translation/types/translationQuery)\<T> (optional)
+      - `$gt`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$gte`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$lt`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$lte`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`\[] (optional)
+      - `$contains`: `string`\[] (optional)
+      - `$contained`: `string`\[] (optional)
+      - `$exists`: `boolean` (optional)
+    - `locale_code`: `string` | `string`\[] | [OperatorMap](/resources/references/translation/types/translationOperatorMap)\<string> (optional) — Filter translations by locale code.
+      - `$and`: [Query](/resources/references/translation/types/translationQuery)\<T>\[] (optional)
+      - `$or`: [Query](/resources/references/translation/types/translationQuery)\<T>\[] (optional)
+      - `$eq`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> | [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T>\[] (optional)
+      - `$ne`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$in`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T>\[] (optional)
+      - `$nin`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T>\[] (optional)
+      - `$not`: [Query](/resources/references/translation/types/translationQuery)\<T> (optional)
+      - `$gt`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$gte`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$lt`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$lte`: [ExpandScalar](/resources/references/translation/types/translationExpandScalar)\<T> (optional)
+      - `$like`: `string` (optional)
+      - `$re`: `string` (optional)
+      - `$ilike`: `string` (optional)
+      - `$fulltext`: `string` (optional)
+      - `$overlap`: `string`\[] (optional)
+      - `$contains`: `string`\[] (optional)
+      - `$contained`: `string`\[] (optional)
+      - `$exists`: `boolean` (optional)
+  - `update`: [UpdateTranslationDataDTO](/resources/references/translation/interfaces/translationUpdateTranslationDataDTO) — The data to update in the translations.
+    - `reference_id`: `string` (optional) — The ID of the data model being translated.
+
+      Example:
+
+      ```
+      "prod_123"
+      ```
+    - `reference`: `string` (optional) — The name of the table that the translation belongs to.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `locale_code`: `string` (optional) — The BCP 47 language tag code for this translation.
+
+      Example:
+
+      ```
+      "en-US"
+      ```
+    - `translations`: `Record<string, unknown>` (optional) — The translated fields as key-value pairs.
+
+      Example:
+
+      ```
+      { * "title": "Product Title", * "description": "Product Description", * }
+      ```
+  - `translations`: [UpdateTranslationDTO](/resources/references/translation/interfaces/translationUpdateTranslationDTO)\[] — The translations to update by ID.
+    - `reference_id`: `string` (optional) — The ID of the data model being translated.
+
+      Example:
+
+      ```
+      "prod_123"
+      ```
+    - `reference`: `string` (optional) — The name of the table that the translation belongs to.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `locale_code`: `string` (optional) — The BCP 47 language tag code for this translation.
+
+      Example:
+
+      ```
+      "en-US"
+      ```
+    - `translations`: `Record<string, unknown>` (optional) — The translated fields as key-value pairs.
+
+      Example:
+
+      ```
+      { * "title": "Product Title", * "description": "Product Description", * }
+      ```
+    - `id`: `string` — The ID of the translation to update.
+
+<a id="updatetranslationsstep-output" />
+
+## Output
+
+**updateTranslationsStep**
+
+- `TranslationDTO[]`: [TranslationDTO](/resources/references/translation/interfaces/translationTranslationDTO)\[]
+  - `id`: `string` — The ID of the translation.
+  - `reference_id`: `string` — The ID of the entity being translated.
+  - `reference`: `string` — The type of entity being translated (e.g., "product", "product\_variant").
+  - `locale_code`: `string` — The BCP 47 language tag code for this translation (e.g., "en-US", "fr-FR").
+  - `translations`: `Record<string, unknown>` — The translated fields as key-value pairs.
+  - `created_at`: `string` | `Date` — The date and time the translation was created.
+  - `updated_at`: `string` | `Date` — The date and time the translation was last updated.
+  - `deleted_at`: `null` | `string` | `Date` — The date and time the translation was deleted.

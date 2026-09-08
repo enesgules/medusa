@@ -1,0 +1,116 @@
+---
+title: retrievePromotion - Promotion Module Reference
+sidebarTitle: retrievePromotion
+---
+
+This documentation provides a reference to the `retrievePromotion` method. This belongs to the Promotion Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a promotion by its ID.
+
+## Example
+
+A simple example that retrieves a promotion by its ID:
+
+```ts
+const promotion =
+  await promotionModuleService.retrievePromotion("promo_123")
+```
+
+To specify relations that should be retrieved:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const promotion = await promotionModuleService.retrievePromotion(
+  "promo_123",
+  {
+    relations: ["application_method"],
+  }
+)
+```
+
+<a id="retrievepromotion-parameters" />
+
+## Parameters
+
+**retrievePromotion**
+
+- `id`: `string` — The ID of the promotion.
+- `config`: [FindConfig](/resources/references/promotion/interfaces/promotionFindConfig)\<[PromotionDTO](/resources/references/promotion/interfaces/promotionPromotionDTO)> (optional) — The configurations determining how the promotion is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a promotion.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/promotion/types/promotionFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/promotion/types/promotionInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/promotion/types/promotionCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/promotion/interfaces/promotionContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/promotion/interfaces/promotionIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="retrievepromotion-returns" />
+
+## Returns
+
+**retrievePromotion**
+
+- `Promise`: Promise\<[PromotionDTO](/resources/references/promotion/interfaces/promotionPromotionDTO)> — The retrieved promotion.
+  - `id`: `string` — The ID of the promotion.
+  - `code`: `string` (optional) — The code of the promotion.
+  - `type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues) (optional) — The type of the promotion: - `standard` indicates that a promotion is a standard one applied with conditions. - `buyget` indicates that a promotion is a "Buy X get Y" promotion.
+  - `status`: [PromotionStatusValues](/resources/references/promotion/types/promotionPromotionStatusValues) (optional) — The status of the promotion: - `active` promotion is available for user to consume - `inactive` promotion is no longer available to the user - `draft` promotion is currently being prepared
+  - `is_automatic`: `boolean` (optional) — Whether the promotion is applied automatically.
+  - `is_tax_inclusive`: `boolean` (optional) — Whether the promotion is tax inclusive.
+  - `limit`: `null` | `number` (optional) — The maximum number of times this promotion can be used across all orders.
+  - `used`: `number` (optional) — The number of times this promotion has been used in completed orders.
+  - `application_method`: [ApplicationMethodDTO](/resources/references/promotion/interfaces/promotionApplicationMethodDTO) (optional) — The associated application method.
+    - `id`: `string` — The ID of the application method.
+    - `type`: [ApplicationMethodTypeValues](/resources/references/promotion/types/promotionApplicationMethodTypeValues) (optional) — The type of the application method indicating how the associated promotion is applied.
+    - `target_type`: [ApplicationMethodTargetTypeValues](/resources/references/promotion/types/promotionApplicationMethodTargetTypeValues) (optional) — The target type of the application method indicating whether the associated promotion is applied to the cart's items, shipping methods, or the whole order.
+    - `allocation`: [ApplicationMethodAllocationValues](/resources/references/promotion/types/promotionApplicationMethodAllocationValues) (optional) — The allocation value that indicates whether the associated promotion is applied on each item in a cart or split between the items in the cart.
+    - `value`: `number` (optional) — The discounted amount applied by the associated promotion based on the `type`.
+    - `currency_code`: `string` (optional) — The currency code of the application method
+    - `max_quantity`: `null` | `number` (optional) — The max quantity allowed in the cart for the associated promotion to be applied.
+    - `buy_rules_min_quantity`: `null` | `number` (optional) — The minimum quantity required for a `buyget` promotion to be applied. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `2`.
+    - `apply_to_quantity`: `null` | `number` (optional) — The quantity that results from matching the `buyget` promotion's condition. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `1`.
+    - `promotion`: `string` | [PromotionDTO](/resources/references/promotion/interfaces/promotionPromotionDTO) (optional) — The promotion of the application method.
+    - `target_rules`: [PromotionRuleDTO](/resources/references/promotion/interfaces/promotionPromotionRuleDTO)\[] (optional) — The target rules of the application method.
+    - `buy_rules`: [PromotionRuleDTO](/resources/references/promotion/interfaces/promotionPromotionRuleDTO)\[] (optional) — The buy rules of the application method.
+  - `rules`: [PromotionRuleDTO](/resources/references/promotion/interfaces/promotionPromotionRuleDTO)\[] (optional) — The rules of the promotion.
+    - `id`: `string` — The ID of the promotion rule.
+    - `description`: `null` | `string` (optional) — The description of the promotion rule.
+    - `attribute`: `string` (optional) — The attribute of the promotion rule.
+    - `operator`: [PromotionRuleOperatorValues](/resources/references/promotion/types/promotionPromotionRuleOperatorValues) (optional) — The operator of the promotion rule.
+    - `values`: [PromotionRuleValueDTO](/resources/references/promotion/interfaces/promotionPromotionRuleValueDTO)\[] — The values of the promotion rule.
+  - `campaign_id`: `null` | `string` (optional) — The associated campaign.
+  - `campaign`: [CampaignDTO](/resources/references/promotion/interfaces/promotionCampaignDTO) (optional) — The associated campaign.
+    - `id`: `string` — The ID of the campaign.
+    - `name`: `string` (optional) — The name of the campaign.
+    - `description`: `string` (optional) — The description of the campaign.
+    - `campaign_identifier`: `string` (optional) — The campaign identifier of the campaign.
+    - `starts_at`: `Date` (optional) — The start date of the campaign.
+    - `ends_at`: `Date` (optional) — The end date of the campaign.
+    - `budget`: [CampaignBudgetDTO](/resources/references/promotion/interfaces/promotionCampaignBudgetDTO) (optional) — The associated campaign budget.
+    - `promotions`: [PromotionDTO](/resources/references/promotion/interfaces/promotionPromotionDTO)\[] (optional) — The associated promotions.

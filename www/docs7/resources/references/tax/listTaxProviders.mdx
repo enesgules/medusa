@@ -1,0 +1,135 @@
+---
+title: listTaxProviders - Tax Module Reference
+sidebarTitle: listTaxProviders
+---
+
+This documentation provides a reference to the `listTaxProviders` method. This belongs to the Tax Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of tax providers based on optional filters and configuration.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.8.0](https://github.com/medusajs/medusa/releases/tag/v2.8.0).
+
+## Example
+
+To retrieve a list of tax providers using their associated tax rate's ID:
+
+```ts
+const taxProviders = await taxModuleService.listTaxProviders({
+  id: ["tp_custom_custom"],
+})
+```
+
+To specify relations that should be retrieved within the tax provider:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const taxProviders = await taxModuleService.listTaxProviders(
+  {
+    id: ["tp_custom_custom"],
+  },
+  {
+    relations: ["regions"],
+  }
+)
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const taxProviders = await taxModuleService.listTaxProviders(
+  {
+    id: ["tp_custom_custom"],
+  },
+  {
+    relations: ["regions"],
+    take: 20,
+    skip: 2,
+  }
+)
+```
+
+<a id="listtaxproviders-parameters" />
+
+## Parameters
+
+**listTaxProviders**
+
+- `filters`: [FilterableTaxProviderProps](/resources/references/tax/interfaces/taxFilterableTaxProviderProps) (optional) — The filters to apply on the retrieved tax providers.
+  - `$and`: ([TaxProviderDTO](/resources/references/tax/interfaces/taxTaxProviderDTO) | [BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<[TaxProviderDTO](/resources/references/tax/interfaces/taxTaxProviderDTO)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `id`: `string` — The ID of the tax provider.
+    - `is_enabled`: `boolean` — Whether the tax provider is enabled.
+    - `$and`: ([BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `$or`: ([TaxProviderDTO](/resources/references/tax/interfaces/taxTaxProviderDTO) | [BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<[TaxProviderDTO](/resources/references/tax/interfaces/taxTaxProviderDTO)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` — The ID of the tax provider.
+    - `is_enabled`: `boolean` — Whether the tax provider is enabled.
+    - `$and`: ([BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string | string\[]> (optional) — The IDs to filter the tax provider by.
+    - `$and`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> | [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/tax/types/taxQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `is_enabled`: `boolean` (optional) — Filter by whether the tax provider is enabled.
+- `config`: [FindConfig](/resources/references/tax/interfaces/taxFindConfig)\<[TaxProviderDTO](/resources/references/tax/interfaces/taxTaxProviderDTO)> (optional) — The configurations determining how the tax provider is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a tax provider.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/tax/types/taxFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/tax/types/taxInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/tax/types/taxCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/tax/interfaces/taxContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/tax/interfaces/taxIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listtaxproviders-returns" />
+
+## Returns
+
+**listTaxProviders**
+
+- `Promise`: Promise\<[TaxProviderDTO](/resources/references/tax/interfaces/taxTaxProviderDTO)\[]> — The list of tax providers.
+  - `TaxProviderDTO[]`: [TaxProviderDTO](/resources/references/tax/interfaces/taxTaxProviderDTO)\[]
+    - `id`: `string` — The ID of the tax provider.
+    - `is_enabled`: `boolean` — Whether the tax provider is enabled.

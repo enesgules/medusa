@@ -1,0 +1,41 @@
+---
+title: validateShippingOptionPricesStep - Medusa Core Workflows Reference
+sidebarTitle: validateShippingOptionPricesStep
+---
+
+This documentation provides a reference to the `validateShippingOptionPricesStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that shipping options can be created based on provided price configuration.
+
+For flat rate prices, it validates that regions exist for the shipping option prices.
+For calculated prices, it validates with the fulfillment provider if the price can be calculated.
+
+If not valid, the step throws an error.
+
+## Example
+
+```ts
+const data = validateShippingOptionPricesStep([
+  {
+    name: "Standard Shipping",
+    service_zone_id: "serzo_123",
+    shipping_profile_id: "sp_123",
+    provider_id: "prov_123",
+    type: {
+      label: "Standard",
+      description: "Standard shipping",
+      code: "standard"
+    },
+    price_type: "calculated",
+  }
+])
+```
+
+<a id="validateshippingoptionpricesstep-input" />
+
+## Input
+
+**validateShippingOptionPricesStep**
+
+- `ValidateShippingOptionPricesStepInput`: [ValidateShippingOptionPricesStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcValidateShippingOptionPricesStepInput)
+  - `ValidateShippingOptionPricesStepInput`: ([CreateShippingOptionsWorkflowInput](/resources/references/types/WorkflowTypes/FulfillmentWorkflow/types/typesWorkflowTypesFulfillmentWorkflowCreateShippingOptionsWorkflowInput) | [UpdateShippingOptionsWorkflowInput](/resources/references/types/WorkflowTypes/FulfillmentWorkflow/types/typesWorkflowTypesFulfillmentWorkflowUpdateShippingOptionsWorkflowInput))\[] — The data to validate shipping option prices.

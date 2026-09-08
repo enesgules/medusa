@@ -1,0 +1,59 @@
+---
+title: retrieve
+---
+
+This method retrieves a product tag by its ID. It sends a request to the
+[Get Product Tag](/api/admin/product-tags/get-a-product-tag) API route.
+
+## Example
+
+To retrieve a product tag by its ID:
+
+```ts
+sdk.admin.productTag.retrieve("ptag_123")
+.then(({ product_tag }) => {
+  console.log(product_tag)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.productTag.retrieve("ptag_123", {
+  fields: "id,*products"
+})
+.then(({ product_tag }) => {
+  console.log(product_tag)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The product tag's ID.
+- `query`: [AdminProductTagParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductTagParams) (optional) — Configure the fields to retrieve in the product tag.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminProductTagResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductTagResponse)> — The product tag's details.
+  - `product_tag`: [AdminProductTag](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductTag) — The tag's details.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The tag's translations.
+    - `id`: `string` — The tag's ID.
+    - `value`: `string` — The tag's value.
+    - `created_at`: `string` — The date the tag was created.
+    - `updated_at`: `string` — The date the tag was updated.
+    - `deleted_at`: `null` | `string` (optional) — The date the tag was deleted.
+    - `external_id`: `null` | `string` (optional) — An external ID for the tag.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.

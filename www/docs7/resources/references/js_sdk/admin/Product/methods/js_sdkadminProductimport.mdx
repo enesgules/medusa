@@ -1,0 +1,45 @@
+---
+title: import
+---
+
+This method creates a product import. The products are only imported after
+the import is confirmed using the [confirmImport](/resources/references/js_sdk/admin/Product/methods/js_sdkadminProductconfirmImport) method.
+
+This method sends a request to the
+[Create Product Import](/api/admin/products/create-product-import)
+API route.
+
+## Example
+
+```ts
+sdk.admin.product.import({
+  file // uploaded File instance
+})
+.then(({ transaction_id }) => {
+  console.log(transaction_id)
+})
+```
+
+<a id="import-parameters" />
+
+## Parameters
+
+**import**
+
+- `body`: [AdminImportProductRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminImportProductRequest) — The import's details.
+  - `file`: [File](/resources/references/core_flows/core_flowsFile) — The CSV file to import the products from. It's an uploaded file of type [File](https://developer.mozilla.org/en-US/docs/Web/API/File).
+- `query`: `object` (optional) — Query parameters to pass to the request.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="import-returns" />
+
+## Returns
+
+**import**
+
+- `Promise`: Promise\<[AdminImportProductResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminImportProductResponse)> — The import's details.
+  - `transaction_id`: `string` — The ID of the import product workflow execution's transaction. This is useful to confirm the import using the `/admin/products/:transaction-id/import` API route.
+  - `summary`: `object` — Details of the products to create or update when the import is confirmed.
+    - `toCreate`: `number` — The number of products that will be created by the import.
+    - `toUpdate`: `number` — The number of products that will be updated by the import.

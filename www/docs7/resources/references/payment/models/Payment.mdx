@@ -1,0 +1,275 @@
+---
+title: Payment - Payment Module Data Models Reference
+sidebarTitle: Payment
+---
+
+This documentation provides a reference to the Payment data model. It belongs to the Payment Module.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/payment/src/models/payment.ts#L9)
+
+**Payment**
+
+- `id`: PrimaryKeyModifier\<IdProperty> — The ID of the payment.
+- `amount`: `BigNumberProperty` — The amount of the payment
+- `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The currency code of the payment.
+
+  Example:
+
+  ```
+  usd
+  ```
+
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `provider_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the Payment Module Provider used to process the payment.
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `data`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The data of the payment that's useful for processing with third-party services. Learn more in [this documentation](/resources/commerce-modules/payment/payment-session#data-property)
+- `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+- `captured_at`: `DateTimeProperty` (optional) — The date that the payment was captured.
+- `canceled_at`: `DateTimeProperty` (optional) — The date that the payment was canceled.
+- `payment_collection`: BelongsTo\<[PaymentCollection](/resources/references/payment/models/PaymentCollection)> — The associated payment collection.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the payment collection.
+  - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The currency code of the payment collection.
+
+    Example:
+
+    ```
+    usd
+    ```
+
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `amount`: `BigNumberProperty` — The amount of the payment collection
+  - `authorized_amount`: `BigNumberProperty` (optional) — The authorized amount of the payment collection
+  - `captured_amount`: `BigNumberProperty` (optional) — The captured amount of the payment collection
+  - `refunded_amount`: `BigNumberProperty` (optional) — The refunded amount of the payment collection
+  - `completed_at`: `DateTimeProperty` (optional) — The date the payment collection was completed
+  - `status`: EnumProperty\<typeof [PaymentCollectionStatus](/resources/references/utils/enums/utilsPaymentCollectionStatus)> — The status of the payment collection
+  - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+  - `payment_providers`: ManyToMany\<[PaymentProvider](/resources/references/payment/models/PaymentProvider)> — The associated payment providers.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the payment provider.
+    - `is_enabled`: [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) — Whether the payment provider is enabled.
+    - `payment_collections`: ManyToMany\<[PaymentCollection](/resources/references/payment/models/PaymentCollection)> — The associated payment collections.
+  - `payment_sessions`: HasMany\<[PaymentSession](/resources/references/payment/models/PaymentSession)> — The associated payment sessions.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the payment session.
+    - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The currency code of the payment session.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `BigNumberProperty` — The authorized amount.
+    - `provider_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the Payment Module Provider used to process the payment.
+    - `data`: JSONProperty\<NoInfer\<Record\<string, unknown>>> — The data of the payment session that's useful for processing with third-party services. Learn more in [this documentation](/resources/commerce-modules/payment/payment-session#data-property)
+    - `context`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The context of the payment session, such as the billing address or the customer's email.
+    - `status`: EnumProperty\<typeof [PaymentSessionStatus](/resources/references/utils/enums/utilsPaymentSessionStatus)> — The status of the payment session
+    - `authorized_at`: `DateTimeProperty` (optional) — The date the payment session was authorized.
+    - `payment_collection`: BelongsTo\<[PaymentCollection](/resources/references/payment/models/PaymentCollection)> — The associated payment collection.
+    - `payment`: HasOne\<[Payment](/resources/references/payment/models/Payment)> (optional) — The associated payment.
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+  - `payments`: HasMany\<[Payment](/resources/references/payment/models/Payment)> — The associated payments.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the payment.
+    - `amount`: `BigNumberProperty` — The amount of the payment
+    - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The currency code of the payment.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `provider_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the Payment Module Provider used to process the payment.
+    - `data`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The data of the payment that's useful for processing with third-party services. Learn more in [this documentation](/resources/commerce-modules/payment/payment-session#data-property)
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+    - `captured_at`: `DateTimeProperty` (optional) — The date that the payment was captured.
+    - `canceled_at`: `DateTimeProperty` (optional) — The date that the payment was canceled.
+    - `payment_collection`: BelongsTo\<[PaymentCollection](/resources/references/payment/models/PaymentCollection)> — The associated payment collection.
+    - `payment_session`: BelongsTo\<[PaymentSession](/resources/references/payment/models/PaymentSession)> — The associated payment session.
+    - `refunds`: HasMany\<[Refund](/resources/references/payment/models/Refund)> — The associated refunds.
+    - `captures`: HasMany\<[Capture](/resources/references/payment/models/Capture)> — The associated captures.
+- `payment_session`: BelongsTo\<[PaymentSession](/resources/references/payment/models/PaymentSession)> — The associated payment session.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the payment session.
+  - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The currency code of the payment session.
+
+    Example:
+
+    ```
+    usd
+    ```
+
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `amount`: `BigNumberProperty` — The authorized amount.
+  - `provider_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the Payment Module Provider used to process the payment.
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `data`: JSONProperty\<NoInfer\<Record\<string, unknown>>> — The data of the payment session that's useful for processing with third-party services. Learn more in [this documentation](/resources/commerce-modules/payment/payment-session#data-property)
+  - `context`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The context of the payment session, such as the billing address or the customer's email.
+  - `status`: EnumProperty\<typeof [PaymentSessionStatus](/resources/references/utils/enums/utilsPaymentSessionStatus)> — The status of the payment session
+  - `authorized_at`: `DateTimeProperty` (optional) — The date the payment session was authorized.
+  - `payment_collection`: BelongsTo\<[PaymentCollection](/resources/references/payment/models/PaymentCollection)> — The associated payment collection.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the payment collection.
+    - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The currency code of the payment collection.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `BigNumberProperty` — The amount of the payment collection
+    - `authorized_amount`: `BigNumberProperty` (optional) — The authorized amount of the payment collection
+    - `captured_amount`: `BigNumberProperty` (optional) — The captured amount of the payment collection
+    - `refunded_amount`: `BigNumberProperty` (optional) — The refunded amount of the payment collection
+    - `completed_at`: `DateTimeProperty` (optional) — The date the payment collection was completed
+    - `status`: EnumProperty\<typeof [PaymentCollectionStatus](/resources/references/utils/enums/utilsPaymentCollectionStatus)> — The status of the payment collection
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+    - `payment_providers`: ManyToMany\<[PaymentProvider](/resources/references/payment/models/PaymentProvider)> — The associated payment providers.
+    - `payment_sessions`: HasMany\<[PaymentSession](/resources/references/payment/models/PaymentSession)> — The associated payment sessions.
+    - `payments`: HasMany\<[Payment](/resources/references/payment/models/Payment)> — The associated payments.
+  - `payment`: HasOne\<[Payment](/resources/references/payment/models/Payment)> (optional) — The associated payment.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the payment.
+    - `amount`: `BigNumberProperty` — The amount of the payment
+    - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The currency code of the payment.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `provider_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the Payment Module Provider used to process the payment.
+    - `data`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The data of the payment that's useful for processing with third-party services. Learn more in [this documentation](/resources/commerce-modules/payment/payment-session#data-property)
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+    - `captured_at`: `DateTimeProperty` (optional) — The date that the payment was captured.
+    - `canceled_at`: `DateTimeProperty` (optional) — The date that the payment was canceled.
+    - `payment_collection`: BelongsTo\<[PaymentCollection](/resources/references/payment/models/PaymentCollection)> — The associated payment collection.
+    - `payment_session`: BelongsTo\<[PaymentSession](/resources/references/payment/models/PaymentSession)> — The associated payment session.
+    - `refunds`: HasMany\<[Refund](/resources/references/payment/models/Refund)> — The associated refunds.
+    - `captures`: HasMany\<[Capture](/resources/references/payment/models/Capture)> — The associated captures.
+  - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+- `refunds`: HasMany\<[Refund](/resources/references/payment/models/Refund)> — The associated refunds.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the refund.
+  - `amount`: `BigNumberProperty` — The refunded amount.
+  - `payment`: BelongsTo\<[Payment](/resources/references/payment/models/Payment)> — The associated payment.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the payment.
+    - `amount`: `BigNumberProperty` — The amount of the payment
+    - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The currency code of the payment.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `provider_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the Payment Module Provider used to process the payment.
+    - `data`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The data of the payment that's useful for processing with third-party services. Learn more in [this documentation](/resources/commerce-modules/payment/payment-session#data-property)
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+    - `captured_at`: `DateTimeProperty` (optional) — The date that the payment was captured.
+    - `canceled_at`: `DateTimeProperty` (optional) — The date that the payment was canceled.
+    - `payment_collection`: BelongsTo\<[PaymentCollection](/resources/references/payment/models/PaymentCollection)> — The associated payment collection.
+    - `payment_session`: BelongsTo\<[PaymentSession](/resources/references/payment/models/PaymentSession)> — The associated payment session.
+    - `refunds`: HasMany\<[Refund](/resources/references/payment/models/Refund)> — The associated refunds.
+    - `captures`: HasMany\<[Capture](/resources/references/payment/models/Capture)> — The associated captures.
+  - `refund_reason`: BelongsTo\<[RefundReason](/resources/references/payment/models/RefundReason)> (optional) — The associated refund reason.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the refund reason.
+    - `label`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The label of the refund reason
+    - `code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The code of the refund reason
+    - `description`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The description of the refund reason
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+    - `refunds`: HasMany\<[Refund](/resources/references/payment/models/Refund)> — The associated refunds.
+  - `note`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — A note with more explanation about the refund
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `created_by`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the user that created the refund.
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+- `captures`: HasMany\<[Capture](/resources/references/payment/models/Capture)> — The associated captures.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the capture.
+  - `amount`: `BigNumberProperty` — The captured amount.
+  - `payment`: BelongsTo\<[Payment](/resources/references/payment/models/Payment)> — The associated payment.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the payment.
+    - `amount`: `BigNumberProperty` — The amount of the payment
+    - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The currency code of the payment.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `provider_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the Payment Module Provider used to process the payment.
+    - `data`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The data of the payment that's useful for processing with third-party services. Learn more in [this documentation](/resources/commerce-modules/payment/payment-session#data-property)
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+    - `captured_at`: `DateTimeProperty` (optional) — The date that the payment was captured.
+    - `canceled_at`: `DateTimeProperty` (optional) — The date that the payment was canceled.
+    - `payment_collection`: BelongsTo\<[PaymentCollection](/resources/references/payment/models/PaymentCollection)> — The associated payment collection.
+    - `payment_session`: BelongsTo\<[PaymentSession](/resources/references/payment/models/PaymentSession)> — The associated payment session.
+    - `refunds`: HasMany\<[Refund](/resources/references/payment/models/Refund)> — The associated refunds.
+    - `captures`: HasMany\<[Capture](/resources/references/payment/models/Capture)> — The associated captures.
+  - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+  - `created_by`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The created by of the capture
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".

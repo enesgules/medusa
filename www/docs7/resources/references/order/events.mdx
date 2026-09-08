@@ -1,0 +1,298 @@
+---
+title: Order Module Events Reference
+sidebarTitle: Events Reference
+---
+
+This reference shows all the events emitted by the Medusa application related to the Order Module. If you use the module outside the Medusa application, these events aren't emitted.
+
+## Order Events
+
+### Summary
+
+| Event                                                                                        | Description                                                                                                   |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| [`order.updated`](/resources/references/order/events#orderupdated)                           | Emitted when the details of an order or draft order is updated. This doesn't include updates made by an edit. |
+| [`order.placed`](/resources/references/order/events#orderplaced)                             | Emitted when an order is placed, or when a draft order is converted to an order.                              |
+| [`order.canceled`](/resources/references/order/events#ordercanceled)                         | Emitted when an order is canceld.                                                                             |
+| [`order.completed`](/resources/references/order/events#ordercompleted)                       | Emitted when orders are completed.                                                                            |
+| [`order.archived`](/resources/references/order/events#orderarchived)                         | Emitted when an order is archived.                                                                            |
+| [`order.fulfillment_created`](/resources/references/order/events#orderfulfillment_created)   | Emitted when a fulfillment is created for an order.                                                           |
+| [`order.fulfillment_canceled`](/resources/references/order/events#orderfulfillment_canceled) | Emitted when an order's fulfillment is canceled.                                                              |
+| [`order.return_requested`](/resources/references/order/events#orderreturn_requested)         | Emitted when a return request is confirmed.                                                                   |
+| [`order.return_received`](/resources/references/order/events#orderreturn_received)           | Emitted when a return is marked as received.                                                                  |
+| [`order.claim_created`](/resources/references/order/events#orderclaim_created)               | Emitted when a claim is created for an order.                                                                 |
+| [`order.exchange_created`](/resources/references/order/events#orderexchange_created)         | Emitted when an exchange is created for an order.                                                             |
+| [`order.transfer_requested`](/resources/references/order/events#ordertransfer_requested)     | Emitted when an order is requested to be transferred to another customer.                                     |
+
+### order.updated
+
+Emitted when the details of an order or draft order is updated. This
+doesn't include updates made by an edit.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the order
+}
+```
+
+#### Workflows Emitting this Event
+
+- [updateOrderWorkflow](/resources/references/medusa-workflows/updateOrderWorkflow)
+- [updateDraftOrderWorkflow](/resources/references/medusa-workflows/updateDraftOrderWorkflow)
+
+### order.placed
+
+Emitted when an order is placed, or when a draft order is converted to an
+order.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the order
+}
+```
+
+#### Workflows Emitting this Event
+
+- [convertDraftOrderWorkflow](/resources/references/medusa-workflows/convertDraftOrderWorkflow)
+- [completeCartWorkflow](/resources/references/medusa-workflows/completeCartWorkflow)
+
+### order.canceled
+
+Emitted when an order is canceld.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the order
+}
+```
+
+#### Workflows Emitting this Event
+
+- [cancelOrderWorkflow](/resources/references/medusa-workflows/cancelOrderWorkflow)
+
+### order.completed
+
+Emitted when orders are completed.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the order
+}
+```
+
+#### Workflows Emitting this Event
+
+- [completeOrderWorkflow](/resources/references/medusa-workflows/completeOrderWorkflow)
+
+### order.archived
+
+Emitted when an order is archived.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the order
+}
+```
+
+#### Workflows Emitting this Event
+
+- [archiveOrderWorkflow](/resources/references/medusa-workflows/archiveOrderWorkflow)
+
+### order.fulfillment\_created
+
+Emitted when a fulfillment is created for an order.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  fulfillment_id, // The ID of the fulfillment
+  no_notification, // (boolean) Whether to notify the customer
+}
+```
+
+#### Workflows Emitting this Event
+
+- [createOrderFulfillmentWorkflow](/resources/references/medusa-workflows/createOrderFulfillmentWorkflow)
+
+### order.fulfillment\_canceled
+
+Emitted when an order's fulfillment is canceled.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  fulfillment_id, // The ID of the fulfillment
+  no_notification, // (boolean) Whether to notify the customer
+}
+```
+
+#### Workflows Emitting this Event
+
+- [cancelOrderFulfillmentWorkflow](/resources/references/medusa-workflows/cancelOrderFulfillmentWorkflow)
+
+### order.return\_requested
+
+Emitted when a return request is confirmed.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  return_id, // The ID of the return
+}
+```
+
+#### Workflows Emitting this Event
+
+- [createAndCompleteReturnOrderWorkflow](/resources/references/medusa-workflows/createAndCompleteReturnOrderWorkflow)
+- [confirmReturnRequestWorkflow](/resources/references/medusa-workflows/confirmReturnRequestWorkflow)
+
+### order.return\_received
+
+Emitted when a return is marked as received.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  return_id, // The ID of the return
+}
+```
+
+#### Workflows Emitting this Event
+
+- [createAndCompleteReturnOrderWorkflow](/resources/references/medusa-workflows/createAndCompleteReturnOrderWorkflow)
+- [confirmReturnReceiveWorkflow](/resources/references/medusa-workflows/confirmReturnReceiveWorkflow)
+
+### order.claim\_created
+
+Emitted when a claim is created for an order.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  claim_id, // The ID of the claim
+}
+```
+
+#### Workflows Emitting this Event
+
+- [confirmClaimRequestWorkflow](/resources/references/medusa-workflows/confirmClaimRequestWorkflow)
+
+### order.exchange\_created
+
+Emitted when an exchange is created for an order.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  exchange_id, // The ID of the exchange
+}
+```
+
+#### Workflows Emitting this Event
+
+- [confirmExchangeRequestWorkflow](/resources/references/medusa-workflows/confirmExchangeRequestWorkflow)
+
+### order.transfer\_requested
+
+Emitted when an order is requested to be transferred to
+another customer.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the order
+  order_change_id, // The ID of the order change created for the transfer
+}
+```
+
+#### Workflows Emitting this Event
+
+- [requestOrderTransferWorkflow](/resources/references/medusa-workflows/requestOrderTransferWorkflow)
+
+***
+
+## Order Edit Events
+
+### Summary
+
+| Event                                                                            | Description                                      |
+| -------------------------------------------------------------------------------- | ------------------------------------------------ |
+| [`order-edit.requested`](/resources/references/order/events#order-editrequested) | Emitted when an order edit is requested.         |
+| [`order-edit.confirmed`](/resources/references/order/events#order-editconfirmed) | Emitted when an order edit request is confirmed. |
+| [`order-edit.canceled`](/resources/references/order/events#order-editcanceled)   | Emitted when an order edit request is canceled.  |
+
+### order-edit.requested
+
+Emitted when an order edit is requested.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+  no_notification, // (boolean) Whether the customer shouldn't be notified of the requested order edit. Available since v2.19.0.
+}
+```
+
+#### Workflows Emitting this Event
+
+- [requestOrderEditRequestWorkflow](/resources/references/medusa-workflows/requestOrderEditRequestWorkflow)
+
+### order-edit.confirmed
+
+Emitted when an order edit request is confirmed.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+  no_notification, // (boolean) Whether the customer shouldn't be notified of the order edit, as stored on the order change when the edit was requested. Available since v2.19.0.
+}
+```
+
+#### Workflows Emitting this Event
+
+- [confirmOrderEditRequestWorkflow](/resources/references/medusa-workflows/confirmOrderEditRequestWorkflow)
+
+### order-edit.canceled
+
+Emitted when an order edit request is canceled.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+}
+```
+
+#### Workflows Emitting this Event
+
+- [cancelBeginOrderEditWorkflow](/resources/references/medusa-workflows/cancelBeginOrderEditWorkflow)

@@ -1,0 +1,19 @@
+---
+title: SearchIndexMigrationAction
+---
+
+A step in bringing the physical indexes in line with the loaded definitions.
+
+Planned and executed separately, like link migrations, so that `db:migrate`
+can show what it is about to do. Every action is idempotent: running the plan
+twice is a no-op.
+
+- `SearchIndexMigrationAction`: `object` | `object` | `object` — A step in bringing the physical indexes in line with the loaded definitions. Planned and executed separately, like link migrations, so that `db:migrate` can show what it is about to do. Every action is idempotent: running the plan twice is a no-op.
+  - `action`: `"create"` — The index does not exist yet. Nothing is serving it, so it is built directly under its live name and filled in place.
+  - `index`: `string` — The name of the index to create.
+  - `physical_name`: `string` — The physical index to create it under.
+  - `definition_hash`: `string` — A hash of the definition the index is created from.
+  - `live_physical_name`: `string` — The index serving reads now.
+  - `live_definition_hash`: `string` — A hash of the definition the index currently serving reads was built from.
+  - `provider`: `string` — The provider the definition now binds to.
+  - `previous_provider`: `string` (optional) — The provider that currently holds this index. Set only when it differs from `provider`, so execute can drop the previous engine's data.

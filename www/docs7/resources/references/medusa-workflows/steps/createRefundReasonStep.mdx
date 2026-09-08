@@ -1,0 +1,49 @@
+---
+title: createRefundReasonStep - Medusa Core Workflows Reference
+sidebarTitle: createRefundReasonStep
+---
+
+This documentation provides a reference to the `createRefundReasonStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates one or more refund reasons.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { createRefundReasonStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = createRefundReasonStep({
+      "label": "{value}",
+      "code": "{value}"
+    })
+  }
+)
+```
+
+<a id="createrefundreasonstep-input" />
+
+## Input
+
+**createRefundReasonStep**
+
+- `CreateRefundReasonStepInput`: [CreateRefundReasonStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcCreateRefundReasonStepInput)
+  - `label`: `string` — The label of the refund reason
+  - `code`: `string` — The code of the refund reason
+  - `description`: `null` | `string` (optional) — The description of the refund reason
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — The metadata of the refund reason
+
+<a id="createrefundreasonstep-output" />
+
+## Output
+
+**createRefundReasonStep**
+
+- `RefundReasonDTO[]`: [RefundReasonDTO](/resources/references/payment/interfaces/paymentRefundReasonDTO)\[]
+  - `id`: `string` — The ID of the refund reason
+  - `label`: `string` — The label of the refund reason
+  - `description`: `null` | `string` (optional) — The description of the refund reason
+  - `metadata`: `null` | `Record<string, unknown>` — The metadata of the refund reason
+  - `created_at`: `string` | `Date` — When the refund reason was created
+  - `updated_at`: `string` | `Date` — When the refund reason was updated

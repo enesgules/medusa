@@ -1,0 +1,238 @@
+---
+title: notification - JS SDK Admin Reference
+sidebarTitle: notification
+---
+
+This documentation provides a reference to the `sdk.admin.notification` set of methods used to send requests to Medusa's Admin API routes.
+
+## retrieve
+
+This method retrieves a notification's details. It sends a request to the
+[Get Notification](/api/admin/notifications/get-a-notification)
+API route.
+
+### Example
+
+To retrieve a notification by its ID:
+
+```ts
+sdk.admin.notification.retrieve("notif_123")
+.then(({ notification }) => {
+  console.log(notification)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.notification.retrieve("notif_123", {
+  fields: "id,to"
+})
+.then(({ notification }) => {
+  console.log(notification)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The notification's ID.
+- `query`: [AdminNotificationParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationParams) (optional) — Configure the fields to retrieve in the notification.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminNotificationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationResponse)> — The notification's details.
+  - `notification`: [AdminNotification](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotification) — The notification's details.
+    - `id`: `string` — The notification's ID.
+    - `to`: `string` — The identifier the notification is sent to. For example, an email, phone number, or username.
+    - `channel`: `string` — The channel to send the notification through.
+
+      Example:
+
+      ```
+      email
+      ```
+    - `template`: `string` — A template ID to use for the notification's content. For example, the ID of a template in SendGrid.
+    - `data`: `null` | `Record<string, unknown>` (optional) — Data to pass to the template.
+    - `trigger_type`: `null` | `string` (optional) — What triggered this notification.
+
+      Example:
+
+      ```
+      order.created
+      ```
+    - `resource_id`: `null` | `string` (optional) — The ID of the associated resource. for example, if the notification was triggered because an order was created, this would be the ID of the order.
+    - `resource_type`: `null` | `string` (optional) — The type of the resource that triggered the notification.
+
+      Example:
+
+      ```
+      order
+      ```
+    - `receiver_id`: `null` | `string` (optional) — The ID of the user or customer that received the notification.
+    - `original_notification_id`: `null` | `string` (optional) — The ID of the original notification if this is a resend of it.
+    - `external_id`: `null` | `string` (optional) — The ID of the notification in an external or third-party system.
+    - `provider_id`: `string` — The ID of the notification provider used.
+    - `created_at`: `string` — The date the notification was created.
+
+## list
+
+This method retrieves a paginated list of notifications. It sends a request to the
+[List Notifications](/api/admin/notifications/list-notifications)
+API route.
+
+### Example
+
+To retrieve the list of notifications:
+
+```ts
+sdk.admin.notification.list()
+.then(({ notifications, count, limit, offset }) => {
+  console.log(notifications)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.notification.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ notifications, count, limit, offset }) => {
+  console.log(notifications)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each notification:
+
+```ts
+sdk.admin.notification.list({
+  fields: "id,to"
+})
+.then(({ notifications, count, limit, offset }) => {
+  console.log(notifications)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [AdminNotificationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationListParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminNotificationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminNotificationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminNotificationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminNotificationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminNotificationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminNotificationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keywords to search the notification's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by notification ID(s).
+    - `channel`: `string` | `string`\[] (optional) — Filter by channel(s).
+    - `to`: `string` | `string`\[] (optional) — Filter by notification to property. This can be a user id or email for example.
+  - `$or`: ([AdminNotificationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminNotificationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminNotificationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminNotificationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminNotificationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminNotificationListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keywords to search the notification's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by notification ID(s).
+    - `channel`: `string` | `string`\[] (optional) — Filter by channel(s).
+    - `to`: `string` | `string`\[] (optional) — Filter by notification to property. This can be a user id or email for example.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keywords to search the notification's searchable fields.
+  - `id`: `string` | `string`\[] (optional) — Filter by notification ID(s).
+  - `channel`: `string` | `string`\[] (optional) — Filter by channel(s).
+  - `to`: `string` | `string`\[] (optional) — Filter by notification to property. This can be a user id or email for example.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminNotificationListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationListResponse)> — The paginated list of notifications.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `notifications`: [AdminNotification](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotification)\[] — The list of notifications.
+    - `id`: `string` — The notification's ID.
+    - `to`: `string` — The identifier the notification is sent to. For example, an email, phone number, or username.
+    - `channel`: `string` — The channel to send the notification through.
+
+      Example:
+
+      ```
+      email
+      ```
+    - `template`: `string` — A template ID to use for the notification's content. For example, the ID of a template in SendGrid.
+    - `data`: `null` | `Record<string, unknown>` (optional) — Data to pass to the template.
+    - `trigger_type`: `null` | `string` (optional) — What triggered this notification.
+
+      Example:
+
+      ```
+      order.created
+      ```
+    - `resource_id`: `null` | `string` (optional) — The ID of the associated resource. for example, if the notification was triggered because an order was created, this would be the ID of the order.
+    - `resource_type`: `null` | `string` (optional) — The type of the resource that triggered the notification.
+
+      Example:
+
+      ```
+      order
+      ```
+    - `receiver_id`: `null` | `string` (optional) — The ID of the user or customer that received the notification.
+    - `original_notification_id`: `null` | `string` (optional) — The ID of the original notification if this is a resend of it.
+    - `external_id`: `null` | `string` (optional) — The ID of the notification in an external or third-party system.
+    - `provider_id`: `string` — The ID of the notification provider used.
+    - `created_at`: `string` — The date the notification was created.

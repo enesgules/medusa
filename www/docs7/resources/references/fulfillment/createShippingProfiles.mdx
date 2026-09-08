@@ -1,0 +1,169 @@
+---
+title: createShippingProfiles - Fulfillment Module Reference
+sidebarTitle: createShippingProfiles
+---
+
+This documentation provides a reference to the `createShippingProfiles` method. This belongs to the Fulfillment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createshippingprofiles-data-sharedcontext-promiseshippingprofiledto" />
+
+## createShippingProfiles(data, sharedContext?): Promise\<[ShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingProfileDTO)\[]>
+
+This method creates shipping profiles.
+
+### Example
+
+```ts
+const shippingProfiles =
+  await fulfillmentModuleService.createShippingProfiles([
+    {
+      name: "Default",
+      type: "default"
+    },
+    {
+      name: "Digital",
+      type: "digital"
+    },
+  ])
+```
+
+<a id="createshippingprofiles-parameters" />
+
+### Parameters
+
+**createShippingProfiles**
+
+- `data`: [CreateShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateShippingProfileDTO)\[] — The shipping profiles to be created.
+  - `name`: `string` — The name of the shipping profile.
+  - `type`: `string` — The type of the shipping profile.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/fulfillment/interfaces/fulfillmentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/fulfillment/interfaces/fulfillmentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createshippingprofiles-returns" />
+
+### Returns
+
+**createShippingProfiles**
+
+- `Promise`: Promise\<[ShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingProfileDTO)\[]> — The created shipping profiles.
+  - `ShippingProfileDTO[]`: [ShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingProfileDTO)\[]
+    - `id`: `string` — The ID of the shipping profile.
+    - `name`: `string` — The name of the shipping profile.
+    - `type`: `string` — The type of the shipping profile.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `shipping_options`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[] — The shipping options associated with the shipping profile.
+      - `id`: `string` — The ID of the shipping option.
+      - `name`: `string` — The name of the shipping option.
+      - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The type of the shipping option's price.
+      - `service_zone_id`: `string` — The associated service zone's ID.
+      - `shipping_profile_id`: `string` — The associated shipping profile's ID.
+      - `provider_id`: `string` — The associated fulfillment provider's ID.
+      - `shipping_option_type_id`: `null` | `string` — The associated shipping option type's ID.
+      - `data`: `null` | `Record<string, unknown>` — The data necessary for the associated fulfillment provider to process the shipping option and, later, its associated fulfillments.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `service_zone`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO) — The associated service zone.
+      - `shipping_profile`: [ShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingProfileDTO) — The associated shipping profile.
+      - `fulfillment_provider`: [FulfillmentProviderDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentProviderDTO) — The associated fulfillment provider.
+      - `type`: [ShippingOptionTypeDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionTypeDTO) — The associated shipping option type.
+      - `rules`: [ShippingOptionRuleDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionRuleDTO)\[] — The rules associated with the shipping option.
+      - `fulfillments`: [FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO)\[] — The fulfillments associated with the shipping option.
+      - `created_at`: `Date` — The creation date of the shipping option.
+      - `updated_at`: `Date` — The update date of the shipping option.
+      - `deleted_at`: `null` | `Date` — The deletion date of the shipping option.
+    - `created_at`: `Date` — The creation date of the shipping profile.
+    - `updated_at`: `Date` — The update date of the shipping profile.
+    - `deleted_at`: `null` | `Date` — The deletion date of the shipping profile.
+
+<a id="createshippingprofiles-data-sharedcontext-promiseshippingprofiledto-1" />
+
+## createShippingProfiles(data, sharedContext?): Promise\<[ShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingProfileDTO)>
+
+This method creates a shipping profile.
+
+### Example
+
+```ts
+const shippingProfile =
+  await fulfillmentModuleService.createShippingProfiles({
+    name: "Default",
+    type: "default"
+  })
+```
+
+<a id="createshippingprofiles-parameters-1" />
+
+### Parameters
+
+**createShippingProfiles**
+
+- `data`: [CreateShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateShippingProfileDTO) — The shipping profile to be created.
+  - `name`: `string` — The name of the shipping profile.
+  - `type`: `string` — The type of the shipping profile.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/fulfillment/interfaces/fulfillmentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/fulfillment/interfaces/fulfillmentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createshippingprofiles-returns-1" />
+
+### Returns
+
+**createShippingProfiles**
+
+- `Promise`: Promise\<[ShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingProfileDTO)> — The created shipping profile.
+  - `id`: `string` — The ID of the shipping profile.
+  - `name`: `string` — The name of the shipping profile.
+  - `type`: `string` — The type of the shipping profile.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `shipping_options`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[] — The shipping options associated with the shipping profile.
+    - `id`: `string` — The ID of the shipping option.
+    - `name`: `string` — The name of the shipping option.
+    - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The type of the shipping option's price.
+    - `service_zone_id`: `string` — The associated service zone's ID.
+    - `shipping_profile_id`: `string` — The associated shipping profile's ID.
+    - `provider_id`: `string` — The associated fulfillment provider's ID.
+    - `shipping_option_type_id`: `null` | `string` — The associated shipping option type's ID.
+    - `data`: `null` | `Record<string, unknown>` — The data necessary for the associated fulfillment provider to process the shipping option and, later, its associated fulfillments.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `service_zone`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO) — The associated service zone.
+    - `shipping_profile`: [ShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingProfileDTO) — The associated shipping profile.
+    - `fulfillment_provider`: [FulfillmentProviderDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentProviderDTO) — The associated fulfillment provider.
+    - `type`: [ShippingOptionTypeDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionTypeDTO) — The associated shipping option type.
+    - `rules`: [ShippingOptionRuleDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionRuleDTO)\[] — The rules associated with the shipping option.
+    - `fulfillments`: [FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO)\[] — The fulfillments associated with the shipping option.
+    - `created_at`: `Date` — The creation date of the shipping option.
+    - `updated_at`: `Date` — The update date of the shipping option.
+    - `deleted_at`: `null` | `Date` — The deletion date of the shipping option.
+  - `created_at`: `Date` — The creation date of the shipping profile.
+  - `updated_at`: `Date` — The update date of the shipping profile.
+  - `deleted_at`: `null` | `Date` — The deletion date of the shipping profile.

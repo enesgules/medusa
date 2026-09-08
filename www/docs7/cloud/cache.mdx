@@ -1,0 +1,399 @@
+---
+title: Medusa Cache
+---
+
+In this guide, you'll learn about Medusa Cache.
+
+## What is Medusa Cache?
+
+Medusa Cache is a caching layer on the Medusa backend that improves your application's performance and reduces costs. It's available to all environments and plans out of the box at no additional cost.
+
+Medusa Cache relies on the existing key/value [Redis](/cloud/redis) store already provisioned for environments. Each environment has its own isolated cache.
+
+![Diagram showcasing Redis isolation between environments](https://res.cloudinary.com/dza7lstvk/image/upload/v1750230910/Cloud/redis-cloud_llg83c.jpg)
+
+***
+
+## Enable Medusa Cache
+
+### Prerequisites
+
+To enable Medusa Cache for your Medusa project deployed on Cloud, set the `caching` feature flag in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  featureFlags: {
+    caching: true,
+  },
+})
+```
+
+This will enable all Medusa Cache functionality in your project.
+
+***
+
+## How Does Medusa Cache Work?
+
+### Cached Data in API Routes
+
+By using Medusa Cache, data is cached across several business-critical APIs to boost performance and throughput. This includes all cart-related operations, where the following data is cached:
+
+- Regions
+- Promotion codes
+- Variant price sets
+- Variants
+- Shipping options
+- Sales channels
+- Customers
+
+### Integrated into Query
+
+Medusa Cache is built on the new [Caching Module](/resources/infrastructure-modules/caching). The module has been integrated into [Query](/learn/fundamentals/module-links/query) so that `query.graph` calls can be cached easily.
+
+You can enable caching for your custom `query.graph` calls by passing a `cache` option. For example:
+
+```ts
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title", "handle"],
+}, {
+  cache: {
+    enable: true,
+  },
+})
+```
+
+This code caches the query result. When the same query is made again, the cached result is returned instead of querying the database.
+
+![Diagram showcasing cache miss and cache hit](https://res.cloudinary.com/dza7lstvk/image/upload/v1759999050/Cloud/medusa-cache-overview_zqpwuo.jpg)
+
+### Automatic Invalidation
+
+By default, data is cached for one hour or until invalidated. Invalidation occurs automatically when related data is created, updated, or deleted.
+
+Learn more about automatic invalidation in the [Caching Module documentation](/resources/infrastructure-modules/caching/concepts#automatic-cache-invalidation).
+
+***
+
+## Performance Benchmark Comparisons
+
+The following benchmark comparisons demonstrate the performance improvements you can expect with Medusa Cache. These were conducted on a Cloud environment with a standard setup.
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Endpoint
+      </th>
+
+      <th>
+        Without Medusa Cache (ms)
+      </th>
+
+      <th>
+        With Medusa Cache (ms)
+      </th>
+
+      <th>
+        Improvement
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        **Product Operations**
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `GET /store/products`
+      </td>
+
+      <td>
+        `354.00`
+      </td>
+
+      <td>
+        `83.00`
+      </td>
+
+      <td>
+        `~77%`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `GET /store/product-categories`
+      </td>
+
+      <td>
+        `88.00`
+      </td>
+
+      <td>
+        `51.00`
+      </td>
+
+      <td>
+        `~42%`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `GET /store/products/:id`
+      </td>
+
+      <td>
+        `161.00`
+      </td>
+
+      <td>
+        `123.00`
+      </td>
+
+      <td>
+        `~24%`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        **Cart Operations**
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `POST /store/carts/:id/line-items`
+      </td>
+
+      <td>
+        `697.00`
+      </td>
+
+      <td>
+        `427.00`
+      </td>
+
+      <td>
+        `~39%`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `POST /store/carts/:id/shipping-methods`
+      </td>
+
+      <td>
+        `1002.00`
+      </td>
+
+      <td>
+        `670.00`
+      </td>
+
+      <td>
+        `~33%`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `POST /store/carts/:id/promotions`
+      </td>
+
+      <td>
+        `302.00`
+      </td>
+
+      <td>
+        `203.00`
+      </td>
+
+      <td>
+        `~33%`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `GET /store/carts/:id`
+      </td>
+
+      <td>
+        `109.00`
+      </td>
+
+      <td>
+        `73.00`
+      </td>
+
+      <td>
+        `~33%`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `POST /store/carts/:id`
+      </td>
+
+      <td>
+        `909.00`
+      </td>
+
+      <td>
+        `656.00`
+      </td>
+
+      <td>
+        `~28%`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `POST /store/carts`
+      </td>
+
+      <td>
+        `446.00`
+      </td>
+
+      <td>
+        `329.00`
+      </td>
+
+      <td>
+        `~26%`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `POST /store/carts/:id/complete`
+      </td>
+
+      <td>
+        `1357.00`
+      </td>
+
+      <td>
+        `1018.00`
+      </td>
+
+      <td>
+        `~25%`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        **Order Operations**
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `GET /store/orders/:id`
+      </td>
+
+      <td>
+        `119.00`
+      </td>
+
+      <td>
+        `81.00`
+      </td>
+
+      <td>
+        `~32%`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        **Other Operations**
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `GET /store/regions`
+      </td>
+
+      <td>
+        `89.00`
+      </td>
+
+      <td>
+        `51.00`
+      </td>
+
+      <td>
+        `~43%`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `GET /store/shipping-options`
+      </td>
+
+      <td>
+        `272.00`
+      </td>
+
+      <td>
+        `173.00`
+      </td>
+
+      <td>
+        `~36%`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `POST /store/payment-collections`
+      </td>
+
+      <td>
+        `238.00`
+      </td>
+
+      <td>
+        `160.00`
+      </td>
+
+      <td>
+        `~33%`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `POST /store/payment-collections/:id/payments`
+      </td>
+
+      <td>
+        `152.00`
+      </td>
+
+      <td>
+        `102.00`
+      </td>
+
+      <td>
+        `~33%`
+      </td>
+    </tr>
+  </tbody>
+</table>

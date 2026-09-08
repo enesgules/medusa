@@ -1,0 +1,46 @@
+---
+title: listRuleAttributes
+---
+
+Retrieve a list of potential rule attributes for the promotion and application method types specified in the query parameters. Only the attributes of the rule type specified in the path parameter are retrieved:
+
+- If `rule_type` is `rules`, the attributes of the promotion's type are retrieved.
+- If `rule_type` is `target-rules`, the target rules' attributes of the application method's type are retrieved.
+- If `rule_type` is `buy-rules`, the buy rules' attributes of the application method's type are retrieved.
+
+This method sends a request to the
+[List Rule Attribute Options API Route](/api/admin/promotions/list-potential-rule-attributes)
+
+## Example
+
+```ts
+sdk.admin.promotion.listRuleAttributes("rules", "standard")
+.then(({ attributes }) => {
+  console.log(attributes)
+})
+```
+
+<a id="listruleattributes-parameters" />
+
+## Parameters
+
+**listRuleAttributes**
+
+- `ruleType`: `string` — The type of rules to retrieve the attributes for. Can be `rules`, `buy-rules`, or `target-rules`.
+- `promotionType`: `string` (optional) — The type of promotion to retrieve the attributes for. It can be `standard` or `buyget`.
+- `applicationMethodTargetType`: `string` (optional) — The type of application method to retrieve the attributes for. It can be `order`, `items` (default) or `shipping_methods`.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listruleattributes-returns" />
+
+## Returns
+
+**listRuleAttributes**
+
+- `Promise`: Promise\<[AdminRuleAttributeOptionsListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminRuleAttributeOptionsListResponse)> — The list of rule attributes.
+  - `attributes`: [AdminRuleAttributeOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRuleAttributeOption)\[] — The list of rule attribute options.
+    - `id`: `string` — The rule attribute option's ID.
+    - `value`: `string` — The rule attribute option's value.
+    - `label`: `string` — The rule attribute option's label.
+    - `operators`: [BaseRuleOperatorOptions](/resources/references/types/interfaces/typesBaseRuleOperatorOptions)\[] — The attribute option's operators.

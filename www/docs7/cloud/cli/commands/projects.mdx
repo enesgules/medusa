@@ -1,0 +1,560 @@
+---
+title: projects Command - Medusa Cloud CLI Reference
+---
+
+In this guide, you'll learn how to manage your Cloud projects using the CLI.
+
+## projects list
+
+List all projects in an organization. If you don't specify an organization, either through the `--organization` flag or the [active context](/cloud/cli/commands/use), the command lists projects across all organizations you have access to, grouped by organization.
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud projects list --organization org_123
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123
+
+    mcloud projects list
+    ```
+  </Tab>
+</Tabs>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) to list projects from. If omitted, projects across all your organizations are listed.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use#set-the-active-context), if set. Otherwise, lists projects across all your organizations.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## projects get
+
+Retrieve a single project by its ID or handle. This is useful if you want to get more details about the project, such as its status or region.
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud projects get <project> --organization org_123
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123
+
+    mcloud projects get <project>
+    ```
+  </Tab>
+</Tabs>
+
+Returns the following information:
+
+<Tabs>
+  <Tab title="Plaintext">
+    ```bash
+    Name:                       My Store
+    Handle:                     <project-handle>
+    Organization:               My Organization (<organization-id>)
+    Status:                     ready
+    Region:                     us-east-1
+    Repository:                 myuser/my-repo
+    Root path:                  /apps/backend
+    Production Backend URL:     https://trusting-soft-form.medusajs.app/app
+    Production Storefront URL:  https://acme.com
+    Environments:               Production (<environment-handle>)
+                                Staging (staging)
+    Created at:                 Apr 1, 2026, 11:44 AM GMT+2
+    ```
+  </Tab>
+
+  <Tab title="JSON (--json)">
+    ```json
+    {
+      "id": "<project-id>",
+      "name": "My Store",
+      "handle": "<project-handle>",
+      "organization": {
+        "id": "<organization-id>",
+        "name": "My Organization",
+        "created_at": "2024-10-10T08:24:32.382Z"
+      },
+      "region": "us-east-1",
+      "repository": "myuser/my-repo",
+      "root_path": "/apps/backend",
+      "status": "ready",
+      "created_at": "2024-10-10T08:24:32.382Z",
+      "updated_at": "2024-10-11T08:24:32.382Z",
+      "metadata": null,
+      "builds": [],
+      "environments": [
+        {
+          "id": "<environment-id>",
+          "project_id": "<project-id>",
+          "handle": "<environment-handle>",
+          "name": "Production",
+          "type": "production",
+          "default_subdomain": "trusting-soft-form",
+          "custom_subdomain": "acme",
+          "default_domain": "trusting-soft-form.medusajs.app",
+          "custom_domain": "acme.com",
+          "created_at": "2024-10-10T08:24:32.382Z",
+          "updated_at": "2024-10-10T08:24:32.382Z",
+          "deleted_at": null,
+          "external_id": "main",
+          "status": "ready",
+          "metadata": null,
+          "builds": [],
+          "deployments": [],
+          "variables": [],
+          "storefront_environments": [
+            {
+              "id": "<storefront-environment-id>",
+              "subdomain": "trusting-soft-form-storefront",
+              "custom_domain": "www.acme.com"
+            }
+          ],
+          "configuration": {
+            "read_replica_database_url": "postgresql://<user>:<password>@<host>/<database>?channel_binding=require&sslmode=require",
+            "tent_handle": "<tent-handle>",
+            "s3_file_url": "https://s3.us-east-1.amazonaws.com/<bucket>",
+            "s3_endpoint": "https://s3.us-east-1.amazonaws.com",
+            "upstash_external_id": "<upstash-id>"
+          },
+          "rules": null,
+          "active_deployment": null
+        }
+      ]
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Arguments
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `project`
+      </td>
+
+      <td>
+        The ID, handle, or name of the project to retrieve.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-p <id-handle-or-name>`, `--project <id-handle-or-name>`
+      </td>
+
+      <td>
+        The ID, handle, or name of the project to retrieve. Interchangeable with the positional argument.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) to get the project from.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## projects delete
+
+Delete a project by its ID or handle.
+
+<Warning>
+  Deleting a project is irreversible and removes all associated environments,
+  deployments, and resources.
+</Warning>
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud projects delete <project> --organization org_123
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123
+
+    mcloud projects delete <project>
+    ```
+  </Tab>
+</Tabs>
+
+### Arguments
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `project`
+      </td>
+
+      <td>
+        The ID, handle, or name of the project to delete.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-p <id-handle-or-name>`, `--project <id-handle-or-name>`
+      </td>
+
+      <td>
+        The ID, handle, or name of the project to delete. Interchangeable with the positional argument.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) to get the project from.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-y`, `--yes`
+      </td>
+
+      <td>
+        Skip the confirmation prompt. Use this in scripts and pipelines where
+        interactive input is not possible.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## Find Project IDs and Handles
+
+Commands that operate on projects require a project ID or handle. You can either:
+
+- Use the interactive selector in [mcloud use](/cloud/cli/commands/use#set-the-active-context) to set an active project for the current context. Once set, you can omit the `--project` flag from all subsequent commands;
+- Or use `projects list --json` to get machine-readable project data. Pipe the output to `jq` to extract IDs or handles for use in subsequent commands. This is useful if you want to set the active project through an AI agent, script, or CI/CD pipeline.
+
+For example, to set the first project in the list as the active project:
+
+<Tabs>
+  <Tab title="macOS / Linux">
+    ```bash
+    PROJECT_HANDLE=$(
+      mcloud projects list --json \
+        | jq -r '.[0].handle'
+    )
+    mcloud use --project "$PROJECT_HANDLE"
+    ```
+  </Tab>
+
+  <Tab title="Windows (PowerShell)">
+    ```powershell
+    $PROJECT_HANDLE = (
+      mcloud projects list --json |
+      jq -r '.[0].handle'
+    )
+    mcloud use --project $PROJECT_HANDLE
+    ```
+  </Tab>
+</Tabs>
+
+To set a project by name as the active project:
+
+<Tabs>
+  <Tab title="macOS / Linux">
+    ```bash
+    PROJECT_HANDLE=$(
+      mcloud projects list --json \
+        | jq -r '.[] | select(.name == "My Store") | .handle'
+    )
+    mcloud use --project "$PROJECT_HANDLE"
+    ```
+  </Tab>
+
+  <Tab title="Windows (PowerShell)">
+    ```powershell
+    $PROJECT_HANDLE = (
+      mcloud projects list --json |
+      jq -r '.[] | select(.name == "My Store") | .handle'
+    )
+    mcloud use --project $PROJECT_HANDLE
+    ```
+  </Tab>
+</Tabs>
+
+Once set, you can omit the `--project` flag from all subsequent commands.
+
+***
+
+## Delete a Project Without Confirmation
+
+In automated cleanup scripts, use `--yes` to skip the interactive
+confirmation prompt:
+
+<Warning>
+  Deleting a project is irreversible and removes all associated environments,
+  deployments, and resources.
+</Warning>
+
+```bash
+mcloud projects delete old-project --yes
+```

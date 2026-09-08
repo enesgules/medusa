@@ -1,0 +1,174 @@
+---
+title: DevServerUtils
+---
+
+## Functions
+
+- [registerDevServerResource](/resources/references/utils/utilsDevServerUtils#registerdevserverresource)
+- [registerResourceTypeHandler](/resources/references/utils/utilsDevServerUtils#registerresourcetypehandler)
+
+## Interfaces
+
+- [BaseResourceData](/resources/references/utils/DevServerUtils/interfaces/utilsDevServerUtilsBaseResourceData)
+- [ResourceTypeHandler](/resources/references/utils/DevServerUtils/interfaces/utilsDevServerUtilsResourceTypeHandler)
+
+## Type Aliases
+
+- [ResourceEntry](/resources/references/utils/DevServerUtils/types/utilsDevServerUtilsResourceEntry)
+- [ResourceMap](/resources/references/utils/DevServerUtils/types/utilsDevServerUtilsResourceMap)
+- [ResourcePath](/resources/references/utils/DevServerUtils/types/utilsDevServerUtilsResourcePath)
+- [ResourceType](/resources/references/utils/DevServerUtils/types/utilsDevServerUtilsResourceType)
+
+## Variables
+
+- [globalDevServerRegistry](/resources/references/utils/utilsDevServerUtils#globaldevserverregistry)
+- [inverseDevServerRegistry](/resources/references/utils/utilsDevServerUtils#inversedevserverregistry)
+
+## Functions
+
+### registerDevServerResource
+
+`**registerDevServerResource**(data): `void\`\`
+
+Register a resource in the dev server for hot module reloading
+
+This function uses a strategy pattern where each resource type has its own handler.
+The handler is responsible for:
+
+- Validating the registration data
+- Resolving the source path
+- Creating the registry entry
+- Generating the inverse registry key
+
+#### Example
+
+```typescript
+// Register a workflow
+registerDevServerResource({
+  type: "workflow",
+  id: "create-product",
+  sourcePath: "/src/workflows/create-product.ts"
+})
+
+// Register a step
+registerDevServerResource({
+  type: "step",
+  id: "validate-product",
+  workflowId: "create-product"
+})
+```
+
+<a id="registerdevserverresource-parameters" />
+
+#### Parameters
+
+**registerDevServerResource**
+
+- `data`: [ResourceRegistrationData](/resources/references/utils/types/utilsResourceRegistrationData) — Resource registration data
+  - `id`: `string`
+  - `type`: `"workflow"`
+  - `sourcePath`: `string`
+  - `workflowId`: `string` (optional)
+  - `subscriberId`: `string`
+  - `events`: `string`\[]
+
+#### Throws
+
+Error if validation fails or handler is not found
+
+`**registerDevServerResource**<TypeParameter T>(data): `void\`\`
+
+Register a resource in the dev server for hot module reloading
+
+This function uses a strategy pattern where each resource type has its own handler.
+The handler is responsible for:
+
+- Validating the registration data
+- Resolving the source path
+- Creating the registry entry
+- Generating the inverse registry key
+
+#### Example
+
+```typescript
+// Register a workflow
+registerDevServerResource({
+  type: "workflow",
+  id: "create-product",
+  sourcePath: "/src/workflows/create-product.ts"
+})
+
+// Register a step
+registerDevServerResource({
+  type: "step",
+  id: "validate-product",
+  workflowId: "create-product"
+})
+```
+
+<a id="registerdevserverresource-type-parameters" />
+
+#### Type Parameters
+
+**registerDevServerResource**
+
+- `T`: [BaseResourceData](/resources/references/utils/DevServerUtils/interfaces/utilsDevServerUtilsBaseResourceData) (optional)
+  - `type`: `string`
+  - `id`: `string`
+  - `sourcePath`: `string` (optional)
+
+<a id="registerdevserverresource-parameters-1" />
+
+#### Parameters
+
+**registerDevServerResource**
+
+- `data`: T — Resource registration data
+
+#### Throws
+
+Error if validation fails or handler is not found
+
+### registerResourceTypeHandler
+
+Register a resource type handler
+
+#### Example
+
+```typescript
+class RouteHandler implements ResourceTypeHandler<RouteData> {
+  readonly type = "route"
+  validate(data: RouteData): void { ... }
+  resolveSourcePath(data: RouteData): string { ... }
+  createEntry(data: RouteData): ResourceEntry { ... }
+  getInverseKey(data: RouteData): string { ... }
+}
+
+registerResourceTypeHandler(new RouteHandler())
+```
+
+<a id="registerresourcetypehandler-parameters" />
+
+#### Parameters
+
+**registerResourceTypeHandler**
+
+- `handler`: [ResourceTypeHandler](/resources/references/utils/DevServerUtils/interfaces/utilsDevServerUtilsResourceTypeHandler)
+  - `type`: `string`
+
+## Variables
+
+### globalDevServerRegistry
+
+`Const` **globalDevServerRegistry**: Map\<string, [ResourceMap](/resources/references/utils/DevServerUtils/types/utilsDevServerUtilsResourceMap)>
+
+Maps source file paths to their registered resources
+Structure: sourcePath -> Map\<resourceType, ResourceEntry\[]>
+
+### inverseDevServerRegistry
+
+`Const` **inverseDevServerRegistry**: Map\<string, string\[]>
+
+Inverse registry for looking up source paths by resource
+Structure: "type:id" -> sourcePath\[]
+Used to find which files contain a specific resource

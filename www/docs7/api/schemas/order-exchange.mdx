@@ -1,0 +1,455 @@
+---
+title: OrderExchange
+---
+
+The order change's exchange.
+
+## Properties
+
+<Accordion title="order_id (required)">
+  The ID of the order the exchange is created for.
+
+  ```json
+  {
+    "type": "string",
+    "title": "order_id",
+    "description": "The ID of the order the exchange is created for."
+  }
+  ```
+</Accordion>
+
+<Accordion title="additional_items (required)">
+  The new items (outbound) sent by the exchange.
+
+  ```json
+  {
+    "type": "array",
+    "description": "The new items (outbound) sent by the exchange.",
+    "items": {
+      "$ref": "#/components/schemas/BaseExchangeItem"
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [BaseExchangeItem](/api/schemas/base-exchange-item)
+</Accordion>
+
+<Accordion title="no_notification (optional)">
+  Whether to send the customer notifications when the exchange is updated.
+
+  ```json
+  {
+    "type": "boolean",
+    "title": "no_notification",
+    "description": "Whether to send the customer notifications when the exchange is updated."
+  }
+  ```
+</Accordion>
+
+<Accordion title="difference_due (optional)">
+  The amount to be exchanged or refunded. If the amount is negative, it must be refunded. If positive, additional payment is required from the customer.
+
+  ```json
+  {
+    "type": "number",
+    "title": "difference_due",
+    "description": "The amount to be exchanged or refunded. If the amount is negative, it must be refunded. If positive, additional payment is required from the customer."
+  }
+  ```
+</Accordion>
+
+<Accordion title="return (optional)">
+  ```json
+  {
+    "$ref": "#/components/schemas/Return"
+  }
+  ```
+
+  Related schemas:
+
+  - [Return](/api/schemas/return)
+</Accordion>
+
+<Accordion title="return_id (optional)">
+  The ID of the associated exchange.
+
+  ```json
+  {
+    "type": "string",
+    "title": "return_id",
+    "description": "The ID of the associated exchange."
+  }
+  ```
+</Accordion>
+
+<Accordion title="id (required)">
+  The exchange's ID.
+
+  ```json
+  {
+    "type": "string",
+    "title": "id",
+    "description": "The exchange's ID."
+  }
+  ```
+</Accordion>
+
+<Accordion title="display_id (required)">
+  The exchange's display ID.
+
+  ```json
+  {
+    "type": "number",
+    "title": "display_id",
+    "description": "The exchange's display ID."
+  }
+  ```
+</Accordion>
+
+<Accordion title="shipping_methods (optional)">
+  The shipping methods used to send the new (outbound) items.
+
+  ```json
+  {
+    "type": "array",
+    "description": "The shipping methods used to send the new (outbound) items.",
+    "items": {
+      "$ref": "#/components/schemas/OrderShippingMethod"
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [OrderShippingMethod](/api/schemas/order-shipping-method)
+</Accordion>
+
+<Accordion title="transactions (optional)">
+  The exchange's transactions.
+
+  ```json
+  {
+    "type": "array",
+    "description": "The exchange's transactions.",
+    "externalDocs": {
+      "url": "https://docs.medusajs.com/resources/commerce-modules/order/transactions"
+    },
+    "items": {
+      "$ref": "#/components/schemas/OrderTransaction"
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [OrderTransaction](/api/schemas/order-transaction)
+</Accordion>
+
+<Accordion title="metadata (required)">
+  The exchange's metadata, can hold custom key-value pairs.
+
+  ```json
+  {
+    "type": "object",
+    "description": "The exchange's metadata, can hold custom key-value pairs.",
+    "externalDocs": {
+      "url": "https://docs.medusajs.com/api/store#manage-metadata",
+      "description": "Learn how to manage metadata"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="created_at (optional)">
+  The date that the exchange was created.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "created_at",
+    "description": "The date that the exchange was created."
+  }
+  ```
+</Accordion>
+
+<Accordion title="updated_at (optional)">
+  The date that the exchange was updated.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "updated_at",
+    "description": "The date that the exchange was updated."
+  }
+  ```
+</Accordion>
+
+<Accordion title="order (optional)">
+  ```json
+  {
+    "$ref": "#/components/schemas/Order"
+  }
+  ```
+
+  Related schemas:
+
+  - [Order](/api/schemas/order)
+</Accordion>
+
+<Accordion title="order_version (required)">
+  The version of the order when the exchange is applied.
+
+  ```json
+  {
+    "type": "number",
+    "title": "order_version",
+    "description": "The version of the order when the exchange is applied."
+  }
+  ```
+</Accordion>
+
+<Accordion title="raw_difference_due (optional)">
+  ```json
+  {
+    "oneOf": [
+      {
+        "type": "string",
+        "title": "raw_difference_due",
+        "description": "The exchange's raw difference due."
+      },
+      {
+        "type": "number",
+        "title": "raw_difference_due",
+        "description": "The exchange's raw difference due."
+      },
+      {
+        "type": "string",
+        "title": "raw_difference_due",
+        "description": "The exchange's raw difference due."
+      },
+      {
+        "type": "number",
+        "title": "raw_difference_due",
+        "description": "The exchange's raw difference due."
+      }
+    ]
+  }
+  ```
+</Accordion>
+
+<Accordion title="allow_backorder (optional)">
+  Whether variants that are out of stock can be added to the exchange as outbound items.
+
+  ```json
+  {
+    "type": "boolean",
+    "title": "allow_backorder",
+    "description": "Whether variants that are out of stock can be added to the exchange as outbound items."
+  }
+  ```
+</Accordion>
+
+<Accordion title="created_by (optional)">
+  The ID of the user that created the exchange.
+
+  ```json
+  {
+    "type": "string",
+    "title": "created_by",
+    "description": "The ID of the user that created the exchange."
+  }
+  ```
+</Accordion>
+
+<Accordion title="deleted_at (optional)">
+  The date the exchange was deleted.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "deleted_at",
+    "description": "The date the exchange was deleted."
+  }
+  ```
+</Accordion>
+
+<Accordion title="canceled_at (optional)">
+  The date the exchange was canceled.
+
+  ```json
+  {
+    "type": "string",
+    "title": "canceled_at",
+    "description": "The date the exchange was canceled.",
+    "format": "date-time"
+  }
+  ```
+</Accordion>
+
+## Schema definition
+
+```json
+{
+  "type": "object",
+  "description": "The order change's exchange.",
+  "x-schemaName": "OrderExchange",
+  "required": [
+    "id",
+    "order_id",
+    "order_version",
+    "display_id",
+    "additional_items",
+    "metadata"
+  ],
+  "properties": {
+    "order_id": {
+      "type": "string",
+      "title": "order_id",
+      "description": "The ID of the order the exchange is created for."
+    },
+    "additional_items": {
+      "type": "array",
+      "description": "The new items (outbound) sent by the exchange.",
+      "items": {
+        "$ref": "#/components/schemas/BaseExchangeItem"
+      }
+    },
+    "no_notification": {
+      "type": "boolean",
+      "title": "no_notification",
+      "description": "Whether to send the customer notifications when the exchange is updated."
+    },
+    "difference_due": {
+      "type": "number",
+      "title": "difference_due",
+      "description": "The amount to be exchanged or refunded. If the amount is negative, it must be refunded. If positive, additional payment is required from the customer."
+    },
+    "return": {
+      "$ref": "#/components/schemas/Return"
+    },
+    "return_id": {
+      "type": "string",
+      "title": "return_id",
+      "description": "The ID of the associated exchange."
+    },
+    "id": {
+      "type": "string",
+      "title": "id",
+      "description": "The exchange's ID."
+    },
+    "display_id": {
+      "type": "number",
+      "title": "display_id",
+      "description": "The exchange's display ID."
+    },
+    "shipping_methods": {
+      "type": "array",
+      "description": "The shipping methods used to send the new (outbound) items.",
+      "items": {
+        "$ref": "#/components/schemas/OrderShippingMethod"
+      }
+    },
+    "transactions": {
+      "type": "array",
+      "description": "The exchange's transactions.",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/resources/commerce-modules/order/transactions"
+      },
+      "items": {
+        "$ref": "#/components/schemas/OrderTransaction"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "The exchange's metadata, can hold custom key-value pairs.",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/api/store#manage-metadata",
+        "description": "Learn how to manage metadata"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "created_at",
+      "description": "The date that the exchange was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "updated_at",
+      "description": "The date that the exchange was updated."
+    },
+    "order": {
+      "$ref": "#/components/schemas/Order"
+    },
+    "order_version": {
+      "type": "number",
+      "title": "order_version",
+      "description": "The version of the order when the exchange is applied."
+    },
+    "raw_difference_due": {
+      "oneOf": [
+        {
+          "type": "string",
+          "title": "raw_difference_due",
+          "description": "The exchange's raw difference due."
+        },
+        {
+          "type": "number",
+          "title": "raw_difference_due",
+          "description": "The exchange's raw difference due."
+        },
+        {
+          "type": "string",
+          "title": "raw_difference_due",
+          "description": "The exchange's raw difference due."
+        },
+        {
+          "type": "number",
+          "title": "raw_difference_due",
+          "description": "The exchange's raw difference due."
+        }
+      ]
+    },
+    "allow_backorder": {
+      "type": "boolean",
+      "title": "allow_backorder",
+      "description": "Whether variants that are out of stock can be added to the exchange as outbound items."
+    },
+    "created_by": {
+      "type": "string",
+      "title": "created_by",
+      "description": "The ID of the user that created the exchange."
+    },
+    "deleted_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "deleted_at",
+      "description": "The date the exchange was deleted."
+    },
+    "canceled_at": {
+      "type": "string",
+      "title": "canceled_at",
+      "description": "The date the exchange was canceled.",
+      "format": "date-time"
+    }
+  }
+}
+```
+
+Related schemas:
+
+- [BaseExchangeItem](/api/schemas/base-exchange-item)
+
+- [Order](/api/schemas/order)
+
+- [OrderShippingMethod](/api/schemas/order-shipping-method)
+
+- [OrderTransaction](/api/schemas/order-transaction)
+
+- [Return](/api/schemas/return)

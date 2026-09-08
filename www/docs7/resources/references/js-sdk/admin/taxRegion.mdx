@@ -1,0 +1,517 @@
+---
+title: taxRegion - JS SDK Admin Reference
+sidebarTitle: taxRegion
+---
+
+This documentation provides a reference to the `sdk.admin.taxRegion` set of methods used to send requests to Medusa's Admin API routes.
+
+## create
+
+This method creates a tax region. It sends a request to the
+[Create Tax Region](/api/admin/tax-regions/create-tax-region)
+API route.
+
+### Example
+
+```ts
+sdk.admin.taxRegion.create({
+  country_code: "us",
+  province_code: "ca",
+  default_tax_rate: {
+    code: "VAT",
+    name: "VAT",
+    rate: 20, // 20%
+    is_combinable: true,
+  },
+})
+.then(({ tax_region }) => {
+  console.log(tax_region)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [AdminCreateTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateTaxRegion) — The details of the tax region to create.
+  - `country_code`: `string` — The country code of the tax region.
+  - `provider_id`: `null` | `string` (optional) — The ID of the tax provider.
+  - `province_code`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code of the tax region.
+  - `parent_id`: `null` | `string` (optional) — The ID of the parent tax region.
+  - `default_tax_rate`: `object` (optional) — The default tax rate of the tax region.
+    - `rate`: `number` (optional) — The percentage rate of the default tax rate.
+    - `code`: `string` — The code of the default tax rate.
+    - `name`: `string` — The name of the default tax rate.
+    - `is_combinable`: `boolean` (optional) — Whether the default tax rate is combinable with other tax rates.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the default tax rate.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the tax region.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the tax region.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminTaxRegionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionResponse)> — The tax region's details.
+  - `tax_region`: [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion) — The tax region's details.
+    - `id`: `string` — The tax region's ID.
+    - `country_code`: `null` | `string` — The tax region's country code.
+
+      Example:
+
+      ```
+      "us"
+      ```
+    - `province_code`: `null` | `string` — The tax region's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code.
+
+      Example:
+
+      ```
+      "us-ca"
+      ```
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the tax region.
+    - `parent_id`: `null` | `string` — The ID of the parent tax region.
+    - `provider_id`: `null` | `string` — The ID of the tax provider for the region.
+    - `created_at`: `string` — The date the tax region was created.
+    - `updated_at`: `string` — The date the tax region was updated.
+    - `deleted_at`: `null` | `string` — The date the tax region was deleted.
+    - `created_by`: `null` | `string` — The ID of the user who created the tax region.
+    - `tax_rates`: [AdminTaxRate](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRate)\[] — The tax rates associated with the tax region.
+    - `parent`: `null` | [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion) — The parent tax region.
+    - `children`: [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion)\[] — The child tax regions.
+
+## update
+
+This method updates a tax region. It sends a request to the
+[Update Tax Region](/api/admin/tax-regions/update-a-tax-region)
+API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.8.0](https://github.com/medusajs/medusa/releases/tag/v2.8.0).
+
+### Example
+
+```ts
+sdk.admin.taxRegion.update("txreg_123", {
+  province_code: "ca",
+})
+.then(({ tax_region }) => {
+  console.log(tax_region)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `id`: `string` — The ID of the tax region to update.
+- `body`: [AdminUpdateTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateTaxRegion) — The details of the tax region to update.
+  - `province_code`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code of the tax region.
+  - `provider_id`: `string` (optional) — The ID of the tax provider.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the tax region.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the tax region.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminTaxRegionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionResponse)> — The tax region's details.
+  - `tax_region`: [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion) — The tax region's details.
+    - `id`: `string` — The tax region's ID.
+    - `country_code`: `null` | `string` — The tax region's country code.
+
+      Example:
+
+      ```
+      "us"
+      ```
+    - `province_code`: `null` | `string` — The tax region's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code.
+
+      Example:
+
+      ```
+      "us-ca"
+      ```
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the tax region.
+    - `parent_id`: `null` | `string` — The ID of the parent tax region.
+    - `provider_id`: `null` | `string` — The ID of the tax provider for the region.
+    - `created_at`: `string` — The date the tax region was created.
+    - `updated_at`: `string` — The date the tax region was updated.
+    - `deleted_at`: `null` | `string` — The date the tax region was deleted.
+    - `created_by`: `null` | `string` — The ID of the user who created the tax region.
+    - `tax_rates`: [AdminTaxRate](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRate)\[] — The tax rates associated with the tax region.
+    - `parent`: `null` | [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion) — The parent tax region.
+    - `children`: [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion)\[] — The child tax regions.
+
+## delete
+
+This method deletes a tax region. It sends a request to the
+[Delete Tax Region](/api/admin/tax-regions/delete-a-tax-region)
+API route.
+
+### Example
+
+```ts
+sdk.admin.taxRegion.delete("txreg_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The ID of the tax region to delete.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminTaxRegionDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: `"tax_region"` — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## retrieve
+
+This method retrieves a tax region. It sends a request to the
+[Get Tax Region](/api/admin/tax-regions/get-a-tax-region)
+API route.
+
+### Example
+
+To retrieve a tax region by its ID:
+
+```ts
+sdk.admin.taxRegion.retrieve("txreg_123")
+.then(({ tax_region }) => {
+  console.log(tax_region)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.taxRegion.retrieve("txreg_123", {
+  fields: "id,*tax_rates"
+})
+.then(({ tax_region }) => {
+  console.log(tax_region)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The ID of the tax region to retrieve.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the tax region.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminTaxRegionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionResponse)> — The tax region's details.
+  - `tax_region`: [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion) — The tax region's details.
+    - `id`: `string` — The tax region's ID.
+    - `country_code`: `null` | `string` — The tax region's country code.
+
+      Example:
+
+      ```
+      "us"
+      ```
+    - `province_code`: `null` | `string` — The tax region's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code.
+
+      Example:
+
+      ```
+      "us-ca"
+      ```
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the tax region.
+    - `parent_id`: `null` | `string` — The ID of the parent tax region.
+    - `provider_id`: `null` | `string` — The ID of the tax provider for the region.
+    - `created_at`: `string` — The date the tax region was created.
+    - `updated_at`: `string` — The date the tax region was updated.
+    - `deleted_at`: `null` | `string` — The date the tax region was deleted.
+    - `created_by`: `null` | `string` — The ID of the user who created the tax region.
+    - `tax_rates`: [AdminTaxRate](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRate)\[] — The tax rates associated with the tax region.
+    - `parent`: `null` | [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion) — The parent tax region.
+    - `children`: [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion)\[] — The child tax regions.
+
+## list
+
+This method retrieves a list of tax regions. It sends a request to the
+[List Tax Regions](/api/admin/tax-regions/list-tax-regions)
+API route.
+
+### Example
+
+To retrieve the list of tax regions:
+
+```ts
+sdk.admin.taxRegion.list()
+.then(({ tax_regions, count, limit, offset }) => {
+  console.log(tax_regions)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.taxRegion.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ tax_regions, count, limit, offset }) => {
+  console.log(tax_regions)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each tax region:
+
+```ts
+sdk.admin.taxRegion.list({
+  fields: "id,*tax_rates"
+})
+.then(({ tax_regions, count, limit, offset }) => {
+  console.log(tax_regions)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [AdminTaxRegionListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionListParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminTaxRegionListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTaxRegionListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminTaxRegionListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTaxRegionListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminTaxRegionListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTaxRegionListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by tax region ID(s).
+    - `q`: `string` (optional) — Query or keywords to search the tax region's searchable fields.
+    - `parent_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by the tax region's parent ID(s) to retrieve its children.
+    - `country_code`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by the tax region's country code(s).
+    - `province_code`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by the tax region's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code(s).
+    - `created_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax region was created.
+    - `updated_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax region was updated.
+    - `deleted_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax region was deleted.
+    - `created_by`: `string` | `string`\[] (optional) — Filter by the ID of the user who created the tax region to retrieve tax regions created by a specific user.
+  - `$or`: ([AdminTaxRegionListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTaxRegionListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminTaxRegionListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTaxRegionListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminTaxRegionListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTaxRegionListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegionListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by tax region ID(s).
+    - `q`: `string` (optional) — Query or keywords to search the tax region's searchable fields.
+    - `parent_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by the tax region's parent ID(s) to retrieve its children.
+    - `country_code`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by the tax region's country code(s).
+    - `province_code`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by the tax region's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code(s).
+    - `created_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax region was created.
+    - `updated_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax region was updated.
+    - `deleted_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax region was deleted.
+    - `created_by`: `string` | `string`\[] (optional) — Filter by the ID of the user who created the tax region to retrieve tax regions created by a specific user.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `id`: `string` | `string`\[] (optional) — Filter by tax region ID(s).
+  - `q`: `string` (optional) — Query or keywords to search the tax region's searchable fields.
+  - `parent_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by the tax region's parent ID(s) to retrieve its children.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `country_code`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by the tax region's country code(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `province_code`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by the tax region's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax region was created.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax region was updated.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: `string` | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax region was deleted.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_by`: `string` | `string`\[] (optional) — Filter by the ID of the user who created the tax region to retrieve tax regions created by a specific user.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminTaxRegionListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminTaxRegionListResponse)> — The list of tax regions.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.

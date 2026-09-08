@@ -1,0 +1,250 @@
+---
+title: listRefunds - Payment Module Reference
+sidebarTitle: listRefunds
+---
+
+This documentation provides a reference to the `listRefunds` method. This belongs to the Payment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of refunds based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of refunds using their IDs:
+
+```ts
+const refunds = await paymentModuleService.listRefunds({
+  id: ["ref_123", "ref_321"],
+})
+```
+
+To specify relations that should be retrieved within the refund:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const refunds = await paymentModuleService.listRefunds(
+  {
+    id: ["ref_123", "ref_321"],
+  },
+  {
+    relations: ["payment"],
+  }
+)
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const refunds = await paymentModuleService.listRefunds(
+  {
+    id: ["ref_123", "ref_321"],
+  },
+  {
+    relations: ["payment"],
+    take: 20,
+    skip: 2,
+  }
+)
+```
+
+<a id="listrefunds-parameters" />
+
+## Parameters
+
+**listRefunds**
+
+- `filters`: [FilterableRefundProps](/resources/references/payment/interfaces/paymentFilterableRefundProps) (optional) — The filters to apply on the retrieved refunds.
+  - `$and`: ([RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO) | [BaseFilterable](/resources/references/payment/interfaces/paymentBaseFilterable)\<[RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `id`: `string` — The ID of the refund
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The refunded amount.
+    - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw refunded amount.
+    - `refund_reason_id`: `null` | `string` (optional) — The id of the refund\_reason that is associated with the refund
+    - `refund_reason`: `null` | [RefundReasonDTO](/resources/references/payment/interfaces/paymentRefundReasonDTO) (optional) — The id of the refund\_reason that is associated with the refund
+    - `note`: `null` | `string` (optional) — A field to add some additional information about the refund
+    - `created_at`: `Date` — The creation date of the refund.
+    - `created_by`: `string` (optional) — Who created the refund. For example, the user's ID.
+    - `payment`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO) — The associated payment.
+    - `$and`: ([BaseFilterable](/resources/references/payment/interfaces/paymentBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseFilterable](/resources/references/payment/interfaces/paymentBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `$or`: ([RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO) | [BaseFilterable](/resources/references/payment/interfaces/paymentBaseFilterable)\<[RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` — The ID of the refund
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The refunded amount.
+    - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw refunded amount.
+    - `refund_reason_id`: `null` | `string` (optional) — The id of the refund\_reason that is associated with the refund
+    - `refund_reason`: `null` | [RefundReasonDTO](/resources/references/payment/interfaces/paymentRefundReasonDTO) (optional) — The id of the refund\_reason that is associated with the refund
+    - `note`: `null` | `string` (optional) — A field to add some additional information about the refund
+    - `created_at`: `Date` — The creation date of the refund.
+    - `created_by`: `string` (optional) — Who created the refund. For example, the user's ID.
+    - `payment`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO) — The associated payment.
+    - `$and`: ([BaseFilterable](/resources/references/payment/interfaces/paymentBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseFilterable](/resources/references/payment/interfaces/paymentBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the refunds by.
+  - `currency_code`: `string` | `string`\[] (optional) — Filter the refunds by their currency code.
+  - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) | [OperatorMap](/resources/references/payment/types/paymentOperatorMap)\<[BigNumberValue](/resources/references/payment/types/paymentBigNumberValue)> (optional) — Filter the refunds by their amount.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+    - `$and`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> | [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/payment/types/paymentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `payment_id`: `string` | `string`\[] (optional) — Filter the refunds by the ID of their associated payment.
+  - `created_at`: [OperatorMap](/resources/references/payment/types/paymentOperatorMap)\<string> (optional) — Filter the refunds by their creation date.
+    - `$and`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> | [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/payment/types/paymentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/payment/types/paymentOperatorMap)\<string> (optional) — Filter the refunds by their update date.
+    - `$and`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> | [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/payment/types/paymentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/payment/types/paymentOperatorMap)\<string> (optional) — Filter the refunds by their deletion date.
+    - `$and`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> | [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/payment/types/paymentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `config`: [FindConfig](/resources/references/payment/interfaces/paymentFindConfig)\<[RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)> (optional) — The configurations determining how the refund is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a refund.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/payment/types/paymentFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/payment/types/paymentInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/payment/types/paymentCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/payment/interfaces/paymentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/payment/interfaces/paymentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listrefunds-returns" />
+
+## Returns
+
+**listRefunds**
+
+- `Promise`: Promise\<[RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)\[]> — The list of refunds.
+  - `RefundDTO[]`: [RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)\[]
+    - `id`: `string` — The ID of the refund
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The refunded amount.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw refunded amount.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `refund_reason_id`: `null` | `string` (optional) — The id of the refund\_reason that is associated with the refund
+    - `refund_reason`: `null` | [RefundReasonDTO](/resources/references/payment/interfaces/paymentRefundReasonDTO) (optional) — The id of the refund\_reason that is associated with the refund
+      - `id`: `string` — The ID of the refund reason
+      - `label`: `string` — The label of the refund reason
+      - `description`: `null` | `string` (optional) — The description of the refund reason
+      - `metadata`: `null` | `Record<string, unknown>` — The metadata of the refund reason
+      - `created_at`: `string` | `Date` — When the refund reason was created
+      - `updated_at`: `string` | `Date` — When the refund reason was updated
+    - `note`: `null` | `string` (optional) — A field to add some additional information about the refund
+    - `created_at`: `Date` — The creation date of the refund.
+    - `created_by`: `string` (optional) — Who created the refund. For example, the user's ID.
+    - `payment`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO) — The associated payment.
+      - `id`: `string` — The ID of the payment.
+      - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The payment's total amount.
+      - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw amount of the payment.
+      - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The authorized amount of the payment.
+      - `raw_authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw authorized amount of the payment.
+      - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+      - `provider_id`: `string` — The ID of the associated payment provider.
+      - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+      - `created_at`: `string` | `Date` (optional) — When the payment was created.
+      - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+      - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+      - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+      - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' amounts.
+      - `raw_captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' raw amounts.
+      - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' amounts.
+      - `raw_refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' raw amounts.
+      - `captures`: [CaptureDTO](/resources/references/payment/interfaces/paymentCaptureDTO)\[] (optional) — The associated captures.
+      - `refunds`: [RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)\[] (optional) — The associated refunds.
+      - `payment_collection_id`: `string` — The ID of the associated payment collection.
+      - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The associated payment collection.
+      - `payment_session`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO) (optional) — The payment session from which the payment is created.

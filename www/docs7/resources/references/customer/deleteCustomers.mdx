@@ -1,0 +1,328 @@
+---
+title: deleteCustomers - Customer Module Reference
+sidebarTitle: deleteCustomers
+---
+
+This documentation provides a reference to the `deleteCustomers` method. This belongs to the Customer Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="deletecustomers-customerid-sharedcontext-promisevoid" />
+
+## deleteCustomers(customerId, sharedContext?): Promise\<void>
+
+This method deletes a customer by its ID.
+
+### Example
+
+```ts
+await customerModuleService.deleteCustomers("cus_123")
+```
+
+<a id="deletecustomers-parameters" />
+
+### Parameters
+
+**deleteCustomers**
+
+- `customerId`: `string` — The customer's ID.
+- `sharedContext`: [Context](/resources/references/customer/interfaces/customerContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/customer/interfaces/customerIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="deletecustomers-returns" />
+
+### Returns
+
+**deleteCustomers**
+
+- `Promise`: Promise\<void> — Resolves when the customer is deleted successfully.
+
+<a id="deletecustomers-customerids-sharedcontext-promisevoid" />
+
+## deleteCustomers(customerIds, sharedContext?): Promise\<void>
+
+This method deletes customers by their IDs.
+
+### Example
+
+```ts
+await customerModuleService.deleteCustomers(["cus_123", "cus_321"])
+```
+
+<a id="deletecustomers-parameters-1" />
+
+### Parameters
+
+**deleteCustomers**
+
+- `customerIds`: `string`\[] — The IDs of customers.
+- `sharedContext`: [Context](/resources/references/customer/interfaces/customerContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/customer/interfaces/customerIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="deletecustomers-returns-1" />
+
+### Returns
+
+**deleteCustomers**
+
+- `Promise`: Promise\<void> — Resolves when the customers are deleted successfully.
+
+<a id="deletecustomers-selector-sharedcontext-promisevoid" />
+
+## deleteCustomers(selector, sharedContext?): Promise\<void>
+
+This method deletes a customer matching the specified filters.
+
+### Example
+
+```ts
+await customerModuleService.deleteCustomers({
+  id: ["cus_123"],
+})
+```
+
+<a id="deletecustomers-parameters-2" />
+
+### Parameters
+
+**deleteCustomers**
+
+- `selector`: [FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps) — The filters that specify which customers should be deleted.
+  - `q`: `string` (optional) — Searches for customers by properties such as name and email using this search term.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the customer by.
+  - `email`: `string` | `string`\[] | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by email.
+    - `$and`: [Query](/resources/references/customer/types/customerQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/customer/types/customerQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> | [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/customer/types/customerQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `groups`: `string` | `string`\[] | [FilterableCustomerGroupProps](/resources/references/customer/interfaces/customerFilterableCustomerGroupProps) (optional) — Filter by associated customer group.
+    - `q`: `string` (optional) — Searches for customer groups by name using this search term.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the customer group by.
+    - `name`: `string` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter customer groups by name.
+    - `customers`: `string` | `string`\[] | [FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps) (optional) — Filter customer groups by associated customers.
+    - `created_by`: `null` | `string` | `string`\[] (optional) — Filter customer groups by their `created_by` attribute.
+    - `created_at`: [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter customer groups by created date.
+    - `updated_at`: [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter customer groups by updated date.
+    - `$and`: ([FilterableCustomerGroupProps](/resources/references/customer/interfaces/customerFilterableCustomerGroupProps) | [BaseFilterable](/resources/references/customer/interfaces/customerBaseFilterable)\<[FilterableCustomerGroupProps](/resources/references/customer/interfaces/customerFilterableCustomerGroupProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableCustomerGroupProps](/resources/references/customer/interfaces/customerFilterableCustomerGroupProps) | [BaseFilterable](/resources/references/customer/interfaces/customerBaseFilterable)\<[FilterableCustomerGroupProps](/resources/references/customer/interfaces/customerFilterableCustomerGroupProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `default_billing_address_id`: `null` | `string` | `string`\[] (optional) — Filter by the associated default billing address's ID.
+  - `default_shipping_address_id`: `null` | `string` | `string`\[] (optional) — Filter by the associated default shipping address's ID.
+  - `company_name`: `null` | `string` | `string`\[] | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by company name.
+    - `$and`: [Query](/resources/references/customer/types/customerQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/customer/types/customerQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> | [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/customer/types/customerQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `first_name`: `null` | `string` | `string`\[] | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by first name.
+    - `$and`: [Query](/resources/references/customer/types/customerQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/customer/types/customerQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> | [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/customer/types/customerQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `last_name`: `null` | `string` | `string`\[] | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by last name.
+    - `$and`: [Query](/resources/references/customer/types/customerQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/customer/types/customerQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> | [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/customer/types/customerQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `has_account`: `boolean` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<boolean> (optional) — Filter by whether the customer has an account.
+    - `$and`: [Query](/resources/references/customer/types/customerQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/customer/types/customerQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> | [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/customer/types/customerQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_by`: `null` | `string` | `string`\[] (optional) — Filter by the `created_by` attribute.
+  - `created_at`: [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by created date.
+    - `$and`: [Query](/resources/references/customer/types/customerQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/customer/types/customerQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> | [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/customer/types/customerQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by updated date.
+    - `$and`: [Query](/resources/references/customer/types/customerQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/customer/types/customerQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> | [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/customer/types/customerQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/customer/types/customerExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `$and`: ([FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps) | [BaseFilterable](/resources/references/customer/interfaces/customerBaseFilterable)\<[FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `q`: `string` (optional) — Searches for customers by properties such as name and email using this search term.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the customer by.
+    - `email`: `string` | `string`\[] | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by email.
+    - `groups`: `string` | `string`\[] | [FilterableCustomerGroupProps](/resources/references/customer/interfaces/customerFilterableCustomerGroupProps) (optional) — Filter by associated customer group.
+    - `default_billing_address_id`: `null` | `string` | `string`\[] (optional) — Filter by the associated default billing address's ID.
+    - `default_shipping_address_id`: `null` | `string` | `string`\[] (optional) — Filter by the associated default shipping address's ID.
+    - `company_name`: `null` | `string` | `string`\[] | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by company name.
+    - `first_name`: `null` | `string` | `string`\[] | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by first name.
+    - `last_name`: `null` | `string` | `string`\[] | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by last name.
+    - `has_account`: `boolean` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<boolean> (optional) — Filter by whether the customer has an account.
+    - `created_by`: `null` | `string` | `string`\[] (optional) — Filter by the `created_by` attribute.
+    - `created_at`: [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by created date.
+    - `updated_at`: [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by updated date.
+    - `$and`: ([FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps) | [BaseFilterable](/resources/references/customer/interfaces/customerBaseFilterable)\<[FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps) | [BaseFilterable](/resources/references/customer/interfaces/customerBaseFilterable)\<[FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `$or`: ([FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps) | [BaseFilterable](/resources/references/customer/interfaces/customerBaseFilterable)\<[FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Searches for customers by properties such as name and email using this search term.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the customer by.
+    - `email`: `string` | `string`\[] | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by email.
+    - `groups`: `string` | `string`\[] | [FilterableCustomerGroupProps](/resources/references/customer/interfaces/customerFilterableCustomerGroupProps) (optional) — Filter by associated customer group.
+    - `default_billing_address_id`: `null` | `string` | `string`\[] (optional) — Filter by the associated default billing address's ID.
+    - `default_shipping_address_id`: `null` | `string` | `string`\[] (optional) — Filter by the associated default shipping address's ID.
+    - `company_name`: `null` | `string` | `string`\[] | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by company name.
+    - `first_name`: `null` | `string` | `string`\[] | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by first name.
+    - `last_name`: `null` | `string` | `string`\[] | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by last name.
+    - `has_account`: `boolean` | [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<boolean> (optional) — Filter by whether the customer has an account.
+    - `created_by`: `null` | `string` | `string`\[] (optional) — Filter by the `created_by` attribute.
+    - `created_at`: [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by created date.
+    - `updated_at`: [OperatorMap](/resources/references/customer/types/customerOperatorMap)\<string> (optional) — Filter by updated date.
+    - `$and`: ([FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps) | [BaseFilterable](/resources/references/customer/interfaces/customerBaseFilterable)\<[FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps) | [BaseFilterable](/resources/references/customer/interfaces/customerBaseFilterable)\<[FilterableCustomerProps](/resources/references/customer/interfaces/customerFilterableCustomerProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+- `sharedContext`: [Context](/resources/references/customer/interfaces/customerContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/customer/interfaces/customerIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="deletecustomers-returns-2" />
+
+### Returns
+
+**deleteCustomers**
+
+- `Promise`: Promise\<void> — Resolves when the customers are deleted successfully.

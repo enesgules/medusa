@@ -1,0 +1,379 @@
+---
+title: Manage Translation Settings
+---
+
+`POST /admin/translations/settings/batch`
+
+Create, update, or delete multiple translation settings.
+
+## Base URLs
+
+- `http://localhost:9000`
+
+- `https://api.medusajs.com`
+
+## Authentication
+
+```json
+{
+  "api_token": {
+    "type": "http",
+    "x-displayName": "API Token",
+    "scheme": "basic"
+  }
+}
+```
+
+```json
+{
+  "cookie_auth": {
+    "type": "apiKey",
+    "in": "cookie",
+    "name": "connect.sid",
+    "x-displayName": "Cookie Session ID"
+  }
+}
+```
+
+```json
+{
+  "jwt_token": {
+    "type": "http",
+    "x-displayName": "JWT Token",
+    "scheme": "bearer"
+  }
+}
+```
+
+[Authentication guide](/api/admin/authentication)
+
+## Request body
+
+Optional.
+
+### application/json
+
+```json
+{
+  "schema": {
+    "$ref": "#/components/schemas/AdminBatchTranslationSettings"
+  }
+}
+```
+
+Related schemas:
+
+- [AdminBatchTranslationSettings](/api/schemas/admin-batch-translation-settings)
+
+## Responses
+
+<Accordion title="200 — OK">
+  OK
+
+  ```json
+  {
+    "description": "OK",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/AdminBatchTranslationSettingsResponse"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminBatchTranslationSettingsResponse](/api/schemas/admin-batch-translation-settings-response)
+</Accordion>
+
+<Accordion title="400 — Client Error">
+  Client Error
+
+  ```json
+  {
+    "description": "Client Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "not_allowed": {
+            "$ref": "#/components/examples/not_allowed_error"
+          },
+          "invalid_data": {
+            "$ref": "#/components/examples/invalid_data_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="401 — User is not authorized. Must log in first">
+  User is not authorized. Must log in first
+
+  ```json
+  {
+    "description": "User is not authorized. Must log in first",
+    "content": {
+      "text/plain": {
+        "schema": {
+          "type": "string",
+          "default": "Unauthorized",
+          "example": "Unauthorized"
+        }
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Not Found Error">
+  Not Found Error
+
+  ```json
+  {
+    "description": "Not Found Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "message": "Entity with id 1 was not found",
+          "type": "not_found"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="409 — Invalid State Error">
+  Invalid State Error
+
+  ```json
+  {
+    "description": "Invalid State Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "unknown_error",
+          "message": "The request conflicted with another request. You may retry the request with the provided Idempotency-Key.",
+          "type": "QueryRunnerAlreadyReleasedError"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="422 — Invalid Request Error">
+  Invalid Request Error
+
+  ```json
+  {
+    "description": "Invalid Request Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "invalid_request_error",
+          "message": "Discount with code TEST already exists.",
+          "type": "duplicate_error"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="500 — Server Error">
+  Server Error
+
+  ```json
+  {
+    "description": "Server Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "database": {
+            "$ref": "#/components/examples/database_error"
+          },
+          "unexpected_state": {
+            "$ref": "#/components/examples/unexpected_state_error"
+          },
+          "invalid_argument": {
+            "$ref": "#/components/examples/invalid_argument_error"
+          },
+          "default_error": {
+            "$ref": "#/components/examples/default_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+## Examples
+
+### JS SDK
+
+```js
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+  debug: import.meta.env.DEV,
+  auth: {
+    type: "session",
+  },
+})
+
+sdk.admin.translation.batchSettings({
+  create: [
+    {
+      entity_type: "product",
+      fields: ["title", "description"],
+      is_active: true
+    }
+  ],
+  update: [
+    {
+      id: "trset_123",
+      fields: ["title", "description", "subtitle"],
+      is_active: true
+    }
+  ],
+  delete: ["trset_456"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+### cURL
+
+```bash
+curl -X POST '{backend_url}/admin/translations/settings/batch' \
+-H 'Authorization: Bearer {access_token}'
+```
+
+<Accordion title="OpenAPI operation">
+  ```json
+  {
+    "operationId": "PostTranslationsSettingsBatch",
+    "summary": "Manage Translation Settings",
+    "description": "Create, update, or delete multiple translation settings.",
+    "x-authenticated": true,
+    "security": [
+      {
+        "api_token": []
+      },
+      {
+        "cookie_auth": []
+      },
+      {
+        "jwt_token": []
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/AdminBatchTranslationSettings"
+          }
+        }
+      }
+    },
+    "x-codeSamples": [
+      {
+        "lang": "JavaScript",
+        "label": "JS SDK",
+        "source": "import Medusa from \"@medusajs/js-sdk\"\n\nexport const sdk = new Medusa({\n  baseUrl: import.meta.env.VITE_BACKEND_URL || \"/\",\n  debug: import.meta.env.DEV,\n  auth: {\n    type: \"session\",\n  },\n})\n\nsdk.admin.translation.batchSettings({\n  create: [\n    {\n      entity_type: \"product\",\n      fields: [\"title\", \"description\"],\n      is_active: true\n    }\n  ],\n  update: [\n    {\n      id: \"trset_123\",\n      fields: [\"title\", \"description\", \"subtitle\"],\n      is_active: true\n    }\n  ],\n  delete: [\"trset_456\"]\n})\n.then(({ created, updated, deleted }) => {\n  console.log(created, updated, deleted)\n})"
+      },
+      {
+        "lang": "Shell",
+        "label": "cURL",
+        "source": "curl -X POST '{backend_url}/admin/translations/settings/batch' \\\n-H 'Authorization: Bearer {access_token}'"
+      }
+    ],
+    "tags": [
+      "Translations"
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AdminBatchTranslationSettingsResponse"
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/400_error"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "404": {
+        "$ref": "#/components/responses/not_found_error"
+      },
+      "409": {
+        "$ref": "#/components/responses/invalid_state_error"
+      },
+      "422": {
+        "$ref": "#/components/responses/invalid_request_error"
+      },
+      "500": {
+        "$ref": "#/components/responses/500_error"
+      }
+    },
+    "x-workflow": "batchTranslationSettingsWorkflow",
+    "x-events": [],
+    "x-since": "2.13.0",
+    "x-featureFlag": "translation"
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminBatchTranslationSettings](/api/schemas/admin-batch-translation-settings)
+
+  - [AdminBatchTranslationSettingsResponse](/api/schemas/admin-batch-translation-settings-response)
+</Accordion>

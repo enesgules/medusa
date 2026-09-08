@@ -1,0 +1,77 @@
+---
+title: exportInventoryItemsStep - Medusa Core Workflows Reference
+sidebarTitle: exportInventoryItemsStep
+---
+
+This documentation provides a reference to the `exportInventoryItemsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step exports inventory items to a CSV file based on the provided filters.
+The exported file includes the inventory levels of each item per stock location.
+
+## Example
+
+To export all inventory items:
+
+```ts
+const data = exportInventoryItemsStep({
+  select: ["id", "sku", "title"],
+  batch_size: 100
+})
+```
+
+To export inventory items stocked in a specific location:
+
+```ts
+const data = exportInventoryItemsStep({
+  select: ["id", "sku", "title"],
+  filter: {
+    location_levels: {
+      location_id: "sloc_123"
+    }
+  }
+})
+```
+
+<a id="exportinventoryitemsstep-input" />
+
+## Input
+
+**exportInventoryItemsStep**
+
+- `ExportInventoryItemsDTO`: [ExportInventoryItemsDTO](/resources/references/types/WorkflowTypes/InventoryWorkflow/interfaces/typesWorkflowTypesInventoryWorkflowExportInventoryItemsDTO)
+  - `select`: `string`\[] — The fields to select. These fields will be passed to [Query](/learn/fundamentals/module-links/query), so you can pass inventory item properties or any relation names, including custom links.
+  - `filter`: [FilterableInventoryItemProps](/resources/references/types/InventoryTypes/interfaces/typesInventoryTypesFilterableInventoryItemProps) & `object` (optional) — The filters to select which inventory items to export.
+    - `q`: `string` (optional) — Search term to search inventory items' attributes.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter inventory items by.
+    - `location_id`: `string` | `string`\[] (optional) — Filter inventory items by the ID of their associated location.
+    - `sku`: `string` | `string`\[] | [StringComparisonOperator](/resources/references/types/CommonTypes/interfaces/typesCommonTypesStringComparisonOperator) (optional) — The SKUs to filter inventory items by.
+      - `lt`: `string` (optional) — The filtered string must be less than this value.
+      - `gt`: `string` (optional) — The filtered string must be greater than this value.
+      - `gte`: `string` (optional) — The filtered string must be greater than or equal to this value.
+      - `lte`: `string` (optional) — The filtered string must be less than or equal to this value.
+      - `contains`: `string` (optional) — The filtered string must contain this value.
+      - `starts_with`: `string` (optional) — The filtered string must start with this value.
+      - `ends_with`: `string` (optional) — The filtered string must end with this value.
+    - `origin_country`: `string` | `string`\[] (optional) — The origin country to filter inventory items by.
+    - `hs_code`: `string` | `string`\[] | [StringComparisonOperator](/resources/references/types/CommonTypes/interfaces/typesCommonTypesStringComparisonOperator) (optional) — The HS Codes to filter inventory items by.
+      - `lt`: `string` (optional) — The filtered string must be less than this value.
+      - `gt`: `string` (optional) — The filtered string must be greater than this value.
+      - `gte`: `string` (optional) — The filtered string must be greater than or equal to this value.
+      - `lte`: `string` (optional) — The filtered string must be less than or equal to this value.
+      - `contains`: `string` (optional) — The filtered string must contain this value.
+      - `starts_with`: `string` (optional) — The filtered string must start with this value.
+      - `ends_with`: `string` (optional) — The filtered string must end with this value.
+    - `requires_shipping`: `boolean` (optional) — Filter inventory items by whether they require shipping.
+    - `location_levels`: `object` (optional)
+      - `location_id`: `string` | `string`\[] (optional)
+  - `batch_size`: `string` | `number` (optional) — The batch size to use for querying inventory items.
+
+<a id="exportinventoryitemsstep-output" />
+
+## Output
+
+**exportInventoryItemsStep**
+
+- `WorkflowDataProperties`: [WorkflowDataProperties](/resources/references/workflows/types/workflowsWorkflowDataProperties)\<object>
+  - `id`: `string` (default: fileKey)
+  - `filename`: `string`

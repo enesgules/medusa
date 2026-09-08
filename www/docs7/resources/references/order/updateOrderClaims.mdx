@@ -1,0 +1,222 @@
+---
+title: updateOrderClaims - Order Module Reference
+sidebarTitle: updateOrderClaims
+---
+
+This documentation provides a reference to the `updateOrderClaims` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updateorderclaims-data-sharedcontext-promiseorderclaimdto" />
+
+## updateOrderClaims(data, sharedContext?): Promise\<[OrderClaimDTO](/resources/references/order/interfaces/orderOrderClaimDTO)\[]>
+
+This method updates existing order claims.
+
+### Example
+
+```ts
+const claims = await orderModuleService.updateOrderClaims([
+  {
+    selector: {
+      id: "123"
+    },
+    data: {
+      type: "refund"
+    }
+  }
+])
+```
+
+<a id="updateorderclaims-parameters" />
+
+### Parameters
+
+**updateOrderClaims**
+
+- `data`: [UpdateOrderClaimWithSelectorDTO](/resources/references/order/interfaces/orderUpdateOrderClaimWithSelectorDTO)\[] — The filters specifying which order claims to update, and the data to update in them.
+  - `selector`: Partial\<[OrderClaimDTO](/resources/references/order/interfaces/orderOrderClaimDTO)> — The filters specifying which claims to update.
+    - `id`: `string` — The claim's ID.
+    - `type`: [OrderClaimType](/resources/references/order/types/orderOrderClaimType) — The claim's type.
+    - `order_id`: `string` — The ID of the associated order.
+    - `order`: [OrderDTO](/resources/references/order/interfaces/orderOrderDTO) (optional) — The associated order.
+    - `order_version`: `number` — The version of the order when the claim is applied.
+    - `display_id`: `number` — The claim's display ID.
+    - `claim_items`: `any`\[] — The items to be received from the customer.
+    - `additional_items`: `any`\[] — The items to be sent to the customer if the claim's type is `replace`.
+    - `return`: [ReturnDTO](/resources/references/order/interfaces/orderReturnDTO) (optional) — The associated return, if the claim's type is `replace`.
+    - `return_id`: `string` (optional) — The ID of the associated return, if the claim's type is `replace`.
+    - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications related to updates on the claim.
+    - `refund_amount`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) (optional) — The refund amount of the claim.
+    - `raw_refund_amount`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) (optional) — The raw refund amount of the claim.
+    - `created_by`: `null` | `string` (optional) — The id of the user that created the order claim
+    - `shipping_methods`: [OrderShippingMethodDTO](/resources/references/order/interfaces/orderOrderShippingMethodDTO)\[] (optional) — The shipping methods used to send the additional items.
+    - `transactions`: [OrderTransactionDTO](/resources/references/order/interfaces/orderOrderTransactionDTO)\[] (optional) — The claim's transactions if additional payment is required.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — The creation date of the claim.
+    - `updated_at`: `string` | `Date` (optional) — The update date of the claim.
+    - `deleted_at`: `string` | `Date` (optional) — The deletion date of the claim.
+    - `canceled_at`: `string` | `Date` (optional) — The cancelation date of the claim.
+  - `data`: Partial\<[UpdateOrderClaimDTO](/resources/references/order/interfaces/orderUpdateOrderClaimDTO)> — The data of the claim to update.
+    - `id`: `string` — The ID of the claim.
+    - `refund_amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The refund amount of the claim.
+    - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications about updates related to the claim.
+    - `return`: `string` (optional) — The associated return's ID, if the claim's [type](/resources/references/order/interfaces/orderUpdateOrderClaimDTO#type) is `replace`.
+    - `type`: [OrderClaimType](/resources/references/order/types/orderOrderClaimType) (optional) — The type of the claim.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorderclaims-returns" />
+
+### Returns
+
+**updateOrderClaims**
+
+- `Promise`: Promise\<[OrderClaimDTO](/resources/references/order/interfaces/orderOrderClaimDTO)\[]> — The updated order claims.
+  - `OrderClaimDTO[]`: [OrderClaimDTO](/resources/references/order/interfaces/orderOrderClaimDTO)\[]
+
+<a id="updateorderclaims-selector-data-sharedcontext-promiseorderclaimdto" />
+
+## updateOrderClaims(selector, data, sharedContext?): Promise\<[OrderClaimDTO](/resources/references/order/interfaces/orderOrderClaimDTO)\[]>
+
+This method updates existing order claims matching the specified filters.
+
+### Example
+
+```ts
+const claims = await orderModuleService.updateOrderClaims({
+  id: "123"
+}, {
+  type: "refund"
+})
+```
+
+<a id="updateorderclaims-parameters-1" />
+
+### Parameters
+
+**updateOrderClaims**
+
+- `selector`: Partial\<[FilterableOrderClaimProps](/resources/references/order/interfaces/orderFilterableOrderClaimProps)> — The filters specifying which order claims to update.
+  - `$and`: ([FilterableOrderClaimProps](/resources/references/order/interfaces/orderFilterableOrderClaimProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderClaimProps](/resources/references/order/interfaces/orderFilterableOrderClaimProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableOrderClaimProps](/resources/references/order/interfaces/orderFilterableOrderClaimProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderClaimProps](/resources/references/order/interfaces/orderFilterableOrderClaimProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableOrderClaimProps](/resources/references/order/interfaces/orderFilterableOrderClaimProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderClaimProps](/resources/references/order/interfaces/orderFilterableOrderClaimProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the claims by.
+    - `order_id`: `string` | `string`\[] (optional) — Filter the claims by their associated order's ID.
+    - `return_id`: `string` | `string`\[] (optional) — Filter the claims by their associated return's ID.
+  - `$or`: ([FilterableOrderClaimProps](/resources/references/order/interfaces/orderFilterableOrderClaimProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderClaimProps](/resources/references/order/interfaces/orderFilterableOrderClaimProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableOrderClaimProps](/resources/references/order/interfaces/orderFilterableOrderClaimProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderClaimProps](/resources/references/order/interfaces/orderFilterableOrderClaimProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableOrderClaimProps](/resources/references/order/interfaces/orderFilterableOrderClaimProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderClaimProps](/resources/references/order/interfaces/orderFilterableOrderClaimProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the claims by.
+    - `order_id`: `string` | `string`\[] (optional) — Filter the claims by their associated order's ID.
+    - `return_id`: `string` | `string`\[] (optional) — Filter the claims by their associated return's ID.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the claims by.
+  - `order_id`: `string` | `string`\[] (optional) — Filter the claims by their associated order's ID.
+  - `return_id`: `string` | `string`\[] (optional) — Filter the claims by their associated return's ID.
+- `data`: Partial\<[UpdateOrderClaimDTO](/resources/references/order/interfaces/orderUpdateOrderClaimDTO)> — The data to update in the order claims.
+  - `id`: `string` — The ID of the claim.
+  - `refund_amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The refund amount of the claim.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications about updates related to the claim.
+  - `return`: `string` (optional) — The associated return's ID, if the claim's [type](/resources/references/order/interfaces/orderUpdateOrderClaimDTO#type) is `replace`.
+  - `type`: [OrderClaimType](/resources/references/order/types/orderOrderClaimType) (optional) — The type of the claim.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorderclaims-returns-1" />
+
+### Returns
+
+**updateOrderClaims**
+
+- `Promise`: Promise\<[OrderClaimDTO](/resources/references/order/interfaces/orderOrderClaimDTO)\[]> — The updated order claims.
+  - `OrderClaimDTO[]`: [OrderClaimDTO](/resources/references/order/interfaces/orderOrderClaimDTO)\[]
+
+<a id="updateorderclaims-id-data-sharedcontext-promiseorderclaimdto" />
+
+## updateOrderClaims(id, data, sharedContext?): Promise\<[OrderClaimDTO](/resources/references/order/interfaces/orderOrderClaimDTO)>
+
+This method updates an existing order claim.
+
+### Example
+
+```ts
+const claim = await orderModuleService.updateOrderClaims("123", {
+  type: "refund"
+})
+```
+
+<a id="updateorderclaims-parameters-2" />
+
+### Parameters
+
+**updateOrderClaims**
+
+- `id`: `string` — The ID of the order claim.
+- `data`: Partial\<[UpdateOrderClaimDTO](/resources/references/order/interfaces/orderUpdateOrderClaimDTO)> — The data to update in the order claim.
+  - `id`: `string` — The ID of the claim.
+  - `refund_amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The refund amount of the claim.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications about updates related to the claim.
+  - `return`: `string` (optional) — The associated return's ID, if the claim's [type](/resources/references/order/interfaces/orderUpdateOrderClaimDTO#type) is `replace`.
+  - `type`: [OrderClaimType](/resources/references/order/types/orderOrderClaimType) (optional) — The type of the claim.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorderclaims-returns-2" />
+
+### Returns
+
+**updateOrderClaims**
+
+- `Promise`: Promise\<[OrderClaimDTO](/resources/references/order/interfaces/orderOrderClaimDTO)> — The updated order claim.

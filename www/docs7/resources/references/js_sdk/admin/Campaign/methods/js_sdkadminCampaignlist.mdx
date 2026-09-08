@@ -1,0 +1,116 @@
+---
+title: list
+---
+
+This method retrieves a paginated list of campaigns. It sends a request to the
+[List Campaigns](/api/admin/campaigns/list-campaigns) API route.
+
+## Example
+
+To retrieve the list of campaigns:
+
+```ts
+sdk.admin.campaign.list()
+.then(({ campaigns, count, limit, offset }) => {
+  console.log(campaigns)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.campaign.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ campaigns, count, limit, offset }) => {
+  console.log(campaigns)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each campaign:
+
+```ts
+sdk.admin.campaign.list({
+  fields: "id,*budget"
+})
+.then(({ campaigns, count, limit, offset }) => {
+  console.log(campaigns)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+## Parameters
+
+**list**
+
+- `query`: [AdminGetCampaignsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignsParams) (optional) — Filters and pagination configurations.
+  - `q`: `string` (optional)
+  - `campaign_identifier`: `string` (optional)
+  - `budget`: `object` (optional)
+    - `currency_code`: `string` (optional)
+  - `$and`: [AdminGetCampaignsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignsParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `q`: `string` (optional)
+    - `campaign_identifier`: `string` (optional)
+    - `budget`: `object` (optional)
+    - `$and`: [AdminGetCampaignsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignsParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: [AdminGetCampaignsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignsParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `$or`: [AdminGetCampaignsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignsParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional)
+    - `campaign_identifier`: `string` (optional)
+    - `budget`: `object` (optional)
+    - `$and`: [AdminGetCampaignsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignsParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: [AdminGetCampaignsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignsParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+## Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminCampaignListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminCampaignListResponse)> — The paginated list of campaigns.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.

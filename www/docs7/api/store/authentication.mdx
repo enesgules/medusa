@@ -1,0 +1,106 @@
+---
+title: Authentication
+---
+
+There are two ways to send authenticated requests to the Medusa application: Using a JWT token or using a Cookie Session ID.
+
+### 1. Bearer Authorization with JWT Tokens
+
+Use a JWT token in a request's bearer authorization header to send authenticated requests. Authentication state is managed by the client, which is ideal for Jamstack applications and mobile applications.
+
+#### How to Obtain the JWT Token
+
+To obtain a JWT token, send a request to the [authentication route](/api/store/auth/authenticate-customer) passing it the customer's email and password in the request body.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Obtain JWT token"
+    token = await sdk.auth.login("customer", "emailpass", {
+      email,
+      password
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Obtain JWT token"
+    curl -X POST '{backend_url}/auth/customer/emailpass' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "email": "user@example.com",
+      "password": "supersecret"
+    }'
+    ```
+  </Tab>
+</Tabs>
+
+If authenticated successfully, an object is returned in the response with the property `token` being the JWT token.
+
+```json title="Example response"
+{
+  "token": "123..."
+}
+```
+
+#### How to Use the JWT Token
+
+To use the JWT token, pass it in the authorization bearer header.
+
+If you're using the JS SDK, the `login` method automatically sets the token for you and passes it to subsequent requests. You can also set the token manually using the `client.setToken` method.
+
+<Note>
+  Make sure you've set the `auth.type` configuration of the JS SDK to `jwt` to use the JWT token. Learn more in the [JS SDK configurations](/resources/js-sdk#js-sdk-configurations).
+</Note>
+
+```bash title="Use JWT token"
+Authorization: Bearer {jwt_token}
+```
+
+### 2. Cookie Session ID
+
+When you authenticate a customer and create a cookie session ID for them, the cookie session ID is passed automatically when sending the request from the browser, or with tools like Postman.
+
+### How to Obtain the Cookie Session
+
+To obtain a cookie session ID, you must have a [JWT token for bearer authentication](/api/store/authentication#1-bearer-authorization-with-jwt-tokens).
+
+Then, if you're using the JS SDK, make sure the `auth.type` configuration is set to `session`, as explained in the [JS SDK configurations](/resources/js-sdk#js-sdk-configurations) guide. The `auth.login` method will handle setting the session cookie and passing it in subsequent requests.
+
+If you're not using the JS SDK, send a request to the [session authentication API route](/api/store/auth/set-authentication-session). To view the cookie session ID, pass the `-v` option to the `curl` command.
+
+```bash title="Obtain cookie session"
+curl -v -X POST '{backend_url}/auth/session' \
+--header 'Authorization: Bearer {jwt_token}'
+```
+
+If you send the `cURL` request, the headers will be logged in the terminal as well as the response. You
+should find in the headers a Cookie header.
+
+```bash title="Logged cookie session"
+Set-Cookie: connect.sid=s%3A2Bu8B...;
+```
+
+#### How to Use the Cookie Session ID in cURL
+
+If you're using the JS SDK, it will pass the cookie session with every request automatically after you use the `auth.login` method.
+
+If you're not using the JS SDK, copy the value after `connect.sid` (without the `;` at the end) and pass
+it as a cookie in subsequent requests.
+
+```bash title="Use cookie session"
+curl '{backend_url}/store/products' \
+-H 'Cookie: connect.sid={sid}'
+```
+
+Where `{sid}` is the value of `connect.sid` that you copied.
+
+#### Including Credentials in the Fetch API
+
+If you're sending requests using JavaScript's Fetch API, you must pass the `credentials` option
+with the value `include` to all the requests you're sending.
+
+```js title="Include credentials in fetch"
+fetch(`<BACKEND_URL>/store/products`, {
+  credentials: "include",
+})
+```

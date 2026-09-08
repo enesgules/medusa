@@ -1,0 +1,30 @@
+---
+title: deleteEntitiesStep - Helper Steps API Reference
+sidebarTitle: deleteEntitiesStep
+---
+
+This documentation provides a reference to the `deleteEntitiesStep` step. It belongs to the `@medusajs/medusa/core-flows` package.
+
+## Example
+
+```ts
+deleteEntitiesStep({
+  moduleRegistrationName: Modules.CART,
+  invokeMethod: "softDeleteCreditLines",
+  compensateMethod: "restoreCreditLines",
+  data: input.id,
+})
+```
+
+<a id="deleteentitiesstep-input" />
+
+## Input
+
+**deleteEntitiesStep**
+
+- `DeleteEntitiesStepType`: [DeleteEntitiesStepType](/resources/references/helper_steps/interfaces/helper_stepsDeleteEntitiesStepType)
+  - `moduleRegistrationName`: `string` — The regitration name of the module that contains the method to be invoked.
+  - `invokeMethod`: `string` — The method to be invoked.
+  - `compensateMethod`: `string` — The method to be invoked in case of compensation (when an error occurs).
+  - `entityIdentifier`: `string` (optional) — A string to pass to the compensate method. For example, an ID of the entity to be deleted.
+  - `data`: `any`\[] — The data to pass to the invoke method. For example, an array of IDs to delete.

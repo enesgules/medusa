@@ -1,0 +1,145 @@
+---
+title: upsertLineItemAdjustments - Cart Module Reference
+sidebarTitle: upsertLineItemAdjustments
+---
+
+This documentation provides a reference to the `upsertLineItemAdjustments` method. This belongs to the Cart Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method upserts line item adjustments.
+
+## Example
+
+```ts
+const lineItemAdjustments = await orderModuleService.upsertLineItemAdjustments(
+  [
+    {
+      item_id: "1234",
+      amount: 10
+    },
+    {
+      id: "123",
+      item_id: "4321",
+      amount: 20
+    }
+  ]
+)
+```
+
+<a id="upsertlineitemadjustments-parameters" />
+
+## Parameters
+
+**upsertLineItemAdjustments**
+
+- `data`: [UpsertLineItemAdjustmentDTO](/resources/references/cart/interfaces/cartUpsertLineItemAdjustmentDTO)\[] — The line item adjustments to create or update. If the `id` property is provided in an object, it means an existing line item adjustment will be updated. Otherwise, a new one is created.
+  - `id`: `string` (optional) — The ID of the line item adjustment.
+  - `item_id`: `string` — The associated item's ID.
+  - `code`: `string` (optional) — The code of the promotion that lead to the adjustment.
+  - `amount`: [BigNumberInput](/resources/references/cart/types/cartBigNumberInput) (optional) — The amount to adjust the original amount with.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `description`: `string` (optional) — The description of the line item adjustment.
+  - `promotion_id`: `string` (optional) — The associated promotion's ID.
+  - `provider_id`: `string` (optional) — The associated provider's ID.
+- `sharedContext`: [Context](/resources/references/cart/interfaces/cartContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/cart/interfaces/cartIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="upsertlineitemadjustments-returns" />
+
+## Returns
+
+**upsertLineItemAdjustments**
+
+- `Promise`: Promise\<[LineItemAdjustmentDTO](/resources/references/cart/interfaces/cartLineItemAdjustmentDTO)\[]> — The line item adjustments.
+  - `LineItemAdjustmentDTO[]`: [LineItemAdjustmentDTO](/resources/references/cart/interfaces/cartLineItemAdjustmentDTO)\[]
+    - `id`: `string` — The ID of the adjustment line
+    - `code`: `string` (optional) — The code of the promotion that lead to this adjustment.
+    - `amount`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The amount to adjust the original amount with.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the adjustment is tax inclusive.
+    - `raw_amount`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw amount to adjust the original amount with.
+      - `value`: `string` | `number`
+    - `cart_id`: `string` — The ID of the associated cart.
+    - `description`: `string` (optional) — The description of the adjustment line.
+    - `promotion_id`: `string` (optional) — The ID of the associated promotion.
+    - `provider_id`: `string` (optional) — The ID of the associated provider.
+    - `created_at`: `string` | `Date` — When the adjustment line was created.
+    - `updated_at`: `string` | `Date` — When the adjustment line was updated.
+    - `item`: [CartLineItemDTO](/resources/references/cart/interfaces/cartCartLineItemDTO) — The associated line item.
+      - `original_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The original total of the cart line item.
+      - `original_subtotal`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The original subtotal of the cart line item.
+      - `original_tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The original tax total of the cart line item.
+      - `item_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The item total of the cart line item.
+      - `item_subtotal`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The item subtotal of the cart line item.
+      - `item_tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The item tax total of the cart line item.
+      - `total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The total of the cart line item.
+      - `subtotal`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The subtotal of the cart line item.
+      - `tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The tax total of the cart line item.
+      - `discount_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The discount total of the cart line item.
+      - `discount_tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The discount tax total of the cart line item.
+      - `raw_original_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw original total of the cart line item.
+      - `raw_original_subtotal`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw original subtotal of the cart line item.
+      - `raw_original_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw original tax total of the cart line item.
+      - `raw_item_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw item total of the cart line item.
+      - `raw_item_subtotal`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw item subtotal of the cart line item.
+      - `raw_item_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw item tax total of the cart line item.
+      - `raw_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw total of the cart line item.
+      - `raw_subtotal`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw subtotal of the cart line item.
+      - `raw_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw tax total of the cart line item.
+      - `raw_discount_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw discount total of the cart line item.
+      - `raw_discount_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw discount tax total of the cart line item.
+      - `id`: `string` — The ID of the line item.
+      - `title`: `string` — The title of the line item.
+      - `subtitle`: `string` (optional) — The subtitle of the line item.
+      - `thumbnail`: `string` (optional) — The line item's thumbnail.
+      - `quantity`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The line item's quantity in the cart.
+      - `product_id`: `string` (optional) — The ID of the associated product.
+      - `product_title`: `string` (optional) — The title of the associated product.
+      - `product_description`: `string` (optional) — The description of the associated product.
+      - `product_subtitle`: `string` (optional) — The subtitle of the associated product.
+      - `product_type`: `string` (optional) — The type of the associated product.
+      - `product_type_id`: `string` (optional) — The type of the associated product.
+      - `product_collection`: `string` (optional) — The collection of the associated product.
+      - `product_handle`: `string` (optional) — The handle of the associated product.
+      - `variant_id`: `string` (optional) — The associated variant's ID of the line item.
+      - `variant_sku`: `string` (optional) — The sku of the associated variant.
+      - `variant_barcode`: `string` (optional) — The barcode of the associated variant.
+      - `variant_title`: `string` (optional) — The title of the associated variant.
+      - `variant_option_values`: `Record<string, unknown>` (optional) — The option values of the associated variant.
+      - `requires_shipping`: `boolean` — Whether the line item requires shipping.
+      - `is_discountable`: `boolean` — Whether the line item is discountable.
+      - `is_giftcard`: `boolean` — Whether the line item is a gift card.
+      - `is_tax_inclusive`: `boolean` — Whether the line item price is tax inclusive.
+      - `is_custom_price`: `boolean` — Whether the line item price is a custom price.
+      - `compare_at_unit_price`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) (optional) — The calculated price of the line item.
+      - `unit_price`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The unit price of the item.
+      - `tax_lines`: [LineItemTaxLineDTO](/resources/references/cart/interfaces/cartLineItemTaxLineDTO)\[] (optional) — The associated tax lines.
+      - `adjustments`: [LineItemAdjustmentDTO](/resources/references/cart/interfaces/cartLineItemAdjustmentDTO)\[] (optional) — The associated adjustments.
+      - `cart`: [CartDTO](/resources/references/cart/interfaces/cartCartDTO) — The associated cart.
+      - `cart_id`: `string` — The ID of the associated cart.
+      - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `Date` (optional) — When the line item was created.
+      - `updated_at`: `Date` (optional) — When the line item was updated.
+      - `deleted_at`: `Date` (optional) — When the line item was deleted.
+    - `item_id`: `string` — The ID of the associated line item.

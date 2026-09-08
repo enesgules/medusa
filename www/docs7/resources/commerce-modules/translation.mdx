@@ -1,0 +1,385 @@
+---
+title: Translation Module
+---
+
+In this section of the documentation, you will find resources to learn more about the Translation Module and how to use it in your application.
+
+### Prerequisites
+
+- [Medusa v2.12.3 or later](https://github.com/medusajs/medusa/releases/tag/v2.12.3)
+- [Translation Feature Flag Enabled](/resources/commerce-modules/translation#configure-translation-module)
+
+<Note>
+  **Looking for no-code docs?**
+
+  Refer to the [Medusa Admin User Guide](/user-guide/settings/translations) to learn how to manage translations in the dashboard.
+</Note>
+
+Medusa has translation features available out-of-the-box through the Translation Module. A [module](/learn/fundamentals/modules) is a standalone package that provides features for a single domain. Each of Medusa's commerce features is provided in Commerce Modules, such as the Translation Module.
+
+<Note>
+  Refer to the [Module Isolation](/learn/fundamentals/modules/isolation) guide to learn more about why modules are isolated.
+</Note>
+
+## Translation Features
+
+- [Translation and Locale Management](/resources/commerce-modules/translation/concepts): Manage locales and add translations for different resources in your store.
+- [Multi-Language Support](/resources/commerce-modules/translation/storefront): Manage and serve resources like products in multiple languages to cater to a diverse customer base.
+- [Translation for Custom Models](/resources/commerce-modules/translation/custom-data-models): Extend translation capabilities to custom data models in your Medusa application.
+- [Manage Translatable Resources from Medusa Admin](/user-guide/settings/translations#manage-translatable-resources): Configure which resources and fields are translatable directly from the Medusa Admin dashboard.
+
+***
+
+## Configure Translation Module
+
+The Translation Module is currently behind a feature flag. To use it in your Medusa application, add it to the `modules` array and enable the `translation` feature flag.
+
+In your `medusa-config.ts` file, add the Translation Module to the `modules` array and enable the `translation` feature flag:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    // other modules...
+    {
+      resolve: "@medusajs/medusa/translation",
+    },
+  ],
+  featureFlags: {
+    translation: true,
+  },
+})
+```
+
+Then, run the following command to make the necessary database changes for the Translation Module:
+
+```bash
+npx medusa db:migrate
+```
+
+You can then use the Translation Module in your Medusa application.
+
+***
+
+## How to Use the Translation Module
+
+In your Medusa application, you build flows around Commerce Modules. A flow is built as a [Workflow](/learn/fundamentals/workflows), which is a special function composed of a series of steps that guarantees data consistency and a reliable rollback mechanism.
+
+You can build custom workflows and steps. You can also re-use Medusa's workflows and steps, which are provided by the `@medusajs/medusa/core-flows` package.
+
+For example:
+
+```ts title="src/workflows/create-translation.ts"
+import { 
+  createWorkflow, 
+  WorkflowResponse,
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+
+const createTranslationStep = createStep(
+  "create-translation",
+  async ({}, { container }) => {
+    const translationModuleService = container.resolve(Modules.TRANSLATION)
+
+    const translation = await translationModuleService.createTranslations({
+      reference_id: "product_123",
+      reference: "product",
+      locale_code: "fr-FR",
+      translations: {
+        title: "Produit Exemple",
+        description: "Ceci est une description en français.",
+      },
+    })
+
+    return new StepResponse({ translation }, translation.id)
+  },
+  async (translationId, { container }) => {
+    const translationModuleService = container.resolve(Modules.TRANSLATION)
+
+    await translationModuleService.deleteTranslations([translationId])
+  }
+)
+
+export const createTranslationWorkflow = createWorkflow(
+  "create-translation",
+  () => {
+    const { translation } = createTranslationStep()
+
+    return new WorkflowResponse({
+      translation,
+    })
+  }
+)
+```
+
+You can then execute the workflow in your custom API routes, scheduled jobs, or subscribers:
+
+<Tabs>
+  <Tab title="API Route">
+    ```ts title="src/api/workflow/route.ts"
+    import type {
+      MedusaRequest,
+      MedusaResponse,
+    } from "@medusajs/framework/http"
+    import { createTranslationWorkflow } from "../../workflows/create-translation"
+
+    export async function GET(
+      req: MedusaRequest,
+      res: MedusaResponse
+    ) {
+      const { result } = await createTranslationWorkflow(req.scope)
+        .run()
+
+      res.send(result)
+    }
+    ```
+  </Tab>
+
+  <Tab title="Subscriber">
+    ```ts title="src/subscribers/user-created.ts"
+    import {
+      type SubscriberConfig,
+      type SubscriberArgs,
+    } from "@medusajs/framework"
+    import { createTranslationWorkflow } from "../workflows/create-translation"
+
+    export default async function handleUserCreated({
+      event: { data },
+      container,
+    }: SubscriberArgs<{ id: string }>) {
+      const { result } = await createTranslationWorkflow(container)
+        .run()
+
+      console.log(result)
+    }
+
+    export const config: SubscriberConfig = {
+      event: "user.created",
+    }
+    ```
+  </Tab>
+
+  <Tab title="Scheduled Job">
+    ```ts title="src/jobs/run-daily.ts"
+    import { MedusaContainer } from "@medusajs/framework/types"
+    import { createTranslationWorkflow } from "../workflows/create-translation"
+
+    export default async function myCustomJob(
+      container: MedusaContainer
+    ) {
+      const { result } = await createTranslationWorkflow(container)
+        .run()
+
+      console.log(result)
+    }
+
+    export const config = {
+      name: "run-once-a-day",
+      schedule: `0 0 * * *`,
+    }
+    ```
+  </Tab>
+</Tabs>
+
+Refer to the [Workflows](/learn/fundamentals/workflows) documentation to learn more.
+
+***
+
+## Supported Module Translations
+
+The Translation Module currently supports translations for the following data models:
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Data Model
+      </th>
+
+      <th>
+        Translatable Fields
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `CustomerGroup` ([Customer Module](/resources/commerce-modules/customer)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </td>
+
+      <td>
+        `name`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `Product` ([Product Module](/resources/commerce-modules/product))
+      </td>
+
+      <td>
+        - `title`
+        - `description`
+        - `material`
+        - `subtitle`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `ProductCategory` ([Product Module](/resources/commerce-modules/product))
+      </td>
+
+      <td>
+        - `name`
+        - `description`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `ProductCollection` ([Product Module](/resources/commerce-modules/product))
+      </td>
+
+      <td>
+        `title`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `ProductOption` ([Product Module](/resources/commerce-modules/product))
+      </td>
+
+      <td>
+        `title`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `ProductOptionValue` ([Product Module](/resources/commerce-modules/product))
+      </td>
+
+      <td>
+        `value`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `ProductTag` ([Product Module](/resources/commerce-modules/product))
+      </td>
+
+      <td>
+        `value`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `ProductType` ([Product Module](/resources/commerce-modules/product))
+      </td>
+
+      <td>
+        `value`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `ProductVariant` ([Product Module](/resources/commerce-modules/product))
+      </td>
+
+      <td>
+        - `title`
+        - `material`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `Region` ([Region Module](/resources/commerce-modules/region)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </td>
+
+      <td>
+        `name`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `ShippingOption` ([Fulfillment Module](/resources/commerce-modules/fulfillment)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </td>
+
+      <td>
+        `name`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `ShippingOptionType` ([Fulfillment Module](/resources/commerce-modules/fulfillment)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </td>
+
+      <td>
+        - `label`
+        - `description`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `TaxRate` ([Tax Module](/resources/commerce-modules/tax)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </td>
+
+      <td>
+        `name`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+Future versions of the Translation Module will include support for all Commerce Modules.
+
+***
+
+[Overview](/resources/commerce-modules/translation)
+
+## Concepts
+
+- [Concepts](/resources/commerce-modules/translation/concepts)
+- [Translate Custom Models](/resources/commerce-modules/translation/custom-data-models)
+- [Translation in Storefront](/resources/commerce-modules/translation/storefront)
+- [Link to Modules](/resources/commerce-modules/translation/links-to-other-modules)
+
+***
+
+## Storefront Guides
+
+Learn how to integrate the Translation Module's features into your storefront.
+
+- [Storefront Localization](/resources/storefront-development/localization)
+
+***
+
+## Admin User Guides
+
+Learn how to utilize and manage Translation features in the Medusa Admin dashboard.
+
+- [Manage Store](/user-guide/settings/store)
+- [Manage Translations](/user-guide/settings/translations)
+
+***
+
+## References
+
+Find references for tools and resources related to the Translation Module, such as data models, methods, and more. These are useful for your customizations.
+
+- [Workflows](/resources/commerce-modules/translation/workflows)
+- [JS SDK](/resources/commerce-modules/translation/js-sdk)
+- [Main Service Reference](/resources/references/translation)
+- [Data Models Reference](/resources/references/translation/models)

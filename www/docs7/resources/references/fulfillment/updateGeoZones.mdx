@@ -1,0 +1,150 @@
+---
+title: updateGeoZones - Fulfillment Module Reference
+sidebarTitle: updateGeoZones
+---
+
+This documentation provides a reference to the `updateGeoZones` method. This belongs to the Fulfillment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updategeozones-data-sharedcontext-promisegeozonedto" />
+
+## updateGeoZones(data, sharedContext?): Promise\<[GeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentGeoZoneDTO)\[]>
+
+This method updates existing geo zones.
+
+### Example
+
+```ts
+const geoZones =
+  await fulfillmentModuleService.updateGeoZones([
+    {
+      id: "fgz_123",
+      type: "country",
+      country_code: "us",
+    },
+    {
+      id: "fgz_321",
+      type: "city",
+      province_code: "us-vt",
+    },
+  ])
+```
+
+<a id="updategeozones-parameters" />
+
+### Parameters
+
+**updateGeoZones**
+
+- `data`: [UpdateGeoZoneDTO](/resources/references/fulfillment/types/fulfillmentUpdateGeoZoneDTO)\[] — The attributes to update in the geo zones.
+  - `service_zone_id`: `string` (optional) — The associated service zone's ID.
+  - `country_code`: `string` (optional) — The ISO 2 character country code of the geo zone.
+  - `metadata`: `null` | `Record<string, any>` (optional) — Holds custom data in key-value pairs.
+  - `id`: `string` — The ID of the geo zone.
+  - `type`: `"country"` (default: `"country"`) — The type of the geo zone.
+  - `province_code`: `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province code of the geo zone.
+  - `city`: `string` (optional) — The city of the geo zone.
+  - `postal_expression`: `Record<string, any>` (optional) — The postal expression of the geo zone.
+- `sharedContext`: [Context](/resources/references/fulfillment/interfaces/fulfillmentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/fulfillment/interfaces/fulfillmentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updategeozones-returns" />
+
+### Returns
+
+**updateGeoZones**
+
+- `Promise`: Promise\<[GeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentGeoZoneDTO)\[]> — The updated geo zones.
+  - `GeoZoneDTO[]`: [GeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentGeoZoneDTO)\[]
+    - `id`: `string` — The ID of the geo zone.
+    - `type`: [GeoZoneType](/resources/references/fulfillment/types/fulfillmentGeoZoneType) — The type of the geo zone.
+    - `country_code`: `string` — The country code of the geo zone.
+    - `province_code`: `null` | `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province code of the geo zone.
+    - `city`: `null` | `string` — The city of the geo zone.
+    - `postal_expression`: `null` | `Record<string, unknown>` — The postal expression of the geo zone.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_at`: `Date` — The creation date of the geo zone.
+    - `updated_at`: `Date` — The update date of the geo zone.
+    - `deleted_at`: `null` | `Date` — The deletion date of the geo zone.
+
+<a id="updategeozones-data-sharedcontext-promisegeozonedto-1" />
+
+## updateGeoZones(data, sharedContext?): Promise\<[GeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentGeoZoneDTO)>
+
+This method updates an existing fulfillment.
+
+### Example
+
+```ts
+const geoZones =
+  await fulfillmentModuleService.updateGeoZones({
+    id: "fgz_123",
+    type: "country",
+    country_code: "us",
+  })
+```
+
+<a id="updategeozones-parameters-1" />
+
+### Parameters
+
+**updateGeoZones**
+
+- `data`: [UpdateGeoZoneDTO](/resources/references/fulfillment/types/fulfillmentUpdateGeoZoneDTO) — The attributes to update in the geo zone.
+  - `service_zone_id`: `string` (optional) — The associated service zone's ID.
+  - `country_code`: `string` (optional) — The ISO 2 character country code of the geo zone.
+  - `metadata`: `null` | `Record<string, any>` (optional) — Holds custom data in key-value pairs.
+  - `id`: `string` — The ID of the geo zone.
+  - `type`: `"country"` (default: `"country"`) — The type of the geo zone.
+  - `province_code`: `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province code of the geo zone.
+  - `city`: `string` (optional) — The city of the geo zone.
+  - `postal_expression`: `Record<string, any>` (optional) — The postal expression of the geo zone.
+- `sharedContext`: [Context](/resources/references/fulfillment/interfaces/fulfillmentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/fulfillment/interfaces/fulfillmentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updategeozones-returns-1" />
+
+### Returns
+
+**updateGeoZones**
+
+- `Promise`: Promise\<[GeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentGeoZoneDTO)> — The updated fulfillment.
+  - `id`: `string` — The ID of the geo zone.
+  - `type`: [GeoZoneType](/resources/references/fulfillment/types/fulfillmentGeoZoneType) — The type of the geo zone.
+  - `country_code`: `string` — The country code of the geo zone.
+  - `province_code`: `null` | `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province code of the geo zone.
+  - `city`: `null` | `string` — The city of the geo zone.
+  - `postal_expression`: `null` | `Record<string, unknown>` — The postal expression of the geo zone.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `created_at`: `Date` — The creation date of the geo zone.
+  - `updated_at`: `Date` — The update date of the geo zone.
+  - `deleted_at`: `null` | `Date` — The deletion date of the geo zone.

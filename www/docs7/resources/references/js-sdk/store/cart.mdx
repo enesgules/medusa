@@ -1,0 +1,1009 @@
+---
+title: cart - JS SDK Store Reference
+sidebarTitle: cart
+---
+
+This documentation provides a reference to the `sdk.store.cart` set of methods used to send requests to Medusa's Store API routes.
+
+Related guides: [How to implement carts in the storefront](/resources/storefront-development/cart).
+
+## create
+
+This method creates a cart. It sends a request to the [Create Cart](/api/store/carts/create-cart)
+API route.
+
+Related guide: [How to create a cart in the storefront](/resources/storefront-development/cart/create).
+
+### Example
+
+```ts
+sdk.store.cart.create({
+  region_id: "reg_123"
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [StoreCreateCart](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCreateCart) — The details of the cart to create.
+  - `region_id`: `null` | `string` (optional) — The ID of the region that the cart is created in. If not provided, the default region of the store is used. If the store doesn't have a default region, an error is thrown.
+  - `shipping_address`: `string` | [StoreAddAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreAddAddress) (optional) — The cart's shipping address.
+    - `first_name`: `null` | `string` (optional) — The first name of the address.
+    - `last_name`: `null` | `string` (optional) — The last name of the address.
+    - `phone`: `null` | `string` (optional) — The phone number of the address.
+    - `company`: `null` | `string` (optional) — The company of the address.
+    - `address_1`: `null` | `string` (optional) — The first address line of the address.
+    - `address_2`: `null` | `string` (optional) — The second address line of the address.
+    - `city`: `null` | `string` (optional) — The city of the address.
+    - `country_code`: `null` | `string` (optional) — The country code of the address.
+    - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
+    - `postal_code`: `null` | `string` (optional) — The postal code of the address.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `billing_address`: `string` | [StoreAddAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreAddAddress) (optional) — The cart's billing address.
+    - `first_name`: `null` | `string` (optional) — The first name of the address.
+    - `last_name`: `null` | `string` (optional) — The last name of the address.
+    - `phone`: `null` | `string` (optional) — The phone number of the address.
+    - `company`: `null` | `string` (optional) — The company of the address.
+    - `address_1`: `null` | `string` (optional) — The first address line of the address.
+    - `address_2`: `null` | `string` (optional) — The second address line of the address.
+    - `city`: `null` | `string` (optional) — The city of the address.
+    - `country_code`: `null` | `string` (optional) — The country code of the address.
+    - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
+    - `postal_code`: `null` | `string` (optional) — The postal code of the address.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `email`: `null` | `string` (optional) — The email of the customer associated with the cart.
+  - `currency_code`: `null` | `string` (optional) — The cart's currency code. If not provided, the region's currency code is used.
+  - `items`: [StoreAddCartLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreAddCartLineItem)\[] (optional) — The cart's items.
+    - `variant_id`: `string` — The ID of the product variant to add to the cart.
+    - `quantity`: `number` — The item's quantity in the cart.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `sales_channel_id`: `null` | `string` (optional) — The ID of the associated sales channel. A product's availability in a sales channel only filters the products you retrieve. Medusa doesn't reject a variant added to the cart when its product isn't available in the cart's sales channel. Learn how to enforce that validation in [this guide](/resources/commerce-modules/cart/sales-channel-availability).
+  - `promo_codes`: `string`\[] (optional) — The promotion codes to apply on the cart.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `locale`: `null` | `string` (optional) — The BCP 47 language tag code of the locale.
+
+    Example:
+
+    ```
+    "en-US"
+    ```
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the cart.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[StoreCartResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartResponse)> — The created cart.
+  - `cart`: [StoreCart](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCart) — The cart's details.
+    - `id`: `string` — The ID of the cart.
+    - `region_id`: `string` (optional) — The ID of the region the cart belongs to.
+    - `customer_id`: `string` (optional) — The ID of the associated customer
+    - `sales_channel_id`: `string` (optional) — The ID of the sales channel the cart belongs to.
+    - `email`: `string` (optional) — The email of the customer that owns the cart.
+    - `currency_code`: `string` — The currency of the cart
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — When the cart was created.
+    - `updated_at`: `string` | `Date` (optional) — When the cart was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `original_total`: `number` — The cart's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The cart's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The cart's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the cart, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the cart's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The gift card total of the cart.
+    - `gift_card_tax_total`: `number` — The gift card tax total of the cart.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `completed_at`: `string` | `Date` (optional) — The date the cart was completed.
+    - `shipping_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's shipping address.
+    - `billing_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's billing address.
+    - `items`: [StoreCartLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartLineItem)\[] (optional) — The cart's items.
+    - `shipping_methods`: [StoreCartShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartShippingMethod)\[] (optional) — The cart's shipping methods.
+    - `payment_collection`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection) (optional) — The cart's payment collection.
+    - `region`: [StoreRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreRegion) (optional) — The cart's region
+    - `promotions`: [StoreCartPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartPromotion)\[] — The promotions applied to the cart.
+
+## update
+
+This method updates a cart. It sends a request to the
+[Update Cart](/api/store/carts/update-a-cart) API route.
+
+Related guide: [How to update a cart in the storefront](/resources/storefront-development/cart/update).
+
+### Example
+
+```ts
+sdk.store.cart.update("cart_123", {
+  region_id: "reg_123"
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `id`: `string` — The cart's ID.
+- `body`: [StoreUpdateCart](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreUpdateCart) — The data to update in the cart.
+  - `region_id`: `null` | `string` (optional) — The ID of the region that the cart is in.
+  - `shipping_address`: `string` | [StoreAddAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreAddAddress) & `object` (optional) — The cart's shipping address.
+    - `first_name`: `null` | `string` (optional) — The first name of the address.
+    - `last_name`: `null` | `string` (optional) — The last name of the address.
+    - `phone`: `null` | `string` (optional) — The phone number of the address.
+    - `company`: `null` | `string` (optional) — The company of the address.
+    - `address_1`: `null` | `string` (optional) — The first address line of the address.
+    - `address_2`: `null` | `string` (optional) — The second address line of the address.
+    - `city`: `null` | `string` (optional) — The city of the address.
+    - `country_code`: `null` | `string` (optional) — The country code of the address.
+    - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
+    - `postal_code`: `null` | `string` (optional) — The postal code of the address.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` (optional)
+  - `billing_address`: `string` | [StoreAddAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreAddAddress) & `object` (optional) — The cart's billing address.
+    - `first_name`: `null` | `string` (optional) — The first name of the address.
+    - `last_name`: `null` | `string` (optional) — The last name of the address.
+    - `phone`: `null` | `string` (optional) — The phone number of the address.
+    - `company`: `null` | `string` (optional) — The company of the address.
+    - `address_1`: `null` | `string` (optional) — The first address line of the address.
+    - `address_2`: `null` | `string` (optional) — The second address line of the address.
+    - `city`: `null` | `string` (optional) — The city of the address.
+    - `country_code`: `null` | `string` (optional) — The country code of the address.
+    - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
+    - `postal_code`: `null` | `string` (optional) — The postal code of the address.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` (optional)
+  - `email`: `null` | `string` (optional) — The email of the customer associated with the cart.
+  - `sales_channel_id`: `null` | `string` (optional) — The ID of the associated sales channel. A product's availability in a sales channel only filters the products you retrieve. Medusa doesn't reject a variant added to the cart when its product isn't available in the cart's sales channel. Learn how to enforce that validation in [this guide](/resources/commerce-modules/cart/sales-channel-availability).
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `promo_codes`: `string`\[] (optional) — The promotion codes to apply on the cart.
+  - `locale`: `null` | `string` (optional) — The BCP 47 language tag code of the locale.
+
+    Example:
+
+    ```
+    "en-US"
+    ```
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the cart.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[StoreCartResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartResponse)> — The updated cart.
+  - `cart`: [StoreCart](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCart) — The cart's details.
+    - `id`: `string` — The ID of the cart.
+    - `region_id`: `string` (optional) — The ID of the region the cart belongs to.
+    - `customer_id`: `string` (optional) — The ID of the associated customer
+    - `sales_channel_id`: `string` (optional) — The ID of the sales channel the cart belongs to.
+    - `email`: `string` (optional) — The email of the customer that owns the cart.
+    - `currency_code`: `string` — The currency of the cart
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — When the cart was created.
+    - `updated_at`: `string` | `Date` (optional) — When the cart was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `original_total`: `number` — The cart's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The cart's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The cart's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the cart, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the cart's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The gift card total of the cart.
+    - `gift_card_tax_total`: `number` — The gift card tax total of the cart.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `completed_at`: `string` | `Date` (optional) — The date the cart was completed.
+    - `shipping_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's shipping address.
+    - `billing_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's billing address.
+    - `items`: [StoreCartLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartLineItem)\[] (optional) — The cart's items.
+    - `shipping_methods`: [StoreCartShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartShippingMethod)\[] (optional) — The cart's shipping methods.
+    - `payment_collection`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection) (optional) — The cart's payment collection.
+    - `region`: [StoreRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreRegion) (optional) — The cart's region
+    - `promotions`: [StoreCartPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartPromotion)\[] — The promotions applied to the cart.
+
+## retrieve
+
+This method retrieves a cart by its ID. It sends a request to the
+[Get Cart](/api/store/carts/get-a-cart) API route.
+
+Related guide: [How to retrieve a cart in the storefront](/resources/storefront-development/cart/retrieve).
+
+### Example
+
+To retrieve a cart by its ID:
+
+```ts
+sdk.store.cart.retrieve("cart_123")
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.store.cart.retrieve("cart_123", {
+  fields: "id,*items"
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The cart's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the cart.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[StoreCartResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartResponse)> — The cart's details.
+  - `cart`: [StoreCart](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCart) — The cart's details.
+    - `id`: `string` — The ID of the cart.
+    - `region_id`: `string` (optional) — The ID of the region the cart belongs to.
+    - `customer_id`: `string` (optional) — The ID of the associated customer
+    - `sales_channel_id`: `string` (optional) — The ID of the sales channel the cart belongs to.
+    - `email`: `string` (optional) — The email of the customer that owns the cart.
+    - `currency_code`: `string` — The currency of the cart
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — When the cart was created.
+    - `updated_at`: `string` | `Date` (optional) — When the cart was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `original_total`: `number` — The cart's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The cart's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The cart's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the cart, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the cart's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The gift card total of the cart.
+    - `gift_card_tax_total`: `number` — The gift card tax total of the cart.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `completed_at`: `string` | `Date` (optional) — The date the cart was completed.
+    - `shipping_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's shipping address.
+    - `billing_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's billing address.
+    - `items`: [StoreCartLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartLineItem)\[] (optional) — The cart's items.
+    - `shipping_methods`: [StoreCartShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartShippingMethod)\[] (optional) — The cart's shipping methods.
+    - `payment_collection`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection) (optional) — The cart's payment collection.
+    - `region`: [StoreRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreRegion) (optional) — The cart's region
+    - `promotions`: [StoreCartPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartPromotion)\[] — The promotions applied to the cart.
+
+## createLineItem
+
+This methods adds a product variant to the cart as a line item. It sends a request to the
+[Add Line Item](/api/store/carts/add-line-item) API route.
+
+Related guide: [How to manage a cart's line items in the storefront](/resources/storefront-development/cart/manage-items).
+
+### Example
+
+```ts
+sdk.store.cart.createLineItem("cart_123", {
+  variant_id: "variant_123",
+  quantity: 1
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+<a id="createlineitem-parameters" />
+
+### Parameters
+
+**createLineItem**
+
+- `cartId`: `string` — The cart's ID.
+- `body`: [StoreAddCartLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreAddCartLineItem) — The details of the item to add.
+  - `variant_id`: `string` — The ID of the product variant to add to the cart.
+  - `quantity`: `number` — The item's quantity in the cart.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the cart.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="createlineitem-returns" />
+
+### Returns
+
+**createLineItem**
+
+- `Promise`: Promise\<[StoreCartResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartResponse)> — The cart's details.
+  - `cart`: [StoreCart](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCart) — The cart's details.
+    - `id`: `string` — The ID of the cart.
+    - `region_id`: `string` (optional) — The ID of the region the cart belongs to.
+    - `customer_id`: `string` (optional) — The ID of the associated customer
+    - `sales_channel_id`: `string` (optional) — The ID of the sales channel the cart belongs to.
+    - `email`: `string` (optional) — The email of the customer that owns the cart.
+    - `currency_code`: `string` — The currency of the cart
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — When the cart was created.
+    - `updated_at`: `string` | `Date` (optional) — When the cart was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `original_total`: `number` — The cart's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The cart's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The cart's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the cart, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the cart's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The gift card total of the cart.
+    - `gift_card_tax_total`: `number` — The gift card tax total of the cart.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `completed_at`: `string` | `Date` (optional) — The date the cart was completed.
+    - `shipping_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's shipping address.
+    - `billing_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's billing address.
+    - `items`: [StoreCartLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartLineItem)\[] (optional) — The cart's items.
+    - `shipping_methods`: [StoreCartShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartShippingMethod)\[] (optional) — The cart's shipping methods.
+    - `payment_collection`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection) (optional) — The cart's payment collection.
+    - `region`: [StoreRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreRegion) (optional) — The cart's region
+    - `promotions`: [StoreCartPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartPromotion)\[] — The promotions applied to the cart.
+
+## updateLineItem
+
+This method updates a line item in a cart. It sends a request to the
+[Update Line Item](/api/store/carts/update-line-item) API route.
+
+Related guide: [How to manage a cart's line items in the storefront](/resources/storefront-development/cart/manage-items).
+
+### Example
+
+```ts
+sdk.store.cart.updateLineItem(
+  "cart_123",
+  "li_123",
+  {
+    quantity: 1
+  }
+)
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+<a id="updatelineitem-parameters" />
+
+### Parameters
+
+**updateLineItem**
+
+- `cartId`: `string` — The cart's ID.
+- `lineItemId`: `string` — The line item's ID.
+- `body`: [StoreUpdateCartLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreUpdateCartLineItem) — The data to update.
+  - `quantity`: `number` — The item's quantity.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the cart.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updatelineitem-returns" />
+
+### Returns
+
+**updateLineItem**
+
+- `Promise`: Promise\<[StoreCartResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartResponse)> — The cart's details.
+  - `cart`: [StoreCart](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCart) — The cart's details.
+    - `id`: `string` — The ID of the cart.
+    - `region_id`: `string` (optional) — The ID of the region the cart belongs to.
+    - `customer_id`: `string` (optional) — The ID of the associated customer
+    - `sales_channel_id`: `string` (optional) — The ID of the sales channel the cart belongs to.
+    - `email`: `string` (optional) — The email of the customer that owns the cart.
+    - `currency_code`: `string` — The currency of the cart
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — When the cart was created.
+    - `updated_at`: `string` | `Date` (optional) — When the cart was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `original_total`: `number` — The cart's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The cart's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The cart's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the cart, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the cart's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The gift card total of the cart.
+    - `gift_card_tax_total`: `number` — The gift card tax total of the cart.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `completed_at`: `string` | `Date` (optional) — The date the cart was completed.
+    - `shipping_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's shipping address.
+    - `billing_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's billing address.
+    - `items`: [StoreCartLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartLineItem)\[] (optional) — The cart's items.
+    - `shipping_methods`: [StoreCartShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartShippingMethod)\[] (optional) — The cart's shipping methods.
+    - `payment_collection`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection) (optional) — The cart's payment collection.
+    - `region`: [StoreRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreRegion) (optional) — The cart's region
+    - `promotions`: [StoreCartPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartPromotion)\[] — The promotions applied to the cart.
+
+## deleteLineItem
+
+This method deletes a line item from a cart. It sends a request to the
+[Remove Line Item](/api/store/carts/remove-line-item) API route.
+
+Related guide: [How to manage a cart's line items in the storefront](/resources/storefront-development/cart/manage-items).
+
+### Example
+
+```ts
+sdk.store.cart.deleteLineItem(
+  "cart_123",
+  "li_123"
+)
+.then(({ deleted, parent: cart }) => {
+  console.log(deleted, cart)
+})
+```
+
+<a id="deletelineitem-parameters" />
+
+### Parameters
+
+**deleteLineItem**
+
+- `cartId`: `string` — The cart's ID.
+- `lineItemId`: `string` — The item's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the cart.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="deletelineitem-returns" />
+
+### Returns
+
+**deleteLineItem**
+
+- `Promise`: Promise\<[StoreLineItemDeleteResponse](/resources/references/types/HttpTypes/types/typesHttpTypesStoreLineItemDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: TObject — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+  - `parent`: TParent (optional) — The parent resource of the item that was deleted, if applicable.
+
+## addShippingMethod
+
+This method adds a shipping method to a cart. It sends a request to
+the [Add Shipping Method](/api/store/carts/add-shipping-method) API routes.
+
+Related guide: [Implement shipping step during checkout](/resources/storefront-development/checkout/shipping).
+
+### Example
+
+```ts
+sdk.store.cart.addShippingMethod("cart_123", {
+  option_id: "so_123",
+  data: {
+    // custom data for fulfillment provider.
+  }
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+<a id="addshippingmethod-parameters" />
+
+### Parameters
+
+**addShippingMethod**
+
+- `cartId`: `string` — The cart's ID.
+- `body`: [StoreAddCartShippingMethods](/resources/references/types/HttpTypes/types/typesHttpTypesStoreAddCartShippingMethods) — The shipping method's details.
+  - `option_id`: `string` — The id of the chosen shipping option.
+  - `data`: `Record<string, unknown>` (optional) — Data useful for the associated fulfillment provider. Learn more in [this documentation](/resources/commerce-modules/fulfillment/shipping-option#data-property).
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the cart.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="addshippingmethod-returns" />
+
+### Returns
+
+**addShippingMethod**
+
+- `Promise`: Promise\<[StoreCartResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartResponse)> — The cart's details.
+  - `cart`: [StoreCart](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCart) — The cart's details.
+    - `id`: `string` — The ID of the cart.
+    - `region_id`: `string` (optional) — The ID of the region the cart belongs to.
+    - `customer_id`: `string` (optional) — The ID of the associated customer
+    - `sales_channel_id`: `string` (optional) — The ID of the sales channel the cart belongs to.
+    - `email`: `string` (optional) — The email of the customer that owns the cart.
+    - `currency_code`: `string` — The currency of the cart
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — When the cart was created.
+    - `updated_at`: `string` | `Date` (optional) — When the cart was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `original_total`: `number` — The cart's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The cart's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The cart's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the cart, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the cart's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The gift card total of the cart.
+    - `gift_card_tax_total`: `number` — The gift card tax total of the cart.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `completed_at`: `string` | `Date` (optional) — The date the cart was completed.
+    - `shipping_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's shipping address.
+    - `billing_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's billing address.
+    - `items`: [StoreCartLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartLineItem)\[] (optional) — The cart's items.
+    - `shipping_methods`: [StoreCartShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartShippingMethod)\[] (optional) — The cart's shipping methods.
+    - `payment_collection`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection) (optional) — The cart's payment collection.
+    - `region`: [StoreRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreRegion) (optional) — The cart's region
+    - `promotions`: [StoreCartPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartPromotion)\[] — The promotions applied to the cart.
+
+## addPromotions
+
+This method adds promotion codes to a cart. It sends a request to the
+[Add Promotion Code](/api/store/carts/add-promotions) API route.
+
+Related guide: [How to apply promotions to cart in the storefront](/resources/storefront-development/cart/manage-items).
+
+### Example
+
+```ts
+sdk.store.cart.addPromotions("cart_123", {
+  promo_codes: ["20OFF"]
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+<a id="addpromotions-parameters" />
+
+### Parameters
+
+**addPromotions**
+
+- `cartId`: `string` — The cart's ID.
+- `body`: [StoreCartAddPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddPromotion) — The details of the promotion codes to add.
+  - `promo_codes`: `string`\[] — The promotion codes to add to the cart.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the cart.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="addpromotions-returns" />
+
+### Returns
+
+**addPromotions**
+
+- `Promise`: Promise\<[StoreCartResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartResponse)> — The cart's details.
+  - `cart`: [StoreCart](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCart) — The cart's details.
+    - `id`: `string` — The ID of the cart.
+    - `region_id`: `string` (optional) — The ID of the region the cart belongs to.
+    - `customer_id`: `string` (optional) — The ID of the associated customer
+    - `sales_channel_id`: `string` (optional) — The ID of the sales channel the cart belongs to.
+    - `email`: `string` (optional) — The email of the customer that owns the cart.
+    - `currency_code`: `string` — The currency of the cart
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — When the cart was created.
+    - `updated_at`: `string` | `Date` (optional) — When the cart was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `original_total`: `number` — The cart's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The cart's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The cart's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the cart, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the cart's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The gift card total of the cart.
+    - `gift_card_tax_total`: `number` — The gift card tax total of the cart.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `completed_at`: `string` | `Date` (optional) — The date the cart was completed.
+    - `shipping_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's shipping address.
+    - `billing_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's billing address.
+    - `items`: [StoreCartLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartLineItem)\[] (optional) — The cart's items.
+    - `shipping_methods`: [StoreCartShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartShippingMethod)\[] (optional) — The cart's shipping methods.
+    - `payment_collection`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection) (optional) — The cart's payment collection.
+    - `region`: [StoreRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreRegion) (optional) — The cart's region
+    - `promotions`: [StoreCartPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartPromotion)\[] — The promotions applied to the cart.
+
+## removePromotions
+
+This method removes promotion codes from a cart. It sends a request to the
+[Remove Promotion Code](/api/store/carts/remove-promotions-from-cart) API route.
+
+Related guide: [How to apply promotions to cart in the storefront](/resources/storefront-development/cart/manage-items).
+
+### Example
+
+```ts
+sdk.store.cart.removePromotions("cart_123", {
+  promo_codes: ["20OFF"]
+})
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+<a id="removepromotions-parameters" />
+
+### Parameters
+
+**removePromotions**
+
+- `cartId`: `string` — The cart's ID.
+- `body`: [StoreCartRemovePromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartRemovePromotion) — The details of the promotion codes to remove.
+  - `promo_codes`: `string`\[] — The promotion codes to remove from the cart.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the cart.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="removepromotions-returns" />
+
+### Returns
+
+**removePromotions**
+
+- `Promise`: Promise\<[StoreCartResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartResponse)> — The cart's details.
+  - `cart`: [StoreCart](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCart) — The cart's details.
+    - `id`: `string` — The ID of the cart.
+    - `region_id`: `string` (optional) — The ID of the region the cart belongs to.
+    - `customer_id`: `string` (optional) — The ID of the associated customer
+    - `sales_channel_id`: `string` (optional) — The ID of the sales channel the cart belongs to.
+    - `email`: `string` (optional) — The email of the customer that owns the cart.
+    - `currency_code`: `string` — The currency of the cart
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — When the cart was created.
+    - `updated_at`: `string` | `Date` (optional) — When the cart was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `original_total`: `number` — The cart's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The cart's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The cart's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the cart, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the cart's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The gift card total of the cart.
+    - `gift_card_tax_total`: `number` — The gift card tax total of the cart.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `completed_at`: `string` | `Date` (optional) — The date the cart was completed.
+    - `shipping_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's shipping address.
+    - `billing_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's billing address.
+    - `items`: [StoreCartLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartLineItem)\[] (optional) — The cart's items.
+    - `shipping_methods`: [StoreCartShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartShippingMethod)\[] (optional) — The cart's shipping methods.
+    - `payment_collection`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection) (optional) — The cart's payment collection.
+    - `region`: [StoreRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreRegion) (optional) — The cart's region
+    - `promotions`: [StoreCartPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartPromotion)\[] — The promotions applied to the cart.
+
+## complete
+
+This method completes a cart and places the order. It's the last step of the checkout flow.
+The method sends a request to the [Complete Cart](/api/store/carts/complete-cart)
+API route.
+
+Related guide: [Learn how to complete cart in checkout flow](/resources/storefront-development/checkout/complete-cart).
+
+### Example
+
+```ts
+sdk.store.cart.complete("cart_123")
+.then((data) => {
+  if(data.type === "cart") {
+    // an error occurred
+    console.log(data.error, data.cart)
+  } else {
+    // order placed successfully
+    console.log(data.order)
+  }
+})
+```
+
+<a id="complete-parameters" />
+
+### Parameters
+
+**complete**
+
+- `cartId`: `string` — The cart's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the created order.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="complete-returns" />
+
+### Returns
+
+**complete**
+
+- `Promise`: Promise\<[StoreCompleteCartResponse](/resources/references/types/HttpTypes/types/typesHttpTypesStoreCompleteCartResponse)> — The order's details, if it was placed successfully. Otherwise, the cart is returned with an error.
+  - `type`: `"cart"` — The response's type. If `cart`, then an error has occurred.
+  - `cart`: [StoreCart](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCart) — The cart's details.
+    - `id`: `string` — The ID of the cart.
+    - `region_id`: `string` (optional) — The ID of the region the cart belongs to.
+    - `customer_id`: `string` (optional) — The ID of the associated customer
+    - `sales_channel_id`: `string` (optional) — The ID of the sales channel the cart belongs to.
+    - `email`: `string` (optional) — The email of the customer that owns the cart.
+    - `currency_code`: `string` — The currency of the cart
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — When the cart was created.
+    - `updated_at`: `string` | `Date` (optional) — When the cart was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `original_total`: `number` — The cart's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The cart's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The cart's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the cart, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the cart's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The gift card total of the cart.
+    - `gift_card_tax_total`: `number` — The gift card tax total of the cart.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `completed_at`: `string` | `Date` (optional) — The date the cart was completed.
+    - `shipping_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's shipping address.
+    - `billing_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's billing address.
+    - `items`: [StoreCartLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartLineItem)\[] (optional) — The cart's items.
+    - `shipping_methods`: [StoreCartShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartShippingMethod)\[] (optional) — The cart's shipping methods.
+    - `payment_collection`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection) (optional) — The cart's payment collection.
+    - `region`: [StoreRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreRegion) (optional) — The cart's region
+    - `promotions`: [StoreCartPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartPromotion)\[] — The promotions applied to the cart.
+  - `error`: `object` — The error that occurred while completing the cart.
+    - `message`: `string` — The error message.
+    - `name`: `string` — The error name.
+    - `type`: `string` — The error type.
+  - `order`: [StoreOrder](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrder) — The order's details.
+    - `id`: `string` — The order's ID.
+    - `region_id`: `null` | `string` — The ID of the associated region.
+    - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+    - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+    - `email`: `null` | `string` — The email of the customer that placed the order.
+    - `currency_code`: `string` — The order's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `display_id`: `number` (optional) — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `status`: `string` — The order's status.
+    - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+    - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the order was created.
+    - `updated_at`: `string` | `Date` — The date the order was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+    - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The total gift card amount.
+    - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+    - `shipping_address`: `null` | [StoreOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderAddress) (optional) — The order's shipping address.
+    - `billing_address`: `null` | [StoreOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderAddress) (optional) — The order's billing address.
+    - `items`: `null` | [StoreOrderLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderLineItem)\[] — The order's items.
+    - `shipping_methods`: `null` | [StoreOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderShippingMethod)\[] — The order's shipping methods.
+    - `payment_collections`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection)\[] (optional) — The order's payment collections.
+    - `fulfillments`: [StoreOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `customer`: [StoreCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomer) (optional) — The customer that placed the order.
+
+## transferCart
+
+This method updates the customer of a cart.
+
+### Example
+
+```ts
+// TODO must be authenticated as the customer to set the cart's customer
+sdk.store.cart.transferCart("cart_123")
+.then(({ cart }) => {
+  console.log(cart)
+})
+```
+
+<a id="transfercart-parameters" />
+
+### Parameters
+
+**transferCart**
+
+- `id`: `string` — The cart's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the cart.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="transfercart-returns" />
+
+### Returns
+
+**transferCart**
+
+- `Promise`: Promise\<[StoreCartResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartResponse)> — The updated cart.
+  - `cart`: [StoreCart](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCart) — The cart's details.
+    - `id`: `string` — The ID of the cart.
+    - `region_id`: `string` (optional) — The ID of the region the cart belongs to.
+    - `customer_id`: `string` (optional) — The ID of the associated customer
+    - `sales_channel_id`: `string` (optional) — The ID of the sales channel the cart belongs to.
+    - `email`: `string` (optional) — The email of the customer that owns the cart.
+    - `currency_code`: `string` — The currency of the cart
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` (optional) — When the cart was created.
+    - `updated_at`: `string` | `Date` (optional) — When the cart was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `original_total`: `number` — The cart's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The cart's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The cart's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the cart, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the cart's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The gift card total of the cart.
+    - `gift_card_tax_total`: `number` — The gift card tax total of the cart.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `completed_at`: `string` | `Date` (optional) — The date the cart was completed.
+    - `shipping_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's shipping address.
+    - `billing_address`: [StoreCartAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartAddress) (optional) — The cart's billing address.
+    - `items`: [StoreCartLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartLineItem)\[] (optional) — The cart's items.
+    - `shipping_methods`: [StoreCartShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartShippingMethod)\[] (optional) — The cart's shipping methods.
+    - `payment_collection`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection) (optional) — The cart's payment collection.
+    - `region`: [StoreRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreRegion) (optional) — The cart's region
+    - `promotions`: [StoreCartPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartPromotion)\[] — The promotions applied to the cart.

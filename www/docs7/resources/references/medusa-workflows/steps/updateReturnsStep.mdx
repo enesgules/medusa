@@ -1,0 +1,50 @@
+---
+title: updateReturnsStep - Medusa Core Workflows Reference
+sidebarTitle: updateReturnsStep
+---
+
+This documentation provides a reference to the `updateReturnsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step updates one or more returns.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { updateReturnsStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = updateReturnsStep({
+      "id": "id_O4v4fbxgv8"
+    })
+  }
+)
+```
+
+<a id="updatereturnsstep-input" />
+
+## Input
+
+**updateReturnsStep**
+
+- `UpdateReturnsStepInput`: [UpdateReturnsStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcUpdateReturnsStepInput)
+  - `id`: `string` — The ID of the return.
+  - `location_id`: `null` | `string` (optional) — The ID of the location to return the items to.
+  - `refund_amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The refund amount of the return.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications related to updates on the return.
+  - `claim_id`: `string` (optional) — The associated claim's ID.
+  - `exchange_id`: `string` (optional) — The associated exchange's ID.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `items`: `object`\[] (optional) — The items of the return.
+    - `quantity`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The quantity of the item.
+    - `internal_note`: `null` | `string` (optional) — The internal note of the item.
+    - `note`: `null` | `string` (optional) — The note of the item.
+    - `reason_id`: `null` | `string` (optional) — The associated reason's ID.
+    - `return_id`: `null` | `string` (optional) — The associated return's ID.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `status`: [ReturnStatus](/resources/references/order/types/orderReturnStatus) (optional) — The return's status.
+  - `requested_at`: `Date` (optional)

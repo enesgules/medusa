@@ -1,0 +1,60 @@
+---
+title: me
+---
+
+This method retrieves the currently authenticated user. It sends a request to the
+[Get Logged-In User](/api/admin/users/get-logged-in-user)
+API route.
+
+## Example
+
+To retrieve the currently authenticated user:
+
+```ts
+sdk.admin.user.me()
+.then(({ user }) => {
+  console.log(user)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.user.me({
+  fields: "id,email"
+})
+.then(({ user }) => {
+  console.log(user)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="me-parameters" />
+
+## Parameters
+
+**me**
+
+- `query`: [AdminUserParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserParams) (optional) — Configure the fields and relations to retrieve in the user.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="me-returns" />
+
+## Returns
+
+**me**
+
+- `Promise`: Promise\<[AdminUserResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserResponse)> — The user's details.
+  - `user`: [AdminUser](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUser) — The user's details.
+    - `id`: `string` — The user's ID.
+    - `email`: `string` — The user's email.
+    - `first_name`: `null` | `string` — The user's first name.
+    - `last_name`: `null` | `string` — The user's last name.
+    - `avatar_url`: `null` | `string` — The URL of the user's avatar image.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the user.
+    - `created_at`: `string` — The date the user was created.
+    - `updated_at`: `string` — The date the user was updated.
+    - `deleted_at`: `null` | `string` — The date the user was deleted.

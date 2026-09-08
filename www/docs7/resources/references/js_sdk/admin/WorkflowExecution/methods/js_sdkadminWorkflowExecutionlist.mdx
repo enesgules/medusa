@@ -1,0 +1,103 @@
+---
+title: list
+---
+
+This method retrieves a list of workflow executions. It sends a request to the
+[List Workflow Executions](/api/admin/workflows-executions/list-workflows-executions)
+API route.
+
+## Example
+
+To retrieve the list of workflow executions:
+
+```ts
+sdk.admin.workflowExecution.list()
+.then(({ workflow_executions, count, limit, offset }) => {
+  console.log(workflow_executions)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.workflowExecution.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ workflow_executions, count, limit, offset }) => {
+  console.log(workflow_executions)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each workflow execution:
+
+```ts
+sdk.admin.workflowExecution.list({
+  fields: "id,name"
+})
+.then(({ workflow_executions, count, limit, offset }) => {
+  console.log(workflow_executions)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+## Parameters
+
+**list**
+
+- `queryParams`: [AdminGetWorkflowExecutionsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetWorkflowExecutionsParams) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Filter using a search query.
+  - `transaction_id`: `string` | `string`\[] (optional) — Filter by the ID of the transaction to retrieve workflow executions for a specific transaction.
+  - `workflow_id`: `string` | `string`\[] (optional) — Filter by the ID of the workflow to retrieve workflow executions for a specific workflow.
+  - `state`: `string` | `string`\[] (optional) — Filter by the state of the workflow execution.
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the creation date of the workflow execution.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+## Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminWorkflowExecutionListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminWorkflowExecutionListResponse)> — The list of workflow executions.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.

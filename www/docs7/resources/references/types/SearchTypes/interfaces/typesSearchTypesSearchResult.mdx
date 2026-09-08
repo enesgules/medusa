@@ -1,0 +1,45 @@
+---
+title: SearchResult
+---
+
+The result of a search query.
+
+## Type parameters
+
+**SearchResult**
+
+- `T`: `object` (optional)
+
+## Properties
+
+**SearchResult**
+
+- `hits`: [SearchHit](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchHit)\<T>\[] — The documents matching the query, ordered by the query's sort or by relevance.
+  - `id`: `string` — The value of the index's primary key for this document. `query.search` uses it to hydrate the rest of the entity through `query.graph`.
+  - `score`: `number` (optional) — The document's relevance score. Scales are provider-specific and not comparable across providers.
+  - `document`: T — The retrievable fields the search engine returned for this document.
+  - `highlights`: `Record<string, string[]>` (optional) — The highlighted fragments of the fields requested in the query's `search_options.highlight`, keyed by field path.
+- `facets`: `Record<string, [SearchFacetResult](/references/types/SearchTypes/types/types.SearchTypes.SearchFacetResult)>` (optional) — The computed facets, keyed by the field they were requested on.
+  - `type`: `"value"` — The facet counts per distinct value of the field.
+  - `values`: `object`\[] — The distinct values of the field and how many documents hold each of them.
+    - `value`: `string`
+    - `count`: `number`
+  - `other_count`: `number` (optional) — The number of documents falling outside the returned values, where the provider reports it.
+  - `ranges`: `object`\[] — The requested ranges and how many documents fall in each of them.
+    - `key`: `string` — The range's key, as passed in the request.
+    - `from`: `number` | `string` (optional) — The range's inclusive lower bound.
+    - `to`: `number` | `string` (optional) — The range's exclusive upper bound.
+    - `count`: `number` — The number of documents in the range.
+  - `min`: `number` — The field's smallest value among the matching documents.
+  - `max`: `number` — The field's largest value among the matching documents.
+  - `avg`: `number` (optional) — The average of the field's values, where the provider reports it.
+  - `sum`: `number` (optional) — The sum of the field's values, where the provider reports it.
+  - `count`: `number` — The number of documents the aggregations were computed over.
+- `metadata`: [SearchResultMetadata](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchResultMetadata) — The result's pagination and timing details.
+  - `skip`: `number` — The number of documents skipped before the returned hits.
+  - `take`: `number` — The maximum number of hits returned.
+  - `count`: `null` | `number` — Usually it's an estimate on the count, very few providers return an exact count. If the user didn't ask for a count, it's `null`.
+  - `next_cursor`: `string` (optional) — The cursor to pass in the next query's pagination to retrieve the next page, on providers that paginate with cursors.
+  - `query`: `string` (optional) — The free-text query the result was computed for.
+  - `processing_time_ms`: `number` (optional) — How long the search engine took to run the query, in milliseconds.
+- `provider_metadata`: `Record<string, unknown>` (optional) — Extra details the provider returned, passed through verbatim. Nothing in Medusa's core reads from this.

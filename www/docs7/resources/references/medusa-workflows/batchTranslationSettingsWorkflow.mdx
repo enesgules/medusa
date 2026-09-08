@@ -1,0 +1,220 @@
+---
+title: batchTranslationSettingsWorkflow - Medusa Core Workflows Reference
+sidebarTitle: batchTranslationSettingsWorkflow
+---
+
+This documentation provides a reference to the `batchTranslationSettingsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow creates, updates, and deletes translation settings in batch.
+It's used by the [List Translation Settings API route](/api/admin/translations/list-settings).
+
+You can use this workflow within your own customizations or custom workflows, allowing you
+to create, update, and delete translation settings in your custom flows.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0).
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/translation/workflows/batch-translation-settings.ts#L65)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { batchTranslationSettingsWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await batchTranslationSettingsWorkflow(req.scope)
+    .run({
+      create: [{
+        entity_type: "product",
+        fields: ["title", "description"],
+        is_active: true
+      }],
+      update: [{
+        id: "ts_123",
+        is_active: false
+      }],
+      delete: ["ts_456"]
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { batchTranslationSettingsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await batchTranslationSettingsWorkflow(container)
+    .run({
+      create: [{
+        entity_type: "product",
+        fields: ["title", "description"],
+        is_active: true
+      }],
+      update: [{
+        id: "ts_123",
+        is_active: false
+      }],
+      delete: ["ts_456"]
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { batchTranslationSettingsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await batchTranslationSettingsWorkflow(container)
+    .run({
+      create: [{
+        entity_type: "product",
+        fields: ["title", "description"],
+        is_active: true
+      }],
+      update: [{
+        id: "ts_123",
+        is_active: false
+      }],
+      delete: ["ts_456"]
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { batchTranslationSettingsWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = batchTranslationSettingsWorkflow
+      .runAsStep({
+        create: [{
+          entity_type: "product",
+          fields: ["title", "description"],
+          is_active: true
+        }],
+        update: [{
+          id: "ts_123",
+          is_active: false
+        }],
+        delete: ["ts_456"]
+      })
+  }
+)
+```
+
+<a id="batchtranslationsettingsworkflow-steps" />
+
+## Steps
+
+- [createTranslationSettingsStep](/resources/references/medusa-workflows/steps/createTranslationSettingsStep): This step creates translation settings based on the provided input. It supports both single and multiple translation settings creation. In case of failure, it compensates by deleting the created translation settings.
+- [updateTranslationSettingsStep](/resources/references/medusa-workflows/steps/updateTranslationSettingsStep): This step updates translation settings based on the provided input. It supports both single and multiple translation settings updates. In case of failure, it compensates by restoring the previous translation settings.
+- [deleteTranslationSettingsStep](/resources/references/medusa-workflows/steps/deleteTranslationSettingsStep): This step deletes translation settings based on the provided IDs. It compensates by restoring the deleted translation settings in case of failure.
+
+<a id="batchtranslationsettingsworkflow-input" />
+
+## Input
+
+**batchTranslationSettingsWorkflow**
+
+- `BatchTranslationSettingsWorkflowInput`: [BatchTranslationSettingsWorkflowInput](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcBatchTranslationSettingsWorkflowInput)
+  - `create`: [CreateTranslationSettingsDTO](/resources/references/translation/interfaces/translationCreateTranslationSettingsDTO)\[] — Translation settings to create.
+    - `entity_type`: `string` — The entity type.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `fields`: `string`\[] — The translatable fields.
+
+      Example:
+
+      ```
+      ["title", "description", "material"]
+      ```
+    - `is_active`: `boolean` (optional) — Whether the entity translatable status is enabled.
+  - `update`: [UpdateTranslationSettingsDTO](/resources/references/translation/interfaces/translationUpdateTranslationSettingsDTO)\[] — Translation settings to update.
+    - `id`: `string` — The ID of the translation settings to update.
+    - `entity_type`: `string` (optional) — The entity type.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `fields`: `string`\[] (optional) — The translatable fields.
+
+      Example:
+
+      ```
+      ["title", "description", "material"]
+      ```
+    - `is_active`: `boolean` (optional) — Whether the entity translatable status is enabled.
+  - `delete`: `string`\[] — Translation settings IDs to delete.
+
+<a id="batchtranslationsettingsworkflow-output" />
+
+## Output
+
+**batchTranslationSettingsWorkflow**
+
+- `created`: [TranslationSettingsDTO](/resources/references/translation/interfaces/translationTranslationSettingsDTO)\[] & [WorkflowDataProperties](/resources/references/workflows/types/workflowsWorkflowDataProperties)\<[TranslationSettingsDTO](/resources/references/translation/interfaces/translationTranslationSettingsDTO)\[]> & `object` & [StepFunctionReturnConfig](/resources/references/workflows/types/workflowsStepFunctionReturnConfig)\<[TranslationSettingsDTO](/resources/references/translation/interfaces/translationTranslationSettingsDTO)\[]>
+  - `id`: `string` — The ID of the settings record.
+  - `entity_type`: `string` — The entity type these settings apply to (e.g., "product", "product\_variant").
+  - `fields`: `string`\[] — The translatable fields for this entity type.
+  - `is_active`: `boolean` — Whether the entity translatable status is enabled.
+  - `created_at`: `string` | `Date` — The date and time the settings were created.
+  - `updated_at`: `string` | `Date` — The date and time the settings were last updated.
+  - `deleted_at`: `null` | `string` | `Date` — The date and time the settings were deleted.
+  - `__step__`: `string`
+- `updated`: [TranslationSettingsDTO](/resources/references/translation/interfaces/translationTranslationSettingsDTO)\[] & [WorkflowDataProperties](/resources/references/workflows/types/workflowsWorkflowDataProperties)\<[TranslationSettingsDTO](/resources/references/translation/interfaces/translationTranslationSettingsDTO)\[]> & `object` & [StepFunctionReturnConfig](/resources/references/workflows/types/workflowsStepFunctionReturnConfig)\<[TranslationSettingsDTO](/resources/references/translation/interfaces/translationTranslationSettingsDTO)\[]>
+  - `id`: `string` — The ID of the settings record.
+  - `entity_type`: `string` — The entity type these settings apply to (e.g., "product", "product\_variant").
+  - `fields`: `string`\[] — The translatable fields for this entity type.
+  - `is_active`: `boolean` — Whether the entity translatable status is enabled.
+  - `created_at`: `string` | `Date` — The date and time the settings were created.
+  - `updated_at`: `string` | `Date` — The date and time the settings were last updated.
+  - `deleted_at`: `null` | `string` | `Date` — The date and time the settings were deleted.
+  - `__step__`: `string`
+- `deleted`: `never`

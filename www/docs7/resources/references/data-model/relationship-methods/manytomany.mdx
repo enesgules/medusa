@@ -1,0 +1,48 @@
+---
+title: manyToMany Relationship Method - DML Reference
+sidebarTitle: manyToMany
+---
+
+This method defines a relationship between two data models,
+where both data models have many related records.
+
+For example, an order is associated with many products, and a product
+is associated with many orders.
+
+## Example
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const Order = model.define("order", {
+  id: model.id(),
+  products: model.manyToMany(() => Product),
+})
+
+const Product = model.define("product", {
+  id: model.id(),
+  order: model.manyToMany(() => Order),
+})
+```
+
+<a id="manytomany-type-parameters" />
+
+## Type Parameters
+
+**manyToMany**
+
+- `T`: `object` (optional) — The type of the entity builder passed as a first parameter. By default, it's a function returning the related model.
+
+<a id="manytomany-parameters" />
+
+## Parameters
+
+**manyToMany**
+
+- `entityBuilder`: T — A function that returns the data model this model is related to.
+- `options`: [ManyToManyOptions](/resources/references/dml/entity_builder/types/dmlentity_builderManyToManyOptions) (optional) — The relationship's options.
+  - `mappedBy`: `string` (optional) — The name of the relationship as defined in the other data model. This is only required by the `belongsTo` and `manyToMany` relationship method.
+  - `pivotTable`: `string` (optional) — The name of the pivot table created in the database for this relationship.
+  - `joinColumn`: `string` | `string`\[] (optional) — The column name in the pivot table that for the current entity
+  - `inverseJoinColumn`: `string` | `string`\[] (optional) — The column name in the pivot table for the opposite entity
+  - `pivotEntity`: () => [DmlEntity](/resources/references/dml/entity/classes/dmlentityDmlEntity)\<any, any> (optional) — A function that returns the data model representing the pivot table created in the database for this relationship.

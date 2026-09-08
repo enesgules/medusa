@@ -1,0 +1,70 @@
+---
+title: CreatePromotionDTO
+---
+
+The promotion to be created.
+
+**CreatePromotionDTO**
+
+- `code`: `string` — The code of the promotion.
+- `type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues) — The type of the promotion: - `standard` indicates that a promotion is a standard one applied with conditions. - `buyget` indicates that a promotion is a "Buy X get Y" promotion.
+- `status`: [PromotionStatusValues](/resources/references/promotion/types/promotionPromotionStatusValues) — The status of the promotion: - `draft` indicates that a promotion is currently being prepared - `active` indicates that a promotion is active - `inactive` indicates that a promotion is no longer active
+- `is_automatic`: `boolean` (optional) — Whether the promotion is applied automatically.
+- `is_tax_inclusive`: `boolean` (optional) — Whether the promotion is tax inclusive.
+- `limit`: `null` | `number` (optional) — The maximum number of times this promotion can be used.
+- `application_method`: [CreateApplicationMethodDTO](/resources/references/promotion/interfaces/promotionCreateApplicationMethodDTO) — The associated application method.
+  - `type`: [ApplicationMethodTypeValues](/resources/references/promotion/types/promotionApplicationMethodTypeValues) — The type of the application method indicating how the associated promotion is applied.
+  - `target_type`: [ApplicationMethodTargetTypeValues](/resources/references/promotion/types/promotionApplicationMethodTargetTypeValues) — The target type of the application method indicating whether the associated promotion is applied to the cart's items, shipping methods, or the whole order.
+  - `allocation`: [ApplicationMethodAllocationValues](/resources/references/promotion/types/promotionApplicationMethodAllocationValues) (optional) — The allocation value that indicates whether the associated promotion is applied on each item in a cart or split between the items in the cart.
+  - `value`: `number` (optional) — The discounted amount applied by the associated promotion based on the `type`.
+  - `currency_code`: `string` (optional) — Currency of the value to apply.
+  - `max_quantity`: `null` | `number` (optional) — The max quantity allowed in the cart for the associated promotion to be applied.
+  - `buy_rules_min_quantity`: `null` | `number` (optional) — The minimum quantity required for a `buyget` promotion to be applied. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `2`.
+  - `apply_to_quantity`: `null` | `number` (optional) — The quantity that results from matching the `buyget` promotion's condition. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `1`.
+  - `promotion`: `string` | [PromotionDTO](/resources/references/promotion/interfaces/promotionPromotionDTO) (optional) — The promotion of the application method.
+    - `id`: `string` — The ID of the promotion.
+    - `code`: `string` (optional) — The code of the promotion.
+    - `type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues) (optional) — The type of the promotion: - `standard` indicates that a promotion is a standard one applied with conditions. - `buyget` indicates that a promotion is a "Buy X get Y" promotion.
+    - `status`: [PromotionStatusValues](/resources/references/promotion/types/promotionPromotionStatusValues) (optional) — The status of the promotion: - `active` promotion is available for user to consume - `inactive` promotion is no longer available to the user - `draft` promotion is currently being prepared
+    - `is_automatic`: `boolean` (optional) — Whether the promotion is applied automatically.
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the promotion is tax inclusive.
+    - `limit`: `null` | `number` (optional) — The maximum number of times this promotion can be used across all orders.
+    - `used`: `number` (optional) — The number of times this promotion has been used in completed orders.
+    - `application_method`: [ApplicationMethodDTO](/resources/references/promotion/interfaces/promotionApplicationMethodDTO) (optional) — The associated application method.
+    - `rules`: [PromotionRuleDTO](/resources/references/promotion/interfaces/promotionPromotionRuleDTO)\[] (optional) — The rules of the promotion.
+    - `campaign_id`: `null` | `string` (optional) — The associated campaign.
+    - `campaign`: [CampaignDTO](/resources/references/promotion/interfaces/promotionCampaignDTO) (optional) — The associated campaign.
+  - `target_rules`: [CreatePromotionRuleDTO](/resources/references/promotion/interfaces/promotionCreatePromotionRuleDTO)\[] (optional) — The target rules of the application method.
+    - `description`: `null` | `string` (optional) — The description of the promotion rule.
+    - `attribute`: `string` — The attribute of the promotion rule.
+    - `operator`: [PromotionRuleOperatorValues](/resources/references/promotion/types/promotionPromotionRuleOperatorValues) — The operator of the promotion rule.
+    - `values`: `string` | `string`\[] — The values of the promotion rule. When provided, `PromotionRuleValue` records are created and associated with the promotion rule.
+  - `buy_rules`: [CreatePromotionRuleDTO](/resources/references/promotion/interfaces/promotionCreatePromotionRuleDTO)\[] (optional) — The buy rules of the application method.
+    - `description`: `null` | `string` (optional) — The description of the promotion rule.
+    - `attribute`: `string` — The attribute of the promotion rule.
+    - `operator`: [PromotionRuleOperatorValues](/resources/references/promotion/types/promotionPromotionRuleOperatorValues) — The operator of the promotion rule.
+    - `values`: `string` | `string`\[] — The values of the promotion rule. When provided, `PromotionRuleValue` records are created and associated with the promotion rule.
+- `rules`: [CreatePromotionRuleDTO](/resources/references/promotion/interfaces/promotionCreatePromotionRuleDTO)\[] (optional) — The rules of the promotion.
+  - `description`: `null` | `string` (optional) — The description of the promotion rule.
+  - `attribute`: `string` — The attribute of the promotion rule.
+  - `operator`: [PromotionRuleOperatorValues](/resources/references/promotion/types/promotionPromotionRuleOperatorValues) — The operator of the promotion rule.
+  - `values`: `string` | `string`\[] — The values of the promotion rule. When provided, `PromotionRuleValue` records are created and associated with the promotion rule.
+- `campaign`: [CreateCampaignDTO](/resources/references/promotion/interfaces/promotionCreateCampaignDTO) (optional) — The associated campaign.
+  - `name`: `string` — The name of the campaign.
+  - `description`: `null` | `string` (optional) — The description of the campaign.
+  - `campaign_identifier`: `string` — The campaign identifier of the campaign.
+  - `starts_at`: `null` | `Date` (optional) — The start date of the campaign.
+  - `ends_at`: `null` | `Date` (optional) — The end date of the campaign.
+  - `budget`: `null` | [CreateCampaignBudgetDTO](/resources/references/promotion/interfaces/promotionCreateCampaignBudgetDTO) (optional) — The associated campaign budget.
+    - `type`: [CampaignBudgetTypeValues](/resources/references/promotion/types/promotionCampaignBudgetTypeValues) (optional) — The type of the campaign budget.
+    - `limit`: `null` | `number` (optional) — The limit of the campaign budget.
+    - `used`: `number` (optional) — How much is used of the campaign budget.
+    - `currency_code`: `null` | `string` (optional) — The currency of the campaign.
+    - `attribute`: `null` | `string` (optional) — The attribute that the budget limit is applied to. By default, the budget is applied globally. If the type is `use_by_attribute`, this field indicates the attribute the budget is tracked by. For example, `customer_id` means the budget is tracked per customer.
+
+      Example:
+
+      ```
+      customer_id
+      ```
+- `campaign_id`: `string` (optional) — The associated campaign's ID.

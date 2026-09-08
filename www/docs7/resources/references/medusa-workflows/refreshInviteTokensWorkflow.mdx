@@ -1,0 +1,162 @@
+---
+title: refreshInviteTokensWorkflow - Medusa Core Workflows Reference
+sidebarTitle: refreshInviteTokensWorkflow
+---
+
+This documentation provides a reference to the `refreshInviteTokensWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow refreshes the token of one or more user invites, updating the
+token and the expiry date. It's used by the
+[Refresh Invite Token Admin API Route](/api/admin/invites/refresh-invite-token).
+
+This workflow is useful to trigger resending invite tokens. It emits the `invite.resent` event,
+which you can listen to in a [Subscriber](/learn/fundamentals/events-and-subscribers).
+
+You can use this workflow within your customizations or your own custom workflows, allowing you to
+refresh invite tokens within your custom flows.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/invite/workflows/refresh-invite-tokens.ts#L37)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { refreshInviteTokensWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await refreshInviteTokensWorkflow(req.scope)
+    .run({
+      input: {
+        invite_ids: ["invite_123"]
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { refreshInviteTokensWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await refreshInviteTokensWorkflow(container)
+    .run({
+      input: {
+        invite_ids: ["invite_123"]
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { refreshInviteTokensWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await refreshInviteTokensWorkflow(container)
+    .run({
+      input: {
+        invite_ids: ["invite_123"]
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { refreshInviteTokensWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = refreshInviteTokensWorkflow
+      .runAsStep({
+        input: {
+          invite_ids: ["invite_123"]
+        }
+      })
+  }
+)
+```
+
+<a id="refreshinvitetokensworkflow-steps" />
+
+## Steps
+
+- [refreshInviteTokensStep](/resources/references/medusa-workflows/steps/refreshInviteTokensStep): This step refreshes the tokens of one or more invites.
+  - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+
+<a id="refreshinvitetokensworkflow-input" />
+
+## Input
+
+**refreshInviteTokensWorkflow**
+
+- `ResendInvitesWorkflowInputDTO`: [ResendInvitesWorkflowInputDTO](/resources/references/types/WorkflowTypes/InviteWorkflow/interfaces/typesWorkflowTypesInviteWorkflowResendInvitesWorkflowInputDTO)
+  - `invite_ids`: `string`\[] — The IDs of the invites to refresh.
+
+<a id="refreshinvitetokensworkflow-output" />
+
+## Output
+
+**refreshInviteTokensWorkflow**
+
+- `InviteDTO[]`: [InviteDTO](/resources/references/user/interfaces/userInviteDTO)\[]
+  - `id`: `string` — The ID of the invite.
+  - `email`: `string` — The email of the invite.
+  - `accepted`: `boolean` — Whether the invite is accepted.
+  - `token`: `string` — The token of the invite.
+  - `expires_at`: `Date` — The invite's expiry date.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `roles`: `null` | `string`\[] (optional) — The RBAC roles to assign to the user when the invite is accepted.
+  - `created_at`: `Date` — The invite's creation date.
+  - `updated_at`: `Date` — The invite's update date.
+  - `deleted_at`: `null` | `Date` — The invite's deletion date.
+
+<a id="refreshinvitetokensworkflow-emitted-events" />
+
+## Emitted Events
+
+- `invite.resent`: Emitted when invites should be resent because their token was refreshed. You can listen to this event to send an email to the invited users, for example.
+
+  ```ts
+  {
+    id, // The ID of the invite
+  }
+  ```

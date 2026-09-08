@@ -1,0 +1,986 @@
+---
+title: StoreOrder
+---
+
+The order's details.
+
+## Properties
+
+<Accordion title="id (required)">
+  The order's ID.
+
+  ```json
+  {
+    "type": "string",
+    "title": "id",
+    "description": "The order's ID."
+  }
+  ```
+</Accordion>
+
+<Accordion title="region_id (required)">
+  The ID of the associated region.
+
+  ```json
+  {
+    "type": "string",
+    "title": "region_id",
+    "description": "The ID of the associated region."
+  }
+  ```
+</Accordion>
+
+<Accordion title="customer_id (required)">
+  The ID of the customer that placed the order.
+
+  ```json
+  {
+    "type": "string",
+    "title": "customer_id",
+    "description": "The ID of the customer that placed the order."
+  }
+  ```
+</Accordion>
+
+<Accordion title="sales_channel_id (required)">
+  The ID of the sales channel the order was placed in.
+
+  ```json
+  {
+    "type": "string",
+    "title": "sales_channel_id",
+    "description": "The ID of the sales channel the order was placed in."
+  }
+  ```
+</Accordion>
+
+<Accordion title="email (required)">
+  The email of the customer that placed the order.
+
+  ```json
+  {
+    "type": "string",
+    "title": "email",
+    "description": "The email of the customer that placed the order.",
+    "format": "email"
+  }
+  ```
+</Accordion>
+
+<Accordion title="currency_code (required)">
+  The order's currency code.
+
+  ```json
+  {
+    "type": "string",
+    "title": "currency_code",
+    "description": "The order's currency code.",
+    "example": "usd"
+  }
+  ```
+</Accordion>
+
+<Accordion title="display_id (optional)">
+  The order's display ID.
+
+  ```json
+  {
+    "type": "number",
+    "title": "display_id",
+    "description": "The order's display ID."
+  }
+  ```
+</Accordion>
+
+<Accordion title="shipping_address (optional)">
+  ```json
+  {
+    "$ref": "#/components/schemas/StoreOrderAddress"
+  }
+  ```
+
+  Related schemas:
+
+  - [StoreOrderAddress](/api/schemas/store-order-address)
+</Accordion>
+
+<Accordion title="billing_address (optional)">
+  ```json
+  {
+    "$ref": "#/components/schemas/StoreOrderAddress"
+  }
+  ```
+
+  Related schemas:
+
+  - [StoreOrderAddress](/api/schemas/store-order-address)
+</Accordion>
+
+<Accordion title="items (required)">
+  The order's items.
+
+  ```json
+  {
+    "type": "array",
+    "description": "The order's items.",
+    "items": {
+      "$ref": "#/components/schemas/StoreOrderLineItem"
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [StoreOrderLineItem](/api/schemas/store-order-line-item)
+</Accordion>
+
+<Accordion title="shipping_methods (required)">
+  The order's shipping methods.
+
+  ```json
+  {
+    "type": "array",
+    "description": "The order's shipping methods.",
+    "items": {
+      "$ref": "#/components/schemas/StoreOrderShippingMethod"
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [StoreOrderShippingMethod](/api/schemas/store-order-shipping-method)
+</Accordion>
+
+<Accordion title="payment_collections (optional)">
+  The order's payment collections.
+
+  ```json
+  {
+    "type": "array",
+    "description": "The order's payment collections.",
+    "items": {
+      "$ref": "#/components/schemas/StorePaymentCollection"
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [StorePaymentCollection](/api/schemas/store-payment-collection)
+</Accordion>
+
+<Accordion title="payment_status (required)">
+  The order's payment status.
+
+  ```json
+  {
+    "type": "string",
+    "description": "The order's payment status.",
+    "enum": [
+      "canceled",
+      "not_paid",
+      "awaiting",
+      "authorized",
+      "partially_authorized",
+      "captured",
+      "partially_captured",
+      "partially_refunded",
+      "refunded",
+      "requires_action"
+    ]
+  }
+  ```
+</Accordion>
+
+<Accordion title="fulfillments (optional)">
+  The order's fulfillments.
+
+  ```json
+  {
+    "type": "array",
+    "description": "The order's fulfillments.",
+    "items": {
+      "$ref": "#/components/schemas/StoreOrderFulfillment"
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [StoreOrderFulfillment](/api/schemas/store-order-fulfillment)
+</Accordion>
+
+<Accordion title="fulfillment_status (required)">
+  The order's fulfillment status.
+
+  ```json
+  {
+    "type": "string",
+    "description": "The order's fulfillment status.",
+    "enum": [
+      "canceled",
+      "not_fulfilled",
+      "partially_fulfilled",
+      "fulfilled",
+      "partially_shipped",
+      "shipped",
+      "partially_delivered",
+      "delivered"
+    ]
+  }
+  ```
+</Accordion>
+
+<Accordion title="summary (required)">
+  ```json
+  {
+    "$ref": "#/components/schemas/BaseOrderSummary"
+  }
+  ```
+
+  Related schemas:
+
+  - [BaseOrderSummary](/api/schemas/base-order-summary)
+</Accordion>
+
+<Accordion title="metadata (optional)">
+  The order's metadata, can hold custom key-value pairs.
+
+  ```json
+  {
+    "type": "object",
+    "description": "The order's metadata, can hold custom key-value pairs.",
+    "externalDocs": {
+      "url": "https://docs.medusajs.com/api/store#manage-metadata",
+      "description": "Learn how to manage metadata"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="created_at (required)">
+  The date the order was created.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "created_at",
+    "description": "The date the order was created."
+  }
+  ```
+</Accordion>
+
+<Accordion title="updated_at (required)">
+  The date the order was updated.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "updated_at",
+    "description": "The date the order was updated."
+  }
+  ```
+</Accordion>
+
+<Accordion title="original_item_total (required)">
+  The sum of all line items' original totals before discounts, including taxes.
+
+  ```json
+  {
+    "type": "number",
+    "title": "original_item_total",
+    "description": "The sum of all line items' original totals before discounts, including taxes."
+  }
+  ```
+</Accordion>
+
+<Accordion title="original_item_subtotal (required)">
+  The sum of all line items' original subtotals before discounts, excluding taxes.
+
+  ```json
+  {
+    "type": "number",
+    "title": "original_item_subtotal",
+    "description": "The sum of all line items' original subtotals before discounts, excluding taxes."
+  }
+  ```
+</Accordion>
+
+<Accordion title="original_item_tax_total (required)">
+  The sum of all line items' original tax totals before discounts.
+
+  ```json
+  {
+    "type": "number",
+    "title": "original_item_tax_total",
+    "description": "The sum of all line items' original tax totals before discounts."
+  }
+  ```
+</Accordion>
+
+<Accordion title="item_total (required)">
+  The sum of all line items' totals after discounts, including taxes.
+
+  ```json
+  {
+    "type": "number",
+    "title": "item_total",
+    "description": "The sum of all line items' totals after discounts, including taxes."
+  }
+  ```
+</Accordion>
+
+<Accordion title="item_subtotal (required)">
+  The sum of all line items' subtotals before discounts, excluding taxes.
+
+  ```json
+  {
+    "type": "number",
+    "title": "item_subtotal",
+    "description": "The sum of all line items' subtotals before discounts, excluding taxes."
+  }
+  ```
+</Accordion>
+
+<Accordion title="item_tax_total (required)">
+  The sum of all line items' tax totals after discounts.
+
+  ```json
+  {
+    "type": "number",
+    "title": "item_tax_total",
+    "description": "The sum of all line items' tax totals after discounts."
+  }
+  ```
+</Accordion>
+
+<Accordion title="original_total (required)">
+  The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+
+  ```json
+  {
+    "type": "number",
+    "title": "original_total",
+    "description": "The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`."
+  }
+  ```
+</Accordion>
+
+<Accordion title="original_subtotal (required)">
+  The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+
+  ```json
+  {
+    "type": "number",
+    "title": "original_subtotal",
+    "description": "The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`."
+  }
+  ```
+</Accordion>
+
+<Accordion title="original_tax_total (required)">
+  The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+
+  ```json
+  {
+    "type": "number",
+    "title": "original_tax_total",
+    "description": "The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`."
+  }
+  ```
+</Accordion>
+
+<Accordion title="total (required)">
+  The order's final total after discounts and credit lines, including taxes.
+
+  ```json
+  {
+    "type": "number",
+    "title": "total",
+    "description": "The order's final total after discounts and credit lines, including taxes."
+  }
+  ```
+</Accordion>
+
+<Accordion title="subtotal (required)">
+  The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+
+  ```json
+  {
+    "type": "number",
+    "title": "subtotal",
+    "description": "The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`."
+  }
+  ```
+</Accordion>
+
+<Accordion title="tax_total (required)">
+  The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+
+  ```json
+  {
+    "type": "number",
+    "title": "tax_total",
+    "description": "The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`."
+  }
+  ```
+</Accordion>
+
+<Accordion title="discount_total (required)">
+  The total amount of discounts applied to the order, including the tax portion of discounts.
+
+  ```json
+  {
+    "type": "number",
+    "title": "discount_total",
+    "description": "The total amount of discounts applied to the order, including the tax portion of discounts."
+  }
+  ```
+</Accordion>
+
+<Accordion title="discount_tax_total (required)">
+  The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+
+  ```json
+  {
+    "type": "number",
+    "title": "discount_tax_total",
+    "description": "The total amount of discounts applied to the order's tax. Represents the tax portion of discounts."
+  }
+  ```
+</Accordion>
+
+<Accordion title="gift_card_total (required)">
+  The order's gift card total.
+
+  ```json
+  {
+    "type": "number",
+    "title": "gift_card_total",
+    "description": "The order's gift card total."
+  }
+  ```
+</Accordion>
+
+<Accordion title="gift_card_tax_total (required)">
+  The total taxes applied on the gift card's amount.
+
+  ```json
+  {
+    "type": "number",
+    "title": "gift_card_tax_total",
+    "description": "The total taxes applied on the gift card's amount."
+  }
+  ```
+</Accordion>
+
+<Accordion title="shipping_total (required)">
+  The sum of all shipping methods' totals after discounts, including taxes.
+
+  ```json
+  {
+    "type": "number",
+    "title": "shipping_total",
+    "description": "The sum of all shipping methods' totals after discounts, including taxes."
+  }
+  ```
+</Accordion>
+
+<Accordion title="shipping_subtotal (required)">
+  The sum of all shipping methods' subtotals before discounts, excluding taxes.
+
+  ```json
+  {
+    "type": "number",
+    "title": "shipping_subtotal",
+    "description": "The sum of all shipping methods' subtotals before discounts, excluding taxes."
+  }
+  ```
+</Accordion>
+
+<Accordion title="shipping_tax_total (required)">
+  The sum of all shipping methods' tax totals after discounts.
+
+  ```json
+  {
+    "type": "number",
+    "title": "shipping_tax_total",
+    "description": "The sum of all shipping methods' tax totals after discounts."
+  }
+  ```
+</Accordion>
+
+<Accordion title="original_shipping_total (required)">
+  The sum of all shipping methods' original totals before discounts, including taxes.
+
+  ```json
+  {
+    "type": "number",
+    "title": "original_shipping_total",
+    "description": "The sum of all shipping methods' original totals before discounts, including taxes."
+  }
+  ```
+</Accordion>
+
+<Accordion title="original_shipping_subtotal (required)">
+  The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+
+  ```json
+  {
+    "type": "number",
+    "title": "original_shipping_subtotal",
+    "description": "The sum of all shipping methods' original subtotals before discounts, excluding taxes."
+  }
+  ```
+</Accordion>
+
+<Accordion title="original_shipping_tax_total (required)">
+  The sum of all shipping methods' original tax totals before discounts.
+
+  ```json
+  {
+    "type": "number",
+    "title": "original_shipping_tax_total",
+    "description": "The sum of all shipping methods' original tax totals before discounts."
+  }
+  ```
+</Accordion>
+
+<Accordion title="customer (optional)">
+  ```json
+  {
+    "$ref": "#/components/schemas/StoreCustomer"
+  }
+  ```
+
+  Related schemas:
+
+  - [StoreCustomer](/api/schemas/store-customer)
+</Accordion>
+
+<Accordion title="transactions (optional)">
+  The order's transactions.
+
+  ```json
+  {
+    "type": "array",
+    "description": "The order's transactions.",
+    "items": {
+      "$ref": "#/components/schemas/BaseOrderTransaction"
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [BaseOrderTransaction](/api/schemas/base-order-transaction)
+</Accordion>
+
+<Accordion title="status (required)">
+  The order's status.
+
+  ```json
+  {
+    "type": "string",
+    "title": "status",
+    "description": "The order's status."
+  }
+  ```
+</Accordion>
+
+<Accordion title="credit_line_total (required)">
+  The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+
+  ```json
+  {
+    "type": "number",
+    "title": "credit_line_total",
+    "description": "The total amount of credit lines applied to the order, including taxes. Subtracted from the final total."
+  }
+  ```
+</Accordion>
+
+<Accordion title="item_discount_total (required)">
+  The sum of all discounts applied to line items, including the tax portion of discounts.
+
+  ```json
+  {
+    "type": "number",
+    "title": "item_discount_total",
+    "description": "The sum of all discounts applied to line items, including the tax portion of discounts."
+  }
+  ```
+</Accordion>
+
+<Accordion title="shipping_discount_total (required)">
+  The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+
+  ```json
+  {
+    "type": "number",
+    "title": "shipping_discount_total",
+    "description": "The sum of all discounts applied to shipping methods, including the tax portion of discounts."
+  }
+  ```
+</Accordion>
+
+<Accordion title="custom_display_id (optional)">
+  The custom display ID of the order.
+
+  ```json
+  {
+    "type": "string",
+    "title": "custom_display_id",
+    "description": "The custom display ID of the order.",
+    "externalDocs": {
+      "url": "https://docs.medusajs.com/resources/commerce-modules/order/custom-display-id"
+    }
+  }
+  ```
+</Accordion>
+
+## Schema definition
+
+```json
+{
+  "type": "object",
+  "description": "The order's details.",
+  "x-schemaName": "StoreOrder",
+  "required": [
+    "items",
+    "shipping_methods",
+    "id",
+    "region_id",
+    "customer_id",
+    "sales_channel_id",
+    "email",
+    "currency_code",
+    "status",
+    "payment_status",
+    "fulfillment_status",
+    "summary",
+    "created_at",
+    "updated_at",
+    "original_item_total",
+    "original_item_subtotal",
+    "original_item_tax_total",
+    "item_total",
+    "item_subtotal",
+    "item_tax_total",
+    "item_discount_total",
+    "original_total",
+    "original_subtotal",
+    "original_tax_total",
+    "total",
+    "subtotal",
+    "tax_total",
+    "discount_total",
+    "discount_tax_total",
+    "gift_card_total",
+    "gift_card_tax_total",
+    "shipping_total",
+    "shipping_subtotal",
+    "shipping_tax_total",
+    "shipping_discount_total",
+    "original_shipping_total",
+    "original_shipping_subtotal",
+    "original_shipping_tax_total",
+    "credit_line_total"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "title": "id",
+      "description": "The order's ID."
+    },
+    "region_id": {
+      "type": "string",
+      "title": "region_id",
+      "description": "The ID of the associated region."
+    },
+    "customer_id": {
+      "type": "string",
+      "title": "customer_id",
+      "description": "The ID of the customer that placed the order."
+    },
+    "sales_channel_id": {
+      "type": "string",
+      "title": "sales_channel_id",
+      "description": "The ID of the sales channel the order was placed in."
+    },
+    "email": {
+      "type": "string",
+      "title": "email",
+      "description": "The email of the customer that placed the order.",
+      "format": "email"
+    },
+    "currency_code": {
+      "type": "string",
+      "title": "currency_code",
+      "description": "The order's currency code.",
+      "example": "usd"
+    },
+    "display_id": {
+      "type": "number",
+      "title": "display_id",
+      "description": "The order's display ID."
+    },
+    "shipping_address": {
+      "$ref": "#/components/schemas/StoreOrderAddress"
+    },
+    "billing_address": {
+      "$ref": "#/components/schemas/StoreOrderAddress"
+    },
+    "items": {
+      "type": "array",
+      "description": "The order's items.",
+      "items": {
+        "$ref": "#/components/schemas/StoreOrderLineItem"
+      }
+    },
+    "shipping_methods": {
+      "type": "array",
+      "description": "The order's shipping methods.",
+      "items": {
+        "$ref": "#/components/schemas/StoreOrderShippingMethod"
+      }
+    },
+    "payment_collections": {
+      "type": "array",
+      "description": "The order's payment collections.",
+      "items": {
+        "$ref": "#/components/schemas/StorePaymentCollection"
+      }
+    },
+    "payment_status": {
+      "type": "string",
+      "description": "The order's payment status.",
+      "enum": [
+        "canceled",
+        "not_paid",
+        "awaiting",
+        "authorized",
+        "partially_authorized",
+        "captured",
+        "partially_captured",
+        "partially_refunded",
+        "refunded",
+        "requires_action"
+      ]
+    },
+    "fulfillments": {
+      "type": "array",
+      "description": "The order's fulfillments.",
+      "items": {
+        "$ref": "#/components/schemas/StoreOrderFulfillment"
+      }
+    },
+    "fulfillment_status": {
+      "type": "string",
+      "description": "The order's fulfillment status.",
+      "enum": [
+        "canceled",
+        "not_fulfilled",
+        "partially_fulfilled",
+        "fulfilled",
+        "partially_shipped",
+        "shipped",
+        "partially_delivered",
+        "delivered"
+      ]
+    },
+    "summary": {
+      "$ref": "#/components/schemas/BaseOrderSummary"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "The order's metadata, can hold custom key-value pairs.",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/api/store#manage-metadata",
+        "description": "Learn how to manage metadata"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "created_at",
+      "description": "The date the order was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "updated_at",
+      "description": "The date the order was updated."
+    },
+    "original_item_total": {
+      "type": "number",
+      "title": "original_item_total",
+      "description": "The sum of all line items' original totals before discounts, including taxes."
+    },
+    "original_item_subtotal": {
+      "type": "number",
+      "title": "original_item_subtotal",
+      "description": "The sum of all line items' original subtotals before discounts, excluding taxes."
+    },
+    "original_item_tax_total": {
+      "type": "number",
+      "title": "original_item_tax_total",
+      "description": "The sum of all line items' original tax totals before discounts."
+    },
+    "item_total": {
+      "type": "number",
+      "title": "item_total",
+      "description": "The sum of all line items' totals after discounts, including taxes."
+    },
+    "item_subtotal": {
+      "type": "number",
+      "title": "item_subtotal",
+      "description": "The sum of all line items' subtotals before discounts, excluding taxes."
+    },
+    "item_tax_total": {
+      "type": "number",
+      "title": "item_tax_total",
+      "description": "The sum of all line items' tax totals after discounts."
+    },
+    "original_total": {
+      "type": "number",
+      "title": "original_total",
+      "description": "The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`."
+    },
+    "original_subtotal": {
+      "type": "number",
+      "title": "original_subtotal",
+      "description": "The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`."
+    },
+    "original_tax_total": {
+      "type": "number",
+      "title": "original_tax_total",
+      "description": "The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`."
+    },
+    "total": {
+      "type": "number",
+      "title": "total",
+      "description": "The order's final total after discounts and credit lines, including taxes."
+    },
+    "subtotal": {
+      "type": "number",
+      "title": "subtotal",
+      "description": "The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`."
+    },
+    "tax_total": {
+      "type": "number",
+      "title": "tax_total",
+      "description": "The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`."
+    },
+    "discount_total": {
+      "type": "number",
+      "title": "discount_total",
+      "description": "The total amount of discounts applied to the order, including the tax portion of discounts."
+    },
+    "discount_tax_total": {
+      "type": "number",
+      "title": "discount_tax_total",
+      "description": "The total amount of discounts applied to the order's tax. Represents the tax portion of discounts."
+    },
+    "gift_card_total": {
+      "type": "number",
+      "title": "gift_card_total",
+      "description": "The order's gift card total."
+    },
+    "gift_card_tax_total": {
+      "type": "number",
+      "title": "gift_card_tax_total",
+      "description": "The total taxes applied on the gift card's amount."
+    },
+    "shipping_total": {
+      "type": "number",
+      "title": "shipping_total",
+      "description": "The sum of all shipping methods' totals after discounts, including taxes."
+    },
+    "shipping_subtotal": {
+      "type": "number",
+      "title": "shipping_subtotal",
+      "description": "The sum of all shipping methods' subtotals before discounts, excluding taxes."
+    },
+    "shipping_tax_total": {
+      "type": "number",
+      "title": "shipping_tax_total",
+      "description": "The sum of all shipping methods' tax totals after discounts."
+    },
+    "original_shipping_total": {
+      "type": "number",
+      "title": "original_shipping_total",
+      "description": "The sum of all shipping methods' original totals before discounts, including taxes."
+    },
+    "original_shipping_subtotal": {
+      "type": "number",
+      "title": "original_shipping_subtotal",
+      "description": "The sum of all shipping methods' original subtotals before discounts, excluding taxes."
+    },
+    "original_shipping_tax_total": {
+      "type": "number",
+      "title": "original_shipping_tax_total",
+      "description": "The sum of all shipping methods' original tax totals before discounts."
+    },
+    "customer": {
+      "$ref": "#/components/schemas/StoreCustomer"
+    },
+    "transactions": {
+      "type": "array",
+      "description": "The order's transactions.",
+      "items": {
+        "$ref": "#/components/schemas/BaseOrderTransaction"
+      }
+    },
+    "status": {
+      "type": "string",
+      "title": "status",
+      "description": "The order's status."
+    },
+    "credit_line_total": {
+      "type": "number",
+      "title": "credit_line_total",
+      "description": "The total amount of credit lines applied to the order, including taxes. Subtracted from the final total."
+    },
+    "item_discount_total": {
+      "type": "number",
+      "title": "item_discount_total",
+      "description": "The sum of all discounts applied to line items, including the tax portion of discounts."
+    },
+    "shipping_discount_total": {
+      "type": "number",
+      "title": "shipping_discount_total",
+      "description": "The sum of all discounts applied to shipping methods, including the tax portion of discounts."
+    },
+    "custom_display_id": {
+      "type": "string",
+      "title": "custom_display_id",
+      "description": "The custom display ID of the order.",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/resources/commerce-modules/order/custom-display-id"
+      }
+    }
+  }
+}
+```
+
+Related schemas:
+
+- [BaseOrderSummary](/api/schemas/base-order-summary)
+
+- [BaseOrderTransaction](/api/schemas/base-order-transaction)
+
+- [StoreCustomer](/api/schemas/store-customer)
+
+- [StoreOrderAddress](/api/schemas/store-order-address)
+
+- [StoreOrderFulfillment](/api/schemas/store-order-fulfillment)
+
+- [StoreOrderLineItem](/api/schemas/store-order-line-item)
+
+- [StoreOrderShippingMethod](/api/schemas/store-order-shipping-method)
+
+- [StorePaymentCollection](/api/schemas/store-payment-collection)

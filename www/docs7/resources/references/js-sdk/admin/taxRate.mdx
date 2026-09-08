@@ -1,0 +1,459 @@
+---
+title: taxRate - JS SDK Admin Reference
+sidebarTitle: taxRate
+---
+
+This documentation provides a reference to the `sdk.admin.taxRate` set of methods used to send requests to Medusa's Admin API routes.
+
+## create
+
+This method creates a tax rate. It sends a request to the
+[Create Tax Rate](/api/admin/tax-rates/create-tax-rate)
+API route.
+
+### Example
+
+```ts
+sdk.admin.taxRate.create({
+  name: "VAT",
+  tax_region_id: "txreg_123",
+  code: "VAT",
+  rate: 2, // 2%
+})
+.then(({ tax_rate }) => {
+  console.log(tax_rate)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [AdminCreateTaxRate](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateTaxRate) — The details of the tax rate to create.
+  - `name`: `string` — The name of the tax rate.
+  - `tax_region_id`: `string` — The ID of the tax region associated with the tax rate.
+  - `rate`: `number` (optional) — The rate of the tax rate.
+  - `code`: `string` — The code of the tax rate.
+  - `rules`: [AdminCreateTaxRateRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateTaxRateRule)\[] (optional) — The rules of the tax rate.
+    - `reference`: `string` — The name of the table that the rule references.
+
+      Example:
+
+      ```
+      "product_type"
+      ```
+    - `reference_id`: `string` — The ID of the record in the table that the rule references.
+
+      Example:
+
+      ```
+      "protyp_123"
+      ```
+  - `is_default`: `boolean` (optional) — Whether the tax rate is the default tax rate in its tax region.
+  - `is_combinable`: `boolean` (optional) — Whether the tax rate is combinable with other tax rates.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the tax rate.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the tax rate.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminTaxRateResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateResponse)> — The tax rate's details.
+  - `tax_rate`: [AdminTaxRate](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRate) — The tax rate's details.
+    - `id`: `string` — The tax rate's ID.
+    - `rate`: `null` | `number` — The tax rate's percentage rate.
+    - `code`: `string` — The tax rate's code.
+    - `name`: `string` — The tax rate's name.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the tax rate.
+    - `tax_region_id`: `string` — The ID of the tax region associated with the tax rate.
+    - `is_combinable`: `boolean` — Whether the tax rate is combinable with other tax rates.
+    - `is_default`: `boolean` — Whether the tax rate is the default tax rate in its tax region.
+    - `created_at`: `string` — The date the tax rate was created.
+    - `updated_at`: `string` — The date the tax rate was updated.
+    - `deleted_at`: `null` — The date the tax rate was deleted.
+    - `created_by`: `null` | `string` — The ID of the user who created the tax rate.
+    - `tax_region`: [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion) — The tax region associated with the tax rate.
+    - `rules`: [AdminTaxRateRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateRule)\[] — The rules associated with the tax rate.
+
+## update
+
+This method updates a tax rate. It sends a request to the
+[Update Tax Rate](/api/admin/tax-rates/update-a-tax-rate)
+API route.
+
+### Example
+
+```ts
+sdk.admin.taxRate.update("txrat_123", {
+  name: "VAT",
+  code: "VAT",
+})
+.then(({ tax_rate }) => {
+  console.log(tax_rate)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `id`: `string` — The ID of the tax rate to update.
+- `body`: [AdminUpdateTaxRate](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateTaxRate) — The details of the tax rate to update.
+  - `name`: `string` (optional) — The name of the tax rate.
+  - `rate`: `number` (optional) — The percentage rate of the tax rate.
+  - `code`: `string` (optional) — The code of the tax rate.
+  - `rules`: [AdminCreateTaxRateRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateTaxRateRule)\[] (optional) — The rules of the tax rate.
+    - `reference`: `string` — The name of the table that the rule references.
+
+      Example:
+
+      ```
+      "product_type"
+      ```
+    - `reference_id`: `string` — The ID of the record in the table that the rule references.
+
+      Example:
+
+      ```
+      "protyp_123"
+      ```
+  - `is_default`: `boolean` (optional) — Whether the tax rate is the default tax rate in its tax region.
+  - `is_combinable`: `boolean` (optional) — Whether the tax rate is combinable with other tax rates.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the tax rate.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the tax rate.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminTaxRateResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateResponse)> — The tax rate's details.
+  - `tax_rate`: [AdminTaxRate](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRate) — The tax rate's details.
+    - `id`: `string` — The tax rate's ID.
+    - `rate`: `null` | `number` — The tax rate's percentage rate.
+    - `code`: `string` — The tax rate's code.
+    - `name`: `string` — The tax rate's name.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the tax rate.
+    - `tax_region_id`: `string` — The ID of the tax region associated with the tax rate.
+    - `is_combinable`: `boolean` — Whether the tax rate is combinable with other tax rates.
+    - `is_default`: `boolean` — Whether the tax rate is the default tax rate in its tax region.
+    - `created_at`: `string` — The date the tax rate was created.
+    - `updated_at`: `string` — The date the tax rate was updated.
+    - `deleted_at`: `null` — The date the tax rate was deleted.
+    - `created_by`: `null` | `string` — The ID of the user who created the tax rate.
+    - `tax_region`: [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion) — The tax region associated with the tax rate.
+    - `rules`: [AdminTaxRateRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateRule)\[] — The rules associated with the tax rate.
+
+## delete
+
+This method deletes a tax rate. It sends a request to the
+[Delete Tax Rate](/api/admin/tax-rates/delete-a-tax-rate)
+API route.
+
+### Example
+
+```ts
+sdk.admin.taxRate.delete("txrat_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The ID of the tax rate to delete.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminTaxRateDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: `"tax_rate"` — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## retrieve
+
+This method retrieves a tax rate. It sends a request to the
+[Get Tax Rate](/api/admin/tax-rates/get-a-tax-rate)
+API route.
+
+### Example
+
+To retrieve a tax rate by its ID:
+
+```ts
+sdk.admin.taxRate.retrieve("txrat_123")
+.then(({ tax_rate }) => {
+  console.log(tax_rate)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.taxRate.retrieve("txrat_123", {
+  fields: "id,*tax_region"
+})
+.then(({ tax_rate }) => {
+  console.log(tax_rate)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The ID of the tax rate to retrieve.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the tax rate.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminTaxRateResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateResponse)> — The tax rate's details.
+  - `tax_rate`: [AdminTaxRate](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRate) — The tax rate's details.
+    - `id`: `string` — The tax rate's ID.
+    - `rate`: `null` | `number` — The tax rate's percentage rate.
+    - `code`: `string` — The tax rate's code.
+    - `name`: `string` — The tax rate's name.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the tax rate.
+    - `tax_region_id`: `string` — The ID of the tax region associated with the tax rate.
+    - `is_combinable`: `boolean` — Whether the tax rate is combinable with other tax rates.
+    - `is_default`: `boolean` — Whether the tax rate is the default tax rate in its tax region.
+    - `created_at`: `string` — The date the tax rate was created.
+    - `updated_at`: `string` — The date the tax rate was updated.
+    - `deleted_at`: `null` — The date the tax rate was deleted.
+    - `created_by`: `null` | `string` — The ID of the user who created the tax rate.
+    - `tax_region`: [AdminTaxRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRegion) — The tax region associated with the tax rate.
+    - `rules`: [AdminTaxRateRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateRule)\[] — The rules associated with the tax rate.
+
+## list
+
+This method retrieves a list of tax rates. It sends a request to the
+[List Tax Rates](/api/admin/tax-rates/list-tax-rates)
+API route.
+
+### Example
+
+To retrieve the list of tax rates:
+
+```ts
+sdk.admin.taxRate.list()
+.then(({ tax_rates, count, limit, offset }) => {
+  console.log(tax_rates)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.taxRate.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ tax_rates, count, limit, offset }) => {
+  console.log(tax_rates)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each tax rate:
+
+```ts
+sdk.admin.taxRate.list({
+  fields: "id,*tax_region"
+})
+.then(({ tax_rates, count, limit, offset }) => {
+  console.log(tax_rates)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [AdminTaxRateListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateListParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminTaxRateListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTaxRateListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminTaxRateListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTaxRateListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminTaxRateListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTaxRateListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keywords to search the tax rate's searchable fields.
+    - `tax_region_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by tax region ID(s).
+    - `is_default`: `"true"` | `"false"` (optional) — Filter by whether the tax rate is the default tax rate in its tax region.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax rate was created.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax rate was updated.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax rate was deleted.
+  - `$or`: ([AdminTaxRateListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTaxRateListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminTaxRateListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTaxRateListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminTaxRateListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTaxRateListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTaxRateListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keywords to search the tax rate's searchable fields.
+    - `tax_region_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by tax region ID(s).
+    - `is_default`: `"true"` | `"false"` (optional) — Filter by whether the tax rate is the default tax rate in its tax region.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax rate was created.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax rate was updated.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax rate was deleted.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keywords to search the tax rate's searchable fields.
+  - `tax_region_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by tax region ID(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `is_default`: `"true"` | `"false"` (optional) — Filter by whether the tax rate is the default tax rate in its tax region.
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax rate was created.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax rate was updated.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the tax rate was deleted.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminTaxRateListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminTaxRateListResponse)> — The list of tax rates.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.

@@ -1,0 +1,197 @@
+---
+title: confirmOrderChange - Order Module Reference
+sidebarTitle: confirmOrderChange
+---
+
+This documentation provides a reference to the `confirmOrderChange` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="confirmorderchange-orderchangeid-sharedcontext-promiseorderchangereturn" />
+
+## confirmOrderChange(orderChangeId, sharedContext?): Promise\<[OrderChangeReturn](/resources/references/order/interfaces/orderOrderChangeReturn)>
+
+This method confirms an order change, applying these changes on the associated order.
+
+### Example
+
+```ts
+const {
+  items,
+  shippingMethods
+} =  await orderModuleService.confirmOrderChange("123")
+```
+
+<a id="confirmorderchange-parameters" />
+
+### Parameters
+
+**confirmOrderChange**
+
+- `orderChangeId`: `string` — The order change's ID.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="confirmorderchange-returns" />
+
+### Returns
+
+**confirmOrderChange**
+
+- `Promise`: Promise\<[OrderChangeReturn](/resources/references/order/interfaces/orderOrderChangeReturn)> — The item and shipping method changes made on the order.
+
+<a id="confirmorderchange-orderchangeid-sharedcontext-promiseorderchangereturn-1" />
+
+## confirmOrderChange(orderChangeId, sharedContext?): Promise\<[OrderChangeReturn](/resources/references/order/interfaces/orderOrderChangeReturn)>
+
+This method confirms order changes, applying these changes on the associated orders.
+
+### Example
+
+```ts
+await orderModuleService.confirmOrderChange(["123"])
+```
+
+<a id="confirmorderchange-parameters-1" />
+
+### Parameters
+
+**confirmOrderChange**
+
+- `orderChangeId`: `string`\[] — The order changes' IDs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="confirmorderchange-returns-1" />
+
+### Returns
+
+**confirmOrderChange**
+
+- `Promise`: Promise\<[OrderChangeReturn](/resources/references/order/interfaces/orderOrderChangeReturn)> — The item and shipping method changes made on the order.
+
+<a id="confirmorderchange-data-sharedcontext-promiseorderchangereturn" />
+
+## confirmOrderChange(data, sharedContext?): Promise\<[OrderChangeReturn](/resources/references/order/interfaces/orderOrderChangeReturn)>
+
+This method confirms an order change, specifying confirmation details.
+
+### Example
+
+```ts
+await orderModuleService.confirmOrderChange({
+  id: "123",
+  confirmed_by: "user_123"
+})
+```
+
+<a id="confirmorderchange-parameters-2" />
+
+### Parameters
+
+**confirmOrderChange**
+
+- `data`: [ConfirmOrderChangeDTO](/resources/references/order/interfaces/orderConfirmOrderChangeDTO) — The confirmation's details of the order change.
+  - `id`: `string` — The ID of the order change.
+  - `confirmed_by`: `string` (optional) — The user or customer that confirmed the order change.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="confirmorderchange-returns-2" />
+
+### Returns
+
+**confirmOrderChange**
+
+- `Promise`: Promise\<[OrderChangeReturn](/resources/references/order/interfaces/orderOrderChangeReturn)> — The item and shipping method changes made on the order.
+
+<a id="confirmorderchange-data-sharedcontext-promiseorderchangereturn-1" />
+
+## confirmOrderChange(data, sharedContext?): Promise\<[OrderChangeReturn](/resources/references/order/interfaces/orderOrderChangeReturn)>
+
+This method confirms order changes, specifying confirmation details.
+
+### Example
+
+```ts
+await orderModuleService.confirmOrderChange([{
+  id: "123",
+  confirmed_by: "user_123"
+}])
+```
+
+<a id="confirmorderchange-parameters-3" />
+
+### Parameters
+
+**confirmOrderChange**
+
+- `data`: [ConfirmOrderChangeDTO](/resources/references/order/interfaces/orderConfirmOrderChangeDTO)\[] — The confirm order changes details.
+  - `id`: `string` — The ID of the order change.
+  - `confirmed_by`: `string` (optional) — The user or customer that confirmed the order change.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="confirmorderchange-returns-3" />
+
+### Returns
+
+**confirmOrderChange**
+
+- `Promise`: Promise\<[OrderChangeReturn](/resources/references/order/interfaces/orderOrderChangeReturn)> — The item and shipping method changes made on all the orders.

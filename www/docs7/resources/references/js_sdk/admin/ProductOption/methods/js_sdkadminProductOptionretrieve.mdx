@@ -1,0 +1,60 @@
+---
+title: retrieve
+---
+
+This method retrieves a product option by its ID. It sends a request to the
+[Get Product Option API route](/api/admin/product-options/get-a-product-option).
+
+## Example
+
+To retrieve a product option by its ID:
+
+```ts
+sdk.admin.productOption.retrieve("opt_123")
+.then(({ product_option }) => {
+  console.log(product_option)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.productOption.retrieve("opt_123", {
+  fields: "id,title"
+})
+.then(({ product_option }) => {
+  console.log(product_option)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The product option's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the product option.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminProductOptionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOptionResponse)> — The product option's details.
+  - `product_option`: [AdminProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOption) — The product option's details.
+    - `products`: `null` | [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct)\[] (optional) — The associated products' details.
+    - `values`: [AdminProductOptionValue](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOptionValue)\[] (optional) — The option's values.
+    - `id`: `string` — The option's ID.
+    - `title`: `string` — The option's title.
+    - `is_exclusive`: `boolean` — Whether the option is exclusive or global.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` (optional) — The date the option was created.
+    - `updated_at`: `string` (optional) — The date the option was updated.
+    - `deleted_at`: `null` | `string` (optional) — The date the option was deleted.

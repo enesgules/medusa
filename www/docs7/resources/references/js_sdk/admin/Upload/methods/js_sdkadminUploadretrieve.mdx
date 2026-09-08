@@ -1,0 +1,39 @@
+---
+title: retrieve
+---
+
+This method retrieves a file's details by its ID. It sends a request to the
+[Get File](/api/admin/uploads/get-a-file)
+API route.
+
+## Example
+
+```ts
+sdk.admin.upload.retrieve("test.txt")
+.then(({ file }) => {
+  console.log(file)
+})
+```
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The ID of the file to retrieve.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Query parameters to pass in the request.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminFileResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFileResponse)> — The file's details.
+  - `file`: [AdminFile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFile) — The file's details.
+    - `id`: `string` — The ID of the file in the configured File Module Provider. For example, when using the Local File Provider Module (default provider), the ID is the file's path relative to the `static` directory.
+    - `url`: `string` — The URL of the file.

@@ -1,0 +1,175 @@
+---
+title: list
+---
+
+This method retrieves a paginated list of orders. It sends a request to the
+[List Orders](/api/admin/orders/list-orders) API route.
+
+## Example
+
+To retrieve the list of orders:
+
+```ts
+sdk.admin.order.list()
+.then(({ orders, count, limit, offset }) => {
+  console.log(orders)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.order.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ orders, count, limit, offset }) => {
+  console.log(orders)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each order:
+
+```ts
+sdk.admin.order.list({
+  fields: "id,*items"
+})
+.then(({ orders, count, limit, offset }) => {
+  console.log(orders)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+## Parameters
+
+**list**
+
+- `queryParams`: [AdminOrderFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderFilters) (optional) — Filters and pagination configurations.
+  - `$and`: ([BaseOrderFilters](/resources/references/types/interfaces/typesBaseOrderFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseOrderFilters](/resources/references/types/interfaces/typesBaseOrderFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([BaseOrderFilters](/resources/references/types/interfaces/typesBaseOrderFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseOrderFilters](/resources/references/types/interfaces/typesBaseOrderFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseOrderFilters](/resources/references/types/interfaces/typesBaseOrderFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseOrderFilters](/resources/references/types/interfaces/typesBaseOrderFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by order ID(s).
+    - `status`: [OrderStatus](/resources/references/fulfillment/types/fulfillmentOrderStatus) | [OrderStatus](/resources/references/fulfillment/types/fulfillmentOrderStatus)\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<OrderStatus | OrderStatus\[]> (optional) — Filter by status(es).
+  - `$or`: ([BaseOrderFilters](/resources/references/types/interfaces/typesBaseOrderFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseOrderFilters](/resources/references/types/interfaces/typesBaseOrderFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([BaseOrderFilters](/resources/references/types/interfaces/typesBaseOrderFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseOrderFilters](/resources/references/types/interfaces/typesBaseOrderFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseOrderFilters](/resources/references/types/interfaces/typesBaseOrderFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseOrderFilters](/resources/references/types/interfaces/typesBaseOrderFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by order ID(s).
+    - `status`: [OrderStatus](/resources/references/fulfillment/types/fulfillmentOrderStatus) | [OrderStatus](/resources/references/fulfillment/types/fulfillmentOrderStatus)\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<OrderStatus | OrderStatus\[]> (optional) — Filter by status(es).
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `id`: `string` | `string`\[] (optional) — Filter by order ID(s).
+  - `sales_channel_id`: `string`\[] (optional) — Filter by sales channel IDs to retrieve their associated orders.
+  - `region_id`: `string` | `string`\[] (optional) — Filter by region IDs to retrieve their associated orders.
+  - `customer_id`: `string` | `string`\[] (optional) — Filter by customer IDs to retrieve their associated orders.
+  - `q`: `string` (optional) — Query or keywords to filter the order's searchable fields.
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the fulfillment's creation date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the fulfillment's update date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `status`: [OrderStatus](/resources/references/fulfillment/types/fulfillmentOrderStatus) | [OrderStatus](/resources/references/fulfillment/types/fulfillmentOrderStatus)\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<OrderStatus | OrderStatus\[]> (optional) — Filter by status(es).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+## Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminOrderListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminOrderListResponse)> — The paginated list of orders.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.

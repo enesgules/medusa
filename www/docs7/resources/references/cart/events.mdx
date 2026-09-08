@@ -1,0 +1,85 @@
+---
+title: Cart Module Events Reference
+sidebarTitle: Events Reference
+---
+
+This reference shows all the events emitted by the Medusa application related to the Cart Module. If you use the module outside the Medusa application, these events aren't emitted.
+
+### Summary
+
+| Event                                                                                     | Description                                                                                          |
+| ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [`cart.created`](/resources/references/cart/events#cartcreated)                           | Emitted when a cart is created.                                                                      |
+| [`cart.updated`](/resources/references/cart/events#cartupdated)                           | Emitted when a cart's details are updated.                                                           |
+| [`cart.region_updated`](/resources/references/cart/events#cartregion_updated)             | Emitted when the cart's region is updated. This event is emitted alongside the `cart.updated` event. |
+| [`cart.customer_transferred`](/resources/references/cart/events#cartcustomer_transferred) | Emitted when the customer in the cart is transferred.                                                |
+
+### cart.created
+
+Emitted when a cart is created.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the cart
+}
+```
+
+#### Workflows Emitting this Event
+
+- [createCartWorkflow](/resources/references/medusa-workflows/createCartWorkflow)
+
+### cart.updated
+
+Emitted when a cart's details are updated.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the cart
+}
+```
+
+#### Workflows Emitting this Event
+
+- [deleteLineItemsWorkflow](/resources/references/medusa-workflows/deleteLineItemsWorkflow)
+- [updateLineItemInCartWorkflow](/resources/references/medusa-workflows/updateLineItemInCartWorkflow)
+- [updateCartWorkflow](/resources/references/medusa-workflows/updateCartWorkflow)
+- [addToCartWorkflow](/resources/references/medusa-workflows/addToCartWorkflow)
+- [addShippingMethodToCartWorkflow](/resources/references/medusa-workflows/addShippingMethodToCartWorkflow)
+
+### cart.region\_updated
+
+Emitted when the cart's region is updated. This
+event is emitted alongside the `cart.updated` event.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the cart
+}
+```
+
+#### Workflows Emitting this Event
+
+- [updateCartWorkflow](/resources/references/medusa-workflows/updateCartWorkflow)
+
+### cart.customer\_transferred
+
+Emitted when the customer in the cart is transferred.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the cart
+  customer_id, // The ID of the customer
+}
+```
+
+#### Workflows Emitting this Event
+
+- [transferCartCustomerWorkflow](/resources/references/medusa-workflows/transferCartCustomerWorkflow)

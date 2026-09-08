@@ -1,0 +1,136 @@
+---
+title: createUsers - User Module Reference
+sidebarTitle: createUsers
+---
+
+This documentation provides a reference to the `createUsers` method. This belongs to the User Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createusers-data-sharedcontext-promiseuserdto" />
+
+## createUsers(data, sharedContext?): Promise\<[UserDTO](/resources/references/user/interfaces/userUserDTO)\[]>
+
+This method creates users.
+
+### Example
+
+```ts
+const users = await userModuleService.createUsers([
+  {
+    email: "john@doe.com"
+  },
+  {
+    email: "john2@doe.com"
+  }
+])
+```
+
+<a id="createusers-parameters" />
+
+### Parameters
+
+**createUsers**
+
+- `data`: [CreateUserDTO](/resources/references/user/interfaces/userCreateUserDTO)\[] — The users to be created.
+  - `email`: `string` — The email of the user.
+  - `first_name`: `null` | `string` (optional) — The first name of the user.
+  - `last_name`: `null` | `string` (optional) — The last name of the user.
+  - `avatar_url`: `null` | `string` (optional) — The avatar URL of the user.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/user/interfaces/userContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/user/interfaces/userIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createusers-returns" />
+
+### Returns
+
+**createUsers**
+
+- `Promise`: Promise\<[UserDTO](/resources/references/user/interfaces/userUserDTO)\[]> — The created users.
+  - `UserDTO[]`: [UserDTO](/resources/references/user/interfaces/userUserDTO)\[]
+    - `id`: `string` — The ID of the user.
+    - `email`: `string` — The email of the user.
+    - `first_name`: `null` | `string` — The first name of the user.
+    - `last_name`: `null` | `string` — The last name of the user.
+    - `avatar_url`: `null` | `string` — The avatar URL of the user.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `roles`: `null` | `string`\[] (optional) — The RBAC roles assigned to the user.
+    - `created_at`: `Date` — The creation date of the user.
+    - `updated_at`: `Date` — The updated date of the user.
+    - `deleted_at`: `null` | `Date` — The deletion date of the user.
+
+<a id="createusers-data-sharedcontext-promiseuserdto-1" />
+
+## createUsers(data, sharedContext?): Promise\<[UserDTO](/resources/references/user/interfaces/userUserDTO)>
+
+This method creates a user.
+
+### Example
+
+```ts
+const user = await userModuleService.createUsers({
+  email: "john@doe.com"
+})
+```
+
+<a id="createusers-parameters-1" />
+
+### Parameters
+
+**createUsers**
+
+- `data`: [CreateUserDTO](/resources/references/user/interfaces/userCreateUserDTO) — The user to be created.
+  - `email`: `string` — The email of the user.
+  - `first_name`: `null` | `string` (optional) — The first name of the user.
+  - `last_name`: `null` | `string` (optional) — The last name of the user.
+  - `avatar_url`: `null` | `string` (optional) — The avatar URL of the user.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/user/interfaces/userContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/user/interfaces/userIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createusers-returns-1" />
+
+### Returns
+
+**createUsers**
+
+- `Promise`: Promise\<[UserDTO](/resources/references/user/interfaces/userUserDTO)> — The created user.
+  - `id`: `string` — The ID of the user.
+  - `email`: `string` — The email of the user.
+  - `first_name`: `null` | `string` — The first name of the user.
+  - `last_name`: `null` | `string` — The last name of the user.
+  - `avatar_url`: `null` | `string` — The avatar URL of the user.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `roles`: `null` | `string`\[] (optional) — The RBAC roles assigned to the user.
+  - `created_at`: `Date` — The creation date of the user.
+  - `updated_at`: `Date` — The updated date of the user.
+  - `deleted_at`: `null` | `Date` — The deletion date of the user.

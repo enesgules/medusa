@@ -1,0 +1,192 @@
+---
+title: deleteProductsWorkflow - Medusa Core Workflows Reference
+sidebarTitle: deleteProductsWorkflow
+---
+
+This documentation provides a reference to the `deleteProductsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow deletes one or more products. It's used by the
+[Delete Products Admin API Route](/api/admin/products/delete-a-product).
+
+This workflow has a hook that allows you to perform custom actions after the products are deleted. For example,
+you can delete custom records linked to the products.
+
+You can also use this workflow within your own custom workflows, allowing you to wrap custom logic around product deletion.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/product/workflows/delete-products.ts#L53)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { deleteProductsWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await deleteProductsWorkflow(req.scope)
+    .run({
+      input: {
+        ids: ["product_123"],
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { deleteProductsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await deleteProductsWorkflow(container)
+    .run({
+      input: {
+        ids: ["product_123"],
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { deleteProductsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await deleteProductsWorkflow(container)
+    .run({
+      input: {
+        ids: ["product_123"],
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { deleteProductsWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = deleteProductsWorkflow
+      .runAsStep({
+        input: {
+          ids: ["product_123"],
+        }
+      })
+  }
+)
+```
+
+<a id="deleteproductsworkflow-steps" />
+
+## Steps
+
+- [deleteInventoryItemWorkflow](/resources/references/medusa-workflows/deleteInventoryItemWorkflow): Delete one or more inventory items.
+  - [deleteProductsStep](/resources/references/medusa-workflows/steps/deleteProductsStep): This step deletes one or more products.
+    - [deleteProductOptionsWorkflow](/resources/references/medusa-workflows/deleteProductOptionsWorkflow): Delete one or more product option.
+      - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+        - [productsDeleted](/resources/references/medusa-workflows/deleteProductsWorkflow#productsdeleted): This hook is executed after the products are deleted. You can consume this hook to perform custom actions on the deleted products.
+
+<a id="deleteproductsworkflow-input" />
+
+## Input
+
+**deleteProductsWorkflow**
+
+- `DeleteProductsWorkflowInput`: [DeleteProductsWorkflowInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcDeleteProductsWorkflowInput)
+  - `ids`: `string`\[] — The IDs of the products to delete.
+
+## Hooks
+
+Hooks allow you to inject custom functionalities into the workflow. You'll receive data from the workflow, as well as additional data sent through an HTTP request.
+
+Learn more about [Hooks](/learn/fundamentals/workflows/workflow-hooks) and [Additional Data](/learn/fundamentals/api-routes/additional-data).
+
+### productsDeleted
+
+This hook is executed after the products are deleted. You can consume this hook to perform custom actions on the deleted products.
+
+#### Example
+
+```ts
+import { deleteProductsWorkflow } from "@medusajs/medusa/core-flows"
+
+deleteProductsWorkflow.hooks.productsDeleted(
+  (async ({ ids }, { container }) => {
+    //TODO
+  })
+)
+```
+
+<a id="input" />
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+**productsDeleted**
+
+- `input`: object — The input data for the hook.
+  - `ids`: `string`\[]
+
+<a id="deleteproductsworkflow-emitted-events" />
+
+## Emitted Events
+
+- `product.deleted`: Emitted when products are deleted.
+
+  ```ts
+  {
+    id, // The ID of the product
+  }
+  ```
+- `product-option.deleted`: Emitted when product options are deleted.
+
+  ```ts
+  {
+    id, // The ID of the product option
+  }
+  ```
+- `inventory-item.deleted` (since v2.18.0): Emitted when inventory items are deleted.
+
+  ```ts
+  {
+    id, // The ID of the inventory item
+  }
+  ```

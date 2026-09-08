@@ -1,0 +1,67 @@
+---
+title: createPaymentAccountHolderStep - Medusa Core Workflows Reference
+sidebarTitle: createPaymentAccountHolderStep
+---
+
+This documentation provides a reference to the `createPaymentAccountHolderStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates the account holder in the payment provider.
+
+## Example
+
+```ts
+const accountHolder = createPaymentAccountHolderStep({
+  provider_id: "pp_stripe_stripe",
+  context: {
+    customer: {
+      id: "cus_123",
+      email: "example@gmail.com"
+    }
+  }
+})
+```
+
+<a id="createpaymentaccountholderstep-input" />
+
+## Input
+
+**createPaymentAccountHolderStep**
+
+- `CreateAccountHolderDTO`: [CreateAccountHolderDTO](/resources/references/payment/interfaces/paymentCreateAccountHolderDTO) — The payment session to be created.
+  - `provider_id`: `string` — The provider's ID.
+  - `context`: [PaymentProviderContext](/resources/references/payment/interfaces/paymentPaymentProviderContext) & `object` — Necessary context data for the associated payment provider.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/payment/types/paymentPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+      - `data`: `Record<string, unknown>` — Account holder's details as stored in the third-party payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/payment/types/paymentPaymentCustomerDTO) (optional) — The customer information from Medusa.
+      - `id`: `string` — The ID of the customer in Medusa.
+      - `email`: `string` — The email of the customer.
+      - `company_name`: `string` | `null` (optional) — The customer's company name.
+      - `first_name`: `string` | `null` (optional) — The customer's first name.
+      - `last_name`: `string` | `null` (optional) — The customer's last name.
+      - `phone`: `string` | `null` (optional) — The customer's phone number.
+      - `billing_address`: [PaymentAddressDTO](/resources/references/payment/types/paymentPaymentAddressDTO) | `null` (optional) — The customer's billing address.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+    - `customer`: [PaymentCustomerDTO](/resources/references/payment/types/paymentPaymentCustomerDTO) — The customer information from Medusa.
+      - `id`: `string` — The ID of the customer in Medusa.
+      - `email`: `string` — The email of the customer.
+      - `company_name`: `string` | `null` (optional) — The customer's company name.
+      - `first_name`: `string` | `null` (optional) — The customer's first name.
+      - `last_name`: `string` | `null` (optional) — The customer's last name.
+      - `phone`: `string` | `null` (optional) — The customer's phone number.
+      - `billing_address`: [PaymentAddressDTO](/resources/references/payment/types/paymentPaymentAddressDTO) | `null` (optional) — The customer's billing address.
+
+<a id="createpaymentaccountholderstep-output" />
+
+## Output
+
+**createPaymentAccountHolderStep**
+
+- `AccountHolderDTO`: [AccountHolderDTO](/resources/references/payment/interfaces/paymentAccountHolderDTO)
+  - `id`: `string` — The ID of the account holder.
+  - `provider_id`: `string` — The ID of the associated payment provider.
+  - `external_id`: `string` — The external ID of the account holder in the payment provider system.
+  - `email`: `null` | `string` — The email of the account holder.
+  - `data`: `Record<string, unknown>` — The data of the account holder, as returned by the payment provider.
+  - `created_at`: `null` | `string` | `Date` (optional) — When the account holder was created.
+  - `updated_at`: `null` | `string` | `Date` (optional) — When the account holder was updated.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.

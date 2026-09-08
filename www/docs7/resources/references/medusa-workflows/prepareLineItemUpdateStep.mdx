@@ -1,0 +1,42 @@
+---
+title: prepareLineItemUpdateStep - Medusa Core Workflows Reference
+sidebarTitle: prepareLineItemUpdateStep
+---
+
+This documentation provides a reference to the `prepareLineItemUpdateStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step builds the update payload for a cart line item, resolving its unit
+price (from the input, the variant's calculated price, or the existing item),
+its compare-at unit price, and tax inclusivity. It throws an error if the
+resulting unit price is unset.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { prepareLineItemUpdateStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = prepareLineItemUpdateStep("{value}")
+  }
+)
+```
+
+<a id="preparelineitemupdatestep-input" />
+
+## Input
+
+**prepareLineItemUpdateStep**
+
+- `PrepareLineItemUpdateStepInput`: `PrepareLineItemUpdateStepInput`
+
+<a id="preparelineitemupdatestep-output" />
+
+## Output
+
+**prepareLineItemUpdateStep**
+
+- `WorkflowDataProperties`: [WorkflowDataProperties](/resources/references/workflows/types/workflowsWorkflowDataProperties)\<object>
+  - `data`: `Record<string, any>` (default: updateData)
+  - `selector`: `object`
+    - `id`: `string` (default: input.item\_id)

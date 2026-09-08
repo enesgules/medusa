@@ -1,0 +1,67 @@
+---
+title: prepareAdjustmentsFromPromotionActionsStep - Medusa Core Workflows Reference
+sidebarTitle: prepareAdjustmentsFromPromotionActionsStep
+---
+
+This documentation provides a reference to the `prepareAdjustmentsFromPromotionActionsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step prepares the line item or shipping method adjustments using
+actions computed by the Promotion Module.
+
+## Example
+
+```ts
+const data = prepareAdjustmentsFromPromotionActionsStep({
+  "actions": [{
+    "action": "addItemAdjustment",
+    "item_id": "litem_123",
+    "amount": 10,
+    "code": "10OFF",
+  }]
+})
+```
+
+<a id="prepareadjustmentsfrompromotionactionsstep-input" />
+
+## Input
+
+**prepareAdjustmentsFromPromotionActionsStep**
+
+- `PrepareAdjustmentsFromPromotionActionsStepInput`: [PrepareAdjustmentsFromPromotionActionsStepInput](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcPrepareAdjustmentsFromPromotionActionsStepInput)
+  - `actions`: [ComputeActions](/resources/references/promotion/types/promotionComputeActions)\[] — The actions computed by the Promotion Module.
+    - `action`: `"addItemAdjustment"` — The type of action.
+    - `item_id`: `string` — The associated item's ID.
+    - `amount`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The amount to remove off the item's total.
+      - `value`: `string` | `number`
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/promotion/types/promotionBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the promotion amount includes tax.
+    - `code`: `string` — The promotion's code.
+    - `description`: `string` (optional) — The promotion's description.
+    - `adjustment_id`: `string` — The associated adjustment's ID.
+    - `shipping_method_id`: `string` — The associated shipping method's ID.
+
+<a id="prepareadjustmentsfrompromotionactionsstep-output" />
+
+## Output
+
+**prepareAdjustmentsFromPromotionActionsStep**
+
+- `PrepareAdjustmentsFromPromotionActionsStepOutput`: [PrepareAdjustmentsFromPromotionActionsStepOutput](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcPrepareAdjustmentsFromPromotionActionsStepOutput)
+  - `lineItemAdjustmentsToCreate`: `object`\[] — The line item adjustments to create.
+    - `code`: `string` — The promotion code that computed the adjustment.
+    - `amount`: `number` — The amount of the adjustment.
+    - `item_id`: `string` — The ID of the line item to adjust.
+    - `promotion_id`: `string` (optional) — The ID of the applied promotion.
+  - `lineItemAdjustmentIdsToRemove`: `string`\[] — The line item adjustment IDs to remove.
+  - `shippingMethodAdjustmentsToCreate`: `object`\[] — The shipping method adjustments to create.
+    - `code`: `string` — The promotion code that computed the adjustment.
+    - `amount`: `number` — The amount of the adjustment.
+    - `shipping_method_id`: `string` — The ID of the shipping method to adjust.
+    - `promotion_id`: `string` (optional) — The ID of the applied promotion.
+  - `shippingMethodAdjustmentIdsToRemove`: `string`\[] — The shipping method adjustment IDs to remove.
+  - `computedPromotionCodes`: `string`\[] — The promotion codes that were computed.
+  - `skippedPromoCodes`: `object`\[] — The promotion codes that could not be applied, along with the reason.
+    - `code`: `string` — The promotion code that was skipped.
+    - `reason`: `"promotion_limit_exceeded"` | `"campaign_budget_exceeded"` — The reason the promotion code was skipped. - `promotion_limit_exceeded`: the promotion's usage limit has been reached. - `campaign_budget_exceeded`: the promotion's campaign budget has been exhausted.

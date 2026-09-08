@@ -1,0 +1,52 @@
+---
+title: revertUsage - Promotion Module Reference
+sidebarTitle: revertUsage
+---
+
+This documentation provides a reference to the `revertUsage` method. This belongs to the Promotion Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method is used to revert the changes made by registerUsage action
+
+## Example
+
+```ts
+await promotionModuleService.revertUsage([
+  {
+    amount: 50,
+    code: "50OFF",
+  },
+  {
+    amount: 5000,
+    code: "FREESHIPPING",
+  },
+])
+```
+
+<a id="revertusage-parameters" />
+
+## Parameters
+
+**revertUsage**
+
+- `computedActions`: [UsageComputedActions](/resources/references/promotion/types/promotionUsageComputedActions)\[] — The computed actions to adjust their promotion's campaign budget.
+  - `amount`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The amount (of usage or money) to adjust the campaign budget by.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/promotion/types/promotionBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `code`: `string` — The promotion's code.
+- `registrationContext`: [CampaignBudgetUsageContext](/resources/references/promotion/types/promotionCampaignBudgetUsageContext) — The context of the campaign budget usage.
+  - `customer_id`: `string` | `null` — The ID of the customer.
+  - `customer_email`: `string` | `null` — The email of the customer.
+
+<a id="revertusage-returns" />
+
+## Returns
+
+**revertUsage**
+
+- `Promise`: Promise\<void> — Resolves when the campaign budgets have been reverted successfully.

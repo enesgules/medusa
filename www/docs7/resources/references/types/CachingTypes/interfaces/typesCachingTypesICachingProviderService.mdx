@@ -1,0 +1,213 @@
+---
+title: ICachingProviderService
+---
+
+### constructor
+
+The constructor allows you to access resources from the module's container using the first parameter,
+and the module's options using the second parameter.
+
+If you're creating a client or establishing a connection with a third-party service, do it in a [Loader](/learn/fundamentals/modules/loaders)
+and store it in the Module's container. Then, you can access it in your service using the container.
+
+> **Loader Example**
+>
+> [Initialize MongoDB client in loader and access it in service](/learn/fundamentals/modules/loaders#example-register-custom-mongodb-connection).
+
+#### Example
+
+```ts
+import { ICachingProviderService } from "@medusajs/framework/types"
+import { Logger } from "@medusajs/framework/types"
+
+type InjectedDependencies = {
+  logger: Logger
+  // assuming you initialized a client
+  // in a Loader and stored it in the container
+  client: Client
+}
+
+type Options = {
+  url: string
+}
+
+class MyCachingModuleProvider implements ICachingProviderService {
+  static identifier = "my-cache"
+  protected logger_: Logger
+  protected options_: Options
+  protected client
+
+  constructor (
+    { logger, client }: InjectedDependencies,
+    options: Options
+  ) {
+    this.logger_ = logger
+    this.options_ = options
+    // set the service's client to
+    // the client from the container
+    this.client = client
+  }
+
+  // ...
+}
+
+export default MyCachingModuleProvider
+```
+
+### Identifier
+
+Every caching module provider must have an `identifier` static property. The provider's ID
+will be stored as `lp_{identifier}_{id}`, where `id` is the ID you set in your `medusa-config.ts` file.
+
+For example:
+
+```ts
+class MyCachingModuleProvider implements ICachingProviderService {
+  static identifier = "my-cache"
+  // ...
+}
+```
+
+## Methods
+
+### get
+
+This method retrieves data from the cache either by `key` or `tags`. If neither `key` nor `tags` are provided, `null` should be returned.
+If both `key` and `tags` are provided, `key` should take precedence over `tags`.
+
+#### Example
+
+```ts
+class MyCachingModuleProvider implements ICachingProviderService {
+  // ...
+  async get({ key, tags }: { key?: string; tags?: string[] }): Promise<any> {
+    // Assuming you're using a client to get data
+    if (key) {
+      return await this.client.get({ key })
+    }
+    if (tags) {
+      return await this.client.getByTags({ tags })
+    }
+    return null
+  }
+}
+```
+
+<a id="get-parameters" />
+
+#### Parameters
+
+**get**
+
+- `param0`: `object` — The parameters for retrieving the item.
+  - `key`: `string` (optional) — The key of the item to retrieve. If both are provided, `key` should take precedence over `tags`.
+  - `tags`: `string`\[] (optional) — The tags of the items to retrieve. All items with any of the provided tags should be retrieved.
+
+<a id="get-returns" />
+
+#### Returns
+
+**get**
+
+- `Promise`: Promise\<any> — The item(s) that was stored in the cache, or `null` if not found.
+  - `any`: `any`
+
+### set
+
+This method stores data in the cache. It should also store the options with the item,
+allowing you to later to check the `autoInvalidate` option when clearing the item.
+
+#### Example
+
+```ts
+class MyCachingModuleProvider implements ICachingProviderService {
+  // ...
+  async set({ key, data, ttl, tags, options }: { 
+    key: string; 
+    data: any; 
+    ttl?: number; 
+    tags?: string[]; 
+    options?: { autoInvalidate?: boolean } 
+  }): Promise<void> {
+    // Assuming you're using a client to set data
+    await this.client.set({ key, data, ttl, tags })
+    await this.client.set({ key, data: options, pipeline: "options" })
+  }
+}
+```
+
+<a id="set-parameters" />
+
+#### Parameters
+
+**set**
+
+- `param0`: `object` — The parameters for storing the item.
+  - `key`: `string` — The key of the item to store.
+  - `data`: `object` — The data to store in the cache.
+  - `ttl`: `number` (optional) — The time-to-live (TTL in seconds) value in seconds. If not provided, the default TTL value configured in the provider should be used.
+  - `tags`: `string`\[] (optional) — The tags of the items to store. Items should be grouped together using tags for retrieval or invalidation.
+  - `options`: `object` (optional) — Options for storing the item. The options should be stored with the item, allowing you to later match against them when clearing the item. For example, if you set `autoInvalidate: false`, the item will only be invalidated when calling the `clear` method directly with the same key or tags.
+    - `autoInvalidate`: `boolean` (optional) — Whether to automatically invalidate the item when related data changes.
+
+<a id="set-returns" />
+
+#### Returns
+
+**set**
+
+- `Promise`: Promise\<void> — A promise that resolves when the item has been stored.
+
+### clear
+
+This method clears data from the cache. If no options are specified, all items matching the key or tags should be cleared.
+Otherwise, if `options.autoInvalidate` is `true`, only items that were set with `options.autoInvalidate: true` should be cleared.
+
+Items with `options.autoInvalidate: false` should only be cleared when no options are provided.
+
+If neither `key` nor `tags` are provided, nothing should be cleared.
+
+#### Example
+
+```ts
+async clear({ key, tags, options, }: { 
+  key?: string; 
+  tags?: string[]; 
+  options?: { autoInvalidate?: boolean }
+}): Promise<void> {
+  if (!options) {
+    // clear all items
+    await this.client.invalidate({ key, tags })
+  } else if (options.autoInvalidate) {
+    // clear only items with autoInvalidate option set to true
+    const keysToDelete: string[] = []
+    const storedOptions = await this.client.get({ key, tags, pipeline: "options" })
+    storedOptions.forEach((item) => {
+      if (item.autoInvalidate) {
+        keysToDelete.push(item.key as string)
+      }
+    })
+    await this.client.invalidate({ keys: keysToDelete })
+  }
+}
+```
+
+<a id="clear-parameters" />
+
+#### Parameters
+
+**clear**
+
+- `param0`: `object` — The parameters for clearing the item(s).
+  - `key`: `string` (optional) — The key of the item to clear.
+  - `tags`: `string`\[] (optional) — The tags of the items to clear. All items with any of the provided tags should be cleared.
+  - `options`: `object` (optional) — Options for clearing the item(s). The options should be matched against the stored options when the item was set. For example, if the item was set with `autoInvalidate: true`, it will only be cleared if the `autoInvalidate` option is also set to `true`. If not provided, all items matching the key or tags should be cleared regardless of their options.
+    - `autoInvalidate`: `boolean` (optional) — Whether to clear item(s) that were set to automatically invalidate.
+
+<a id="clear-returns" />
+
+#### Returns
+
+**clear**
+
+- `Promise`: Promise\<void> — A promise that resolves when the item(s) have been cleared.

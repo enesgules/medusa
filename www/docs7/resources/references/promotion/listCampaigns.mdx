@@ -1,0 +1,146 @@
+---
+title: listCampaigns - Promotion Module Reference
+sidebarTitle: listCampaigns
+---
+
+This documentation provides a reference to the `listCampaigns` method. This belongs to the Promotion Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of campaigns based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of campaigns using their IDs:
+
+```ts
+const campaigns = await promotionModuleService.listCampaigns({
+  id: ["procamp_123"],
+})
+```
+
+To specify relations that should be retrieved within the campaigns:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const campaigns = await promotionModuleService.listCampaigns(
+  {
+    id: ["procamp_123"],
+  },
+  {
+    relations: ["promotions"],
+  }
+)
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const campaigns = await promotionModuleService.listCampaigns(
+  {
+    id: ["procamp_123"],
+  },
+  {
+    relations: ["promotions"],
+    take: 20,
+    skip: 2,
+  }
+)
+```
+
+<a id="listcampaigns-parameters" />
+
+## Parameters
+
+**listCampaigns**
+
+- `filters`: [FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps) (optional) — The filters to apply on the retrieved campaigns.
+  - `$and`: ([FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps) | [BaseFilterable](/resources/references/promotion/interfaces/promotionBaseFilterable)\<[FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps) | [BaseFilterable](/resources/references/promotion/interfaces/promotionBaseFilterable)\<[FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps) | [BaseFilterable](/resources/references/promotion/interfaces/promotionBaseFilterable)\<[FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Find campaigns by their name or description through this search term.
+    - `id`: `string`\[] (optional) — The IDs to filter the campaigns by.
+    - `campaign_identifier`: `string`\[] (optional) — Filters the campaigns by their campaign identifier.
+  - `$or`: ([FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps) | [BaseFilterable](/resources/references/promotion/interfaces/promotionBaseFilterable)\<[FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps) | [BaseFilterable](/resources/references/promotion/interfaces/promotionBaseFilterable)\<[FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps) | [BaseFilterable](/resources/references/promotion/interfaces/promotionBaseFilterable)\<[FilterableCampaignProps](/resources/references/promotion/interfaces/promotionFilterableCampaignProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Find campaigns by their name or description through this search term.
+    - `id`: `string`\[] (optional) — The IDs to filter the campaigns by.
+    - `campaign_identifier`: `string`\[] (optional) — Filters the campaigns by their campaign identifier.
+  - `q`: `string` (optional) — Find campaigns by their name or description through this search term.
+  - `id`: `string`\[] (optional) — The IDs to filter the campaigns by.
+  - `campaign_identifier`: `string`\[] (optional) — Filters the campaigns by their campaign identifier.
+- `config`: [FindConfig](/resources/references/promotion/interfaces/promotionFindConfig)\<[CampaignDTO](/resources/references/promotion/interfaces/promotionCampaignDTO)> (optional) — The configurations determining how the campaign is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a campaign.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/promotion/types/promotionFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/promotion/types/promotionInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/promotion/types/promotionCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/promotion/interfaces/promotionContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/promotion/interfaces/promotionIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listcampaigns-returns" />
+
+## Returns
+
+**listCampaigns**
+
+- `Promise`: Promise\<[CampaignDTO](/resources/references/promotion/interfaces/promotionCampaignDTO)\[]> — The list of campaigns.
+  - `CampaignDTO[]`: [CampaignDTO](/resources/references/promotion/interfaces/promotionCampaignDTO)\[]
+    - `id`: `string` — The ID of the campaign.
+    - `name`: `string` (optional) — The name of the campaign.
+    - `description`: `string` (optional) — The description of the campaign.
+    - `campaign_identifier`: `string` (optional) — The campaign identifier of the campaign.
+    - `starts_at`: `Date` (optional) — The start date of the campaign.
+    - `ends_at`: `Date` (optional) — The end date of the campaign.
+    - `budget`: [CampaignBudgetDTO](/resources/references/promotion/interfaces/promotionCampaignBudgetDTO) (optional) — The associated campaign budget.
+      - `id`: `string` — The ID of the campaign budget.
+      - `type`: [CampaignBudgetTypeValues](/resources/references/promotion/types/promotionCampaignBudgetTypeValues) (optional) — The type of the campaign budget: - `spend` indicates that the budget is limited by the amount discounted by the promotions in the associated campaign. - `usage` indicates that the budget is limited by the number of times the promotions of the associated campaign have been used. - `use_by_attribute` indicates that the budget is limited by the number of times the promotions of the associated campaign have been used by a specific attribute value (for example, per customer) - `spend_by_attribute` indicates that the budget is limited by the amount discounted by the promotions in the associated campaign by a specific attribute value (for example, per customer)
+      - `limit`: `null` | `number` (optional) — The limit of the campaign budget.
+      - `used`: `number` (optional) — The usage from the campaign budget's limit: - If the budget's type is `spend`, the value of this attribute is the amount discounted so far by the promotions in the associated campaign. - If the budget's type is `usage`, the value of this attribute is the number of times the promotions of the associated campaign have been used so far.
+      - `currency_code`: `string` (optional) — The currency of the campaign.
+      - `attribute`: `string` (optional) — The attribute that the budget limit is applied to. By default, the budget is applied globally. If the type is `use_by_attribute`, this field indicates the attribute the budget is tracked by. For example, `customer_id` means the budget is tracked per customer.
+
+        Example:
+
+        ```
+        customer_id
+        ```
+      - `usages`: [CampaignBudgetUsageDTO](/resources/references/promotion/interfaces/promotionCampaignBudgetUsageDTO)\[] (optional) — The usages of the campaign budget. This is only set if the budget's type is `use_by_attribute` or `spend_by_attribute`. Each usage tracks the budget usage for a specific attribute value.
+    - `promotions`: [PromotionDTO](/resources/references/promotion/interfaces/promotionPromotionDTO)\[] (optional) — The associated promotions.
+      - `id`: `string` — The ID of the promotion.
+      - `code`: `string` (optional) — The code of the promotion.
+      - `type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues) (optional) — The type of the promotion: - `standard` indicates that a promotion is a standard one applied with conditions. - `buyget` indicates that a promotion is a "Buy X get Y" promotion.
+      - `status`: [PromotionStatusValues](/resources/references/promotion/types/promotionPromotionStatusValues) (optional) — The status of the promotion: - `active` promotion is available for user to consume - `inactive` promotion is no longer available to the user - `draft` promotion is currently being prepared
+      - `is_automatic`: `boolean` (optional) — Whether the promotion is applied automatically.
+      - `is_tax_inclusive`: `boolean` (optional) — Whether the promotion is tax inclusive.
+      - `limit`: `null` | `number` (optional) — The maximum number of times this promotion can be used across all orders.
+      - `used`: `number` (optional) — The number of times this promotion has been used in completed orders.
+      - `application_method`: [ApplicationMethodDTO](/resources/references/promotion/interfaces/promotionApplicationMethodDTO) (optional) — The associated application method.
+      - `rules`: [PromotionRuleDTO](/resources/references/promotion/interfaces/promotionPromotionRuleDTO)\[] (optional) — The rules of the promotion.
+      - `campaign_id`: `null` | `string` (optional) — The associated campaign.
+      - `campaign`: [CampaignDTO](/resources/references/promotion/interfaces/promotionCampaignDTO) (optional) — The associated campaign.

@@ -1,0 +1,116 @@
+---
+title: retrievePriceList - Pricing Module Reference
+sidebarTitle: retrievePriceList
+---
+
+This documentation provides a reference to the `retrievePriceList` method. This belongs to the Pricing Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method is used to retrieve a price list by its ID.
+
+## Example
+
+A simple example that retrieves a price list by its ID:
+
+```ts
+const priceList =
+  await pricingModuleService.retrievePriceList("plist_123")
+```
+
+To specify relations that should be retrieved:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const priceList =
+  await pricingModuleService.retrievePriceList("plist_123", {
+    relations: ["prices"],
+  })
+```
+
+<a id="retrievepricelist-parameters" />
+
+## Parameters
+
+**retrievePriceList**
+
+- `id`: `string` — The ID of the price list to retrieve.
+- `config`: [FindConfig](/resources/references/pricing/interfaces/pricingFindConfig)\<[PriceListDTO](/resources/references/pricing/interfaces/pricingPriceListDTO)> (optional) — The configurations determining how the price list is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price list.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/pricing/types/pricingFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/pricing/types/pricingInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/pricing/types/pricingCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/pricing/interfaces/pricingContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/pricing/interfaces/pricingIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="retrievepricelist-returns" />
+
+## Returns
+
+**retrievePriceList**
+
+- `Promise`: Promise\<[PriceListDTO](/resources/references/pricing/interfaces/pricingPriceListDTO)> — The retrieved price list.
+  - `id`: `string` — The price list's ID.
+  - `title`: `string` (optional) — The price list's title.
+  - `description`: `string` (optional) — The price list's description.
+  - `starts_at`: `null` | `string` (optional) — The price list is enabled starting from this date.
+  - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus) (optional) — The price list's status.
+  - `type`: [PriceListType](/resources/references/pricing/types/pricingPriceListType) (optional) — The price list's type.
+  - `ends_at`: `null` | `string` (optional) — The price list expires after this date.
+  - `rules_count`: `number` (optional) — The number of rules associated with this price list.
+  - `prices`: [PriceDTO](/resources/references/pricing/interfaces/pricingPriceDTO)\[] (optional) — The associated price list money amounts.
+    - `id`: `string` — The ID of a price.
+    - `title`: `string` (optional) — The title of the price.
+    - `currency_code`: `string` (optional) — The currency code of this price.
+    - `amount`: [BigNumberValue](/resources/references/pricing/types/pricingBigNumberValue) (optional) — The price of this price.
+    - `min_quantity`: [BigNumberValue](/resources/references/pricing/types/pricingBigNumberValue) (optional) — The minimum quantity required to be purchased for this price to be applied.
+    - `max_quantity`: [BigNumberValue](/resources/references/pricing/types/pricingBigNumberValue) (optional) — The maximum quantity required to be purchased for this price to be applied.
+    - `price_set`: [PriceSetDTO](/resources/references/pricing/interfaces/pricingPriceSetDTO) (optional) — The price set associated with the price.
+    - `price_list`: [PriceListDTO](/resources/references/pricing/interfaces/pricingPriceListDTO) (optional) — The price list associated with the price.
+    - `price_set_id`: `string` (optional) — The ID of the associated price set.
+    - `price_rules`: [PriceRuleDTO](/resources/references/pricing/interfaces/pricingPriceRuleDTO)\[] (optional) — The price rules associated with the price.
+    - `created_at`: `Date` — When the price was created.
+    - `updated_at`: `Date` — When the price was updated.
+    - `deleted_at`: `null` | `Date` — When the price was deleted.
+  - `money_amounts`: [MoneyAmountDTO](/resources/references/pricing/interfaces/pricingMoneyAmountDTO)\[] (optional) — The associated money amounts.
+    - `id`: `string` — The ID of the money amount.
+    - `currency_code`: `string` (optional) — The currency code of this money amount.
+    - `amount`: [BigNumberValue](/resources/references/pricing/types/pricingBigNumberValue) (optional) — The price of this money amount.
+    - `min_quantity`: [BigNumberValue](/resources/references/pricing/types/pricingBigNumberValue) (optional) — The minimum quantity required to be purchased for this price to be applied.
+    - `max_quantity`: [BigNumberValue](/resources/references/pricing/types/pricingBigNumberValue) (optional) — The maximum quantity required to be purchased for this price to be applied.
+    - `rules_count`: `number` (optional) — The number of rules that apply to this price
+    - `price_rules`: [PriceRuleDTO](/resources/references/pricing/interfaces/pricingPriceRuleDTO)\[] (optional) — The price rules that apply to this price
+    - `created_at`: `Date` — When the money\_amount was created.
+    - `updated_at`: `Date` — When the money\_amount was updated.
+    - `deleted_at`: `null` | `Date` — When the money\_amount was deleted.
+  - `price_list_rules`: [PriceListRuleDTO](/resources/references/pricing/interfaces/pricingPriceListRuleDTO)\[] (optional) — The price list's rules.
+    - `id`: `string` — The price list rule's ID.
+    - `attribute`: `string` — The attribute of the rule.
+    - `value`: `string` | `string`\[] — The value of the rule.
+    - `price_list`: [PriceListDTO](/resources/references/pricing/interfaces/pricingPriceListDTO) — The associated price list.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.

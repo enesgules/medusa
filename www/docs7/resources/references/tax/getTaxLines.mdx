@@ -1,0 +1,109 @@
+---
+title: getTaxLines - Tax Module Reference
+sidebarTitle: getTaxLines
+---
+
+This documentation provides a reference to the `getTaxLines` method. This belongs to the Tax Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves tax lines for taxable items and shipping methods in a cart.
+
+Learn more in [this guide](/resources/commerce-modules/tax/tax-calculation-with-provider).
+
+## Example
+
+```ts
+const taxLines = await taxModuleService.getTaxLines(
+  [
+    {
+      id: "cali_123",
+      product_id: "prod_123",
+      unit_price: 1000,
+      quantity: 1,
+    },
+    {
+      id: "casm_123",
+      shipping_option_id: "so_123",
+      unit_price: 2000,
+    },
+  ],
+  {
+    address: {
+      country_code: "us",
+    },
+  }
+)
+```
+
+<a id="gettaxlines-parameters" />
+
+## Parameters
+
+**getTaxLines**
+
+- `items`: ([TaxableItemDTO](/resources/references/tax/interfaces/taxTaxableItemDTO) | [TaxableShippingDTO](/resources/references/tax/interfaces/taxTaxableShippingDTO))\[] — The items and shipping methods to retrieve their tax lines.
+  - `id`: `string` — The ID of the taxable item.
+  - `product_id`: `string` — The associated product's ID.
+  - `product_type_id`: `string` (optional) — The ID of the type of the item's product.
+  - `quantity`: [BigNumberInput](/resources/references/tax/types/taxBigNumberInput) (optional) — The quantity of the taxable item.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/tax/types/taxBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `unit_price`: [BigNumberInput](/resources/references/tax/types/taxBigNumberInput) (optional) — The unit price of the taxable item.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/tax/types/taxBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `currency_code`: `string` (optional) — The ISO 3 character currency code of the taxable item.
+  - `shipping_option_id`: `string` — The associated shipping option's ID.
+- `calculationContext`: [TaxCalculationContext](/resources/references/tax/interfaces/taxTaxCalculationContext) — The context to pass to the underlying tax provider. It provides more details that are useful to provide accurate tax lines.
+  - `locale`: `string` (optional) — The locale of the tax calculation.
+  - `address`: `object` — The customer's address
+    - `country_code`: `string` — The ISO 2 character currency code.
+    - `province_code`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code.
+    - `address_1`: `string` (optional) — The first line of the address.
+    - `address_2`: `null` | `string` (optional) — The second line of the address
+    - `city`: `string` (optional) — The city.
+    - `postal_code`: `string` (optional) — The postal code.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Address metadata.
+  - `customer`: `object` (optional) — The customer's details.
+    - `id`: `string` — The ID of the customer.
+    - `email`: `string` — The email of the customer.
+    - `customer_groups`: `string`\[] — The groups that the customer belongs to.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Customer metadata.
+  - `is_return`: `boolean` (optional) — Whether the tax lines are calculated for an order return.
+  - `shipping_methods`: `object`\[] (optional) — The shipping method details.
+    - `id`: `string` — The associated shipping method's ID.
+    - `name`: `string` — The name of the shipping method.
+    - `shipping_option_id`: `string` — The associated shipping options's ID.
+    - `amount`: `number` — The amount of the shipping method.
+  - `additional_context`: `Record<string, unknown>` (optional) — Additional context to pass to the underlying tax provider. Use this to forward custom data that isn't part of the framework-provided fields but that your tax provider needs to calculate tax lines accurately. In cart and order tax workflows, this is populated by the `setTaxLineContext` hook.
+- `sharedContext`: [Context](/resources/references/tax/interfaces/taxContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/tax/interfaces/taxIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="gettaxlines-returns" />
+
+## Returns
+
+**getTaxLines**
+
+- `Promise`: Promise\<([ItemTaxLineDTO](/resources/references/tax/interfaces/taxItemTaxLineDTO) | [ShippingTaxLineDTO](/resources/references/tax/interfaces/taxShippingTaxLineDTO))\[]> — The item and shipping methods' tax lines.
+  - `(ItemTaxLineDTO \| ShippingTaxLineDTO)[]`: ([ItemTaxLineDTO](/resources/references/tax/interfaces/taxItemTaxLineDTO) | [ShippingTaxLineDTO](/resources/references/tax/interfaces/taxShippingTaxLineDTO))\[]
+    - `ItemTaxLineDTO \| ShippingTaxLineDTO`: [ItemTaxLineDTO](/resources/references/tax/interfaces/taxItemTaxLineDTO) | [ShippingTaxLineDTO](/resources/references/tax/interfaces/taxShippingTaxLineDTO)

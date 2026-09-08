@@ -1,0 +1,58 @@
+---
+title: addRulesToPromotionsStep - Medusa Core Workflows Reference
+sidebarTitle: addRulesToPromotionsStep
+---
+
+This documentation provides a reference to the `addRulesToPromotionsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step adds rules to a promotion.
+
+## Example
+
+```ts
+const data = addRulesToPromotionsStep({
+  // import { RuleType } from "@medusajs/framework/utils"
+  rule_type: RuleType.RULES,
+  data: {
+    id: "promo_123",
+    rules: [
+      {
+        attribute: "customer_group",
+        operator: "eq",
+        values: "custgrp_123"
+      }
+    ]
+  }
+})
+```
+
+<a id="addrulestopromotionsstep-input" />
+
+## Input
+
+**addRulesToPromotionsStep**
+
+- `AddPromotionRulesWorkflowDTO`: [AddPromotionRulesWorkflowDTO](/resources/references/types/types/typesAddPromotionRulesWorkflowDTO) — The data to create rules for a promotion.
+  - `rule_type`: `PromotionRuleTypes` — The type of rules to create.
+  - `data`: `object` — The data to create the rules.
+    - `id`: `string` — The ID of the promotion to create the rules for.
+    - `rules`: [CreatePromotionRuleDTO](/resources/references/promotion/interfaces/promotionCreatePromotionRuleDTO)\[] — The rules to create.
+      - `description`: `null` | `string` (optional) — The description of the promotion rule.
+      - `attribute`: `string` — The attribute of the promotion rule.
+      - `operator`: [PromotionRuleOperatorValues](/resources/references/promotion/types/promotionPromotionRuleOperatorValues) — The operator of the promotion rule.
+      - `values`: `string` | `string`\[] — The values of the promotion rule. When provided, `PromotionRuleValue` records are created and associated with the promotion rule.
+
+<a id="addrulestopromotionsstep-output" />
+
+## Output
+
+**addRulesToPromotionsStep**
+
+- `PromotionRuleDTO[]`: [PromotionRuleDTO](/resources/references/promotion/interfaces/promotionPromotionRuleDTO)\[]
+  - `id`: `string` — The ID of the promotion rule.
+  - `description`: `null` | `string` (optional) — The description of the promotion rule.
+  - `attribute`: `string` (optional) — The attribute of the promotion rule.
+  - `operator`: [PromotionRuleOperatorValues](/resources/references/promotion/types/promotionPromotionRuleOperatorValues) (optional) — The operator of the promotion rule.
+  - `values`: [PromotionRuleValueDTO](/resources/references/promotion/interfaces/promotionPromotionRuleValueDTO)\[] — The values of the promotion rule.
+    - `id`: `string` — The ID of the promotion rule value.
+    - `value`: `string` (optional) — The value of the promotion rule value.

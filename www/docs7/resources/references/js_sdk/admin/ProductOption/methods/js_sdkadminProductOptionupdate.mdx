@@ -1,0 +1,113 @@
+---
+title: update
+---
+
+This method updates a product option. It sends a request to the
+[Update Option](/api/admin/product-options/update-a-product-option)
+API route.
+
+## Example
+
+```ts
+sdk.admin.productOption.update("opt_123", {
+  title: "Size"
+})
+.then(({ product_option }) => {
+  console.log(product_option)
+})
+```
+
+<a id="update-parameters" />
+
+## Parameters
+
+**update**
+
+- `id`: `string` — The product option's ID.
+- `body`: [AdminUpdateProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateProductOption) — The data to update in the option.
+  - `id`: `string` (optional) — The option's ID.
+  - `title`: `string` (optional) — The option's title.
+  - `values`: `string`\[] (optional) — The option's values.
+  - `ranks`: `Record<string, number>` (optional) — The rank for each option value. The keys are the option values, and the values are their respective ranks.
+
+    Example:
+
+    ```
+    { * "Small": 1, * "Medium": 2, * "Large": 3 * }
+    ```
+  - `is_exclusive`: `boolean` (optional) — Whether the option is exclusive to a specific product, or can be shared across multiple products.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [AdminProductOptionParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOptionParams) (optional) — Configure the fields to retrieve in the option.
+  - `$and`: ([BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+    - `id`: `string` | `string`\[] (optional) — Filter by the option's id(s).
+    - `title`: `string` | `string`\[] (optional) — Filter by the option's title(s).
+    - `is_exclusive`: `boolean` (optional) — Filter by whether the option is exclusive to a product or global.
+    - `product_id`: `string` | `string`\[] (optional) — Filter by product ID(s).
+  - `$or`: ([BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductOptionParams](/resources/references/types/interfaces/typesBaseProductOptionParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+    - `id`: `string` | `string`\[] (optional) — Filter by the option's id(s).
+    - `title`: `string` | `string`\[] (optional) — Filter by the option's title(s).
+    - `is_exclusive`: `boolean` (optional) — Filter by whether the option is exclusive to a product or global.
+    - `product_id`: `string` | `string`\[] (optional) — Filter by product ID(s).
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+  - `id`: `string` | `string`\[] (optional) — Filter by the option's id(s).
+  - `title`: `string` | `string`\[] (optional) — Filter by the option's title(s).
+  - `is_exclusive`: `boolean` (optional) — Filter by whether the option is exclusive to a product or global.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+## Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminProductOptionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOptionResponse)> — The option's details.
+  - `product_option`: [AdminProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOption) — The product option's details.
+    - `products`: `null` | [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct)\[] (optional) — The associated products' details.
+    - `values`: [AdminProductOptionValue](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOptionValue)\[] (optional) — The option's values.
+    - `id`: `string` — The option's ID.
+    - `title`: `string` — The option's title.
+    - `is_exclusive`: `boolean` — Whether the option is exclusive or global.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` (optional) — The date the option was created.
+    - `updated_at`: `string` (optional) — The date the option was updated.
+    - `deleted_at`: `null` | `string` (optional) — The date the option was deleted.

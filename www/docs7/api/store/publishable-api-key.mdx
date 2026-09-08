@@ -1,0 +1,41 @@
+---
+title: Publishable API Key
+---
+
+You must pass a publishable API key in the header of your requests to the store API routes.
+
+Publishable API Keys sets the scope of your request to one or more sales channels. This ensures you only
+retrieve products available in the publishable API key's sales channels, retrieve correct inventory details,
+and associate placed orders with the specified sales channel.
+
+### How to Create a Publishable API Key
+
+Create a publishable API key either using the [admin REST APIs](/api/admin/api-keys/create-api-key), or using the [Medusa Admin](/user-guide/settings/developer/publishable-api-keys#create-publishable-api-key).
+
+### How to Use a Publishable API Key
+
+If you're using the JS SDK, set the publishable API key in the JS SDK's configurations.
+
+If you're not using the JS SDK, pass the publishable API key in the header `x-publishable-api-key` in all your requests to the store APIs.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Use publishable API key"
+    import Medusa from "@medusajs/js-sdk"
+
+    export const sdk = new Medusa({
+      // other configurations...
+      publishableKey: "{your_publishable_api_key}",
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Use publishable API key"
+    curl 'http://localhost:9000/store/products' \
+    -H 'x-publishable-api-key: {your_publishable_api_key}'
+    ```
+  </Tab>
+</Tabs>
+
+Where `{your_publishable_api_key}` is the token of the publishable API key. When using the JS SDK, set the value as an environment variable.

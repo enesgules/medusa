@@ -1,0 +1,67 @@
+---
+title: refresh - JS SDK Auth Reference
+sidebarTitle: refresh
+---
+
+This documentation provides a reference to the `sdk.auth.refresh` method used to send requests to Medusa's Authentication API routes. It can be used for admin users, customers, or custom actor types.
+
+This method refreshes a JWT authentication token, which is useful after validating the Oauth callback
+with [callback](/resources/references/js-sdk/auth/callback). It sends a request to the [Refresh Authentication Token API route](/api/admin/auth/refresh-authentication-token).
+
+The method stores the returned token and passes it in the header of subsequent requests. So, you can call other
+methods that require authentication after calling this method.
+
+Learn more in the [JS SDK Authentication](/resources/js-sdk/auth/overview) guide.
+
+For an example of implementing third-party authentication, refer to the
+[Third-Party Login in Storefront](/resources/storefront-development/customers/third-party-login) guide.
+
+## Example
+
+```ts
+const token = await sdk.auth.refresh()
+
+// all subsequent requests will use the token in the header
+const { customer } = await sdk.store.customer.retrieve()
+```
+
+<a id="refresh-parameters" />
+
+## Parameters
+
+**refresh**
+
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="refresh-returns" />
+
+## Returns
+
+**refresh**
+
+- `Promise`: Promise\<[AuthRefreshResponse](/resources/references/js_sdk/auth/types/js_sdkauthAuthRefreshResponse)> — The refreshed JWT authentication token, or any requirements such as MFA or verification.
+  - `token`: `string`
+  - `mfa_required`: `true` — Indicates that the client must complete the returned MFA challenge.
+  - `mfa_challenge`: [AuthMfaChallengeDTO](/resources/references/auth/types/authAuthMfaChallengeDTO) — The MFA challenge to complete.
+    - `id`: `string` — The multi-factor authentication (MFA) challenge's ID.
+    - `auth_identity_id`: `string` (optional) — The ID of the authentication identity being challenged.
+    - `auth_identity`: [AuthIdentityDTO](/resources/references/auth/interfaces/authAuthIdentityDTO) (optional) — The authentication identity being challenged.
+    - `auth_provider`: `string` | `null` (optional) — The authentication provider handling the challenge.
+    - `methods`: [AuthMfaChallengeMethod](/resources/references/auth/types/authAuthMfaChallengeMethod)\[] — Available methods for completing this challenge.
+    - `expires_at`: `Date` — When the challenge expires.
+    - `attempts`: `number` — Number of verification attempts made.
+    - `max_attempts`: `number` — Maximum verification attempts allowed.
+    - `completed_at`: `Date` | `null` (optional) — When the challenge was completed.
+    - `metadata`: `Record<string, unknown>` | `null` (optional) — Additional metadata for the challenge.
+  - `verification_required`: `true` — Indicates that the client must complete verification.
+  - `verification`: [AuthVerificationDTO](/resources/references/auth/types/authAuthVerificationDTO) (optional) — The verification state to show to the caller.
+    - `id`: `string` (optional)
+    - `entity_id`: `string`
+    - `auth_identity_id`: `string`
+    - `entity_type`: `string`
+    - `code_provider`: `string`
+    - `provider_metadata`: `Record<string, unknown>` | `null` (optional)
+    - `metadata`: `Record<string, unknown>` | `null` (optional)
+    - `verified_at`: `Date` | `null` (optional)
+    - `requested_at`: `Date`

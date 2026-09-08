@@ -1,0 +1,23 @@
+---
+title: DeletePaymentInput
+---
+
+The data to delete a payment.
+
+## Properties
+
+**DeletePaymentInput**
+
+- `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+- `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+  - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `data`: `Record<string, unknown>` — Account holder's details as stored in the third-party payment provider.
+  - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `id`: `string` — The ID of the customer in Medusa.
+    - `email`: `string` — The email of the customer.
+    - `company_name`: `string` | `null` (optional) — The customer's company name.
+    - `first_name`: `string` | `null` (optional) — The customer's first name.
+    - `last_name`: `string` | `null` (optional) — The customer's last name.
+    - `phone`: `string` | `null` (optional) — The customer's phone number.
+    - `billing_address`: [PaymentAddressDTO](/resources/references/types/types/typesPaymentAddressDTO) | `null` (optional) — The customer's billing address.
+  - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.

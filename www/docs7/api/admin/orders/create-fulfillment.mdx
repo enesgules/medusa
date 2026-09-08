@@ -1,0 +1,631 @@
+---
+title: Create Fulfillment
+---
+
+`POST /admin/orders/{id}/fulfillments`
+
+Create a fulfillment for an order. The creation fails if the order is canceled.
+
+## Base URLs
+
+- `http://localhost:9000`
+
+- `https://api.medusajs.com`
+
+## Authentication
+
+```json
+{
+  "api_token": {
+    "type": "http",
+    "x-displayName": "API Token",
+    "scheme": "basic"
+  }
+}
+```
+
+```json
+{
+  "cookie_auth": {
+    "type": "apiKey",
+    "in": "cookie",
+    "name": "connect.sid",
+    "x-displayName": "Cookie Session ID"
+  }
+}
+```
+
+```json
+{
+  "jwt_token": {
+    "type": "http",
+    "x-displayName": "JWT Token",
+    "scheme": "bearer"
+  }
+}
+```
+
+[Authentication guide](/api/admin/authentication)
+
+## Parameters
+
+<Accordion title="id (path, required)">
+  The order's ID.
+
+  ```json
+  {
+    "name": "id",
+    "in": "path",
+    "description": "The order's ID.",
+    "required": true,
+    "schema": {
+      "type": "string"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="fields (query, optional)">
+  Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+
+  ```json
+  {
+    "name": "fields",
+    "in": "query",
+    "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "title": "fields",
+      "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+      "externalDocs": {
+        "url": "#select-fields-and-relations"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="version (query, optional)">
+  The order's version.
+
+  ```json
+  {
+    "name": "version",
+    "in": "query",
+    "description": "The order's version.",
+    "required": false,
+    "schema": {
+      "type": "number",
+      "title": "version",
+      "description": "The order's version."
+    }
+  }
+  ```
+</Accordion>
+
+## Request body
+
+Optional.
+
+### application/json
+
+```json
+{
+  "schema": {
+    "allOf": [
+      {
+        "type": "object",
+        "description": "The fulfillment's details.",
+        "required": [
+          "items",
+          "location_id",
+          "metadata"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": "The items to fulfill.",
+            "items": {
+              "type": "object",
+              "description": "An item's details.",
+              "required": [
+                "id",
+                "quantity"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "id",
+                  "description": "The item's ID."
+                },
+                "quantity": {
+                  "type": "number",
+                  "title": "quantity",
+                  "description": "The item's quantity to fulfill."
+                }
+              }
+            }
+          },
+          "location_id": {
+            "type": "string",
+            "title": "location_id",
+            "description": "The ID of the location to fulfill the items from. If not provided, the location associated with the shipping option of the order's shipping method is used."
+          },
+          "no_notification": {
+            "type": "boolean",
+            "title": "no_notification",
+            "description": "Whether to send the customer a notification about the created fulfillment."
+          },
+          "delivery_address": {
+            "$ref": "#/components/schemas/AdminFulfillmentDeliveryAddress",
+            "description": "The recipient address to use for the fulfillment. It's merged over the order's shipping address, allowing you to override recipient details (such as the first and last name) sent to the fulfillment provider."
+          },
+          "metadata": {
+            "type": "object",
+            "description": "The order's metadata. Can hold custom key-value pairs."
+          }
+        }
+      },
+      {
+        "type": "object",
+        "description": "The fulfillment's details.",
+        "properties": {
+          "additional_data": {
+            "type": "object",
+            "description": "Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter."
+          }
+        }
+      }
+    ],
+    "description": "The fulfillment's details."
+  }
+}
+```
+
+Related schemas:
+
+- [AdminFulfillmentDeliveryAddress](/api/schemas/admin-fulfillment-delivery-address)
+
+## Responses
+
+<Accordion title="200 — OK">
+  OK
+
+  ```json
+  {
+    "description": "OK",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/AdminOrderResponse"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminOrderResponse](/api/schemas/admin-order-response)
+</Accordion>
+
+<Accordion title="400 — Client Error">
+  Client Error
+
+  ```json
+  {
+    "description": "Client Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "not_allowed": {
+            "$ref": "#/components/examples/not_allowed_error"
+          },
+          "invalid_data": {
+            "$ref": "#/components/examples/invalid_data_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="401 — User is not authorized. Must log in first">
+  User is not authorized. Must log in first
+
+  ```json
+  {
+    "description": "User is not authorized. Must log in first",
+    "content": {
+      "text/plain": {
+        "schema": {
+          "type": "string",
+          "default": "Unauthorized",
+          "example": "Unauthorized"
+        }
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Not Found Error">
+  Not Found Error
+
+  ```json
+  {
+    "description": "Not Found Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "message": "Entity with id 1 was not found",
+          "type": "not_found"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="409 — Invalid State Error">
+  Invalid State Error
+
+  ```json
+  {
+    "description": "Invalid State Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "unknown_error",
+          "message": "The request conflicted with another request. You may retry the request with the provided Idempotency-Key.",
+          "type": "QueryRunnerAlreadyReleasedError"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="422 — Invalid Request Error">
+  Invalid Request Error
+
+  ```json
+  {
+    "description": "Invalid Request Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "invalid_request_error",
+          "message": "Discount with code TEST already exists.",
+          "type": "duplicate_error"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="500 — Server Error">
+  Server Error
+
+  ```json
+  {
+    "description": "Server Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "database": {
+            "$ref": "#/components/examples/database_error"
+          },
+          "unexpected_state": {
+            "$ref": "#/components/examples/unexpected_state_error"
+          },
+          "invalid_argument": {
+            "$ref": "#/components/examples/invalid_argument_error"
+          },
+          "default_error": {
+            "$ref": "#/components/examples/default_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+## Examples
+
+### JS SDK
+
+```js
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+  debug: import.meta.env.DEV,
+  auth: {
+    type: "session",
+  },
+})
+
+sdk.admin.order.createFulfillment("order_123", {
+  items: [
+    {
+      id: "orli_123",
+      quantity: 1
+    }
+  ]
+})
+.then(({ order }) => {
+  console.log(order)
+})
+```
+
+### cURL
+
+```bash
+curl -X POST '{backend_url}/admin/orders/{id}/fulfillments' \
+-H 'Authorization: Bearer {jwt_token}' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "items": [
+    {
+      "id": "id_YePfQ6PBCBKvmYyreUt2",
+      "quantity": 6623610359775232
+    }
+  ],
+  "location_id": "{value}",
+  "metadata": {}
+}'
+```
+
+<Accordion title="OpenAPI operation">
+  ````json
+  {
+    "operationId": "PostOrdersIdFulfillments",
+    "summary": "Create an Order Fulfillment",
+    "x-sidebar-summary": "Create Fulfillment",
+    "description": "Create a fulfillment for an order. The creation fails if the order is canceled.",
+    "x-authenticated": true,
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "description": "The order's ID.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "fields",
+        "in": "query",
+        "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "fields",
+          "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+          "externalDocs": {
+            "url": "#select-fields-and-relations"
+          }
+        }
+      },
+      {
+        "name": "version",
+        "in": "query",
+        "description": "The order's version.",
+        "required": false,
+        "schema": {
+          "type": "number",
+          "title": "version",
+          "description": "The order's version."
+        }
+      }
+    ],
+    "security": [
+      {
+        "api_token": []
+      },
+      {
+        "cookie_auth": []
+      },
+      {
+        "jwt_token": []
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "allOf": [
+              {
+                "type": "object",
+                "description": "The fulfillment's details.",
+                "required": [
+                  "items",
+                  "location_id",
+                  "metadata"
+                ],
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "description": "The items to fulfill.",
+                    "items": {
+                      "type": "object",
+                      "description": "An item's details.",
+                      "required": [
+                        "id",
+                        "quantity"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "title": "id",
+                          "description": "The item's ID."
+                        },
+                        "quantity": {
+                          "type": "number",
+                          "title": "quantity",
+                          "description": "The item's quantity to fulfill."
+                        }
+                      }
+                    }
+                  },
+                  "location_id": {
+                    "type": "string",
+                    "title": "location_id",
+                    "description": "The ID of the location to fulfill the items from. If not provided, the location associated with the shipping option of the order's shipping method is used."
+                  },
+                  "no_notification": {
+                    "type": "boolean",
+                    "title": "no_notification",
+                    "description": "Whether to send the customer a notification about the created fulfillment."
+                  },
+                  "delivery_address": {
+                    "$ref": "#/components/schemas/AdminFulfillmentDeliveryAddress",
+                    "description": "The recipient address to use for the fulfillment. It's merged over the order's shipping address, allowing you to override recipient details (such as the first and last name) sent to the fulfillment provider."
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "The order's metadata. Can hold custom key-value pairs."
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "description": "The fulfillment's details.",
+                "properties": {
+                  "additional_data": {
+                    "type": "object",
+                    "description": "Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter."
+                  }
+                }
+              }
+            ],
+            "description": "The fulfillment's details."
+          }
+        }
+      }
+    },
+    "x-codeSamples": [
+      {
+        "lang": "JavaScript",
+        "label": "JS SDK",
+        "source": "import Medusa from \"@medusajs/js-sdk\"\n\nexport const sdk = new Medusa({\n  baseUrl: import.meta.env.VITE_BACKEND_URL || \"/\",\n  debug: import.meta.env.DEV,\n  auth: {\n    type: \"session\",\n  },\n})\n\nsdk.admin.order.createFulfillment(\"order_123\", {\n  items: [\n    {\n      id: \"orli_123\",\n      quantity: 1\n    }\n  ]\n})\n.then(({ order }) => {\n  console.log(order)\n})"
+      },
+      {
+        "lang": "Shell",
+        "label": "cURL",
+        "source": "curl -X POST '{backend_url}/admin/orders/{id}/fulfillments' \\\n-H 'Authorization: Bearer {jwt_token}' \\\n-H 'Content-Type: application/json' \\\n--data-raw '{\n  \"items\": [\n    {\n      \"id\": \"id_YePfQ6PBCBKvmYyreUt2\",\n      \"quantity\": 6623610359775232\n    }\n  ],\n  \"location_id\": \"{value}\",\n  \"metadata\": {}\n}'"
+      }
+    ],
+    "tags": [
+      "Orders"
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AdminOrderResponse"
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/400_error"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "404": {
+        "$ref": "#/components/responses/not_found_error"
+      },
+      "409": {
+        "$ref": "#/components/responses/invalid_state_error"
+      },
+      "422": {
+        "$ref": "#/components/responses/invalid_request_error"
+      },
+      "500": {
+        "$ref": "#/components/responses/500_error"
+      }
+    },
+    "x-workflow": "createOrderFulfillmentWorkflow",
+    "x-events": [
+      {
+        "name": "order.fulfillment_created",
+        "payload": "```ts\n{\n  order_id, // The ID of the order\n  fulfillment_id, // The ID of the fulfillment\n  no_notification, // (boolean) Whether to notify the customer\n}\n```",
+        "description": "Emitted when a fulfillment is created for an order.",
+        "deprecated": false
+      },
+      {
+        "name": "inventory-level.updated",
+        "payload": "```ts\n{\n  id, // The ID of the inventory level\n  order_id, // (optional) The ID of the order, if the update was triggered by an order flow\n}\n```",
+        "description": "Emitted when inventory levels are updated. This includes adjustments to\nthe stocked or reserved quantity, such as during order fulfillment.",
+        "deprecated": false,
+        "since": "2.18.0"
+      },
+      {
+        "name": "reservation-item.updated",
+        "payload": "```ts\n{\n  id, // The ID of the reservation\n  order_id, // (optional) The ID of the order, if the reservation was updated by an order flow\n}\n```",
+        "description": "Emitted when reservations are updated.",
+        "deprecated": false,
+        "since": "2.18.0"
+      },
+      {
+        "name": "reservation-item.deleted",
+        "payload": "```ts\n{\n  id, // The ID of the reservation\n  order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow\n}\n```",
+        "description": "Emitted when reservations are deleted.",
+        "deprecated": false,
+        "since": "2.18.0"
+      }
+    ]
+  }
+  ````
+
+  Related schemas:
+
+  - [AdminFulfillmentDeliveryAddress](/api/schemas/admin-fulfillment-delivery-address)
+
+  - [AdminOrderResponse](/api/schemas/admin-order-response)
+</Accordion>

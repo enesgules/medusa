@@ -1,0 +1,349 @@
+---
+title: updateProductTagsWorkflow - Medusa Core Workflows Reference
+sidebarTitle: updateProductTagsWorkflow
+---
+
+This documentation provides a reference to the `updateProductTagsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow updates one or more product tags. It's used by the
+[Update Product Tag Admin API Route](/api/admin/product-tags/update-a-product-tag).
+
+This workflow has a hook that allows you to perform custom actions on the updated product tags. For example, you can pass under `additional_data` custom data that
+allows you to update custom data models linked to the product tags.
+
+You can also use this workflow within your own custom workflows, allowing you to wrap custom logic around product-tag updates.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/product/workflows/update-product-tags.ts#L59)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { updateProductTagsWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await updateProductTagsWorkflow(req.scope)
+    .run({
+      input: {
+        selector: {
+          id: "pcol_123"
+        },
+        update: {
+          value: "clothing"
+        },
+        additional_data: {
+          erp_id: "123"
+        }
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { updateProductTagsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await updateProductTagsWorkflow(container)
+    .run({
+      input: {
+        selector: {
+          id: "pcol_123"
+        },
+        update: {
+          value: "clothing"
+        },
+        additional_data: {
+          erp_id: "123"
+        }
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { updateProductTagsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await updateProductTagsWorkflow(container)
+    .run({
+      input: {
+        selector: {
+          id: "pcol_123"
+        },
+        update: {
+          value: "clothing"
+        },
+        additional_data: {
+          erp_id: "123"
+        }
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { updateProductTagsWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = updateProductTagsWorkflow
+      .runAsStep({
+        input: {
+          selector: {
+            id: "pcol_123"
+          },
+          update: {
+            value: "clothing"
+          },
+          additional_data: {
+            erp_id: "123"
+          }
+        }
+      })
+  }
+)
+```
+
+<a id="updateproducttagsworkflow-steps" />
+
+## Steps
+
+- [updateProductTagsStep](/resources/references/medusa-workflows/steps/updateProductTagsStep): This step updates product tags matching the specified filters.
+  - [productTagsUpdated](/resources/references/medusa-workflows/updateProductTagsWorkflow#producttagsupdated): This hook is executed after the product tags are updated. You can consume this hook to perform custom actions on the updated product tags.
+    - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+
+<a id="updateproducttagsworkflow-input" />
+
+## Input
+
+**updateProductTagsWorkflow**
+
+- `UpdateProductTagsWorkflowInput`: [UpdateProductTagsWorkflowInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcUpdateProductTagsWorkflowInput)
+  - `selector`: [FilterableProductTypeProps](/resources/references/product/interfaces/productFilterableProductTypeProps) — The filters to select the product tags to update.
+    - `$and`: ([FilterableProductTypeProps](/resources/references/product/interfaces/productFilterableProductTypeProps) | [BaseFilterable](/resources/references/product/interfaces/productBaseFilterable)\<[FilterableProductTypeProps](/resources/references/product/interfaces/productFilterableProductTypeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$and`: ([FilterableProductTypeProps](/resources/references/product/interfaces/productFilterableProductTypeProps) | [BaseFilterable](/resources/references/product/interfaces/productBaseFilterable)\<[FilterableProductTypeProps](/resources/references/product/interfaces/productFilterableProductTypeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$or`: ([FilterableProductTypeProps](/resources/references/product/interfaces/productFilterableProductTypeProps) | [BaseFilterable](/resources/references/product/interfaces/productBaseFilterable)\<[FilterableProductTypeProps](/resources/references/product/interfaces/productFilterableProductTypeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `q`: `string` (optional) — Search through the types' values.
+      - `id`: `string` | `string`\[] (optional) — The IDs to filter product types by.
+      - `value`: `string` (optional) — The value to filter product types by.
+    - `$or`: ([FilterableProductTypeProps](/resources/references/product/interfaces/productFilterableProductTypeProps) | [BaseFilterable](/resources/references/product/interfaces/productBaseFilterable)\<[FilterableProductTypeProps](/resources/references/product/interfaces/productFilterableProductTypeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `$and`: ([FilterableProductTypeProps](/resources/references/product/interfaces/productFilterableProductTypeProps) | [BaseFilterable](/resources/references/product/interfaces/productBaseFilterable)\<[FilterableProductTypeProps](/resources/references/product/interfaces/productFilterableProductTypeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$or`: ([FilterableProductTypeProps](/resources/references/product/interfaces/productFilterableProductTypeProps) | [BaseFilterable](/resources/references/product/interfaces/productBaseFilterable)\<[FilterableProductTypeProps](/resources/references/product/interfaces/productFilterableProductTypeProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `q`: `string` (optional) — Search through the types' values.
+      - `id`: `string` | `string`\[] (optional) — The IDs to filter product types by.
+      - `value`: `string` (optional) — The value to filter product types by.
+    - `q`: `string` (optional) — Search through the types' values.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter product types by.
+    - `value`: `string` (optional) — The value to filter product types by.
+  - `update`: [UpdateProductTypeDTO](/resources/references/product/interfaces/productUpdateProductTypeDTO) — The data to update in the product tags.
+    - `value`: `string` (optional) — The new value of the product type.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `additional_data`: `Record<string, unknown>` (optional) — Additional data that can be passed through the `additional_data` property in HTTP requests. Learn more in [this documentation](/learn/fundamentals/api-routes/additional-data).
+
+<a id="updateproducttagsworkflow-output" />
+
+## Output
+
+**updateProductTagsWorkflow**
+
+- `ProductTagDTO[]`: [ProductTagDTO](/resources/references/product/interfaces/productProductTagDTO)\[]
+  - `id`: `string` — The ID of the product tag.
+  - `value`: `string` — The value of the product tag.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+    - `id`: `string` — The ID of the product.
+    - `title`: `string` — The title of the product.
+    - `handle`: `string` — The handle of the product. The handle can be used to create slug URL paths.
+    - `subtitle`: `null` | `string` — The subttle of the product.
+    - `description`: `null` | `string` — The description of the product.
+    - `is_giftcard`: `boolean` — Whether the product is a gift card.
+    - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) — The status of the product.
+    - `thumbnail`: `null` | `string` — The URL of the product's thumbnail.
+    - `width`: `null` | `number` — The width of the product.
+    - `weight`: `null` | `number` — The weight of the product.
+    - `length`: `null` | `number` — The length of the product.
+    - `height`: `null` | `number` — The height of the product.
+    - `origin_country`: `null` | `string` — The origin country of the product.
+    - `hs_code`: `null` | `string` — The HS Code of the product.
+    - `mid_code`: `null` | `string` — The MID Code of the product.
+    - `material`: `null` | `string` — The material of the product.
+    - `collection`: `null` | [ProductCollectionDTO](/resources/references/product/interfaces/productProductCollectionDTO) — The associated product collection.
+      - `id`: `string` — The ID of the product collection.
+      - `title`: `string` — The title of the product collection.
+      - `handle`: `string` — The handle of the product collection. The handle can be used to create slug URL paths.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — When the product collection was created.
+      - `updated_at`: `string` | `Date` — When the product collection was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product collection was deleted.
+      - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+    - `collection_id`: `null` | `string` — The associated product collection id.
+    - `categories`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] (optional) — The associated product categories.
+      - `id`: `string` — The ID of the product category.
+      - `name`: `string` — The name of the product category.
+      - `description`: `string` — The description of the product category.
+      - `handle`: `string` — The handle of the product category. The handle can be used to create slug URL paths.
+      - `is_active`: `boolean` — Whether the product category is active.
+      - `is_internal`: `boolean` — Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.
+      - `rank`: `number` — The ranking of the product category among sibling categories.
+      - `external_id`: `null` | `string` — An external identifier for the product category, such as an ID from a third-party system.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — The ranking of the product category among sibling categories.
+      - `parent_category`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO) — The associated parent category.
+      - `parent_category_id`: `null` | `string` — The associated parent category id.
+      - `category_children`: [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] — The associated child categories.
+      - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] — The associated products.
+      - `created_at`: `string` | `Date` — When the product category was created.
+      - `updated_at`: `string` | `Date` — When the product category was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product category was deleted.
+    - `type`: `null` | [ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO) — The associated product type.
+      - `id`: `string` — The ID of the product type.
+      - `value`: `string` — The value of the product type.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — When the product type was created.
+      - `updated_at`: `string` | `Date` — When the product type was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product type was deleted.
+    - `type_id`: `null` | `string` — The associated product type id.
+    - `tags`: [ProductTagDTO](/resources/references/product/interfaces/productProductTagDTO)\[] — The associated product tags.
+      - `id`: `string` — The ID of the product tag.
+      - `value`: `string` — The value of the product tag.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+    - `variants`: [ProductVariantDTO](/resources/references/product/interfaces/productProductVariantDTO)\[] — The associated product variants.
+      - `id`: `string` — The ID of the product variant.
+      - `title`: `string` — The tile of the product variant.
+      - `sku`: `null` | `string` — The SKU of the product variant.
+      - `barcode`: `null` | `string` — The barcode of the product variant.
+      - `ean`: `null` | `string` — The EAN of the product variant.
+      - `upc`: `null` | `string` — The UPC of the product variant.
+      - `allow_backorder`: `boolean` — Whether the product variant can be ordered when it's out of stock.
+      - `manage_inventory`: `boolean` — Whether the product variant's inventory should be managed by the core system.
+      - `thumbnail`: `null` | `string` — The thumbnail of the product variant form the product images.
+      - `requires_shipping`: `boolean` — Whether the product variant's requires shipping.
+      - `hs_code`: `null` | `string` — The HS Code of the product variant.
+      - `origin_country`: `null` | `string` — The origin country of the product variant.
+      - `mid_code`: `null` | `string` — The MID Code of the product variant.
+      - `material`: `null` | `string` — The material of the product variant.
+      - `weight`: `null` | `number` — The weight of the product variant.
+      - `length`: `null` | `number` — The length of the product variant.
+      - `height`: `null` | `number` — The height of the product variant.
+      - `width`: `null` | `number` — The width of the product variant.
+      - `options`: [ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[] — The associated product options.
+      - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `product`: `null` | [ProductDTO](/resources/references/product/interfaces/productProductDTO) (optional) — The associated product.
+      - `product_id`: `null` | `string` — The associated product id.
+      - `variant_rank`: `null` | `number` (optional) — he ranking of the variant among other variants associated with the product.
+      - `created_at`: `string` | `Date` — When the product variant was created.
+      - `updated_at`: `string` | `Date` — When the product variant was updated.
+      - `deleted_at`: `string` | `Date` — When the product variant was deleted.
+    - `options`: [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO)\[] — The associated product options.
+      - `id`: `string` — The ID of the product option.
+      - `title`: `string` — The title of the product option.
+      - `is_exclusive`: `boolean` — Whether the product option is exclusive to a product or shared across products.
+      - `products`: `null` | [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+      - `values`: [ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[] — The associated product option values.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — When the product option was created.
+      - `updated_at`: `string` | `Date` — When the product option was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product option was deleted.
+    - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+      - `id`: `string` — The ID of the product image.
+      - `url`: `string` — The URL of the product image.
+      - `rank`: `number` — The rank of the product image.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — When the product image was created.
+      - `updated_at`: `string` | `Date` — When the product image was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product image was deleted.
+    - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+    - `external_id`: `null` | `string` — The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.
+    - `created_at`: `string` | `Date` — When the product was created.
+    - `updated_at`: `string` | `Date` — When the product was updated.
+    - `deleted_at`: `string` | `Date` — When the product was deleted.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+
+## Hooks
+
+Hooks allow you to inject custom functionalities into the workflow. You'll receive data from the workflow, as well as additional data sent through an HTTP request.
+
+Learn more about [Hooks](/learn/fundamentals/workflows/workflow-hooks) and [Additional Data](/learn/fundamentals/api-routes/additional-data).
+
+### productTagsUpdated
+
+This hook is executed after the product tags are updated. You can consume this hook to perform custom actions on the updated product tags.
+
+#### Example
+
+```ts
+import { updateProductTagsWorkflow } from "@medusajs/medusa/core-flows"
+
+updateProductTagsWorkflow.hooks.productTagsUpdated(
+  (async ({ product_tags, additional_data }, { container }) => {
+    //TODO
+  })
+)
+```
+
+<a id="input" />
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+**productTagsUpdated**
+
+- `input`: object — The input data for the hook.
+  - `product_tags`: [WorkflowDataProperties](/resources/references/workflows/types/workflowsWorkflowDataProperties)\<[ProductTagDTO](/resources/references/product/interfaces/productProductTagDTO)\[]>
+    - `__step__`: `string`
+  - `additional_data`: `Record<string, unknown> | undefined` — Additional data that can be passed through the `additional_data` property in HTTP requests. Learn more in [this documentation](/learn/fundamentals/api-routes/additional-data).
+
+<a id="updateproducttagsworkflow-emitted-events" />
+
+## Emitted Events
+
+- `product-tag.updated`: Emitted when product tags are updated.
+
+  ```ts
+  {
+    id, // The ID of the product tag
+  }
+  ```

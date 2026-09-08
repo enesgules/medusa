@@ -1,0 +1,139 @@
+---
+title: addOrderAction - Order Module Reference
+sidebarTitle: addOrderAction
+---
+
+This documentation provides a reference to the `addOrderAction` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="addorderaction-data-sharedcontext-promiseorderchangeactiondto" />
+
+## addOrderAction(data, sharedContext?): Promise\<[OrderChangeActionDTO](/resources/references/order/interfaces/orderOrderChangeActionDTO)>
+
+This method creates and adds an action to an order and its change.
+
+### Example
+
+```ts
+const orderChangeAction = await orderModuleService.addOrderAction({
+  order_id: "123",
+  order_change_id: "321",
+  action: "ITEM_ADD"
+})
+```
+
+<a id="addorderaction-parameters" />
+
+### Parameters
+
+**addOrderAction**
+
+- `data`: [CreateOrderChangeActionDTO](/resources/references/order/interfaces/orderCreateOrderChangeActionDTO) — The action to be added to an order.
+  - `order_change_id`: `string` (optional) — The associated order change's ID.
+  - `order_id`: `string` (optional) — The associated order's ID.
+  - `return_id`: `string` (optional) — The associated return's ID.
+  - `claim_id`: `string` (optional) — The associated claim's ID.
+  - `exchange_id`: `string` (optional) — The associated exchange's ID.
+  - `version`: `number` (optional) — The version of the order change action. Once the order change action is confirmed, this becomes the order's version.
+  - `reference`: `string` (optional) — The name of the data model that this action references. For example, `return`.
+  - `reference_id`: `string` (optional) — The ID of the record references of the data model specified in [reference](/resources/references/order/interfaces/orderCreateOrderChangeActionDTO#reference). For example, if `reference` is `return`, the `reference_id` is the ID of the return.
+  - `action`: [ChangeActionType](/resources/references/order/types/orderChangeActionType) — The type of action.
+  - `internal_note`: `null` | `string` (optional) — The internal note of the order change action.
+  - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The amount of the order change action.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `details`: `Record<string, unknown>` (optional) — The details of the order change action. This could include the returned items or their changed quantity, based on the type of this action.
+  - `applied`: `boolean` (optional) — Whether the action has been applied.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="addorderaction-returns" />
+
+### Returns
+
+**addOrderAction**
+
+- `Promise`: Promise\<[OrderChangeActionDTO](/resources/references/order/interfaces/orderOrderChangeActionDTO)> — The order change action added.
+
+<a id="addorderaction-data-sharedcontext-promiseorderchangeactiondto-1" />
+
+## addOrderAction(data, sharedContext?): Promise\<[OrderChangeActionDTO](/resources/references/order/interfaces/orderOrderChangeActionDTO)\[]>
+
+This method creates and adds actions to orders and their changes.
+
+### Example
+
+```ts
+const orderChangeActions = await orderModuleService.addOrderAction([{
+  order_id: "123",
+  order_change_id: "321",
+  action: "ITEM_ADD"
+}])
+```
+
+<a id="addorderaction-parameters-1" />
+
+### Parameters
+
+**addOrderAction**
+
+- `data`: [CreateOrderChangeActionDTO](/resources/references/order/interfaces/orderCreateOrderChangeActionDTO)\[] — The order change actions to be created.
+  - `order_change_id`: `string` (optional) — The associated order change's ID.
+  - `order_id`: `string` (optional) — The associated order's ID.
+  - `return_id`: `string` (optional) — The associated return's ID.
+  - `claim_id`: `string` (optional) — The associated claim's ID.
+  - `exchange_id`: `string` (optional) — The associated exchange's ID.
+  - `version`: `number` (optional) — The version of the order change action. Once the order change action is confirmed, this becomes the order's version.
+  - `reference`: `string` (optional) — The name of the data model that this action references. For example, `return`.
+  - `reference_id`: `string` (optional) — The ID of the record references of the data model specified in [reference](/resources/references/order/interfaces/orderCreateOrderChangeActionDTO#reference). For example, if `reference` is `return`, the `reference_id` is the ID of the return.
+  - `action`: [ChangeActionType](/resources/references/order/types/orderChangeActionType) — The type of action.
+  - `internal_note`: `null` | `string` (optional) — The internal note of the order change action.
+  - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The amount of the order change action.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `details`: `Record<string, unknown>` (optional) — The details of the order change action. This could include the returned items or their changed quantity, based on the type of this action.
+  - `applied`: `boolean` (optional) — Whether the action has been applied.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="addorderaction-returns-1" />
+
+### Returns
+
+**addOrderAction**
+
+- `Promise`: Promise\<[OrderChangeActionDTO](/resources/references/order/interfaces/orderOrderChangeActionDTO)\[]> — The created order change actions.
+  - `OrderChangeActionDTO[]`: [OrderChangeActionDTO](/resources/references/order/interfaces/orderOrderChangeActionDTO)\[]

@@ -1,0 +1,127 @@
+---
+title: createPricePreferences - Pricing Module Reference
+sidebarTitle: createPricePreferences
+---
+
+This documentation provides a reference to the `createPricePreferences` method. This belongs to the Pricing Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createpricepreferences-data-sharedcontext-promisepricepreferencedto" />
+
+## createPricePreferences(data, sharedContext?): Promise\<[PricePreferenceDTO](/resources/references/pricing/interfaces/pricingPricePreferenceDTO)>
+
+This method is used to create a new price preference.
+
+### Example
+
+To create a price preference with rule:
+
+```ts
+const pricePreference = await pricingModuleService.createPricePreferences({
+   attribute: 'region_id',
+   value: 'DE',
+   is_tax_inclusive: true
+})
+```
+
+<a id="createpricepreferences-parameters" />
+
+### Parameters
+
+**createPricePreferences**
+
+- `data`: [CreatePricePreferenceDTO](/resources/references/pricing/interfaces/pricingCreatePricePreferenceDTO) — The attributes of the price preference to create.
+  - `attribute`: `string` (optional) — The rule attribute for the preference
+  - `value`: `string` (optional) — The rule value for the preference
+  - `is_tax_inclusive`: `boolean` (optional) — Flag specifying whether prices for the specified rule are tax inclusive.
+- `sharedContext`: [Context](/resources/references/pricing/interfaces/pricingContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/pricing/interfaces/pricingIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createpricepreferences-returns" />
+
+### Returns
+
+**createPricePreferences**
+
+- `Promise`: Promise\<[PricePreferenceDTO](/resources/references/pricing/interfaces/pricingPricePreferenceDTO)> — The created price preference.
+  - `id`: `string` — The ID of a price preference.
+  - `attribute`: `null` | `string` — The rule attribute for the preference
+  - `value`: `null` | `string` — The rule value for the preference
+  - `is_tax_inclusive`: `boolean` — Flag specifying whether prices for the specified rule are tax inclusive.
+  - `created_at`: `Date` — When the price preference was created.
+  - `updated_at`: `Date` — When the price preference was updated.
+  - `deleted_at`: `null` | `Date` — When the price preference was deleted.
+
+<a id="createpricepreferences-data-sharedcontext-promisepricepreferencedto-1" />
+
+## createPricePreferences(data, sharedContext?): Promise\<[PricePreferenceDTO](/resources/references/pricing/interfaces/pricingPricePreferenceDTO)\[]>
+
+This method is used to create multiple price preferences.
+
+### Example
+
+```ts
+const pricePreferences = await pricingModuleService.createPricePreferences([{
+   attribute: 'region_id',
+   value: 'DE',
+   is_tax_inclusive: true
+}])
+```
+
+<a id="createpricepreferences-parameters-1" />
+
+### Parameters
+
+**createPricePreferences**
+
+- `data`: [CreatePricePreferenceDTO](/resources/references/pricing/interfaces/pricingCreatePricePreferenceDTO)\[] — The price preferences to create.
+  - `attribute`: `string` (optional) — The rule attribute for the preference
+  - `value`: `string` (optional) — The rule value for the preference
+  - `is_tax_inclusive`: `boolean` (optional) — Flag specifying whether prices for the specified rule are tax inclusive.
+- `sharedContext`: [Context](/resources/references/pricing/interfaces/pricingContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/pricing/interfaces/pricingIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createpricepreferences-returns-1" />
+
+### Returns
+
+**createPricePreferences**
+
+- `Promise`: Promise\<[PricePreferenceDTO](/resources/references/pricing/interfaces/pricingPricePreferenceDTO)\[]> — The list of created price preferences.
+  - `PricePreferenceDTO[]`: [PricePreferenceDTO](/resources/references/pricing/interfaces/pricingPricePreferenceDTO)\[]
+    - `id`: `string` — The ID of a price preference.
+    - `attribute`: `null` | `string` — The rule attribute for the preference
+    - `value`: `null` | `string` — The rule value for the preference
+    - `is_tax_inclusive`: `boolean` — Flag specifying whether prices for the specified rule are tax inclusive.
+    - `created_at`: `Date` — When the price preference was created.
+    - `updated_at`: `Date` — When the price preference was updated.
+    - `deleted_at`: `null` | `Date` — When the price preference was deleted.

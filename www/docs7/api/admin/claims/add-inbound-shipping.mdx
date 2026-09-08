@@ -1,0 +1,401 @@
+---
+title: Add Inbound Shipping
+---
+
+`POST /admin/claims/{id}/inbound/shipping-method`
+
+Add an inbound (or return) shipping method to a claim. The inbound shipping method will have a `SHIPPING_ADD` action.
+
+## Base URLs
+
+- `http://localhost:9000`
+
+- `https://api.medusajs.com`
+
+## Authentication
+
+```json
+{
+  "api_token": {
+    "type": "http",
+    "x-displayName": "API Token",
+    "scheme": "basic"
+  }
+}
+```
+
+```json
+{
+  "cookie_auth": {
+    "type": "apiKey",
+    "in": "cookie",
+    "name": "connect.sid",
+    "x-displayName": "Cookie Session ID"
+  }
+}
+```
+
+```json
+{
+  "jwt_token": {
+    "type": "http",
+    "x-displayName": "JWT Token",
+    "scheme": "bearer"
+  }
+}
+```
+
+[Authentication guide](/api/admin/authentication)
+
+## Parameters
+
+<Accordion title="id (path, required)">
+  The claim's ID.
+
+  ```json
+  {
+    "name": "id",
+    "in": "path",
+    "description": "The claim's ID.",
+    "required": true,
+    "schema": {
+      "type": "string"
+    }
+  }
+  ```
+</Accordion>
+
+## Request body
+
+Optional.
+
+### application/json
+
+```json
+{
+  "schema": {
+    "$ref": "#/components/schemas/AdminPostReturnsShippingReqSchema"
+  }
+}
+```
+
+Related schemas:
+
+- [AdminPostReturnsShippingReqSchema](/api/schemas/admin-post-returns-shipping-req-schema)
+
+## Responses
+
+<Accordion title="200 — OK">
+  OK
+
+  ```json
+  {
+    "description": "OK",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/AdminClaimReturnPreviewResponse"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminClaimReturnPreviewResponse](/api/schemas/admin-claim-return-preview-response)
+</Accordion>
+
+<Accordion title="400 — Client Error">
+  Client Error
+
+  ```json
+  {
+    "description": "Client Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "not_allowed": {
+            "$ref": "#/components/examples/not_allowed_error"
+          },
+          "invalid_data": {
+            "$ref": "#/components/examples/invalid_data_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="401 — User is not authorized. Must log in first">
+  User is not authorized. Must log in first
+
+  ```json
+  {
+    "description": "User is not authorized. Must log in first",
+    "content": {
+      "text/plain": {
+        "schema": {
+          "type": "string",
+          "default": "Unauthorized",
+          "example": "Unauthorized"
+        }
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Not Found Error">
+  Not Found Error
+
+  ```json
+  {
+    "description": "Not Found Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "message": "Entity with id 1 was not found",
+          "type": "not_found"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="409 — Invalid State Error">
+  Invalid State Error
+
+  ```json
+  {
+    "description": "Invalid State Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "unknown_error",
+          "message": "The request conflicted with another request. You may retry the request with the provided Idempotency-Key.",
+          "type": "QueryRunnerAlreadyReleasedError"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="422 — Invalid Request Error">
+  Invalid Request Error
+
+  ```json
+  {
+    "description": "Invalid Request Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "invalid_request_error",
+          "message": "Discount with code TEST already exists.",
+          "type": "duplicate_error"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="500 — Server Error">
+  Server Error
+
+  ```json
+  {
+    "description": "Server Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "database": {
+            "$ref": "#/components/examples/database_error"
+          },
+          "unexpected_state": {
+            "$ref": "#/components/examples/unexpected_state_error"
+          },
+          "invalid_argument": {
+            "$ref": "#/components/examples/invalid_argument_error"
+          },
+          "default_error": {
+            "$ref": "#/components/examples/default_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+## Examples
+
+### JS SDK
+
+```js
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+  debug: import.meta.env.DEV,
+  auth: {
+    type: "session",
+  },
+})
+
+sdk.admin.claim.addInboundShipping(
+  "claim_123", 
+  {
+    shipping_option_id: "so_123",
+    custom_amount: 10
+  },
+  )
+.then(({ return: returnData }) => {
+  console.log(returnData)
+})
+```
+
+### cURL
+
+```bash
+curl -X POST '{backend_url}/admin/claims/{id}/inbound/shipping-method' \
+-H 'Authorization: Bearer {jwt_token}' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "shipping_option_id": "{value}"
+}'
+```
+
+<Accordion title="OpenAPI operation">
+  ```json
+  {
+    "operationId": "PostClaimsIdInboundShippingMethod",
+    "summary": "Add an Inbound Shipping Method to a Claim",
+    "x-sidebar-summary": "Add Inbound Shipping",
+    "description": "Add an inbound (or return) shipping method to a claim. The inbound shipping method will have a `SHIPPING_ADD` action.\n",
+    "x-authenticated": true,
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "description": "The claim's ID.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "security": [
+      {
+        "api_token": []
+      },
+      {
+        "cookie_auth": []
+      },
+      {
+        "jwt_token": []
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/AdminPostReturnsShippingReqSchema"
+          }
+        }
+      }
+    },
+    "x-codeSamples": [
+      {
+        "lang": "JavaScript",
+        "label": "JS SDK",
+        "source": "import Medusa from \"@medusajs/js-sdk\"\n\nexport const sdk = new Medusa({\n  baseUrl: import.meta.env.VITE_BACKEND_URL || \"/\",\n  debug: import.meta.env.DEV,\n  auth: {\n    type: \"session\",\n  },\n})\n\nsdk.admin.claim.addInboundShipping(\n  \"claim_123\", \n  {\n    shipping_option_id: \"so_123\",\n    custom_amount: 10\n  },\n  )\n.then(({ return: returnData }) => {\n  console.log(returnData)\n})"
+      },
+      {
+        "lang": "Shell",
+        "label": "cURL",
+        "source": "curl -X POST '{backend_url}/admin/claims/{id}/inbound/shipping-method' \\\n-H 'Authorization: Bearer {jwt_token}' \\\n-H 'Content-Type: application/json' \\\n--data-raw '{\n  \"shipping_option_id\": \"{value}\"\n}'"
+      }
+    ],
+    "tags": [
+      "Claims"
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AdminClaimReturnPreviewResponse"
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/400_error"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "404": {
+        "$ref": "#/components/responses/not_found_error"
+      },
+      "409": {
+        "$ref": "#/components/responses/invalid_state_error"
+      },
+      "422": {
+        "$ref": "#/components/responses/invalid_request_error"
+      },
+      "500": {
+        "$ref": "#/components/responses/500_error"
+      }
+    },
+    "x-workflow": "createClaimShippingMethodWorkflow",
+    "x-events": []
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminClaimReturnPreviewResponse](/api/schemas/admin-claim-return-preview-response)
+
+  - [AdminPostReturnsShippingReqSchema](/api/schemas/admin-post-returns-shipping-req-schema)
+</Accordion>

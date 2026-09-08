@@ -1,0 +1,163 @@
+---
+title: updateStoreCreditAccounts - Store Credit Module Reference
+sidebarTitle: updateStoreCreditAccounts
+---
+
+This documentation provides a reference to the `updateStoreCreditAccounts` method. This belongs to the Store Credit Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updatestorecreditaccounts-data-sharedcontext-promisemodulestorecreditaccount" />
+
+## updateStoreCreditAccounts(data, sharedContext?): Promise\<[ModuleStoreCreditAccount](/resources/references/store_credit/types/store_creditModuleStoreCreditAccount)>
+
+This method updates a store credit account.
+
+### Example
+
+```ts
+const account = await storeCreditModuleService.updateStoreCreditAccounts({
+  id: "sca_123",
+  customer_id: "cust_456",
+})
+```
+
+<a id="updatestorecreditaccounts-parameters" />
+
+### Parameters
+
+**updateStoreCreditAccounts**
+
+- `data`: [ModuleUpdateStoreCreditAccount](/resources/references/store_credit/types/store_creditModuleUpdateStoreCreditAccount) — The attributes to update in the store credit account.
+  - `id`: `string` — The ID of the store credit account to update.
+  - `customer_id`: `string` (optional) — The ID of the customer to associate with the account.
+  - `currency_code`: `string` (optional) — The three-letter ISO currency code to update.
+  - `metadata`: `Record<string, unknown>` (optional) — Custom key-value pairs to update on the account.
+- `sharedContext`: [Context](/resources/references/store_credit/interfaces/store_creditContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/store_credit/interfaces/store_creditIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatestorecreditaccounts-returns" />
+
+### Returns
+
+**updateStoreCreditAccounts**
+
+- `Promise`: Promise\<[ModuleStoreCreditAccount](/resources/references/store_credit/types/store_creditModuleStoreCreditAccount)> — The updated store credit account.
+  - `id`: `string` — The store credit account's ID.
+  - `customer_id`: `string` (optional) — The ID of the customer who owns this account, if any.
+  - `code`: `string` (optional) — The unique code that identifies this account, used for anonymous or gift card accounts.
+  - `currency_code`: `string` — The three-letter ISO currency code of the account's balance.
+
+    Example:
+
+    ```
+    usd
+    ```
+  - `credits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount credited to this account.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `debits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount debited from this account.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `balance`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The current balance of this account (credits minus debits).
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `metadata`: `Record<string, unknown>` — Custom key-value pairs attached to this account.
+  - `created_at`: `string` — The date the account was created.
+  - `updated_at`: `string` — The date the account was last updated.
+
+<a id="updatestorecreditaccounts-data-sharedcontext-promisemodulestorecreditaccount-1" />
+
+## updateStoreCreditAccounts(data, sharedContext?): Promise\<[ModuleStoreCreditAccount](/resources/references/store_credit/types/store_creditModuleStoreCreditAccount)\[]>
+
+This method updates store credit accounts.
+
+### Example
+
+```ts
+const accounts = await storeCreditModuleService.updateStoreCreditAccounts([
+  {
+    id: "sca_123",
+    customer_id: "cust_456",
+  },
+])
+```
+
+<a id="updatestorecreditaccounts-parameters-1" />
+
+### Parameters
+
+**updateStoreCreditAccounts**
+
+- `data`: [ModuleUpdateStoreCreditAccount](/resources/references/store_credit/types/store_creditModuleUpdateStoreCreditAccount)\[] — The attributes to update in the store credit accounts.
+  - `id`: `string` — The ID of the store credit account to update.
+  - `customer_id`: `string` (optional) — The ID of the customer to associate with the account.
+  - `currency_code`: `string` (optional) — The three-letter ISO currency code to update.
+  - `metadata`: `Record<string, unknown>` (optional) — Custom key-value pairs to update on the account.
+- `sharedContext`: [Context](/resources/references/store_credit/interfaces/store_creditContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/store_credit/interfaces/store_creditIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatestorecreditaccounts-returns-1" />
+
+### Returns
+
+**updateStoreCreditAccounts**
+
+- `Promise`: Promise\<[ModuleStoreCreditAccount](/resources/references/store_credit/types/store_creditModuleStoreCreditAccount)\[]> — The updated store credit accounts.
+  - `ModuleStoreCreditAccount[]`: [ModuleStoreCreditAccount](/resources/references/store_credit/types/store_creditModuleStoreCreditAccount)\[]
+    - `id`: `string` — The store credit account's ID.
+    - `customer_id`: `string` (optional) — The ID of the customer who owns this account, if any.
+    - `code`: `string` (optional) — The unique code that identifies this account, used for anonymous or gift card accounts.
+    - `currency_code`: `string` — The three-letter ISO currency code of the account's balance.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `credits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount credited to this account.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `debits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount debited from this account.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `balance`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The current balance of this account (credits minus debits).
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `metadata`: `Record<string, unknown>` — Custom key-value pairs attached to this account.
+    - `created_at`: `string` — The date the account was created.
+    - `updated_at`: `string` — The date the account was last updated.

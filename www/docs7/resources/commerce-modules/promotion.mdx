@@ -1,0 +1,209 @@
+---
+title: Promotion Module
+---
+
+In this section of the documentation, you will find resources to learn more about the Promotion Module and how to use it in your application.
+
+<Note>
+  **Looking for no-code docs?**
+
+  Refer to the [Medusa Admin User Guide](/user-guide/promotions) to learn how to manage promotions using the dashboard.
+</Note>
+
+Medusa has promotion related features available out-of-the-box through the Promotion Module. A [module](/learn/fundamentals/modules) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Promotion Module.
+
+<Note>
+  Learn more about why modules are isolated in [this documentation](/learn/fundamentals/modules/isolation).
+</Note>
+
+## Promotion Features
+
+- [Discount Functionalities](/resources/commerce-modules/promotion/concepts): A promotion discounts an amount or percentage of a cart's items, shipping methods, or the entire order.
+- [Flexible Promotion Rules](/resources/commerce-modules/promotion/concepts#flexible-rules): A promotion has rules that restricts when the promotion is applied.
+- [Campaign Management](/resources/commerce-modules/promotion/campaign): A campaign combines promotions under the same conditions, such as start and end dates, and budget configurations.
+- [Apply Promotion on Carts and Orders](/resources/commerce-modules/promotion/actions): Apply promotions on carts and orders to discount items, shipping methods, or the entire order.
+
+***
+
+## How to Use the Promotion Module
+
+In your Medusa application, you build flows around Commerce Modules. A flow is built as a [Workflow](/learn/fundamentals/workflows), which is a special function composed of a series of steps that guarantees data consistency and reliable roll-back mechanism.
+
+You can build custom workflows and steps. You can also re-use Medusa's workflows and steps, which are provided by the `@medusajs/medusa/core-flows` package.
+
+For example:
+
+```ts title="src/workflows/create-promotion.ts"
+import { 
+  createWorkflow, 
+  WorkflowResponse,
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+
+const createPromotionStep = createStep(
+  "create-promotion",
+  async ({}, { container }) => {
+    const promotionModuleService = container.resolve(Modules.PROMOTION)
+
+    const promotion = await promotionModuleService.createPromotions({
+      code: "10%OFF",
+      type: "standard",
+      application_method: {
+        type: "percentage",
+        target_type: "order",
+        value: 10,
+        currency_code: "usd",
+      },
+    })
+
+    return new StepResponse({ promotion }, promotion.id)
+  },
+  async (promotionId, { container }) => {
+    if (!promotionId) {
+      return
+    }
+    const promotionModuleService = container.resolve(Modules.PROMOTION)
+
+    await promotionModuleService.deletePromotions(promotionId)
+  }
+)
+
+export const createPromotionWorkflow = createWorkflow(
+  "create-promotion",
+  () => {
+    const { promotion } = createPromotionStep()
+
+    return new WorkflowResponse({
+      promotion,
+    })
+  }
+)
+```
+
+You can then execute the workflow in your custom API routes, scheduled jobs, or subscribers:
+
+<Tabs>
+  <Tab title="API Route">
+    ```ts title="src/api/workflow/route.ts"
+    import type {
+      MedusaRequest,
+      MedusaResponse,
+    } from "@medusajs/framework/http"
+    import { createPromotionWorkflow } from "../../workflows/create-cart"
+
+    export async function GET(
+      req: MedusaRequest,
+      res: MedusaResponse
+    ) {
+      const { result } = await createPromotionWorkflow(req.scope)
+        .run()
+
+      res.send(result)
+    }
+    ```
+  </Tab>
+
+  <Tab title="Subscriber">
+    ```ts title="src/subscribers/user-created.ts"
+    import {
+      type SubscriberConfig,
+      type SubscriberArgs,
+    } from "@medusajs/framework"
+    import { createPromotionWorkflow } from "../workflows/create-cart"
+
+    export default async function handleUserCreated({
+      event: { data },
+      container,
+    }: SubscriberArgs<{ id: string }>) {
+      const { result } = await createPromotionWorkflow(container)
+        .run()
+
+      console.log(result)
+    }
+
+    export const config: SubscriberConfig = {
+      event: "user.created",
+    }
+    ```
+  </Tab>
+
+  <Tab title="Scheduled Job">
+    ```ts title="src/jobs/run-daily.ts"
+    import { MedusaContainer } from "@medusajs/framework/types"
+    import { createPromotionWorkflow } from "../workflows/create-cart"
+
+    export default async function myCustomJob(
+      container: MedusaContainer
+    ) {
+      const { result } = await createPromotionWorkflow(container)
+        .run()
+
+      console.log(result)
+    }
+
+    export const config = {
+      name: "run-once-a-day",
+      schedule: `0 0 * * *`,
+    }
+    ```
+  </Tab>
+</Tabs>
+
+Learn more about workflows in [this documentation](/learn/fundamentals/workflows).
+
+***
+
+[Overview](/resources/commerce-modules/promotion)
+
+## Concepts
+
+- [Promotion](/resources/commerce-modules/promotion/concepts)
+- [Tax-Inclusive Promotions](/resources/commerce-modules/promotion/promotion-taxes)
+- [Application Method](/resources/commerce-modules/promotion/application-method)
+- [Campaign](/resources/commerce-modules/promotion/campaign)
+- [Promotion Actions](/resources/commerce-modules/promotion/actions)
+- [Links to Modules](/resources/commerce-modules/promotion/links-to-other-modules)
+
+***
+
+## Server Guides
+
+Learn how to use the Promotion Module in your customizations on the Medusa application server.
+
+- [Extend Module](/resources/commerce-modules/promotion/extend)
+- [Implement Customer Tiers](/resources/how-to-tutorials/tutorials/customer-tiers)
+- [Implement First-Purchase Discount](/resources/how-to-tutorials/tutorials/first-purchase-discounts)
+- [Implement Loyalty Points](/resources/how-to-tutorials/tutorials/loyalty-points)
+
+***
+
+## Storefront Guides
+
+Learn how to integrate the Promotion Module's features into your storefront.
+
+- [Manage Cart Promotions in Storefront](/resources/storefront-development/cart/manage-promotions)
+
+***
+
+## Admin User Guides
+
+Learn how to utilize and manage Promotion features in the Medusa Admin dashboard.
+
+- [Create a Promotion](/user-guide/promotions/create)
+- [Manage Campaigns](/user-guide/promotions/campaigns)
+- [Manage Promotions](/user-guide/promotions/manage)
+- [Promotions Overview](/user-guide/promotions)
+
+***
+
+## References
+
+Find references for tools and resources related to the Promotion Module, such as data models, methods, and more. These are useful for your customizations.
+
+- [Workflows](/resources/commerce-modules/promotion/workflows)
+- [JS SDK](/resources/commerce-modules/promotion/js-sdk)
+- [Admin Widget Zones](/resources/commerce-modules/promotion/admin-widget-zones)
+- [Main Service Reference](/resources/references/promotion)
+- [Data Models Reference](/resources/references/promotion/models)

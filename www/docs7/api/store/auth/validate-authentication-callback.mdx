@@ -1,0 +1,392 @@
+---
+title: Validate Authentication Callback
+---
+
+`POST /auth/customer/{auth_provider}/callback`
+
+This API route is used by your storefront or frontend application when a third-party provider redirects to it after authentication. It validates the authentication with the third-party provider and, if successful, returns an authentication token. All query parameters received from the third-party provider, such as `code`, `state`, and `error`, must be passed as query parameters to this route.
+You can decode the JWT token using libraries like [react-jwt](https://www.npmjs.com/package/react-jwt) in the storefront. If the decoded data doesn't  have an `actor_id` property, then you must register the customer using the Create Customer API route passing the token in the request's Authorization header.
+
+[Storefront development: Implement third-party (social) login.](/resources/storefront-development/customers/third-party-login)
+
+## Base URLs
+
+- `http://localhost:9000`
+
+- `https://api.medusajs.com`
+
+## Authentication
+
+This operation does not require authentication.
+
+[Authentication guide](/api/store/authentication)
+
+## Parameters
+
+<Accordion title="auth_provider (path, required)">
+  The provider used for authentication.
+
+  ```json
+  {
+    "name": "auth_provider",
+    "in": "path",
+    "description": "The provider used for authentication.",
+    "required": true,
+    "schema": {
+      "type": "string",
+      "example": "google"
+    }
+  }
+  ```
+</Accordion>
+
+## Responses
+
+<Accordion title="200 — OK">
+  OK
+
+  ```json
+  {
+    "description": "OK",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/AuthResponse"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AuthResponse](/api/schemas/auth-response)
+</Accordion>
+
+<Accordion title="400 — Client Error">
+  Client Error
+
+  ```json
+  {
+    "description": "Client Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "not_allowed": {
+            "$ref": "#/components/examples/not_allowed_error"
+          },
+          "invalid_data": {
+            "$ref": "#/components/examples/invalid_data_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="401 — User is not authorized. Must log in first">
+  User is not authorized. Must log in first
+
+  ```json
+  {
+    "description": "User is not authorized. Must log in first",
+    "content": {
+      "text/plain": {
+        "schema": {
+          "type": "string",
+          "default": "Unauthorized",
+          "example": "Unauthorized"
+        }
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Not Found Error">
+  Not Found Error
+
+  ```json
+  {
+    "description": "Not Found Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "message": "Entity with id 1 was not found",
+          "type": "not_found"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="409 — Invalid State Error">
+  Invalid State Error
+
+  ```json
+  {
+    "description": "Invalid State Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "unknown_error",
+          "message": "The request conflicted with another request. You may retry the request with the provided Idempotency-Key.",
+          "type": "QueryRunnerAlreadyReleasedError"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="422 — Invalid Request Error">
+  Invalid Request Error
+
+  ```json
+  {
+    "description": "Invalid Request Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "invalid_request_error",
+          "message": "Discount with code TEST already exists.",
+          "type": "duplicate_error"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="500 — Server Error">
+  Server Error
+
+  ```json
+  {
+    "description": "Server Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "database": {
+            "$ref": "#/components/examples/database_error"
+          },
+          "unexpected_state": {
+            "$ref": "#/components/examples/unexpected_state_error"
+          },
+          "invalid_argument": {
+            "$ref": "#/components/examples/invalid_argument_error"
+          },
+          "default_error": {
+            "$ref": "#/components/examples/default_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+## Examples
+
+### Google Provider
+
+```js
+import Medusa from "@medusajs/js-sdk"
+import { decodeToken } from "react-jwt"
+
+let MEDUSA_BACKEND_URL = "http://localhost:9000"
+
+if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
+  MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+}
+
+export const sdk = new Medusa({
+  baseUrl: MEDUSA_BACKEND_URL,
+  debug: process.env.NODE_ENV === "development",
+  publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+})
+
+const token = await sdk.auth.callback(
+  "customer",
+  "google",
+  {
+    code: "123",
+    state: "456"
+  }
+)
+// all subsequent requests will use the token in the header
+
+const decodedToken = decodeToken(token) as { actor_id: string, user_metadata: Record<string, unknown> }
+
+const shouldCreateCustomer = decodedToken.actor_id === ""
+
+if (shouldCreateCustomer) {
+  const { customer } = await sdk.store.customer.create({
+    email: decodedToken.user_metadata.email as string,
+  })
+
+  // refresh auth token
+  await sdk.auth.refresh()
+  // all subsequent requests will use the new token in the header
+} else {
+  // Customer already exists and is authenticated
+}
+```
+
+### GitHub Provider
+
+```ts
+import Medusa from "@medusajs/js-sdk"
+import { decodeToken } from "react-jwt"
+
+let MEDUSA_BACKEND_URL = "http://localhost:9000"
+
+if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
+  MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+}
+
+export const sdk = new Medusa({
+  baseUrl: MEDUSA_BACKEND_URL,
+  debug: process.env.NODE_ENV === "development",
+  publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+})
+
+const token = await sdk.auth.callback(
+  "customer",
+  "github",
+  {
+    code: "123",
+    state: "456"
+  }
+)
+// all subsequent requests will use the token in the header
+
+const decodedToken = decodeToken(token) as { actor_id: string, user_metadata: Record<string, unknown> }
+
+const shouldCreateCustomer = decodedToken.actor_id === ""
+
+if (shouldCreateCustomer) {
+  const { customer } = await sdk.store.customer.create({
+    email: decodedToken.user_metadata.email as string,
+  })
+
+  // refresh auth token
+  await sdk.auth.refresh()
+  // all subsequent requests will use the new token in the header
+} else {
+  // Customer already exists and is authenticated
+}
+```
+
+<Accordion title="OpenAPI operation">
+  ```json
+  {
+    "operationId": "PostActor_typeAuth_providerCallback",
+    "summary": "Validate Authentication Callback",
+    "description": "This API route is used by your storefront or frontend application when a third-party provider redirects to it after authentication. It validates the authentication with the third-party provider and, if successful, returns an authentication token. All query parameters received from the third-party provider, such as `code`, `state`, and `error`, must be passed as query parameters to this route.\nYou can decode the JWT token using libraries like [react-jwt](https://www.npmjs.com/package/react-jwt) in the storefront. If the decoded data doesn't  have an `actor_id` property, then you must register the customer using the Create Customer API route passing the token in the request's Authorization header.\n",
+    "externalDocs": {
+      "url": "https://docs.medusajs.com/resources/storefront-development/customers/third-party-login",
+      "description": "Storefront development: Implement third-party (social) login."
+    },
+    "x-authenticated": false,
+    "parameters": [
+      {
+        "name": "auth_provider",
+        "in": "path",
+        "description": "The provider used for authentication.",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "google"
+        }
+      }
+    ],
+    "x-codeSamples": [
+      {
+        "lang": "JavaScript",
+        "label": "Google Provider",
+        "source": "import Medusa from \"@medusajs/js-sdk\"\nimport { decodeToken } from \"react-jwt\"\n\nlet MEDUSA_BACKEND_URL = \"http://localhost:9000\"\n\nif (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {\n  MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL\n}\n\nexport const sdk = new Medusa({\n  baseUrl: MEDUSA_BACKEND_URL,\n  debug: process.env.NODE_ENV === \"development\",\n  publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,\n})\n\nconst token = await sdk.auth.callback(\n  \"customer\",\n  \"google\",\n  {\n    code: \"123\",\n    state: \"456\"\n  }\n)\n// all subsequent requests will use the token in the header\n\nconst decodedToken = decodeToken(token) as { actor_id: string, user_metadata: Record<string, unknown> }\n\nconst shouldCreateCustomer = decodedToken.actor_id === \"\"\n\nif (shouldCreateCustomer) {\n  const { customer } = await sdk.store.customer.create({\n    email: decodedToken.user_metadata.email as string,\n  })\n\n  // refresh auth token\n  await sdk.auth.refresh()\n  // all subsequent requests will use the new token in the header\n} else {\n  // Customer already exists and is authenticated\n}"
+      },
+      {
+        "lang": "TypeScript",
+        "label": "GitHub Provider",
+        "source": "import Medusa from \"@medusajs/js-sdk\"\nimport { decodeToken } from \"react-jwt\"\n\nlet MEDUSA_BACKEND_URL = \"http://localhost:9000\"\n\nif (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {\n  MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL\n}\n\nexport const sdk = new Medusa({\n  baseUrl: MEDUSA_BACKEND_URL,\n  debug: process.env.NODE_ENV === \"development\",\n  publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,\n})\n\nconst token = await sdk.auth.callback(\n  \"customer\",\n  \"github\",\n  {\n    code: \"123\",\n    state: \"456\"\n  }\n)\n// all subsequent requests will use the token in the header\n\nconst decodedToken = decodeToken(token) as { actor_id: string, user_metadata: Record<string, unknown> }\n\nconst shouldCreateCustomer = decodedToken.actor_id === \"\"\n\nif (shouldCreateCustomer) {\n  const { customer } = await sdk.store.customer.create({\n    email: decodedToken.user_metadata.email as string,\n  })\n\n  // refresh auth token\n  await sdk.auth.refresh()\n  // all subsequent requests will use the new token in the header\n} else {\n  // Customer already exists and is authenticated\n}"
+      }
+    ],
+    "tags": [
+      "Auth"
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AuthResponse"
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/400_error"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "404": {
+        "$ref": "#/components/responses/not_found_error"
+      },
+      "409": {
+        "$ref": "#/components/responses/invalid_state_error"
+      },
+      "422": {
+        "$ref": "#/components/responses/invalid_request_error"
+      },
+      "500": {
+        "$ref": "#/components/responses/500_error"
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AuthResponse](/api/schemas/auth-response)
+</Accordion>

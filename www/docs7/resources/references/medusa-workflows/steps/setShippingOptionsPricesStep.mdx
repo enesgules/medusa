@@ -1,0 +1,48 @@
+---
+title: setShippingOptionsPricesStep - Medusa Core Workflows Reference
+sidebarTitle: setShippingOptionsPricesStep
+---
+
+This documentation provides a reference to the `setShippingOptionsPricesStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step sets the prices of one or more shipping options.
+
+## Example
+
+```ts
+const data = setShippingOptionsPricesStep([
+  {
+    id: "so_123",
+    prices: [
+      {
+        amount: 1000,
+        currency_code: "usd",
+      }
+    ]
+  }
+])
+```
+
+<a id="setshippingoptionspricesstep-input" />
+
+## Input
+
+**setShippingOptionsPricesStep**
+
+- `SetShippingOptionsPricesStepInput`: [SetShippingOptionsPricesStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcSetShippingOptionsPricesStepInput)
+  - `id`: `string` — The ID of the shipping option.
+  - `prices`: [UpdateShippingOptionPriceRecord](/resources/references/types/WorkflowTypes/FulfillmentWorkflow/types/typesWorkflowTypesFulfillmentWorkflowUpdateShippingOptionPriceRecord)\[] (optional) — The prices of the shipping option.
+    - `id`: `string` (optional) — The ID of the price record.
+    - `currency_code`: `string` (optional) — The currency code of the price.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` (optional) — The amount of the price.
+    - `rules`: [PriceRule](/resources/references/pricing/models/PriceRule)\[] (optional) — The rules of the price.
+      - `[IsDmlEntity]`: `boolean` (default: true)
+      - `name`: [InferDmlEntityNameFromConfig](/resources/references/types/DmlTypes/types/typesDmlTypesInferDmlEntityNameFromConfig)\<TConfig>
+      - `schema`: Schema
+    - `region_id`: `string` (optional) — The ID of the region that this price applies in.

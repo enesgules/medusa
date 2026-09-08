@@ -1,0 +1,85 @@
+---
+title: MedusaRequest
+---
+
+## Type parameters
+
+**MedusaRequest**
+
+- `Body`: `object` (optional)
+- `QueryFields`: `object` (optional)
+
+## Properties
+
+**MedusaRequest**
+
+- `validatedBody`: Body
+- `validatedQuery`: [RequestQueryFields](/resources/references/medusa/interfaces/medusaRequestQueryFields) & QueryFields
+  - `fields`: `string` (optional) — Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+  - `offset`: `number` (optional) — The number of items to skip when retrieving a list.
+  - `limit`: `number` (optional) — Limit the number of items returned in the list.
+  - `order`: `string` (optional) — The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+  - `with_deleted`: `boolean` (optional) — Whether to include deleted records in the result.
+- `allowedProperties`: `string`\[] — TODO: shouldn't this correspond to returnable fields instead of allowed fields? also it is used by the cleanResponseData util
+- `listConfig`: [FindConfig](/resources/references/medusa/interfaces/medusaFindConfig)\<unknown> — An object containing the select, relation, skip, take and order to be used with medusa internal services
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/medusa/types/medusaFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/medusa/types/medusaInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/medusa/types/medusaCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `retrieveConfig`: [FindConfig](/resources/references/medusa/interfaces/medusaFindConfig)\<unknown> — An object containing the select, relation to be used with medusa internal services
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/medusa/types/medusaFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/medusa/types/medusaInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/medusa/types/medusaCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `queryConfig`: `object` — An object containing fields and variables to be used with the remoteQuery
+  - `fields`: `string`\[]
+  - `pagination`: `object`
+    - `order`: `Record<string, string>` (optional)
+    - `skip`: `number`
+    - `take`: `number` (optional)
+  - `withDeleted`: `boolean` (optional)
+- `remoteQueryConfig`: `object` (deprecated)
+
+  Deprecated: Use queryConfig instead.
+
+  - `fields`: `string`\[]
+  - `pagination`: `object`
+    - `order`: `Record<string, string>` (optional)
+    - `skip`: `number`
+    - `take`: `number` (optional)
+  - `withDeleted`: `boolean` (optional)
+- `filterableFields`: QueryFields — An object containing the fields that are filterable e.g `{ id: Any<String> }`
+- `includes`: `Record<string, boolean>` (optional)
+- `allowed`: `string`\[] (optional) — An array of fields and relations that are allowed to be queried, this can be set by the consumer as part of a middleware and it will take precedence over the req.allowed set by the api
+- `errors`: `string`\[]
+- `scope`: [MedusaContainer](/resources/references/medusa/types/medusaMedusaContainer)
+- `session`: `any` (optional)
+- `rawBody`: `any` (optional)
+- `requestId`: `string` (optional)
+- `restrictedFields`: [RestrictedFields](/resources/references/medusa/classes/medusaRestrictedFields) (optional)
+  - `#private`: `any`
+- `storeRelationsLimit`: `number` (optional) — The maximum number of relations that can be expanded by the request. It is only set for routes under the `/store` prefix, and can be overridden by a route's query configuration.
+- `pricingContext`: [MedusaPricingContext](/resources/references/medusa/types/medusaMedusaPricingContext) (optional) — An object that carries the context that is used to calculate prices for variants
+  - `region_id`: `string` (optional)
+  - `currency_code`: `string` (optional)
+  - `customer_id`: `string` (optional)
+  - `customer`: `object` (optional)
+    - `groups`: `object`\[] (optional)
+- `context`: `Record<string, any>` (optional) — A generic context object that can be used across the request lifecycle
+- `additionalDataValidator`: ZodOptional\<ZodNullable\<ZodObject\<any, any>>> (optional) — Custom validator to validate the `additional_data` property in requests that allows for additional\_data
+- `locale`: `string` (optional) — The locale for the current request, resolved from: 1. Query parameter `?locale=` 2. x-medusa-locale header 3. Store's default locale
+- `user`: `object` (optional)
+  - `customer_id`: `string` (optional)
+  - `userId`: `string` (optional)

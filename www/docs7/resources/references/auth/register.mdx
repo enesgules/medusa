@@ -1,0 +1,72 @@
+---
+title: register - Auth Module Reference
+sidebarTitle: register
+---
+
+This documentation provides a reference to the `register` method. This belongs to the Auth Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method is used to register a user using a provider. The `register` method of the
+underlying provider is called, passing it the `providerData` parameter as a parameter. The method
+returns the data returned by the provider.
+
+Refer to [this guide](/resources/commerce-modules/auth/authentication-route) to learn more about the authentication flows.
+
+## Example
+
+The following example is in the context of an API route, where
+`req` is an instance of the `MedusaRequest` object:
+
+```ts
+const { success, authIdentity, location, error } =
+  await authModuleService.register("emailpass", {
+    url: req.url,
+    headers: req.headers,
+    query: req.query,
+    body: req.body,
+    protocol: req.protocol,
+  } as AuthenticationInput)
+```
+
+<a id="register-parameters" />
+
+## Parameters
+
+**register**
+
+- `provider`: `string` — The ID of the provider to register the user with.
+- `providerData`: [AuthenticationInput](/resources/references/auth/interfaces/authAuthenticationInput) — The data to pass to the provider to register the user.
+  - `url`: `string` (optional) — URL of the incoming authentication request.
+  - `headers`: `Record<string, string>` (optional) — Headers of incoming authentication request.
+  - `query`: `Record<string, string>` (optional) — Query params of the incoming authentication request.
+  - `body`: `Record<string, string>` (optional) — Body of the incoming authentication request. One of the arguments that is suggested to be treated in a standard manner is a `callback_url` field. The field specifies where the user is redirected to after a successful authentication in the case of Oauth auhentication. If not passed, the provider will fallback to the callback\_url provided in the provider options.
+  - `protocol`: `string` (optional) — Protocol of the incoming authentication request (For example, `https`).
+
+<a id="register-returns" />
+
+## Returns
+
+**register**
+
+- `Promise`: Promise\<[AuthenticationResponse](/resources/references/auth/interfaces/authAuthenticationResponse)> — The details of the registration result.
+  - `success`: `boolean` — Whether the authentication was successful.
+  - `authIdentity`: [AuthIdentityDTO](/resources/references/auth/interfaces/authAuthIdentityDTO) (optional) — The authenticated user's details.
+    - `id`: `string` — The ID of the auth identity.
+    - `provider_identities`: [ProviderIdentityDTO](/resources/references/auth/interfaces/authProviderIdentityDTO)\[] (optional) — The list of provider identities linked to the auth identity.
+    - `app_metadata`: `Record<string, unknown>` (optional) — Holds information related to the actor IDs tied to the auth identity.
+  - `mfaChallenge`: [AuthMfaChallengeDTO](/resources/references/auth/types/authAuthMfaChallengeDTO) (optional) — The multi-factor authentication (MFA) challenge to complete before issuing a token.
+    - `id`: `string` — The multi-factor authentication (MFA) challenge's ID.
+    - `auth_identity_id`: `string` (optional) — The ID of the authentication identity being challenged.
+    - `auth_identity`: [AuthIdentityDTO](/resources/references/auth/interfaces/authAuthIdentityDTO) (optional) — The authentication identity being challenged.
+    - `auth_provider`: `string` | `null` (optional) — The authentication provider handling the challenge.
+    - `methods`: [AuthMfaChallengeMethod](/resources/references/auth/types/authAuthMfaChallengeMethod)\[] — Available methods for completing this challenge.
+    - `expires_at`: `Date` — When the challenge expires.
+    - `attempts`: `number` — Number of verification attempts made.
+    - `max_attempts`: `number` — Maximum verification attempts allowed.
+    - `completed_at`: `Date` | `null` (optional) — When the challenge was completed.
+    - `metadata`: `Record<string, unknown>` | `null` (optional) — Additional metadata for the challenge.
+  - `error`: `string` (optional) — If an error occurs during the authentication process, whether within the Auth Module or a third-party provider, the error message is set in this field.
+  - `location`: `string` (optional) — The URL to redirect to for further authentication action with a third-party provider. This takes precedence before the `success` field. So, after checking that authentication is successful, you should check whether this field is defined and, if so, redirect to the specified location.

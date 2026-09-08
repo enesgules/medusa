@@ -1,0 +1,160 @@
+---
+title: addGiftCardToCartWorkflow - Medusa Core Workflows Reference
+sidebarTitle: addGiftCardToCartWorkflow
+---
+
+This documentation provides a reference to the `addGiftCardToCartWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow applies a gift card to a cart by creating a credit line for the
+gift card's balance and linking the gift card to the cart. It validates that
+the gift card exists, has sufficient balance, and can be applied to the cart.
+
+You can use this workflow within your own customizations or custom workflows,
+allowing you to wrap custom logic around adding gift cards to carts.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/plugins/loyalty/src/workflows/carts/workflows/add-gift-card-to-cart.ts#L218)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { addGiftCardToCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await addGiftCardToCartWorkflow(req.scope)
+    .run({
+      input: {
+        code: "GC-XXXX-XXXX",
+        cart_id: "cart_123",
+      },
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { addGiftCardToCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await addGiftCardToCartWorkflow(container)
+    .run({
+      input: {
+        code: "GC-XXXX-XXXX",
+        cart_id: "cart_123",
+      },
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { addGiftCardToCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await addGiftCardToCartWorkflow(container)
+    .run({
+      input: {
+        code: "GC-XXXX-XXXX",
+        cart_id: "cart_123",
+      },
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { addGiftCardToCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = addGiftCardToCartWorkflow
+      .runAsStep({
+        input: {
+          code: "GC-XXXX-XXXX",
+          cart_id: "cart_123",
+        },
+      })
+  }
+)
+```
+
+<a id="addgiftcardtocartworkflow-steps" />
+
+## Steps
+
+- [validateGiftCardStep](/resources/references/medusa-workflows/validateGiftCardStep): This step validates that a gift card code exists in the cart and that the gift card itself exists. It throws an error if the gift card code is not in the cart or if the gift card record is not found.
+  - [validateCartGiftCardStep](/resources/references/medusa-workflows/validateCartGiftCardStep): This step validates that gift cards can be added to a cart. It throws an error if a gift card is already applied to the cart, if the gift card has expired, or if the gift card currency does not match the cart's currency.
+    - [retrieveGiftCardBalanceStep](/resources/references/medusa-workflows/retrieveGiftCardBalanceStep): This step retrieves the balance of a single gift card from its associated store credit account. Returns a map of the gift card code to its account stats.
+      - [createCartCreditLinesWorkflow](/resources/references/medusa-workflows/createCartCreditLinesWorkflow): This workflow creates one or more credit lines for a cart.
+        - [createLinksWorkflow](/resources/references/medusa-workflows/createLinksWorkflow): Create links between two records of linked data models.
+          - [refreshCartItemsWorkflow](/resources/references/medusa-workflows/refreshCartItemsWorkflow): Refresh a cart's details after an update.
+
+<a id="addgiftcardtocartworkflow-input" />
+
+## Input
+
+**addGiftCardToCartWorkflow**
+
+- `AddGiftCardToCartWorkflowInput`: [AddGiftCardToCartWorkflowInput](/resources/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flowsplugins_loyalty_src_workflowsAddGiftCardToCartWorkflowInput)
+  - `code`: `string` — The code of the gift card to apply.
+  - `cart_id`: `string` — The ID of the cart to apply the gift card to.
+
+<a id="addgiftcardtocartworkflow-output" />
+
+## Output
+
+**addGiftCardToCartWorkflow**
+
+- `CartCreditLineDTO[]`: [CartCreditLineDTO](/resources/references/cart/interfaces/cartCartCreditLineDTO)\[]
+  - `id`: `string` — The ID of the cart credit line.
+  - `cart_id`: `string` — The ID of the cart that the credit line belongs to.
+  - `amount`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The amount of the credit line.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `raw_amount`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw amount of the credit line.
+    - `value`: `string` | `number`
+  - `reference`: `null` | `string` — The reference model name that the credit line is generated from
+  - `reference_id`: `null` | `string` — The reference model id that the credit line is generated from
+  - `metadata`: `null` | `Record<string, unknown>` — The metadata of the cart detail
+  - `created_at`: `Date` — The date when the cart credit line was created.
+  - `updated_at`: `Date` — The date when the cart credit line was last updated.

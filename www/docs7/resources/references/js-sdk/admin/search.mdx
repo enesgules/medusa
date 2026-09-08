@@ -1,0 +1,123 @@
+---
+title: search - JS SDK Admin Reference
+sidebarTitle: search
+---
+
+This documentation provides a reference to the `sdk.admin.search` set of methods used to send requests to Medusa's Admin API routes.
+
+## list
+
+This method searches across entities. Per entity, results come from the
+Search Module when that entity is indexed; otherwise each entity is queried
+with the same free-text `q` filter the list endpoints support.
+
+Results are grouped per entity and paginated independently.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
+
+### Example
+
+```ts
+sdk.admin.search.list({ q: "shirt", limit: 5 })
+.then(({ results }) => {
+  console.log(results)
+})
+```
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [AdminSearchParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSearchParams) (optional) — Search query and pagination parameters.
+  - `q`: `string` (optional) — Applied to every entity searched.
+  - `entity`: `string` | `string`\[] (optional) — The entities / indexes to search, comma-separated. When the Search Module is enabled, defaults to every registered index. Otherwise defaults to the admin fallback entity set. Per entity, an index is used when one exists; otherwise the request falls back to `query.graph` for that entity only.
+  - `limit`: `number` (optional) — Per entity, not across the response — each group paginates on its own.
+  - `offset`: `number` (optional) — The number of items to skip before the results. Used for pagination.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminSearchResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSearchResponse)\<Record\<string, unknown>>> — The grouped search results.
+
+## listIndexes
+
+This method retrieves the registered search indexes, their status, and the
+fields each stores. `enabled` is `false` when the Search Module is not
+configured.
+
+### Example
+
+```ts
+sdk.admin.search.listIndexes()
+.then(({ search_indexes, enabled }) => {
+  console.log(search_indexes, enabled)
+})
+```
+
+<a id="listindexes-parameters" />
+
+### Parameters
+
+**listIndexes**
+
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listindexes-returns" />
+
+### Returns
+
+**listIndexes**
+
+- `Promise`: Promise\<[AdminSearchIndexListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSearchIndexListResponse)> — The registered search indexes.
+  - `search_indexes`: [AdminSearchIndex](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSearchIndex)\[] — The registered search indexes.
+    - `name`: `string` — Unique index name, as used in `query.search({ entity })`.
+    - `entity`: `string` — The `query.graph` entrypoint used to hydrate non-indexed fields.
+    - `provider`: `string` — Identifier of the provider backing this index.
+    - `status`: [AdminSearchIndexStatus](/resources/references/types/HttpTypes/types/typesHttpTypesAdminSearchIndexStatus) — Lifecycle status of the index.
+    - `fields`: [AdminSearchIndexField](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSearchIndexField)\[] — Leaf fields stored in the index.
+  - `enabled`: `boolean` — Whether the Search Module is enabled. When `false`, `search_indexes` is empty.
+
+## reindex
+
+This method triggers rebuilding a search index from its seed. The rebuild runs in
+the background - check the index's `status` through [listIndexes](/resources/references/js_sdk/admin/Search/methods/js_sdkadminSearchlistIndexes) to know
+when it's done.
+
+### Example
+
+```ts
+sdk.admin.search.reindex("product")
+.then(({ job_id, indexes }) => {
+  console.log(job_id, indexes)
+})
+```
+
+<a id="reindex-parameters" />
+
+### Parameters
+
+**reindex**
+
+- `id`: `string` — The name of the index to reindex.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="reindex-returns" />
+
+### Returns
+
+**reindex**
+
+- `Promise`: Promise\<[AdminSearchIndexReindexResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSearchIndexReindexResponse)> — The triggered reindex job.
+  - `job_id`: `string` — Identifier of the triggered reindex job.
+  - `indexes`: `string`\[] — Names of the indexes being reindexed.

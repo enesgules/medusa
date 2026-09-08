@@ -1,0 +1,301 @@
+---
+title: Redis Workflow Engine Module
+---
+
+The Redis Workflow Engine Module uses Redis to track workflow executions and handle their subscribers. In production, it's recommended to use this module.
+
+<Note>
+  **Using Cloud?**
+
+  Our Cloud offering automatically provisions a Redis instance and configures the Redis Workflow Engine Module for you. Learn more in the [Redis](/cloud/redis) Cloud documentation.
+</Note>
+
+***
+
+## Register the Redis Workflow Engine Module
+
+### Prerequisites
+
+- [Redis installed and Redis server running](https://redis.io/docs/getting-started/installation/)
+
+Add the module into the `modules` property of the exported object in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/workflow-engine-redis",
+      options: {
+        redis: {
+          redisUrl: process.env.WE_REDIS_URL,
+          // ...other Redis options
+        },
+      },
+    },
+  ],
+})
+```
+
+### Environment Variables
+
+Make sure to add the following environment variables:
+
+```bash
+WE_REDIS_URL=<YOUR_REDIS_URL>
+```
+
+### Redis Workflow Engine Module Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `url` (Deprecated v2.12.2+, use `redisUrl` instead)
+      </td>
+
+      <td>
+        A string indicating the Redis connection URL.
+      </td>
+
+      <td>
+        No. If not provided, you must provide the `pubsub` option.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `redisUrl` (v2.12.2+)
+      </td>
+
+      <td>
+        A string indicating the Redis connection URL.
+      </td>
+
+      <td>
+        No. If not provided, you must provide the `pubsub` option.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `pubsub`
+      </td>
+
+      <td>
+        A connection object having the following properties:
+
+        - `url`: A required string indicating the Redis connection URL.
+        - `options`: An optional object of Redis options. Refer to the [Redis API Reference](https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.
+      </td>
+
+      <td>
+        No. If not provided, you must provide the `url` option.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `queueName`
+      </td>
+
+      <td>
+        The name of the queue used to keep track of retries and timeouts for workflow executions.
+
+        Default: `medusa-workflows`
+      </td>
+
+      <td>
+        No
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `jobQueueName`
+      </td>
+
+      <td>
+        The name of the queue used to keep track of retries and timeouts for scheduled jobs.
+
+        Default: `medusa-workflows-jobs`
+      </td>
+
+      <td>
+        No
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `options` (deprecated v2.12.2+, use `redisOptions` instead)
+      </td>
+
+      <td>
+        An object of Redis options. Refer to the [Redis API Reference](https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.
+      </td>
+
+      <td>
+        No
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `redisOptions` (v2.12.2+)
+      </td>
+
+      <td>
+        An object of Redis options. Refer to the [Redis API Reference](https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.
+      </td>
+
+      <td>
+        No
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `queueOptions` (v2.12.2+)
+      </td>
+
+      <td>
+        An object of options to pass to all BullMQ instances. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html) for allowed properties.
+      </td>
+
+      <td>
+        No
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `workerOptions` (v2.12.2+)
+      </td>
+
+      <td>
+        An object of options to pass to all BullMQ worker instances. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html) for allowed properties.
+
+        You can instead set options per worker using the `mainWorkerOptions`, `jobWorkerOptions`, and `cleanerWorkerOptions` options.
+      </td>
+
+      <td>
+        No
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `mainQueueOptions` (v2.12.2+)
+      </td>
+
+      <td>
+        An object of options to pass to the main BullMQ queue instance for workflows. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html) for allowed properties.
+      </td>
+
+      <td>
+        No
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `mainWorkerOptions` (v2.12.2+)
+      </td>
+
+      <td>
+        An object of options to pass to the main BullMQ worker instance for workflows. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html) for allowed properties.
+      </td>
+
+      <td>
+        No
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `jobQueueOptions` (v2.12.2+)
+      </td>
+
+      <td>
+        An object of options to pass to the main BullMQ workflow queue instance for scheduled jobs. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html) for allowed properties.
+      </td>
+
+      <td>
+        No
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `jobWorkerOptions` (v2.12.2+)
+      </td>
+
+      <td>
+        An object of options to pass to the main BullMQ workflow worker instance for scheduled jobs. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html) for allowed properties.
+      </td>
+
+      <td>
+        No
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `cleanerQueueOptions` (v2.12.2+)
+      </td>
+
+      <td>
+        An object of options to pass to the BullMQ cleaner queue instance. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html) for allowed properties.
+      </td>
+
+      <td>
+        No
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `cleanerWorkerOptions` (v2.12.2+)
+      </td>
+
+      <td>
+        An object of options to pass to the BullMQ cleaner worker instance. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html) for allowed properties.
+      </td>
+
+      <td>
+        No
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Test the Module
+
+To test the module, start the Medusa application:
+
+```bash
+npm run dev
+```
+
+You'll see the following message in the terminal's logs:
+
+```bash
+Connection to Redis in module 'workflow-engine-redis' established
+```

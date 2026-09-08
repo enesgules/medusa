@@ -1,0 +1,52 @@
+---
+title: validateProductInputStep - Medusa Core Workflows Reference
+sidebarTitle: validateProductInputStep
+---
+
+This documentation provides a reference to the `validateProductInputStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that all provided products have options.
+If a product is missing options or a shipping profile, an error is thrown.
+
+## Example
+
+```ts
+const data = validateProductInputStep({
+  products: [
+    {
+      title: "Shirt",
+      options: [
+        {
+          title: "Size",
+          values: ["S", "M", "L"]
+        }
+      ],
+      variants: [
+        {
+          title: "Small Shirt",
+          sku: "SMALLSHIRT",
+          options: {
+            Size: "S"
+          },
+          prices: [
+            {
+              amount: 10,
+              currency_code: "usd"
+            }
+          ],
+          manage_inventory: true,
+        },
+      ]
+    }
+  ]
+})
+```
+
+<a id="validateproductinputstep-input" />
+
+## Input
+
+**validateProductInputStep**
+
+- `ValidateProductInputStepInput`: [ValidateProductInputStepInput](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcValidateProductInputStepInput)
+  - `products`: Omit\<[CreateProductWorkflowInputDTO](/resources/references/types/types/typesCreateProductWorkflowInputDTO), "sales\_channels">\[] — The products to validate.

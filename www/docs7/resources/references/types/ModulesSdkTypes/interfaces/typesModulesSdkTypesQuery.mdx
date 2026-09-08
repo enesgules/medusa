@@ -1,0 +1,152 @@
+---
+title: Query
+---
+
+## Properties
+
+**Query**
+
+- `graph`: [QueryGraphFunction](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesQueryGraphFunction) — Graph function uses the remoteQuery under the hood and returns a result set
+- `gql`: (`query`: `string`, `variables?`: `Record<string, unknown>`, `options?`: [RemoteJoinerOptions](/resources/references/types/interfaces/typesRemoteJoinerOptions)) => Promise\<any> — Query wrapper to provide specific GraphQL like API around remoteQuery.query
+
+## Methods
+
+### query
+
+`**query**<TypeParameter TEntry>(queryConfig, options?): Promise<any>`
+
+Query wrapper to provide specific API's and pre processing around remoteQuery.query
+
+<a id="query-type-parameters" />
+
+#### Type Parameters
+
+**query**
+
+- `TEntry`: `string` (optional)
+
+<a id="query-parameters" />
+
+#### Parameters
+
+**query**
+
+- `queryConfig`: [RemoteQueryObjectConfig](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesRemoteQueryObjectConfig)\<TEntry>
+  - `entryPoint`: TEntry | keyof [RemoteQueryEntryPoints](/resources/references/types/ModulesSdkTypes/interfaces/typesModulesSdkTypesRemoteQueryEntryPoints)
+  - `variables`: `any` (optional)
+  - `fields`: [ObjectToRemoteQueryFields](/resources/references/types/types/typesObjectToRemoteQueryFields)\<[RemoteQueryEntryPoints](/resources/references/types/ModulesSdkTypes/interfaces/typesModulesSdkTypesRemoteQueryEntryPoints)\[TEntry & keyof [RemoteQueryEntryPoints](/resources/references/types/ModulesSdkTypes/interfaces/typesModulesSdkTypesRemoteQueryEntryPoints)]> extends `never` ? `string`\[] : [ObjectToRemoteQueryFields](/resources/references/types/types/typesObjectToRemoteQueryFields)\<[RemoteQueryEntryPoints](/resources/references/types/ModulesSdkTypes/interfaces/typesModulesSdkTypesRemoteQueryEntryPoints)\[TEntry & keyof [RemoteQueryEntryPoints](/resources/references/types/ModulesSdkTypes/interfaces/typesModulesSdkTypesRemoteQueryEntryPoints)]>\[] | `string`\[]
+- `options`: [RemoteJoinerOptions](/resources/references/types/interfaces/typesRemoteJoinerOptions) (optional) — Options controlling the behavior of a remote joiner query execution.
+  - `throwIfKeyNotFound`: `boolean` (optional) — Whether to throw an error if a requested key is not found in the result.
+  - `throwIfRelationNotFound`: `boolean` | `string`\[] (optional) — Whether to throw an error if a requested relation is not found, or a list of relation names to check.
+  - `initialData`: `object` | `object`\[] (optional) — Initial data to use as the starting dataset for the query instead of fetching from a service.
+  - `initialDataOnly`: `boolean` (optional) — Whether to use only the initial data without fetching additional data from services.
+  - `locale`: `string` (optional) — The locale to use for the query. Translation will be applied to the query result based on the locale.
+  - `cache`: `object` (optional)
+    - `enable`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to enable the cache. This is only useful if you want to enable without providing any other options or if you want to enable/disable the cache based on the arguments.
+    - `key`: `string` | (`args`: `any`\[], `cachingModule`: [ICachingModuleService](/resources/references/types/CachingTypes/interfaces/typesCachingTypesICachingModuleService)) => `string` | Promise\<string> (optional) — The key to use for the cache. If a function is provided, it will be called with the arguments as the first argument and the container as the second argument.
+    - `tags`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The tags to use for the cache. Used on their own unless `computeAutomaticTags` is set, in which case the automatically computed tags are stored alongside them.
+    - `computeAutomaticTags`: `boolean` (optional, default: false) — Whether the automatically computed tags should be applied along with the ones given in `tags`, rather than `tags` being used on its own. Automatic tags are computed from the result, which only exposes entities that carry an `id`. They therefore never cover link tables (whose rows are usually not selected), relations queried without their `id`, or entities that affect the result without appearing in it - pass only those in `tags` and enable this, instead of restating every entity the result already exposes. Has no effect when `tags` is omitted, since tags are computed either way.
+    - `ttl`: `number` | (`args`: `any`\[]) => `undefined` | `number` (optional) — The time-to-live (TTL) value in seconds.
+    - `autoInvalidate`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to auto invalidate the cache whenever it is possible.
+    - `providers`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The providers to use for the cache.
+
+<a id="query-returns" />
+
+#### Returns
+
+**query**
+
+- `Promise`: Promise\<any> — Query wrapper to provide specific API's and pre processing around remoteQuery.query
+  - `any`: `any`
+
+`**query**<TypeParameter TConfig>(queryConfig, options?): Promise<any>`
+
+Query wrapper to provide specific API's and pre processing around remoteQuery.query
+
+<a id="query-type-parameters-1" />
+
+#### Type Parameters
+
+**query**
+
+- `TConfig`: [RemoteQueryObjectFromStringResult](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesRemoteQueryObjectFromStringResult)\<any> (optional)
+  - `__TConfig`: TConfig
+  - `__value`: `object`
+
+<a id="query-parameters-1" />
+
+#### Parameters
+
+**query**
+
+- `queryConfig`: TConfig
+- `options`: [RemoteJoinerOptions](/resources/references/types/interfaces/typesRemoteJoinerOptions) (optional) — Options controlling the behavior of a remote joiner query execution.
+  - `throwIfKeyNotFound`: `boolean` (optional) — Whether to throw an error if a requested key is not found in the result.
+  - `throwIfRelationNotFound`: `boolean` | `string`\[] (optional) — Whether to throw an error if a requested relation is not found, or a list of relation names to check.
+  - `initialData`: `object` | `object`\[] (optional) — Initial data to use as the starting dataset for the query instead of fetching from a service.
+  - `initialDataOnly`: `boolean` (optional) — Whether to use only the initial data without fetching additional data from services.
+  - `locale`: `string` (optional) — The locale to use for the query. Translation will be applied to the query result based on the locale.
+  - `cache`: `object` (optional)
+    - `enable`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to enable the cache. This is only useful if you want to enable without providing any other options or if you want to enable/disable the cache based on the arguments.
+    - `key`: `string` | (`args`: `any`\[], `cachingModule`: [ICachingModuleService](/resources/references/types/CachingTypes/interfaces/typesCachingTypesICachingModuleService)) => `string` | Promise\<string> (optional) — The key to use for the cache. If a function is provided, it will be called with the arguments as the first argument and the container as the second argument.
+    - `tags`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The tags to use for the cache. Used on their own unless `computeAutomaticTags` is set, in which case the automatically computed tags are stored alongside them.
+    - `computeAutomaticTags`: `boolean` (optional, default: false) — Whether the automatically computed tags should be applied along with the ones given in `tags`, rather than `tags` being used on its own. Automatic tags are computed from the result, which only exposes entities that carry an `id`. They therefore never cover link tables (whose rows are usually not selected), relations queried without their `id`, or entities that affect the result without appearing in it - pass only those in `tags` and enable this, instead of restating every entity the result already exposes. Has no effect when `tags` is omitted, since tags are computed either way.
+    - `ttl`: `number` | (`args`: `any`\[]) => `undefined` | `number` (optional) — The time-to-live (TTL) value in seconds.
+    - `autoInvalidate`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to auto invalidate the cache whenever it is possible.
+    - `providers`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The providers to use for the cache.
+
+<a id="query-returns-1" />
+
+#### Returns
+
+**query**
+
+- `Promise`: Promise\<any> — Query wrapper to provide specific API's and pre processing around remoteQuery.query
+  - `any`: `any`
+
+`**query**(query, options?): Promise<any>`
+
+Query wrapper to provide specific API's and pre processing around remoteQuery.query
+
+<a id="query-parameters-2" />
+
+#### Parameters
+
+**query**
+
+- `query`: [RemoteJoinerQuery](/resources/references/types/interfaces/typesRemoteJoinerQuery) — A query object used by the remote joiner to fetch and join data across services.
+  - `service`: `string` (optional) — The name of the service to query.
+  - `alias`: `string` (optional) — The alias of the service entry point to query.
+  - `expands`: `object`\[] (optional) — Nested relationships to expand in the query result.
+    - `property`: `string` — The property path to the relationship to expand.
+    - `fields`: `string`\[] — The fields to retrieve for the expanded relationship.
+    - `args`: [JoinerArgument](/resources/references/types/interfaces/typesJoinerArgument)\[] (optional) — Arguments to pass to the expanded relationship query.
+    - `directives`: `object` (optional) — Directives to apply to fields in the expanded relationship.
+  - `fields`: `string`\[] — The fields to retrieve from the queried service.
+  - `args`: [JoinerArgument](/resources/references/types/interfaces/typesJoinerArgument)\[] (optional) — Arguments to pass to the service query.
+    - `name`: `string` — The name of the argument.
+    - `value`: `any` (optional) — The value of the argument.
+  - `directives`: `object` (optional) — Directives to apply to fields in the query.
+- `options`: [RemoteJoinerOptions](/resources/references/types/interfaces/typesRemoteJoinerOptions) (optional) — Options controlling the behavior of a remote joiner query execution.
+  - `throwIfKeyNotFound`: `boolean` (optional) — Whether to throw an error if a requested key is not found in the result.
+  - `throwIfRelationNotFound`: `boolean` | `string`\[] (optional) — Whether to throw an error if a requested relation is not found, or a list of relation names to check.
+  - `initialData`: `object` | `object`\[] (optional) — Initial data to use as the starting dataset for the query instead of fetching from a service.
+  - `initialDataOnly`: `boolean` (optional) — Whether to use only the initial data without fetching additional data from services.
+  - `locale`: `string` (optional) — The locale to use for the query. Translation will be applied to the query result based on the locale.
+  - `cache`: `object` (optional)
+    - `enable`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to enable the cache. This is only useful if you want to enable without providing any other options or if you want to enable/disable the cache based on the arguments.
+    - `key`: `string` | (`args`: `any`\[], `cachingModule`: [ICachingModuleService](/resources/references/types/CachingTypes/interfaces/typesCachingTypesICachingModuleService)) => `string` | Promise\<string> (optional) — The key to use for the cache. If a function is provided, it will be called with the arguments as the first argument and the container as the second argument.
+    - `tags`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The tags to use for the cache. Used on their own unless `computeAutomaticTags` is set, in which case the automatically computed tags are stored alongside them.
+    - `computeAutomaticTags`: `boolean` (optional, default: false) — Whether the automatically computed tags should be applied along with the ones given in `tags`, rather than `tags` being used on its own. Automatic tags are computed from the result, which only exposes entities that carry an `id`. They therefore never cover link tables (whose rows are usually not selected), relations queried without their `id`, or entities that affect the result without appearing in it - pass only those in `tags` and enable this, instead of restating every entity the result already exposes. Has no effect when `tags` is omitted, since tags are computed either way.
+    - `ttl`: `number` | (`args`: `any`\[]) => `undefined` | `number` (optional) — The time-to-live (TTL) value in seconds.
+    - `autoInvalidate`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to auto invalidate the cache whenever it is possible.
+    - `providers`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The providers to use for the cache.
+
+<a id="query-returns-2" />
+
+#### Returns
+
+**query**
+
+- `Promise`: Promise\<any> — Query wrapper to provide specific API's and pre processing around remoteQuery.query
+  - `any`: `any`

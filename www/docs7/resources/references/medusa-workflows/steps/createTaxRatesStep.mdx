@@ -1,0 +1,77 @@
+---
+title: createTaxRatesStep - Medusa Core Workflows Reference
+sidebarTitle: createTaxRatesStep
+---
+
+This documentation provides a reference to the `createTaxRatesStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates one or more tax rates.
+
+## Example
+
+```ts
+const data = createTaxRatesStep([
+  {
+    name: "Default",
+    tax_region_id: "txreg_123",
+  }
+])
+```
+
+<a id="createtaxratesstep-input" />
+
+## Input
+
+**createTaxRatesStep**
+
+- `CreateTaxRateDTO[]`: [CreateTaxRateDTO](/resources/references/tax/interfaces/taxCreateTaxRateDTO)\[]
+  - `tax_region_id`: `string` — The associated tax region's ID.
+  - `rate`: `null` | `number` (optional) — The rate to charge.
+
+    Example:
+
+    ```
+    10
+    ```
+  - `code`: `null` | `string` (optional) — The code of the tax rate.
+  - `name`: `string` — The name of the tax rate.
+  - `rules`: Omit\<[CreateTaxRateRuleDTO](/resources/references/tax/interfaces/taxCreateTaxRateRuleDTO), "tax\_rate\_id">\[] (optional) — The rules of the tax rate.
+    - `reference`: `string` — The snake-case name of the data model that the tax rule references. For example, `product`. Learn more in [this guide](/resources/commerce-modules/tax/tax-rates-and-rules#override-tax-rates-with-rules).
+    - `reference_id`: `string` — The ID of the record of the data model that the tax rule references. For example, `prod_123`. Learn more in [this guide](/resources/commerce-modules/tax/tax-rates-and-rules#override-tax-rates-with-rules).
+    - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_by`: `null` | `string` (optional) — Who created the tax rate rule. For example, the ID of the user that created it.
+  - `is_default`: `boolean` (optional) — Whether the tax rate is default.
+  - `created_by`: `string` (optional) — Who created the tax rate. For example, the ID of the user that created the tax rate.
+  - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+
+<a id="createtaxratesstep-output" />
+
+## Output
+
+**createTaxRatesStep**
+
+- `TaxRateDTO[]`: [TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[]
+  - `id`: `string` — The ID of the tax rate.
+  - `rate`: `null` | `number` — The rate to charge.
+
+    Example:
+
+    ```
+    10
+    ```
+  - `code`: `null` | `string` — The code the tax rate is identified by.
+  - `name`: `string` — The name of the Tax Rate.
+
+    Example:
+
+    ```
+    VAT
+    ```
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `tax_region_id`: `string` — The ID of the associated tax region.
+  - `is_combinable`: `boolean` — Whether the tax rate should be combined with parent rates. Learn more [here](/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+  - `is_default`: `boolean` — Whether the tax rate is the default rate for the region.
+  - `created_at`: `string` | `Date` — The creation date of the tax rate.
+  - `updated_at`: `string` | `Date` — The update date of the tax rate.
+  - `deleted_at`: `null` | `Date` — The deletion date of the tax rate.
+  - `created_by`: `null` | `string` — Who created the tax rate. For example, the ID of the user that created the tax rate.

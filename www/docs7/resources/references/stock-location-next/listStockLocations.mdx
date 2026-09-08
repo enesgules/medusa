@@ -1,0 +1,162 @@
+---
+title: listStockLocations - Stock Location Next Module Reference
+sidebarTitle: listStockLocations
+---
+
+This documentation provides a reference to the `listStockLocations` method. This belongs to the Stock Location Next Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of stock locations based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of stock locations using their IDs:
+
+```ts
+const stockLocations = await stockLocationModuleService.listStockLocations({
+  id: ["sloc_123", "sloc_321"],
+})
+```
+
+To specify relations that should be retrieved within the stock locations:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const stockLocations = await stockLocationModuleService.listStockLocations(
+  {
+    id: ["sloc_123", "sloc_321"],
+  },
+  {
+    relations: ["address"],
+  }
+)
+```
+
+By default, only the first `10` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const stockLocations = await stockLocationModuleService.listStockLocations(
+  {
+    id: ["sloc_123", "sloc_321"],
+  },
+  {
+    relations: ["address"],
+    take: 20,
+    skip: 2,
+  }
+)
+```
+
+<a id="liststocklocations-parameters" />
+
+## Parameters
+
+**listStockLocations**
+
+- `selector`: [FilterableStockLocationProps](/resources/references/stock_location_next/interfaces/stock_location_nextFilterableStockLocationProps) — The filters to apply on the retrieved stock locations.
+  - `$and`: ([FilterableStockLocationProps](/resources/references/stock_location_next/interfaces/stock_location_nextFilterableStockLocationProps) | [BaseFilterable](/resources/references/stock_location_next/interfaces/stock_location_nextBaseFilterable)\<[FilterableStockLocationProps](/resources/references/stock_location_next/interfaces/stock_location_nextFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableStockLocationProps](/resources/references/stock_location_next/interfaces/stock_location_nextFilterableStockLocationProps) | [BaseFilterable](/resources/references/stock_location_next/interfaces/stock_location_nextBaseFilterable)\<[FilterableStockLocationProps](/resources/references/stock_location_next/interfaces/stock_location_nextFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableStockLocationProps](/resources/references/stock_location_next/interfaces/stock_location_nextFilterableStockLocationProps) | [BaseFilterable](/resources/references/stock_location_next/interfaces/stock_location_nextBaseFilterable)\<[FilterableStockLocationProps](/resources/references/stock_location_next/interfaces/stock_location_nextFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search parameter for stock location names
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter stock locations by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/stock_location_next/types/stock_location_nextOperatorMap)\<string> (optional) — The names to filter stock locations by.
+  - `$or`: ([FilterableStockLocationProps](/resources/references/stock_location_next/interfaces/stock_location_nextFilterableStockLocationProps) | [BaseFilterable](/resources/references/stock_location_next/interfaces/stock_location_nextBaseFilterable)\<[FilterableStockLocationProps](/resources/references/stock_location_next/interfaces/stock_location_nextFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableStockLocationProps](/resources/references/stock_location_next/interfaces/stock_location_nextFilterableStockLocationProps) | [BaseFilterable](/resources/references/stock_location_next/interfaces/stock_location_nextBaseFilterable)\<[FilterableStockLocationProps](/resources/references/stock_location_next/interfaces/stock_location_nextFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableStockLocationProps](/resources/references/stock_location_next/interfaces/stock_location_nextFilterableStockLocationProps) | [BaseFilterable](/resources/references/stock_location_next/interfaces/stock_location_nextBaseFilterable)\<[FilterableStockLocationProps](/resources/references/stock_location_next/interfaces/stock_location_nextFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search parameter for stock location names
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter stock locations by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/stock_location_next/types/stock_location_nextOperatorMap)\<string> (optional) — The names to filter stock locations by.
+  - `q`: `string` (optional) — Search parameter for stock location names
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter stock locations by.
+  - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/stock_location_next/types/stock_location_nextOperatorMap)\<string> (optional) — The names to filter stock locations by.
+    - `$and`: [Query](/resources/references/stock_location_next/types/stock_location_nextQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/stock_location_next/types/stock_location_nextQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/stock_location_next/types/stock_location_nextExpandScalar)\<T> | [ExpandScalar](/resources/references/stock_location_next/types/stock_location_nextExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/stock_location_next/types/stock_location_nextExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/stock_location_next/types/stock_location_nextExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/stock_location_next/types/stock_location_nextExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/stock_location_next/types/stock_location_nextQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/stock_location_next/types/stock_location_nextExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/stock_location_next/types/stock_location_nextExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/stock_location_next/types/stock_location_nextExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/stock_location_next/types/stock_location_nextExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `config`: [FindConfig](/resources/references/stock_location_next/interfaces/stock_location_nextFindConfig)\<[StockLocationDTO](/resources/references/stock_location_next/types/stock_location_nextStockLocationDTO)> (optional) — The configurations determining how the stock location is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a stock location.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/stock_location_next/types/stock_location_nextFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/stock_location_next/types/stock_location_nextInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/stock_location_next/types/stock_location_nextCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `context`: [Context](/resources/references/stock_location_next/interfaces/stock_location_nextContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/stock_location_next/interfaces/stock_location_nextIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="liststocklocations-returns" />
+
+## Returns
+
+**listStockLocations**
+
+- `Promise`: Promise\<[StockLocationDTO](/resources/references/stock_location_next/types/stock_location_nextStockLocationDTO)\[]> — The list of stock locations.
+  - `StockLocationDTO[]`: [StockLocationDTO](/resources/references/stock_location_next/types/stock_location_nextStockLocationDTO)\[]
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `Record<string, unknown>` | `null` — Holds custom data in key-value pairs.
+    - `address_id`: `string` — The associated address's ID.
+    - `address`: [StockLocationAddressDTO](/resources/references/stock_location_next/types/stock_location_nextStockLocationAddressDTO) (optional) — The address of the stock location.
+      - `id`: `string` (optional) — The ID of the stock location address.
+      - `address_1`: `string` — The address 1 of the stock location address.
+      - `address_2`: `string` | `null` (optional) — The address 2 of the stock location address.
+      - `company`: `string` | `null` (optional) — The company of the stock location address.
+      - `country_code`: `string` — The country code of the stock location address.
+      - `city`: `string` | `null` (optional) — The city of the stock location address.
+      - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+      - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+      - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+      - `metadata`: [MetadataType](/resources/references/stock_location_next/types/stock_location_nextMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — The creation date of the stock location address.
+      - `updated_at`: `string` | `Date` — The update date of the stock location address.
+      - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location address.
+    - `fulfillment_sets`: [FulfillmentSetDTO](/resources/references/stock_location_next/interfaces/stock_location_nextFulfillmentSetDTO)\[] — Fulfillment sets for the location
+      - `id`: `string` — The ID of the fulfillment set.
+      - `name`: `string` — The name of the fulfillment set.
+      - `type`: `string` — The type of the fulfillment set.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `service_zones`: [ServiceZoneDTO](/resources/references/stock_location_next/interfaces/stock_location_nextServiceZoneDTO)\[] — The service zones associated with the fulfillment set.
+      - `created_at`: `Date` — The creation date of the fulfillment set.
+      - `updated_at`: `Date` — The update date of the fulfillment set.
+      - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment set.
+    - `created_at`: `string` | `Date` — The creation date of the stock location.
+    - `updated_at`: `string` | `Date` — The update date of the stock location.
+    - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location.

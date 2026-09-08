@@ -1,0 +1,65 @@
+---
+title: retrieve
+---
+
+This method retrieves a reservation by ID. It sends a request to the
+[Get Reservation](/api/admin/reservations/get-a-reservation)
+API route.
+
+## Example
+
+To retrieve a reservation by its ID:
+
+```ts
+sdk.admin.reservation.retrieve("res_123")
+.then(({ reservation }) => {
+  console.log(reservation)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.reservation.retrieve("res_123", {
+  fields: "id,name"
+})
+.then(({ reservation }) => {
+  console.log(reservation)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The reservation's ID.
+- `query`: [AdminReservationParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReservationParams) (optional) — Configure the fields and relations to retrieve in the reservation.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminReservationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReservationResponse)> — The reservation's details.
+  - `reservation`: [AdminReservation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReservation) — The reservation's details.
+    - `id`: `string` — The reservation's ID.
+    - `line_item_id`: `null` | `string` — The ID of the line item that the reservation is for.
+    - `location_id`: `string` — The ID of the location that the quantity is reserved from.
+    - `quantity`: `number` — The quantity that is reserved.
+    - `external_id`: `null` | `string` — The ID of the reservation in an external system.
+    - `description`: `null` | `string` — The description of the reservation.
+    - `inventory_item_id`: `string` — The ID of the inventory item that the reservation is for.
+    - `inventory_item`: [AdminInventoryItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryItem) (optional) — The inventory item that the reservation is for.
+    - `metadata`: `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the reservation.
+    - `created_by`: `null` | `string` (optional) — The ID of the user that created the reservation.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date that the reservation was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date that the reservation was created.
+    - `updated_at`: `string` | `Date` (optional) — The date that the reservation was updated.

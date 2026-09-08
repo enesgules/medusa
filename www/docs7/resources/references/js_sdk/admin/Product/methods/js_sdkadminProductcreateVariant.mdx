@@ -1,0 +1,122 @@
+---
+title: createVariant
+---
+
+This method creates a variant for a product. It sends a request to the
+[Create Variant](/api/admin/products/create-variant)
+API route.
+
+## Example
+
+```ts
+sdk.admin.product.createVariant("prod_123", {
+  title: "Blue Shirt",
+  options: {
+    Color: "Blue"
+  },
+  prices: [
+    {
+      amount: 10,
+      currency_code: "usd"
+    }
+  ]
+})
+.then(({ product }) => {
+  console.log(product)
+})
+```
+
+<a id="createvariant-parameters" />
+
+## Parameters
+
+**createVariant**
+
+- `productId`: `string` — The product's ID.
+- `body`: [AdminCreateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariant) — The variant's details.
+  - `title`: `string` — The variant's title.
+  - `sku`: `null` | `string` (optional) — The variant's SKU.
+  - `ean`: `null` | `string` (optional) — The variant's EAN.
+  - `upc`: `null` | `string` (optional) — The variant's UPC.
+  - `barcode`: `null` | `string` (optional) — The variant's barcode.
+  - `hs_code`: `null` | `string` (optional) — The variant's HS code.
+  - `mid_code`: `null` | `string` (optional) — The variant's MID code.
+  - `allow_backorder`: `boolean` (optional) — Whether the variant can be ordered even if it's out of stock.
+  - `manage_inventory`: `boolean` (optional) — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+  - `variant_rank`: `number` (optional) — The variant's ranking among its sibling variants.
+  - `weight`: `null` | `number` (optional) — The variant's weight.
+  - `length`: `null` | `number` (optional) — The variant's length.
+  - `height`: `null` | `number` (optional) — The variant's height.
+  - `width`: `null` | `number` (optional) — The variant's width.
+  - `origin_country`: `null` | `string` (optional) — The variant's origin country.
+  - `material`: `null` | `string` (optional) — The variant's material.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `prices`: [AdminCreateProductVariantPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantPrice)\[] — The variant's prices.
+    - `currency_code`: `string` — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` — The price's amount.
+    - `min_quantity`: `null` | `number` (optional) — The minimum quantity required in the cart for the price to apply.
+    - `max_quantity`: `null` | `number` (optional) — The maximum quantity required in the cart for the price to apply.
+    - `rules`: `Record<string, string>` (optional) — The price's rules. Currently, only supports a `region_id` key to specify the region that the price applies to.
+
+      Example:
+
+      ```
+      { * "region_id": "region_123" * }
+      ```
+  - `inventory_items`: [AdminCreateProductVariantInventoryKit](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantInventoryKit)\[] (optional) — The variant's inventory items. It's only available if `manage_inventory` is enabled.
+    - `inventory_item_id`: `string`
+    - `required_quantity`: `number`
+  - `options`: `Record<string, string>` (optional) — The variant's values for the associated product's options.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the product.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="createvariant-returns" />
+
+## Returns
+
+**createVariant**
+
+- `Promise`: Promise\<[AdminProductResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductResponse)> — The product's details.
+  - `product`: [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) — The product's details.
+    - `collection`: `null` | [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) (optional) — The product's collection.
+    - `categories`: `null` | [AdminProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductCategory)\[] (optional) — The product's categories.
+    - `sales_channels`: `null` | [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels that the product is available in.
+    - `shipping_profile`: `null` | [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) (optional) — The shipping profile that the product is available in.
+    - `variants`: `null` | [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)\[] — The product's variants.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product's translations.
+    - `type`: `null` | [AdminProductType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductType) — The product's type.
+    - `tags`: `null` | [AdminProductTag](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductTag)\[] (optional) — The product's tags.
+    - `options`: `null` | [AdminProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOption)\[] — The product's options.
+    - `images`: `null` | [AdminProductImage](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductImage)\[] — The product's images.
+    - `id`: `string` — The product's ID.
+    - `title`: `string` — The product's title.
+    - `handle`: `string` — The product's handle.
+    - `subtitle`: `null` | `string` — The product's subtitle.
+    - `description`: `null` | `string` — The product's description.
+    - `is_giftcard`: `boolean` — Whether the product is a gift card.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) — The product's status.
+    - `thumbnail`: `null` | `string` — The product's thumbnail.
+    - `width`: `null` | `number` — The product's width.
+    - `weight`: `null` | `number` — The product's weight.
+    - `length`: `null` | `number` — The product's length.
+    - `height`: `null` | `number` — The product's height.
+    - `origin_country`: `null` | `string` — The product's origin country.
+    - `hs_code`: `null` | `string` — The product's HS code.
+    - `mid_code`: `null` | `string` — The product's MID code.
+    - `material`: `null` | `string` — The product's material.
+    - `collection_id`: `null` | `string` — The ID of the associated product collection.
+    - `type_id`: `null` | `string` — The ID of the associated product type.
+    - `discountable`: `boolean` — Whether the product is discountable.
+    - `external_id`: `null` | `string` — The ID of the product in external systems.
+    - `created_at`: `null` | `string` — The date the product was created.
+    - `updated_at`: `null` | `string` — The date the product was update.
+    - `deleted_at`: `null` | `string` — The date the product was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.

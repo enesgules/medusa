@@ -1,0 +1,45 @@
+---
+title: JoinerServiceConfig
+---
+
+Configuration for a service registered with the Joiner.
+
+**JoinerServiceConfig**
+
+- `serviceName`: `string` — The unique name of the service.
+- `alias`: [JoinerServiceConfigAlias](/resources/references/stock_location_next/interfaces/stock_location_nextJoinerServiceConfigAlias) | [JoinerServiceConfigAlias](/resources/references/stock_location_next/interfaces/stock_location_nextJoinerServiceConfigAlias)\[] (optional) — Property name to use as entrypoint to the service
+  - `name`: `string` | `string`\[] — The alias name or list of alias names for the service entry point.
+  - `entity`: `string` (optional) — The entity name associated with this alias.
+  - `filterable`: `string`\[] (optional) — The list of fields that can be used as filters when querying through this alias.
+  - `__internal`: `object` (optional) — Internal-only alias metadata used by the query layer.
+    - `crossjoinable`: `string`\[] (optional) — Non-computed DML fields that can be used in cross-module SQL joins. Used as an optimization layer to determine which fields are safe to push into EXISTS-based cross-module filters.
+    - `tableName`: `string` (optional) — Physical table name (without PG schema) backing the alias entity. Required to build cross-module SQL joins against the entity's table.
+    - `schema`: `string` (optional) — PG schema of the entity's table, when the DML definition specifies one.
+    - `relations`: `Record<string, object>` (optional) — Module-internal DML relations of the alias entity, keyed by property name. Used to traverse own-model hops when building cross-module SQL joins (e.g. cart -> items -> product).
+  - `args`: `Record<string, any>` (optional) — Extra arguments to pass to the remoteFetchData callback
+- `fieldAlias`: `Record<string, string \| object>` (optional) — alias for deeper nested relationships (e.g. \{ 'price': 'prices.calculated\_price\_set.amount' })
+  - `path`: `string`
+  - `forwardArgumentsOnPath`: `string`\[]
+- `primaryKeys`: `string`\[] — The primary key fields used to identify records in this service.
+- `relationships`: [JoinerRelationship](/resources/references/stock_location_next/types/stock_location_nextJoinerRelationship)\[] (optional) — The relationships this service has with other services.
+  - `alias`: `string` — The alias used to reference the related service in queries.
+  - `foreignKey`: `string` — The foreign key field on the related service used to join the relationship.
+  - `primaryKey`: `string` — The primary key field on the current service used to join the relationship.
+  - `serviceName`: `string` — The name of the related service.
+  - `entity`: `string` (optional) — The entity name within the related service.
+  - `inverse`: `boolean` (optional) — In an inverted relationship the foreign key is on the other service and the primary key is on the current service
+  - `isList`: `boolean` (optional) — Force the relationship to return a list
+  - `args`: `Record<string, any>` (optional) — Extra arguments to pass to the remoteFetchData callback
+- `extends`: `object`\[] (optional) — Relationship extensions that this service adds to other services.
+  - `serviceName`: `string`
+  - `entity`: `string` (optional)
+  - `relationship`: [JoinerRelationship](/resources/references/stock_location_next/types/stock_location_nextJoinerRelationship) — Defines a relationship between two services in the Joiner.
+    - `alias`: `string` — The alias used to reference the related service in queries.
+    - `foreignKey`: `string` — The foreign key field on the related service used to join the relationship.
+    - `primaryKey`: `string` — The primary key field on the current service used to join the relationship.
+    - `serviceName`: `string` — The name of the related service.
+    - `entity`: `string` (optional) — The entity name within the related service.
+    - `inverse`: `boolean` (optional) — In an inverted relationship the foreign key is on the other service and the primary key is on the current service
+    - `isList`: `boolean` (optional) — Force the relationship to return a list
+    - `args`: `Record<string, any>` (optional) — Extra arguments to pass to the remoteFetchData callback
+- `args`: `Record<string, any>` (optional) — Extra arguments to pass to the remoteFetchData callback

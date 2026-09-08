@@ -1,0 +1,336 @@
+---
+title: invite - JS SDK Admin Reference
+sidebarTitle: invite
+---
+
+This documentation provides a reference to the `sdk.admin.invite` set of methods used to send requests to Medusa's Admin API routes.
+
+## accept
+
+This method accepts an invite. It requires sending a previous request to
+the Auth.register.
+
+This method sends a request to the \[Accept Invite]
+([https://docs.medusajs.com/api/admin/invites/accept-invite](/api/admin/invites/accept-invite))
+API route.
+
+### Example
+
+```ts
+await sdk.auth.register("user", "emailpass", {
+  email: "user@gmail.com",
+  password: "supersecret"
+})
+
+// all subsequent requests will use the token in the header
+const { user } = await sdk.admin.invite.accept(
+  {
+    email: "user@gmail.com",
+    first_name: "John",
+    last_name: "Smith",
+    invite_token: "12345..."
+  },
+)
+```
+
+<a id="accept-parameters" />
+
+### Parameters
+
+**accept**
+
+- `input`: [AdminAcceptInvite](/resources/references/types/HttpTypes/types/typesHttpTypesAdminAcceptInvite) & `object` — The details of the user to create.
+  - `email`: `string` | `null` (optional) — The user's email.
+  - `first_name`: `string` | `null` (optional) — The user's first name.
+  - `last_name`: `string` | `null` (optional) — The user's last name.
+  - `invite_token`: `string` — The invite's token.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the user.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="accept-returns" />
+
+### Returns
+
+**accept**
+
+- `Promise`: Promise\<[AdminAcceptInviteResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminAcceptInviteResponse)> — The user's details.
+  - `user`: [AdminUser](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUser) — The user's details.
+    - `id`: `string` — The user's ID.
+    - `email`: `string` — The user's email.
+    - `first_name`: `null` | `string` — The user's first name.
+    - `last_name`: `null` | `string` — The user's last name.
+    - `avatar_url`: `null` | `string` — The URL of the user's avatar image.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the user.
+    - `created_at`: `string` — The date the user was created.
+    - `updated_at`: `string` — The date the user was updated.
+    - `deleted_at`: `null` | `string` — The date the user was deleted.
+  - `message`: `string` — A message if an error occurs.
+
+## create
+
+This method creates an invite. It sends a request to the
+[Create Invite](/api/admin/invites/create-invite)
+API route.
+
+### Example
+
+```ts
+sdk.admin.invite.create({
+  email: "user@gmail.com",
+})
+.then(({ invite }) => {
+  console.log(invite)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [AdminCreateInvite](/resources/references/types/HttpTypes/types/typesHttpTypesAdminCreateInvite) — The invite's details.
+  - `email`: `string` — The email of the user to invite.
+  - `roles`: `string`\[] | `null` (optional) — The RBAC roles to assign to the user when the invite is accepted.
+  - `metadata`: `Record<string, unknown>` | `null` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the invite.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminInviteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInviteResponse)> — The invite's details.
+  - `invite`: [AdminInvite](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInvite) — The invite's details.
+    - `id`: `string` — The invite's ID.
+    - `email`: `string` — The email of the invited user.
+    - `accepted`: `boolean` — Whether the invite was accepted.
+    - `token`: `string` — The invite token.
+    - `expires_at`: `string` — The date the invite expires.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `rbac_roles`: [AdminRbacRole](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRole)\[] (optional) — The RBAC roles assigned to the invite.
+    - `created_at`: `string` — The date that the invite was created.
+    - `updated_at`: `string` — The date that the invite was updated.
+
+## retrieve
+
+This method retrieves an invite by its ID. It sends a request to the
+[Get Invite](/api/admin/invites/get-an-invite)
+API route.
+
+### Example
+
+To retrieve an invite its ID:
+
+```ts
+sdk.admin.invite.retrieve("invite_123")
+.then(({ invite }) => {
+  console.log(invite)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.invite.retrieve("invite_123", {
+  fields: "id,email"
+})
+.then(({ invite }) => {
+  console.log(invite)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The invite's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the invite.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminInviteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInviteResponse)> — The invite's details.
+  - `invite`: [AdminInvite](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInvite) — The invite's details.
+    - `id`: `string` — The invite's ID.
+    - `email`: `string` — The email of the invited user.
+    - `accepted`: `boolean` — Whether the invite was accepted.
+    - `token`: `string` — The invite token.
+    - `expires_at`: `string` — The date the invite expires.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `rbac_roles`: [AdminRbacRole](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRole)\[] (optional) — The RBAC roles assigned to the invite.
+    - `created_at`: `string` — The date that the invite was created.
+    - `updated_at`: `string` — The date that the invite was updated.
+
+## list
+
+This method retrieves a paginated list of invites. It sends a request to the
+[List Invites](/api/admin/invites/list-invites)
+API route.
+
+### Example
+
+To retrieve the list of invites:
+
+```ts
+sdk.admin.invite.list()
+.then(({ invites, count, limit, offset }) => {
+  console.log(invites)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.invite.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ invites, count, limit, offset }) => {
+  console.log(invites)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each invite:
+
+```ts
+sdk.admin.invite.list({
+  fields: "id,email"
+})
+.then(({ invites, count, limit, offset }) => {
+  console.log(invites)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `queryParams`: [FindParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesFindParams) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminInviteListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminInviteListResponse)> — The paginated list of invites.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## resend
+
+This method refreshes the token of an invite. It sends a request to the
+[Refresh Invite Token](/api/admin/invites/refresh-invite-token)
+API route.
+
+### Example
+
+```ts
+sdk.admin.invite.resend("invite_123")
+.then(({ invite }) => {
+  console.log(invite)
+})
+```
+
+<a id="resend-parameters" />
+
+### Parameters
+
+**resend**
+
+- `id`: `string` — The invite's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="resend-returns" />
+
+### Returns
+
+**resend**
+
+- `Promise`: Promise\<[AdminInviteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInviteResponse)> — The invite's details.
+  - `invite`: [AdminInvite](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInvite) — The invite's details.
+    - `id`: `string` — The invite's ID.
+    - `email`: `string` — The email of the invited user.
+    - `accepted`: `boolean` — Whether the invite was accepted.
+    - `token`: `string` — The invite token.
+    - `expires_at`: `string` — The date the invite expires.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `rbac_roles`: [AdminRbacRole](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRole)\[] (optional) — The RBAC roles assigned to the invite.
+    - `created_at`: `string` — The date that the invite was created.
+    - `updated_at`: `string` — The date that the invite was updated.
+
+## delete
+
+This method deletes an invite. It sends a request to the
+[Delete Invite](/api/admin/invites/delete-invite)
+API route.
+
+### Example
+
+```ts
+sdk.admin.invite.delete("invite_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The invite's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminInviteDeleteResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminInviteDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: TObject — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.

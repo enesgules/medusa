@@ -1,0 +1,212 @@
+---
+title: Auth Module
+---
+
+In this section of the documentation, you will find resources to learn more about the Auth Module and how to use it in your application.
+
+Medusa has auth related features available out-of-the-box through the Auth Module. A [module](/learn/fundamentals/modules) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Auth Module.
+
+<Note>
+  Learn more about why modules are isolated in [this documentation](/learn/fundamentals/modules/isolation).
+</Note>
+
+## Auth Features
+
+- [Basic User Authentication](/resources/commerce-modules/auth/authentication-route#1-basic-authentication-flow): Authenticate users using their email and password credentials.
+- [Third-Party and Social Authentication](/resources/commerce-modules/auth/authentication-route#2-third-party-service-authenticate-flow): Authenticate users using third-party services and social platforms, such as [Google](/resources/commerce-modules/auth/auth-providers/google) and [GitHub](/resources/commerce-modules/auth/auth-providers/github).
+- [Authenticate Custom Actor Types](/resources/commerce-modules/auth/create-actor-type): Create custom user or actor types, such as managers, authenticate them in your application, and guard routes based on the custom user types.
+- [Email Verification](/resources/commerce-modules/auth/email-verification): Require email verification for new registrations and authentications.
+- [Multi-Factor Authentication (MFA)](/resources/commerce-modules/auth/mfa): Add an extra layer of security with time-based one-time passwords (TOTP), backup recovery codes, and configurable disable policies.
+- [Custom Authentication Providers](/resources/references/auth/provider): Integrate third-party services with custom authentication providers.
+
+***
+
+## How to Use the Auth Module
+
+In your Medusa application, you build flows around Commerce Modules. A flow is built as a [Workflow](/learn/fundamentals/workflows), which is a special function composed of a series of steps that guarantees data consistency and reliable roll-back mechanism.
+
+You can build custom workflows and steps. You can also re-use Medusa's workflows and steps, which are provided by the `@medusajs/medusa/core-flows` package.
+
+For example:
+
+```ts title="src/workflows/authenticate-user.ts"
+import { 
+  createWorkflow, 
+  WorkflowResponse,
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { Modules, MedusaError } from "@medusajs/framework/utils"
+import { MedusaRequest } from "@medusajs/framework/http"
+import { AuthenticationInput } from "@medusajs/framework/types"
+
+type Input = {
+  req: MedusaRequest
+}
+
+const authenticateUserStep = createStep(
+  "authenticate-user",
+  async ({ req }: Input, { container }) => {
+    const authModuleService = container.resolve(Modules.AUTH)
+
+    const { success, authIdentity, error } = await authModuleService
+      .authenticate(
+        "emailpass",
+       {
+          url: req.url,
+          headers: req.headers,
+          query: req.query,
+          body: req.body,
+          authScope: "admin", // or custom actor type
+          protocol: req.protocol,
+        } as AuthenticationInput
+      )
+
+    if (!success) {
+      // incorrect authentication details
+      throw new MedusaError(
+        MedusaError.Types.UNAUTHORIZED,
+        error || "Incorrect authentication details"
+      )
+    }
+
+    return new StepResponse({ authIdentity }, authIdentity?.id)
+  },
+  async (authIdentityId, { container }) => {
+    if (!authIdentityId) {
+      return
+    }
+    
+    const authModuleService = container.resolve(Modules.AUTH)
+
+    await authModuleService.deleteAuthIdentities([authIdentityId])
+  }
+)
+
+export const authenticateUserWorkflow = createWorkflow(
+  "authenticate-user",
+  (input: Input) => {
+    const { authIdentity } = authenticateUserStep(input)
+
+    return new WorkflowResponse({
+      authIdentity,
+    })
+  }
+)
+```
+
+You can then execute the workflow in your custom API routes, scheduled jobs, or subscribers:
+
+```ts title="API Route"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { authenticateUserWorkflow } from "../../workflows/authenticate-user"
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await authenticateUserWorkflow(req.scope)
+    .run({
+      req,
+    })
+
+  res.send(result)
+}
+```
+
+Learn more about workflows in [this documentation](/learn/fundamentals/workflows).
+
+***
+
+## Configure Auth Module
+
+The Auth Module accepts options for further configurations. Refer to [this documentation](/resources/commerce-modules/auth/module-options) for details on the module's options.
+
+***
+
+## Providers
+
+Medusa provides the following authentication providers out-of-the-box. You can use them to authenticate admin users, customers, or custom actor types.
+
+- [Emailpass Provider](/resources/commerce-modules/auth/auth-providers/emailpass)
+- [Google Provider](/resources/commerce-modules/auth/auth-providers/google)
+- [GitHub Provider](/resources/commerce-modules/auth/auth-providers/github)
+
+***
+
+[Overview](/resources/commerce-modules/auth)
+
+[Module Options](/resources/commerce-modules/auth/module-options)
+
+## Concepts
+
+- [Identity and Actor Types](/resources/commerce-modules/auth/auth-identity-and-actor-types)
+- [Auth Module Provider](/resources/commerce-modules/auth/auth-providers)
+- [Auth Flow with Module](/resources/commerce-modules/auth/auth-flows)
+- [Auth Flow with Routes](/resources/commerce-modules/auth/authentication-route)
+- [Multi-Factor Authentication](/resources/commerce-modules/auth/mfa)
+
+***
+
+## Server Guides
+
+Learn how to use the Auth Module in your customizations on the Medusa application server.
+
+- [Create Actor Type](/resources/commerce-modules/auth/create-actor-type)
+- [Create Auth Provider](/resources/references/auth/provider)
+- [Create MFA Provider](/resources/references/auth/mfa-module-provider)
+- [Create Recovery Code MFA Provider](/resources/references/auth/recovery-code-mfa-module-provider)
+- [Custom Admin Authentication](/resources/how-to-tutorials/how-to/admin/auth)
+- [Handle Password Reset Event](/resources/commerce-modules/auth/reset-password)
+- [Integrate Okta](/resources/integrations/guides/okta)
+- [Link Provider to Existing Actor](/resources/commerce-modules/auth/link-provider-identity)
+- [Phone Authentication](/resources/how-to-tutorials/tutorials/phone-auth)
+- [Restrict Order Retrieval](/resources/commerce-modules/order/secure-order-retrieval)
+- [Restrict Return Creation](/resources/commerce-modules/order/secure-return-creation)
+- [Send Email Verification](/resources/commerce-modules/auth/email-verification)
+
+***
+
+## Storefront Guides
+
+Learn how to integrate the Auth Module's features into your storefront.
+
+- [Log-out Customer in Storefront](/resources/storefront-development/customers/log-out)
+- [Login Customer in Storefront](/resources/storefront-development/customers/login)
+- [Register Customer in Storefront](/resources/storefront-development/customers/register)
+- [Register Customer with Email Verification in Storefront](/resources/storefront-development/customers/verify-account)
+- [Reset Customer Password in Storefront](/resources/storefront-development/customers/reset-password)
+- [Retrieve Logged-In Customer in Storefront](/resources/storefront-development/customers/retrieve)
+- [Third-Party or Social Login in Storefront](/resources/storefront-development/customers/third-party-login)
+
+***
+
+## Admin User Guides
+
+Learn how to utilize and manage Auth features in the Medusa Admin dashboard.
+
+- [Reset Password](/user-guide/reset-password)
+
+***
+
+## Providers
+
+- [Emailpass Provider](/resources/commerce-modules/auth/auth-providers/emailpass)
+- [Google Provider](/resources/commerce-modules/auth/auth-providers/google)
+- [GitHub Provider](/resources/commerce-modules/auth/auth-providers/github)
+
+***
+
+## References
+
+Find references for tools and resources related to the Auth Module, such as data models, methods, and more. These are useful for your customizations.
+
+- [Workflows](/resources/commerce-modules/auth/workflows)
+- [JS SDK](/resources/commerce-modules/auth/js-sdk)
+- [Events Reference](/resources/references/auth/events)
+- [Admin Widget Zones](/resources/commerce-modules/auth/admin-widget-zones)
+- [Main Service Reference](/resources/references/auth)
+- [Data Models Reference](/resources/references/auth/models)

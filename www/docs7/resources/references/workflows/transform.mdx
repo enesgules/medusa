@@ -1,0 +1,71 @@
+---
+title: transform - Workflows SDK Reference
+sidebarTitle: transform
+---
+
+This documentation provides a reference to the `transform` . It belongs to the Workflows SDK.
+
+This function transforms the output of other utility functions.
+
+For example, if you're using the value(s) of some step(s) as an input to a later step. As you can't directly manipulate data in the  workflow constructor function passed to [createWorkflow](/resources/references/workflows/createWorkflow),
+the `transform` function provides access to the runtime value of the step(s) output so that you can manipulate them.
+
+Another example is if you're using the runtime value of some step(s) as the output of a workflow.
+
+If you're also retrieving the output of a hook and want to check if its value is set, you must use a workflow to get the runtime value of that hook.
+
+## Example
+
+```ts
+import {
+  createWorkflow,
+  transform,
+  WorkflowResponse
+} from "@medusajs/framework/workflows-sdk"
+import { step1, step2 } from "./steps"
+
+type WorkflowInput = {
+  name: string
+}
+
+const myWorkflow = createWorkflow(
+  "hello-world",
+  (input: WorkflowInput) => {
+    const str1 = step1(input)
+    const str2 = step2(input)
+
+    const message = transform({
+      str1,
+      str2
+    }, (input) => `${input.str1}${input.str2}`)
+
+    return new WorkflowResponse(message)
+})
+```
+
+<a id="transform-type-parameters" />
+
+## Type Parameters
+
+**transform**
+
+- `T`: `object` | [WorkflowData](/resources/references/workflows/types/workflowsWorkflowData) (optional)
+  - `__step__`: `string`
+- `RFinal`: `object` (optional)
+
+<a id="transform-parameters" />
+
+## Parameters
+
+**transform**
+
+- `values`: T — The output(s) of other step functions.
+- `func`: \[[Func1](/resources/references/workflows/types/workflowsFunc1)\<T, RFinal>] — The transform function used to perform action on the runtime values of the provided `values`.
+
+<a id="transform-returns" />
+
+## Returns
+
+**transform**
+
+- `WorkflowData`: [WorkflowData](/resources/references/workflows/types/workflowsWorkflowData)\<RFinal> — There's no expected value to be returned by the `transform` function.

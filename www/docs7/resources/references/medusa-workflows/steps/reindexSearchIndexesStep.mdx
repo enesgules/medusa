@@ -1,0 +1,36 @@
+---
+title: reindexSearchIndexesStep - Medusa Core Workflows Reference
+sidebarTitle: reindexSearchIndexesStep
+---
+
+This documentation provides a reference to the `reindexSearchIndexesStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step rebuilds one or more search indexes from their seed.
+
+## Example
+
+```ts
+const data = reindexSearchIndexesStep({
+  index: "product",
+})
+```
+
+<a id="reindexsearchindexesstep-input" />
+
+## Input
+
+**reindexSearchIndexesStep**
+
+- `ReindexSearchIndexesStepInput`: [ReindexSearchIndexesStepInput](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcReindexSearchIndexesStepInput)
+  - `index`: `string` | `string`\[] (optional) — The name of the index to reindex. Defaults to every registered index.
+  - `strategy`: `"swap"` | `"in_place"` (optional) — How to rebuild. `swap` fills a shadow index and aliases over; `in_place` writes into the live index.
+
+<a id="reindexsearchindexesstep-output" />
+
+## Output
+
+**reindexSearchIndexesStep**
+
+- `SearchReindexResult`: [SearchReindexResult](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchReindexResult)
+  - `job_id`: `string` — The ID of the background job performing the reindex.
+  - `indexes`: `string`\[] — The names of the indexes being rebuilt.

@@ -1,0 +1,25 @@
+---
+title: SearchIndexDefinitionInput
+---
+
+Definition accepted by `defineSearchIndex` before fields are normalized.
+`seed` is type-checked against the declared `search.define(...)` schema.
+
+- `SearchIndexDefinitionInput`: Omit\<[SearchIndexDefinition](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIndexDefinition), "fields" | "seed"> & `object` — Definition accepted by `defineSearchIndex` before fields are normalized. `seed` is type-checked against the declared `search.define(...)` schema.
+  - `name`: `string` — The index's unique name, which is what `query.search({ entity })` resolves against.
+  - `entity`: `string` — The `query.graph` entrypoint used to hydrate non-indexed fields.
+  - `primary_key`: `string` (optional) — The field whose value keys the index's documents, which is what a hit's `id` holds.
+  - `provider`: `string` (optional) — The identifier of the provider backing this index. Defaults to the module's configured default provider.
+  - `settings`: [SearchIndexSettings](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIndexSettings) (optional) — The settings applied to the index when it's created or migrated.
+    - `synonyms`: `Record<string, string[]>` (optional) — Terms treated as equivalent when matching, keyed by the term they expand to.
+    - `stop_words`: `string`\[] (optional) — Terms ignored when matching, such as `the` or `a`.
+    - `typo_tolerance`: `object` (optional) — How misspelled terms are matched.
+    - `faceting`: `object` (optional) — The defaults applied to the facets computed on this index.
+    - `pagination`: `object` (optional) — The limits applied when paginating this index.
+    - `distinct_attribute`: `string` (optional) — The dotted path of a field that hits are deduplicated by, returning at most one hit per distinct value.
+    - `locales`: `string`\[] (optional) — The languages the index's text is analyzed for, such as `["en"]`.
+    - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Index settings specific to a search engine, keyed by provider identifier.
+  - `events`: `string`\[] (optional) — Events related and that can affect the data for this index.
+  - `consume`: (`event`: [Event](/resources/references/types/EventBusTypes/types/typesEventBusTypesEvent)\<any>, `context`: [SearchIngestionContext](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIngestionContext)) => Promise\<[SearchMutation](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMutation)\[]> (optional) — Executed on event ingestion to determine the action that needs to be performed on the index.
+  - `fields`: Fields
+  - `seed`: (`context`: [SearchSeedContext](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchSeedContext)) => AsyncIterable\<[InferSearchDocumentType](/resources/references/types/SearchTypes/types/typesSearchTypesInferSearchDocumentType)\<Fields>\[]>

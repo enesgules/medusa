@@ -1,0 +1,5 @@
+---
+title: ExtractFiltersOperators
+---
+
+- `ExtractFiltersOperators`: \{ \[Key in keyof T]?: Key extends Exclusion\[number] ? never : Key extends ExcludedProps ? never : NonNullable\<T\[Key]> extends string | number | boolean | Date ? T\[Key] | T\[Key]\[] | OperatorMap\<T\[Key] | T\[Key]\[]> : T\[Key] extends (infer R)\[] ? TypeOnly\<R> extends \{ \_\_typename: string } ? RemoteQueryFilters\<Key & string, T, \[Key & string, ...Exclusion], Depth\[Lim]> : R extends object ? CleanupObject\<R> : never : TypeOnly\<T\[Key]> extends \{ \_\_typename: string } ? RemoteQueryFilters\<Key & string, T, \[Key & string, ...Exclusion], Depth\[Lim]> : T\[Key] extends object ? CleanupObject\<T\[Key]> : never }

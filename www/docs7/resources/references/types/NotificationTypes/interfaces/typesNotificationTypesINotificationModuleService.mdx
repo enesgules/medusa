@@ -1,0 +1,920 @@
+---
+title: INotificationModuleService
+---
+
+## Methods
+
+### createNotifications
+
+`**createNotifications**(data, sharedContext?): Promise<[NotificationDTO](/references/types/NotificationTypes/interfaces/types.NotificationTypes.NotificationDTO)[]>`
+
+This method is used to send multiple notifications and store them in the database.
+
+#### Example
+
+```ts
+const notifications = await notificationModuleService.createNotifications([
+  {
+    to: "john@doe.me",
+    template: "order-confirmation",
+    channel: "email",
+  },
+  {
+    to: "+38975123456",
+    template: "order-confirmation",
+    channel: "sms",
+  },
+])
+```
+
+<a id="createnotifications-parameters" />
+
+#### Parameters
+
+**createNotifications**
+
+- `data`: [CreateNotificationDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesCreateNotificationDTO)\[] — The notifications to be sent.
+  - `to`: `string` — The recipient of the notification. It can be email, phone number, or username, depending on the channel.
+  - `from`: `null` | `string` (optional) — The sender of the notification. It can be email, phone number, or username, depending on the channel.
+  - `channel`: `string` — The channel through which the notification is sent, such as `email` or `sms`.
+  - `template`: `null` | `string` (optional) — The template name in the provider's system.
+  - `data`: `null` | `Record<string, unknown>` (optional) — The data that gets passed over to the provider for rendering the notification.
+  - `provider_data`: `null` | `Record<string, unknown>` (optional) — Additional data specific to the provider or channel. For example, cc and bcc for emails.
+  - `content`: `null` | [NotificationContent](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationContent) (optional) — The content that gets passed over to the provider.
+    - `subject`: `string` (optional) — the subject of the notification
+    - `text`: `string` (optional) — the text content of the notification
+    - `html`: `string` (optional) — the html content of the notification
+  - `trigger_type`: `null` | `string` (optional) — The event name, the workflow, or anything else that can help to identify what triggered the notification.
+  - `resource_id`: `null` | `string` (optional) — The ID of the resource this notification is for, if applicable. Useful for displaying relevant information in the UI. For example, the ID of the order if the notification is related to an order update.
+  - `resource_type`: `null` | `string` (optional) — The type of the resource this notification is for, if applicable. For example, `order` if it's related to an order update.
+  - `receiver_id`: `null` | `string` (optional) — The ID of the customer this notification is for, if applicable.
+  - `original_notification_id`: `null` | `string` (optional) — The original notification, in case this is a resent notification.
+  - `idempotency_key`: `null` | `string` (optional) — An idempotency key that ensures the same notification is not sent multiple times.
+  - `attachments`: `null` | [Attachment](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesAttachment)\[] (optional) — Optional attachments for the notification.
+    - `content`: `string` — The content of the attachment, encoded as a binary string.
+    - `filename`: `string` — The filename of the attachment.
+    - `content_type`: `string` (optional) — The MIME type of the attachment.
+    - `disposition`: `string` (optional) — The disposition of the attachment, For example, "inline" or "attachment".
+    - `id`: `string` (optional) — The ID, if the attachment is meant to be referenced within the body of the message.
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createnotifications-returns" />
+
+#### Returns
+
+**createNotifications**
+
+- `Promise`: Promise\<[NotificationDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationDTO)\[]> — The list of sent notifications.
+  - `NotificationDTO[]`: [NotificationDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationDTO)\[]
+    - `id`: `string` — The ID of the notification.
+    - `to`: `string` — The recipient of the notification. It can be email, phone number, or username, depending on the channel.
+    - `from`: `null` | `string` (optional) — The sender of the notification. It can be email, phone number, or username, depending on the channel.
+    - `attachments`: `null` | [Attachment](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesAttachment)\[] (optional) — Optional attachments for the notification.
+      - `content`: `string` — The content of the attachment, encoded as a binary string.
+      - `filename`: `string` — The filename of the attachment.
+      - `content_type`: `string` (optional) — The MIME type of the attachment.
+      - `disposition`: `string` (optional) — The disposition of the attachment, For example, "inline" or "attachment".
+      - `id`: `string` (optional) — The ID, if the attachment is meant to be referenced within the body of the message.
+    - `channel`: `string` — The channel through which the notification is sent, such as 'email' or 'sms'
+    - `template`: `string` — The template name in the provider's system.
+    - `data`: `null` | `Record<string, unknown>` — The data that gets passed over to the provider for rendering the notification.
+    - `provider_data`: `null` | `Record<string, unknown>` (optional) — Additional data specific to the provider or channel. For example, cc and bcc for emails.
+    - `trigger_type`: `null` | `string` (optional) — The event name, the workflow, or anything else that can help to identify what triggered the notification.
+    - `resource_id`: `null` | `string` (optional) — The ID of the resource this notification is for, if applicable. Useful for displaying relevant information in the UI
+    - `resource_type`: `null` | `string` (optional) — The type of the resource this notification is for, if applicable, eg. "order"
+    - `receiver_id`: `null` | `string` (optional) — The ID of the customer this notification is for, if applicable.
+    - `original_notification_id`: `null` | `string` (optional) — The original notification, in case this is a retried notification.
+    - `external_id`: `null` | `string` (optional) — The id of the notification in the external system, if applicable
+    - `provider_id`: `string` — The ID of the notification provider.
+    - `provider`: [NotificationProviderDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationProviderDTO) — Information about the notification provider
+      - `id`: `string` — The ID of the notification provider.
+      - `handle`: `string` — The handle of the notification provider.
+      - `name`: `string` — A user-friendly name of the notification provider.
+      - `channels`: `string`\[] — The supported channels by the notification provider.
+    - `created_at`: `Date` — The date and time the notification was created.
+    - `status`: `"pending"` | `"success"` | `"failure"` — The status of the notification
+
+`**createNotifications**(data, sharedContext?): Promise<[NotificationDTO](/references/types/NotificationTypes/interfaces/types.NotificationTypes.NotificationDTO)>`
+
+This method is used to send a notification, and store the request in the database.
+
+#### Example
+
+```ts
+const notification = await notificationModuleService.createNotifications({
+  to: "john@doe.me",
+  template: "order-confirmation",
+  channel: "email",
+})
+```
+
+<a id="createnotifications-parameters-1" />
+
+#### Parameters
+
+**createNotifications**
+
+- `data`: [CreateNotificationDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesCreateNotificationDTO) — The notification to be sent.
+  - `to`: `string` — The recipient of the notification. It can be email, phone number, or username, depending on the channel.
+  - `from`: `null` | `string` (optional) — The sender of the notification. It can be email, phone number, or username, depending on the channel.
+  - `channel`: `string` — The channel through which the notification is sent, such as `email` or `sms`.
+  - `template`: `null` | `string` (optional) — The template name in the provider's system.
+  - `data`: `null` | `Record<string, unknown>` (optional) — The data that gets passed over to the provider for rendering the notification.
+  - `provider_data`: `null` | `Record<string, unknown>` (optional) — Additional data specific to the provider or channel. For example, cc and bcc for emails.
+  - `content`: `null` | [NotificationContent](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationContent) (optional) — The content that gets passed over to the provider.
+    - `subject`: `string` (optional) — the subject of the notification
+    - `text`: `string` (optional) — the text content of the notification
+    - `html`: `string` (optional) — the html content of the notification
+  - `trigger_type`: `null` | `string` (optional) — The event name, the workflow, or anything else that can help to identify what triggered the notification.
+  - `resource_id`: `null` | `string` (optional) — The ID of the resource this notification is for, if applicable. Useful for displaying relevant information in the UI. For example, the ID of the order if the notification is related to an order update.
+  - `resource_type`: `null` | `string` (optional) — The type of the resource this notification is for, if applicable. For example, `order` if it's related to an order update.
+  - `receiver_id`: `null` | `string` (optional) — The ID of the customer this notification is for, if applicable.
+  - `original_notification_id`: `null` | `string` (optional) — The original notification, in case this is a resent notification.
+  - `idempotency_key`: `null` | `string` (optional) — An idempotency key that ensures the same notification is not sent multiple times.
+  - `attachments`: `null` | [Attachment](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesAttachment)\[] (optional) — Optional attachments for the notification.
+    - `content`: `string` — The content of the attachment, encoded as a binary string.
+    - `filename`: `string` — The filename of the attachment.
+    - `content_type`: `string` (optional) — The MIME type of the attachment.
+    - `disposition`: `string` (optional) — The disposition of the attachment, For example, "inline" or "attachment".
+    - `id`: `string` (optional) — The ID, if the attachment is meant to be referenced within the body of the message.
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createnotifications-returns-1" />
+
+#### Returns
+
+**createNotifications**
+
+- `Promise`: Promise\<[NotificationDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationDTO)> — The sent notification.
+  - `id`: `string` — The ID of the notification.
+  - `to`: `string` — The recipient of the notification. It can be email, phone number, or username, depending on the channel.
+  - `from`: `null` | `string` (optional) — The sender of the notification. It can be email, phone number, or username, depending on the channel.
+  - `attachments`: `null` | [Attachment](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesAttachment)\[] (optional) — Optional attachments for the notification.
+    - `content`: `string` — The content of the attachment, encoded as a binary string.
+    - `filename`: `string` — The filename of the attachment.
+    - `content_type`: `string` (optional) — The MIME type of the attachment.
+    - `disposition`: `string` (optional) — The disposition of the attachment, For example, "inline" or "attachment".
+    - `id`: `string` (optional) — The ID, if the attachment is meant to be referenced within the body of the message.
+  - `channel`: `string` — The channel through which the notification is sent, such as 'email' or 'sms'
+  - `template`: `string` — The template name in the provider's system.
+  - `data`: `null` | `Record<string, unknown>` — The data that gets passed over to the provider for rendering the notification.
+  - `provider_data`: `null` | `Record<string, unknown>` (optional) — Additional data specific to the provider or channel. For example, cc and bcc for emails.
+  - `trigger_type`: `null` | `string` (optional) — The event name, the workflow, or anything else that can help to identify what triggered the notification.
+  - `resource_id`: `null` | `string` (optional) — The ID of the resource this notification is for, if applicable. Useful for displaying relevant information in the UI
+  - `resource_type`: `null` | `string` (optional) — The type of the resource this notification is for, if applicable, eg. "order"
+  - `receiver_id`: `null` | `string` (optional) — The ID of the customer this notification is for, if applicable.
+  - `original_notification_id`: `null` | `string` (optional) — The original notification, in case this is a retried notification.
+  - `external_id`: `null` | `string` (optional) — The id of the notification in the external system, if applicable
+  - `provider_id`: `string` — The ID of the notification provider.
+  - `provider`: [NotificationProviderDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationProviderDTO) — Information about the notification provider
+    - `id`: `string` — The ID of the notification provider.
+    - `handle`: `string` — The handle of the notification provider.
+    - `name`: `string` — A user-friendly name of the notification provider.
+    - `channels`: `string`\[] — The supported channels by the notification provider.
+  - `created_at`: `Date` — The date and time the notification was created.
+  - `status`: `"pending"` | `"success"` | `"failure"` — The status of the notification
+
+### retrieveNotification
+
+This method is used to retrieve a notification by its ID
+
+#### Example
+
+A simple example that retrieves a notification by its ID:
+
+```ts
+const notification =
+  await notificationModuleService.retrieveNotification("noti_123")
+```
+
+To specify relations that should be retrieved:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const notification = await notificationModuleService.retrieveNotification(
+  "noti_123",
+  {
+    relations: ["provider"],
+  }
+)
+```
+
+<a id="retrievenotification-parameters" />
+
+#### Parameters
+
+**retrieveNotification**
+
+- `notificationId`: `string` — The ID of the notification to retrieve.
+- `config`: [FindConfig](/resources/references/types/CommonTypes/interfaces/typesCommonTypesFindConfig)\<[NotificationDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationDTO)> (optional) — The configurations determining how the notification is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a notification.
+  - `select`: (`string` & `object` | keyof Entity)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/types/CommonTypes/types/typesCommonTypesFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="retrievenotification-returns" />
+
+#### Returns
+
+**retrieveNotification**
+
+- `Promise`: Promise\<[NotificationDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationDTO)> — The retrieved notification.
+  - `id`: `string` — The ID of the notification.
+  - `to`: `string` — The recipient of the notification. It can be email, phone number, or username, depending on the channel.
+  - `from`: `null` | `string` (optional) — The sender of the notification. It can be email, phone number, or username, depending on the channel.
+  - `attachments`: `null` | [Attachment](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesAttachment)\[] (optional) — Optional attachments for the notification.
+    - `content`: `string` — The content of the attachment, encoded as a binary string.
+    - `filename`: `string` — The filename of the attachment.
+    - `content_type`: `string` (optional) — The MIME type of the attachment.
+    - `disposition`: `string` (optional) — The disposition of the attachment, For example, "inline" or "attachment".
+    - `id`: `string` (optional) — The ID, if the attachment is meant to be referenced within the body of the message.
+  - `channel`: `string` — The channel through which the notification is sent, such as 'email' or 'sms'
+  - `template`: `string` — The template name in the provider's system.
+  - `data`: `null` | `Record<string, unknown>` — The data that gets passed over to the provider for rendering the notification.
+  - `provider_data`: `null` | `Record<string, unknown>` (optional) — Additional data specific to the provider or channel. For example, cc and bcc for emails.
+  - `trigger_type`: `null` | `string` (optional) — The event name, the workflow, or anything else that can help to identify what triggered the notification.
+  - `resource_id`: `null` | `string` (optional) — The ID of the resource this notification is for, if applicable. Useful for displaying relevant information in the UI
+  - `resource_type`: `null` | `string` (optional) — The type of the resource this notification is for, if applicable, eg. "order"
+  - `receiver_id`: `null` | `string` (optional) — The ID of the customer this notification is for, if applicable.
+  - `original_notification_id`: `null` | `string` (optional) — The original notification, in case this is a retried notification.
+  - `external_id`: `null` | `string` (optional) — The id of the notification in the external system, if applicable
+  - `provider_id`: `string` — The ID of the notification provider.
+  - `provider`: [NotificationProviderDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationProviderDTO) — Information about the notification provider
+    - `id`: `string` — The ID of the notification provider.
+    - `handle`: `string` — The handle of the notification provider.
+    - `name`: `string` — A user-friendly name of the notification provider.
+    - `channels`: `string`\[] — The supported channels by the notification provider.
+  - `created_at`: `Date` — The date and time the notification was created.
+  - `status`: `"pending"` | `"success"` | `"failure"` — The status of the notification
+
+### listNotifications
+
+This method is used to retrieve a paginated list of notifications based on optional filters and configuration.
+
+#### Example
+
+To retrieve a list of notifications using their IDs:
+
+```ts
+const notifications = await notificationModuleService.listNotifications({
+  id: ["noti_123", "noti_321"],
+})
+```
+
+To specify relations that should be retrieved within the notifications:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const notifications = await notificationModuleService.listNotifications(
+  {
+    id: ["noti_123", "noti_321"],
+  },
+  {
+    relations: ["provider"],
+  }
+)
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const notifications = await notificationModuleService.listNotifications(
+  {
+    id: ["noti_123", "noti_321"],
+  },
+  {
+    relations: ["provider"],
+    take: 20,
+    skip: 2,
+  }
+)
+```
+
+<a id="listnotifications-parameters" />
+
+#### Parameters
+
+**listNotifications**
+
+- `filters`: [FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps) (optional) — The filters to apply on the retrieved notifications.
+  - `$and`: ([FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search through the notifications' attributes, such as trigger types and recipients, using this search term.
+    - `to`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the recipient of the notification.
+    - `from`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the recipient of the notification.
+    - `channel`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the channel through which the notification is sent, such as 'email' or 'sms'
+    - `template`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the template name.
+    - `trigger_type`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the trigger type.
+    - `resource_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the resource that was the trigger for the notification.
+    - `resource_type`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — T\* Filter based on the resource type that was the trigger for the notification.
+    - `receiver_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the customer ID.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filters a notification based on when it was sent and created in the database
+  - `$or`: ([FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search through the notifications' attributes, such as trigger types and recipients, using this search term.
+    - `to`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the recipient of the notification.
+    - `from`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the recipient of the notification.
+    - `channel`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the channel through which the notification is sent, such as 'email' or 'sms'
+    - `template`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the template name.
+    - `trigger_type`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the trigger type.
+    - `resource_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the resource that was the trigger for the notification.
+    - `resource_type`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — T\* Filter based on the resource type that was the trigger for the notification.
+    - `receiver_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the customer ID.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filters a notification based on when it was sent and created in the database
+  - `q`: `string` (optional) — Search through the notifications' attributes, such as trigger types and recipients, using this search term.
+  - `to`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the recipient of the notification.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `from`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the recipient of the notification.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `channel`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the channel through which the notification is sent, such as 'email' or 'sms'
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `template`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the template name.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `trigger_type`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the trigger type.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `resource_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the resource that was the trigger for the notification.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `resource_type`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — T\* Filter based on the resource type that was the trigger for the notification.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `receiver_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the customer ID.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filters a notification based on when it was sent and created in the database
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `config`: [FindConfig](/resources/references/types/CommonTypes/interfaces/typesCommonTypesFindConfig)\<[NotificationDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationDTO)> (optional) — The configurations determining how the notifications are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a notification.
+  - `select`: (`string` & `object` | keyof Entity)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/types/CommonTypes/types/typesCommonTypesFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listnotifications-returns" />
+
+#### Returns
+
+**listNotifications**
+
+- `Promise`: Promise\<[NotificationDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationDTO)\[]> — The list of notifications.
+  - `NotificationDTO[]`: [NotificationDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationDTO)\[]
+    - `id`: `string` — The ID of the notification.
+    - `to`: `string` — The recipient of the notification. It can be email, phone number, or username, depending on the channel.
+    - `from`: `null` | `string` (optional) — The sender of the notification. It can be email, phone number, or username, depending on the channel.
+    - `attachments`: `null` | [Attachment](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesAttachment)\[] (optional) — Optional attachments for the notification.
+      - `content`: `string` — The content of the attachment, encoded as a binary string.
+      - `filename`: `string` — The filename of the attachment.
+      - `content_type`: `string` (optional) — The MIME type of the attachment.
+      - `disposition`: `string` (optional) — The disposition of the attachment, For example, "inline" or "attachment".
+      - `id`: `string` (optional) — The ID, if the attachment is meant to be referenced within the body of the message.
+    - `channel`: `string` — The channel through which the notification is sent, such as 'email' or 'sms'
+    - `template`: `string` — The template name in the provider's system.
+    - `data`: `null` | `Record<string, unknown>` — The data that gets passed over to the provider for rendering the notification.
+    - `provider_data`: `null` | `Record<string, unknown>` (optional) — Additional data specific to the provider or channel. For example, cc and bcc for emails.
+    - `trigger_type`: `null` | `string` (optional) — The event name, the workflow, or anything else that can help to identify what triggered the notification.
+    - `resource_id`: `null` | `string` (optional) — The ID of the resource this notification is for, if applicable. Useful for displaying relevant information in the UI
+    - `resource_type`: `null` | `string` (optional) — The type of the resource this notification is for, if applicable, eg. "order"
+    - `receiver_id`: `null` | `string` (optional) — The ID of the customer this notification is for, if applicable.
+    - `original_notification_id`: `null` | `string` (optional) — The original notification, in case this is a retried notification.
+    - `external_id`: `null` | `string` (optional) — The id of the notification in the external system, if applicable
+    - `provider_id`: `string` — The ID of the notification provider.
+    - `provider`: [NotificationProviderDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationProviderDTO) — Information about the notification provider
+      - `id`: `string` — The ID of the notification provider.
+      - `handle`: `string` — The handle of the notification provider.
+      - `name`: `string` — A user-friendly name of the notification provider.
+      - `channels`: `string`\[] — The supported channels by the notification provider.
+    - `created_at`: `Date` — The date and time the notification was created.
+    - `status`: `"pending"` | `"success"` | `"failure"` — The status of the notification
+
+### listAndCountNotifications
+
+This method is used to retrieve a paginated list of notifications along with the total count of available notifications satisfying the provided filters.
+
+#### Example
+
+To retrieve a list of notifications using their IDs:
+
+```ts
+const [notifications, count] =
+  await notificationModuleService.listAndCountNotifications({
+    id: ["noti_123", "noti_321"],
+  })
+```
+
+To specify relations that should be retrieved within the notifications:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const [notifications, count] =
+  await notificationModuleService.listAndCountNotifications(
+    {
+      id: ["noti_123", "noti_321"],
+    },
+    {
+      relations: ["provider"],
+    }
+  )
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const [notifications, count] =
+  await notificationModuleService.listAndCountNotifications(
+    {
+      id: ["noti_123", "noti_321"],
+    },
+    {
+      relations: ["provider"],
+      take: 20,
+      skip: 2,
+    }
+  )
+```
+
+<a id="listandcountnotifications-parameters" />
+
+#### Parameters
+
+**listAndCountNotifications**
+
+- `filters`: [FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps) (optional) — The filters to apply on the retrieved notifications.
+  - `$and`: ([FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search through the notifications' attributes, such as trigger types and recipients, using this search term.
+    - `to`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the recipient of the notification.
+    - `from`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the recipient of the notification.
+    - `channel`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the channel through which the notification is sent, such as 'email' or 'sms'
+    - `template`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the template name.
+    - `trigger_type`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the trigger type.
+    - `resource_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the resource that was the trigger for the notification.
+    - `resource_type`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — T\* Filter based on the resource type that was the trigger for the notification.
+    - `receiver_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the customer ID.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filters a notification based on when it was sent and created in the database
+  - `$or`: ([FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableNotificationProps](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesFilterableNotificationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search through the notifications' attributes, such as trigger types and recipients, using this search term.
+    - `to`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the recipient of the notification.
+    - `from`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the recipient of the notification.
+    - `channel`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the channel through which the notification is sent, such as 'email' or 'sms'
+    - `template`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the template name.
+    - `trigger_type`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the trigger type.
+    - `resource_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the resource that was the trigger for the notification.
+    - `resource_type`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — T\* Filter based on the resource type that was the trigger for the notification.
+    - `receiver_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the customer ID.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filters a notification based on when it was sent and created in the database
+  - `q`: `string` (optional) — Search through the notifications' attributes, such as trigger types and recipients, using this search term.
+  - `to`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the recipient of the notification.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `from`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the recipient of the notification.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `channel`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the channel through which the notification is sent, such as 'email' or 'sms'
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `template`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the template name.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `trigger_type`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the trigger type.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `resource_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the resource that was the trigger for the notification.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `resource_type`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — T\* Filter based on the resource type that was the trigger for the notification.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `receiver_id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter based on the customer ID.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filters a notification based on when it was sent and created in the database
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `config`: [FindConfig](/resources/references/types/CommonTypes/interfaces/typesCommonTypesFindConfig)\<[NotificationDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationDTO)> (optional) — The configurations determining how the notifications are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a notification.
+  - `select`: (`string` & `object` | keyof Entity)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/types/CommonTypes/types/typesCommonTypesFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listandcountnotifications-returns" />
+
+#### Returns
+
+**listAndCountNotifications**
+
+- `Promise`: Promise\<\[[NotificationDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationDTO)\[], number]> — The list of notifications along with the total count.
+  - `NotificationDTO[]`: [NotificationDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationDTO)\[]
+  - `number`: `number`

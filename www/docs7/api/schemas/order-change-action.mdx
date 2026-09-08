@@ -1,0 +1,359 @@
+---
+title: OrderChangeAction
+---
+
+The order change action's details.
+
+## Properties
+
+<Accordion title="id (required)">
+  The action's ID.
+
+  ```json
+  {
+    "type": "string",
+    "title": "id",
+    "description": "The action's ID."
+  }
+  ```
+</Accordion>
+
+<Accordion title="order_change_id (required)">
+  The ID of the order change that the action belongs to.
+
+  ```json
+  {
+    "type": "string",
+    "title": "order_change_id",
+    "description": "The ID of the order change that the action belongs to."
+  }
+  ```
+</Accordion>
+
+<Accordion title="order_change (required)">
+  ```json
+  {
+    "type": "object"
+  }
+  ```
+</Accordion>
+
+<Accordion title="order_id (required)">
+  The ID of the order the associated change is for.
+
+  ```json
+  {
+    "type": "string",
+    "title": "order_id",
+    "description": "The ID of the order the associated change is for."
+  }
+  ```
+</Accordion>
+
+<Accordion title="return_id (required)">
+  The ID of the associated return.
+
+  ```json
+  {
+    "type": "string",
+    "title": "return_id",
+    "description": "The ID of the associated return."
+  }
+  ```
+</Accordion>
+
+<Accordion title="claim_id (required)">
+  The ID of the associated claim.
+
+  ```json
+  {
+    "type": "string",
+    "title": "claim_id",
+    "description": "The ID of the associated claim."
+  }
+  ```
+</Accordion>
+
+<Accordion title="exchange_id (required)">
+  The ID of the associated exchange.
+
+  ```json
+  {
+    "type": "string",
+    "title": "exchange_id",
+    "description": "The ID of the associated exchange."
+  }
+  ```
+</Accordion>
+
+<Accordion title="order (required)">
+  ```json
+  {
+    "$ref": "#/components/schemas/Order"
+  }
+  ```
+
+  Related schemas:
+
+  - [Order](/api/schemas/order)
+</Accordion>
+
+<Accordion title="reference (required)">
+  The name of the table this action applies on.
+
+  ```json
+  {
+    "type": "string",
+    "title": "reference",
+    "description": "The name of the table this action applies on.",
+    "enum": [
+      "claim",
+      "exchange",
+      "return",
+      "order_shipping_method"
+    ]
+  }
+  ```
+</Accordion>
+
+<Accordion title="reference_id (required)">
+  The ID of the record in the referenced table.
+
+  ```json
+  {
+    "type": "string",
+    "title": "reference_id",
+    "description": "The ID of the record in the referenced table."
+  }
+  ```
+</Accordion>
+
+<Accordion title="action (required)">
+  The applied action.
+
+  ```json
+  {
+    "type": "string",
+    "description": "The applied action.",
+    "enum": [
+      "CANCEL_RETURN_ITEM",
+      "FULFILL_ITEM",
+      "DELIVER_ITEM",
+      "CANCEL_ITEM_FULFILLMENT",
+      "ITEM_ADD",
+      "ITEM_REMOVE",
+      "ITEM_UPDATE",
+      "RECEIVE_DAMAGED_RETURN_ITEM",
+      "RECEIVE_RETURN_ITEM",
+      "RETURN_ITEM",
+      "SHIPPING_ADD",
+      "SHIPPING_REMOVE",
+      "SHIP_ITEM",
+      "WRITE_OFF_ITEM",
+      "REINSTATE_ITEM"
+    ]
+  }
+  ```
+</Accordion>
+
+<Accordion title="details (required)">
+  The action's details.
+
+  ```json
+  {
+    "type": "object",
+    "description": "The action's details.",
+    "example": {
+      "reference_id": 123,
+      "quantity": 1
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="internal_note (required)">
+  A note that's viewed only by admin users.
+
+  ```json
+  {
+    "type": "string",
+    "title": "internal_note",
+    "description": "A note that's viewed only by admin users."
+  }
+  ```
+</Accordion>
+
+<Accordion title="created_at (required)">
+  The date the action was created.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "created_at",
+    "description": "The date the action was created."
+  }
+  ```
+</Accordion>
+
+<Accordion title="updated_at (required)">
+  The date the action was updated.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "updated_at",
+    "description": "The date the action was updated."
+  }
+  ```
+</Accordion>
+
+<Accordion title="ordering (required)">
+  The action's ordering among other actions in the same order change.
+
+  ```json
+  {
+    "type": "number",
+    "title": "ordering",
+    "description": "The action's ordering among other actions in the same order change."
+  }
+  ```
+</Accordion>
+
+## Schema definition
+
+```json
+{
+  "type": "object",
+  "description": "The order change action's details.",
+  "x-schemaName": "OrderChangeAction",
+  "required": [
+    "id",
+    "order_change_id",
+    "order_change",
+    "order_id",
+    "return_id",
+    "claim_id",
+    "exchange_id",
+    "order",
+    "reference",
+    "reference_id",
+    "action",
+    "details",
+    "internal_note",
+    "ordering",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "title": "id",
+      "description": "The action's ID."
+    },
+    "order_change_id": {
+      "type": "string",
+      "title": "order_change_id",
+      "description": "The ID of the order change that the action belongs to."
+    },
+    "order_change": {
+      "type": "object"
+    },
+    "order_id": {
+      "type": "string",
+      "title": "order_id",
+      "description": "The ID of the order the associated change is for."
+    },
+    "return_id": {
+      "type": "string",
+      "title": "return_id",
+      "description": "The ID of the associated return."
+    },
+    "claim_id": {
+      "type": "string",
+      "title": "claim_id",
+      "description": "The ID of the associated claim."
+    },
+    "exchange_id": {
+      "type": "string",
+      "title": "exchange_id",
+      "description": "The ID of the associated exchange."
+    },
+    "order": {
+      "$ref": "#/components/schemas/Order"
+    },
+    "reference": {
+      "type": "string",
+      "title": "reference",
+      "description": "The name of the table this action applies on.",
+      "enum": [
+        "claim",
+        "exchange",
+        "return",
+        "order_shipping_method"
+      ]
+    },
+    "reference_id": {
+      "type": "string",
+      "title": "reference_id",
+      "description": "The ID of the record in the referenced table."
+    },
+    "action": {
+      "type": "string",
+      "description": "The applied action.",
+      "enum": [
+        "CANCEL_RETURN_ITEM",
+        "FULFILL_ITEM",
+        "DELIVER_ITEM",
+        "CANCEL_ITEM_FULFILLMENT",
+        "ITEM_ADD",
+        "ITEM_REMOVE",
+        "ITEM_UPDATE",
+        "RECEIVE_DAMAGED_RETURN_ITEM",
+        "RECEIVE_RETURN_ITEM",
+        "RETURN_ITEM",
+        "SHIPPING_ADD",
+        "SHIPPING_REMOVE",
+        "SHIP_ITEM",
+        "WRITE_OFF_ITEM",
+        "REINSTATE_ITEM"
+      ]
+    },
+    "details": {
+      "type": "object",
+      "description": "The action's details.",
+      "example": {
+        "reference_id": 123,
+        "quantity": 1
+      }
+    },
+    "internal_note": {
+      "type": "string",
+      "title": "internal_note",
+      "description": "A note that's viewed only by admin users."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "created_at",
+      "description": "The date the action was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "updated_at",
+      "description": "The date the action was updated."
+    },
+    "ordering": {
+      "type": "number",
+      "title": "ordering",
+      "description": "The action's ordering among other actions in the same order change."
+    }
+  }
+}
+```
+
+Related schemas:
+
+- [Order](/api/schemas/order)

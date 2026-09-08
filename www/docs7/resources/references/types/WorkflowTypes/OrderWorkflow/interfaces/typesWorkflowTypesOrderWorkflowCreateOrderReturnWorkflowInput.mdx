@@ -1,0 +1,34 @@
+---
+title: CreateOrderReturnWorkflowInput
+---
+
+The details to create a return order.
+
+## Properties
+
+**CreateOrderReturnWorkflowInput**
+
+- `order_id`: `string` — The ID of the order to return items from.
+- `created_by`: `null` | `string` (optional) — The ID of the customer that's creating the return
+- `items`: [CreateReturnItem](/resources/references/types/WorkflowTypes/OrderWorkflow/interfaces/typesWorkflowTypesOrderWorkflowCreateReturnItem)\[] — The items to return.
+  - `id`: `string` — The ID of the order item to return.
+  - `quantity`: [BigNumberInput](/resources/references/types/types/typesBigNumberInput) — The quantity of the item to return.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/types/types/typesBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `internal_note`: `null` | `string` (optional) — An internal note viewed only by admin users.
+  - `reason_id`: `null` | `string` (optional) — The ID of the reason indicating why the item is being returned.
+  - `note`: `null` | `string` (optional) — More details about the returned item.
+  - `metadata`: `null` | `Record<string, any>` (optional) — Custom key-value pairs of data to store in the return item.
+- `return_shipping`: `object` (optional) — The shipping details of the returned items.
+  - `option_id`: `string` — The ID of the shipping option to use for the return.
+  - `price`: `number` (optional) — The custom amount to create the return shipping with. If not provided, the shipping option's amount is used.
+  - `labels`: [CreateFulfillmentLabelWorkflowDTO](/resources/references/types/WorkflowTypes/FulfillmentWorkflow/types/typesWorkflowTypesFulfillmentWorkflowCreateFulfillmentLabelWorkflowDTO)\[] (optional) — The shipmen's label details.
+    - `tracking_number`: `string` — The tracking number of the fulfillment label.
+    - `tracking_url`: `string` — The tracking URL of the fulfillment label.
+    - `label_url`: `string` — The URL of the label.
+- `note`: `null` | `string` (optional) — More details about the return.
+- `receive_now`: `boolean` (optional) — Whether to mark the return as received immediately.
+- `refund_amount`: `number` (optional) — The amount to refund the customer.
+- `location_id`: `null` | `string` (optional) — The ID of the location to return the items to. If not provided, the return shipping option's location is used.

@@ -1,0 +1,129 @@
+---
+title: addOrderTransactions - Order Module Reference
+sidebarTitle: addOrderTransactions
+---
+
+This documentation provides a reference to the `addOrderTransactions` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="addordertransactions-data-sharedcontext-promiseordertransactiondto" />
+
+## addOrderTransactions(data, sharedContext?): Promise\<[OrderTransactionDTO](/resources/references/order/interfaces/orderOrderTransactionDTO)>
+
+This method adds a transaction to an order.
+
+### Example
+
+```ts
+const transaction = await orderModuleService.addOrderTransactions({
+  order_id: "123",
+  amount: 10,
+  currency_code: "usd"
+})
+```
+
+<a id="addordertransactions-parameters" />
+
+### Parameters
+
+**addOrderTransactions**
+
+- `data`: [CreateOrderTransactionDTO](/resources/references/order/interfaces/orderCreateOrderTransactionDTO) — The transaction to be created.
+  - `order_id`: `string` — The associated order's ID.
+  - `return_id`: `string` (optional) — The associated return's ID.
+  - `claim_id`: `string` (optional) — The associated claim's ID.
+  - `exchange_id`: `string` (optional) — The associated exchange's ID.
+  - `reference`: `string` (optional) — The data model this transaction references. For example, `payment`.
+  - `reference_id`: `string` (optional) — The ID of the data model's record referenced. For example, `pay_132`.
+  - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The amount of the transaction.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `currency_code`: `string` — The currency code of the transaction.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="addordertransactions-returns" />
+
+### Returns
+
+**addOrderTransactions**
+
+- `Promise`: Promise\<[OrderTransactionDTO](/resources/references/order/interfaces/orderOrderTransactionDTO)> — The created transaction.
+
+<a id="addordertransactions-data-sharedcontext-promiseordertransactiondto-1" />
+
+## addOrderTransactions(data, sharedContext?): Promise\<[OrderTransactionDTO](/resources/references/order/interfaces/orderOrderTransactionDTO)\[]>
+
+This method adds transactions to an order.
+
+### Example
+
+```ts
+const transactions = await orderModuleService.addOrderTransactions([{
+  order_id: "123",
+  amount: 10,
+  currency_code: "usd"
+}])
+```
+
+<a id="addordertransactions-parameters-1" />
+
+### Parameters
+
+**addOrderTransactions**
+
+- `data`: [CreateOrderTransactionDTO](/resources/references/order/interfaces/orderCreateOrderTransactionDTO)\[] — The order transactions to be created.
+  - `order_id`: `string` — The associated order's ID.
+  - `return_id`: `string` (optional) — The associated return's ID.
+  - `claim_id`: `string` (optional) — The associated claim's ID.
+  - `exchange_id`: `string` (optional) — The associated exchange's ID.
+  - `reference`: `string` (optional) — The data model this transaction references. For example, `payment`.
+  - `reference_id`: `string` (optional) — The ID of the data model's record referenced. For example, `pay_132`.
+  - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The amount of the transaction.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `currency_code`: `string` — The currency code of the transaction.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="addordertransactions-returns-1" />
+
+### Returns
+
+**addOrderTransactions**
+
+- `Promise`: Promise\<[OrderTransactionDTO](/resources/references/order/interfaces/orderOrderTransactionDTO)\[]> — The created order transactions.
+  - `OrderTransactionDTO[]`: [OrderTransactionDTO](/resources/references/order/interfaces/orderOrderTransactionDTO)\[]

@@ -1,0 +1,33 @@
+---
+title: StoreShippingOption
+---
+
+The details of a shipping option that customers can choose from during checkout.
+
+## Properties
+
+**StoreShippingOption**
+
+- `id`: `string` — The shipping option's ID.
+- `name`: `string` — The shipping option's name. Customers can see this name during checkout.
+- `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The type of the shipping option's price: - `flat`: the price is a fixed amount available in the `amount` property. - `calculated`: the price is calculated during checkout by the shipping option's fulfillment provider. Retrieve the price using the [Calculate Shipping Option Price API route](/api/store/shipping-options/calculate-shipping-option-price).
+- `service_zone_id`: `string` — The ID of the service zone that the shipping option belongs to.
+- `provider_id`: `string` — The ID of the fulfillment provider that processes the shipping option's fulfillments and, for calculated shipping options, computes its price.
+- `provider`: [BaseFulfillmentProvider](/resources/references/types/interfaces/typesBaseFulfillmentProvider) — The fulfillment provider that processes the shipping option's fulfillments.
+  - `id`: `string` — The fulfillment provider's ID.
+  - `is_enabled`: `boolean` — Whether the fulfillment provider is enabled.
+- `shipping_option_type_id`: `null` | `string` — The ID of the shipping option's type.
+- `type`: [StoreShippingOptionType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreShippingOptionType) — The shipping option's type.
+  - `id`: `string` — The shipping option type's ID.
+  - `label`: `string` — The shipping option type's label.
+  - `description`: `string` — The shipping option type's description.
+  - `code`: `string` — The shipping option type's code.
+  - `shipping_option_id`: `string` — The ID of the shipping option this type belongs to.
+  - `created_at`: `string` — The date the shipping option type was created.
+  - `updated_at`: `string` — The date the shipping option type was last updated.
+  - `deleted_at`: `null` | `string` — The date the shipping option type was deleted.
+- `shipping_profile_id`: `string` — The ID of the shipping profile that the shipping option belongs to.
+- `amount`: `number` — The shipping option's price amount. For a shipping option whose `price_type` is `calculated`, this amount is resolved by the fulfillment provider during checkout, so it isn't reliable until the price is calculated using the Calculate Shipping Option Price API route.
+- `is_tax_inclusive`: `boolean` — Whether the shipping option's amount is tax inclusive.
+- `data`: `null` | `Record<string, unknown>` — Additional data that is useful for the shipping option's fulfillment provider.
+- `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the shipping option.

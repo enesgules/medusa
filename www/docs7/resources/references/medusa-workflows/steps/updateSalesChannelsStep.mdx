@@ -1,0 +1,76 @@
+---
+title: updateSalesChannelsStep - Medusa Core Workflows Reference
+sidebarTitle: updateSalesChannelsStep
+---
+
+This documentation provides a reference to the `updateSalesChannelsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step updates sales channels matching the specified filters.
+
+## Example
+
+```ts
+const data = updateSalesChannelsStep({
+  selector: {
+    id: "sc_123"
+  },
+  update: {
+    name: "Webshop"
+  }
+})
+```
+
+<a id="updatesaleschannelsstep-input" />
+
+## Input
+
+**updateSalesChannelsStep**
+
+- `UpdateSalesChannelsStepInput`: [UpdateSalesChannelsStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcUpdateSalesChannelsStepInput)
+  - `selector`: [FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps) — The filters to select the sales channels to update.
+    - `$and`: ([FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps) | [BaseFilterable](/resources/references/sales_channel/interfaces/sales_channelBaseFilterable)\<[FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$and`: ([FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps) | [BaseFilterable](/resources/references/sales_channel/interfaces/sales_channelBaseFilterable)\<[FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$or`: ([FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps) | [BaseFilterable](/resources/references/sales_channel/interfaces/sales_channelBaseFilterable)\<[FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `q`: `string` (optional) — Find sales channels by their name or description through this search term.
+      - `id`: `string` | `string`\[] (optional) — The IDs to filter the sales channel by.
+      - `name`: `string` | `string`\[] (optional) — Filter sales channels by their names.
+      - `is_disabled`: `boolean` (optional) — Filter sales channels by whether they're disabled.
+    - `$or`: ([FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps) | [BaseFilterable](/resources/references/sales_channel/interfaces/sales_channelBaseFilterable)\<[FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `$and`: ([FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps) | [BaseFilterable](/resources/references/sales_channel/interfaces/sales_channelBaseFilterable)\<[FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+      - `$or`: ([FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps) | [BaseFilterable](/resources/references/sales_channel/interfaces/sales_channelBaseFilterable)\<[FilterableSalesChannelProps](/resources/references/sales_channel/interfaces/sales_channelFilterableSalesChannelProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+      - `q`: `string` (optional) — Find sales channels by their name or description through this search term.
+      - `id`: `string` | `string`\[] (optional) — The IDs to filter the sales channel by.
+      - `name`: `string` | `string`\[] (optional) — Filter sales channels by their names.
+      - `is_disabled`: `boolean` (optional) — Filter sales channels by whether they're disabled.
+    - `q`: `string` (optional) — Find sales channels by their name or description through this search term.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the sales channel by.
+    - `name`: `string` | `string`\[] (optional) — Filter sales channels by their names.
+    - `is_disabled`: `boolean` (optional) — Filter sales channels by whether they're disabled.
+  - `update`: [UpdateSalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelUpdateSalesChannelDTO) — The data to update the sales channels.
+    - `name`: `string` (optional) — The name of the sales channel.
+    - `description`: `null` | `string` (optional) — The description of the sales channel.
+    - `is_disabled`: `boolean` (optional) — Whether the sales channel is disabled.
+    - `metadata`: [MetadataType](/resources/references/sales_channel/types/sales_channelMetadataType) (optional) — Holds custom data in key-value pairs.
+
+<a id="updatesaleschannelsstep-output" />
+
+## Output
+
+**updateSalesChannelsStep**
+
+- `SalesChannelDTO[]`: [SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO)\[]
+  - `id`: `string` — The ID of the sales channel.
+  - `name`: `string` — The name of the sales channel.
+  - `description`: `null` | `string` — The description of the sales channel.
+  - `is_disabled`: `boolean` — Whether the sales channel is disabled.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `locations`: [SalesChannelLocationDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelLocationDTO)\[] (optional) — The locations of the sales channel.
+    - `sales_channel_id`: `string` — The associated sales channel's ID.
+    - `location_id`: `string` — The associated location's ID.
+    - `sales_channel`: [SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO) — The associated sales channel.
+      - `id`: `string` — The ID of the sales channel.
+      - `name`: `string` — The name of the sales channel.
+      - `description`: `null` | `string` — The description of the sales channel.
+      - `is_disabled`: `boolean` — Whether the sales channel is disabled.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `locations`: [SalesChannelLocationDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelLocationDTO)\[] (optional) — The locations of the sales channel.

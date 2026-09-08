@@ -1,0 +1,99 @@
+---
+title: SearchFieldsSchema
+---
+
+A fields schema produced by `search.define(...)`. Compiles to plain
+SearchFieldDefinition records for the Search Module.
+
+## Type parameters
+
+**SearchFieldsSchema**
+
+- `Schema`: [SearchSchema](/resources/references/types/SearchTypes/types/typesSearchTypesSearchSchema) (optional)
+  - `$dataType`: T
+  - `$dataType`: T
+
+## constructor
+
+<a id="constructor-type-parameters" />
+
+### Type Parameters
+
+**constructor**
+
+- `Schema`: [SearchSchema](/resources/references/types/SearchTypes/types/typesSearchTypesSearchSchema) (optional)
+  - `$dataType`: T
+  - `$dataType`: T
+
+<a id="constructor-parameters" />
+
+### Parameters
+
+**constructor**
+
+- `schema`: Schema
+
+## Properties
+
+**SearchFieldsSchema**
+
+- `[IsSearchFieldsSchema]`: `boolean` (default: true)
+- `schema`: Schema — The DSL schema. Public so document types can be inferred from it — see InferSearchDocumentType.
+
+## Methods
+
+### isSearchFieldsSchema
+
+<a id="issearchfieldsschema-parameters" />
+
+#### Parameters
+
+**isSearchFieldsSchema**
+
+- `value`: `unknown`
+
+<a id="issearchfieldsschema-returns" />
+
+#### Returns
+
+**isSearchFieldsSchema**
+
+- `value`: value is SearchFieldsSchema\<any>
+
+### toFields
+
+Compile the DSL schema into plain SearchFieldDefinition records.
+
+<a id="tofields-returns" />
+
+#### Returns
+
+**toFields**
+
+- `Record`: `Record<string, [SearchFieldDefinition](/references/types/SearchTypes/interfaces/types.SearchTypes.SearchFieldDefinition)>` — Compile the DSL schema into plain SearchFieldDefinition records.
+  - `string`: `string`
+  - `SearchFieldDefinition`: [SearchFieldDefinition](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchFieldDefinition)
+    - `type`: [SearchFieldKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFieldKind) — The field's type.
+    - `array`: `boolean` (optional) — Whether the field holds an array of the declared `type`.
+    - `searchable`: `boolean` | `object` (optional) — Whether the field is matched against a free-text query, optionally with a `weight` boosting its relevance. The weight is applied at build time on some engines, such as Meilisearch and Algolia, and at query time on others, such as Typesense and Elasticsearch.
+      - `weight`: `number` (optional)
+    - `filterable`: `boolean` (optional) — Whether the field can be used in a query's filters.
+    - `sortable`: `boolean` (optional) — Whether results can be sorted by the field.
+    - `facetable`: `boolean` | `object` (optional) — Whether the field can be faceted, and which facet types it supports. Defaults to `["value"]`, or `["range"]` for numeric and date fields. `"stats"` is opt-in, since implying it would make numeric fields unusable on providers without aggregations.
+      - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+    - `retrievable`: `boolean` (optional) — Whether the field comes back on hits. `false` for index-only fields, such as a blob used purely for matching. `query.search` reads this to decide which requested fields the engine can serve and which need `query.graph`. Vector fields default to not retrievable — embeddings are not useful on hits. Set `retrievable: true`, or `.retrievable()` in the DSL, to return them.
+    - `fields`: `Record<string, [SearchFieldDefinition](/references/types/SearchTypes/interfaces/types.SearchTypes.SearchFieldDefinition)>` (optional) — The fields of a nested object, only used when `type` is `object`.
+      - `type`: [SearchFieldKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFieldKind) — The field's type.
+      - `array`: `boolean` (optional) — Whether the field holds an array of the declared `type`.
+      - `searchable`: `boolean` | `object` (optional) — Whether the field is matched against a free-text query, optionally with a `weight` boosting its relevance. The weight is applied at build time on some engines, such as Meilisearch and Algolia, and at query time on others, such as Typesense and Elasticsearch.
+      - `filterable`: `boolean` (optional) — Whether the field can be used in a query's filters.
+      - `sortable`: `boolean` (optional) — Whether results can be sorted by the field.
+      - `facetable`: `boolean` | `object` (optional) — Whether the field can be faceted, and which facet types it supports. Defaults to `["value"]`, or `["range"]` for numeric and date fields. `"stats"` is opt-in, since implying it would make numeric fields unusable on providers without aggregations.
+      - `retrievable`: `boolean` (optional) — Whether the field comes back on hits. `false` for index-only fields, such as a blob used purely for matching. `query.search` reads this to decide which requested fields the engine can serve and which need `query.graph`. Vector fields default to not retrievable — embeddings are not useful on hits. Set `retrievable: true`, or `.retrievable()` in the DSL, to return them.
+      - `fields`: `Record<string, [SearchFieldDefinition](/references/types/SearchTypes/interfaces/types.SearchTypes.SearchFieldDefinition)>` (optional) — The fields of a nested object, only used when `type` is `object`.
+      - `dimensions`: `number` (optional) — The dimensionality of the embedding stored in a `type: "vector"` field. Required for vector fields; meaningless on any other type. When `embed` is omitted, every vector written to the field must have exactly this many components.
+      - `embed`: `boolean` (optional) — When `true` on a vector field, documents pass a string and the engine embeds it at write time, and for `search_options.vector.query` at query time. Omit `embed` to supply embeddings yourself as a `number[]`.
+      - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Field options specific to a search engine, keyed by provider identifier, such as `{ meilisearch: { ... } }`.
+    - `dimensions`: `number` (optional) — The dimensionality of the embedding stored in a `type: "vector"` field. Required for vector fields; meaningless on any other type. When `embed` is omitted, every vector written to the field must have exactly this many components.
+    - `embed`: `boolean` (optional) — When `true` on a vector field, documents pass a string and the engine embeds it at write time, and for `search_options.vector.query` at query time. Omit `embed` to supply embeddings yourself as a `number[]`.
+    - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Field options specific to a search engine, keyed by provider identifier, such as `{ meilisearch: { ... } }`.

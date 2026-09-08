@@ -1,0 +1,32 @@
+---
+title: SearchOptions
+---
+
+The options changing how a search query is matched, scored, and aggregated.
+
+## Properties
+
+**SearchOptions**
+
+- `attributes_to_search_on`: `string`\[] (optional) — The dotted paths of the fields to match the free-text query against. Defaults to every field marked `searchable` on the index.
+- <a id="match_strategy" />`match_strategy`: [SearchMatchStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMatchStrategy) (optional) — How query terms combine. - `"all"` (default): every term must appear as a complete token. - `"any"`: at least one term must match. - `"last"`: typeahead. Completed terms must match in full; the last term is a prefix, so `"my sear"` matches `"My search results"`.
+- `typo_tolerance`: `boolean` (optional) — Whether to match terms that are misspelled by a character or two.
+- `facets`: (`string` | [SearchFacetRequest](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetRequest))\[] (optional) — The facets to compute alongside the hits. A string is shorthand for a `value` facet on that field.
+- `disjunctive_facets`: `boolean` (optional) — Compute each facet ignoring the filter on that same field, so a storefront keeps showing sibling values of an active filter. Needs one query per facet on every engine reviewed, so the module expands them and hands the set to `provider.searchMany`.
+- `highlight`: [SearchHighlightOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchHighlightOptions) (optional) — How the matched terms are highlighted in the returned hits.
+  - `fields`: `string`\[] — The dotted paths of the fields to highlight.
+  - `pre_tag`: `string` (optional) — The tag inserted before a matched term.
+  - `post_tag`: `string` (optional) — The tag inserted after a matched term.
+  - `snippet`: `boolean` | `object` (optional) — Whether to crop a fragment around the match rather than returning the whole field, optionally specifying the fragment's length.
+    - `length`: `number`
+- `distinct`: `string` (optional) — Return at most one hit per distinct value of this field.
+- `min_score`: `number` (optional) — Discard hits scoring below this threshold.
+- `include_score`: `boolean` (optional) — Whether to return each hit's relevance score.
+- `locales`: `string`\[] (optional) — Query-time language hint, e.g. `["en"]`. Engines that analyze per language (Meilisearch, Algolia) use it to pick the analyzer; a provider that cannot honour it rejects it rather than silently matching differently. Defaults to the index' `settings.locales`.
+- `vector`: [SearchVectorOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchVectorOptions) (optional) — The options of a vector, or semantic, search to run instead of, or alongside, the free-text query.
+  - `field`: `string` (optional) — The dotted path of the `vector` field to search in. Optional when the index declares exactly one vector field.
+  - `value`: `number`\[] (optional) — A pre-computed embedding to search with. Mutually exclusive with `query`. Allowed whether documents store customer-supplied embeddings or the engine embeds them.
+  - `query`: `string` (optional) — Text the engine embeds at query time. Requires the vector field to set `embed: true`. Mutually exclusive with `value`.
+  - `semantic_ratio`: `number` (optional) — How much the semantic score contributes relative to the keyword score, where `0` is keyword-only and `1` is semantic-only. Defaults to `1` when there is no free-text query, and `0.5` when both run together.
+- `count`: [SearchCountStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchCountStrategy) (optional) — How the total number of matching documents is computed. `"exact"` may be rejected or slow depending on the provider.
+- `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Escape hatch for engine features the interface does not model, keyed by provider identifier, e.g. `{ typesense: { drop_tokens_threshold: 0 } }`.

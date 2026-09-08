@@ -1,0 +1,61 @@
+---
+title: authorizePaymentSession - Payment Module Reference
+sidebarTitle: authorizePaymentSession
+---
+
+This documentation provides a reference to the `authorizePaymentSession` method. This belongs to the Payment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method authorizes a payment session using its associated payment provider. This creates a payment that can later be captured.
+
+When the provider returns a `pending_authorization` status (for async payment methods like bank transfers or payment links),
+this method returns `null` instead of creating a payment. The session status is updated to `pending_authorization` and the
+method can be called again later (via webhook or manual action) to complete authorization.
+
+Learn more about the payment flow in [this guide](/resources/commerce-modules/payment/payment-flow)
+
+## Example
+
+```ts
+const payment =
+  await paymentModuleService.authorizePaymentSession(
+    "payses_123",
+    {}
+  )
+```
+
+<a id="authorizepaymentsession-parameters" />
+
+## Parameters
+
+**authorizePaymentSession**
+
+- `id`: `string` — The payment session's ID.
+- `context`: `Record<string, unknown>` — Context data to pass to the associated payment provider.
+- `sharedContext`: [Context](/resources/references/payment/interfaces/paymentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/payment/interfaces/paymentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="authorizepaymentsession-returns" />
+
+## Returns
+
+**authorizePaymentSession**
+
+- `Promise`: Promise\<null | [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO)> — The created payment, or `null` if the payment authorization is pending.
+  - `null \| PaymentDTO`: `null` | [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO)

@@ -1,0 +1,412 @@
+---
+title: campaign - JS SDK Admin Reference
+sidebarTitle: campaign
+---
+
+This documentation provides a reference to the `sdk.admin.campaign` set of methods used to send requests to Medusa's Admin API routes.
+
+## retrieve
+
+This method retrieves a campaign by its ID. It sends a request to the
+[Get Campaign](/api/admin/campaigns/get-a-campaign) API route.
+
+### Example
+
+To retrieve a campaign by its ID:
+
+```ts
+sdk.admin.campaign.retrieve("procamp_123")
+.then(({ campaign }) => {
+  console.log(campaign)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.campaign.retrieve("procamp_123", {
+  fields: "id,*budget"
+})
+.then(({ campaign }) => {
+  console.log(campaign)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The campaign's ID.
+- `query`: [AdminGetCampaignParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignParams) (optional) — Configure the fields to retrieve in the campaign.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminCampaignResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaignResponse)> — The campaign's details.
+  - `campaign`: [AdminCampaign](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaign) — The campaign's details.
+    - `id`: `string` — The campaign's ID.
+    - `name`: `string` — The campaign's name.
+    - `description`: `string` — The campaign's description.
+    - `currency`: `string` — The campaign's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `campaign_identifier`: `string` — The campaign's identifier.
+    - `starts_at`: `string` — The date the campaign and its promotions start at.
+    - `ends_at`: `string` — The date the campaign and its promotions end at.
+    - `budget`: `object` — The campaign's budget.
+    - `created_at`: `string`
+    - `updated_at`: `string`
+    - `deleted_at`: `null` | `string`
+
+## list
+
+This method retrieves a paginated list of campaigns. It sends a request to the
+[List Campaigns](/api/admin/campaigns/list-campaigns) API route.
+
+### Example
+
+To retrieve the list of campaigns:
+
+```ts
+sdk.admin.campaign.list()
+.then(({ campaigns, count, limit, offset }) => {
+  console.log(campaigns)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.campaign.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ campaigns, count, limit, offset }) => {
+  console.log(campaigns)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each campaign:
+
+```ts
+sdk.admin.campaign.list({
+  fields: "id,*budget"
+})
+.then(({ campaigns, count, limit, offset }) => {
+  console.log(campaigns)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [AdminGetCampaignsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignsParams) (optional) — Filters and pagination configurations.
+  - `q`: `string` (optional)
+  - `campaign_identifier`: `string` (optional)
+  - `budget`: `object` (optional)
+    - `currency_code`: `string` (optional)
+  - `$and`: [AdminGetCampaignsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignsParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `q`: `string` (optional)
+    - `campaign_identifier`: `string` (optional)
+    - `budget`: `object` (optional)
+    - `$and`: [AdminGetCampaignsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignsParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: [AdminGetCampaignsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignsParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `$or`: [AdminGetCampaignsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignsParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional)
+    - `campaign_identifier`: `string` (optional)
+    - `budget`: `object` (optional)
+    - `$and`: [AdminGetCampaignsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignsParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: [AdminGetCampaignsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetCampaignsParams)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminCampaignListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminCampaignListResponse)> — The paginated list of campaigns.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## create
+
+This method creates a campaign. It sends a request to the
+[Create Campaign](/api/admin/campaigns/create-campaign) API route.
+
+### Example
+
+```ts
+sdk.admin.campaign.create({
+  name: "Summer Campaign"
+})
+.then(({ campaign }) => {
+  console.log(campaign)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `payload`: [AdminCreateCampaign](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateCampaign) — The details of the campaign to create.
+  - `name`: `string` — The campaign's name.
+  - `description`: `null` | `string` (optional) — The campaign's description.
+  - `campaign_identifier`: `string` — The campaign's identifier.
+  - `starts_at`: `null` | `Date` (optional) — The date the campaign and its promotions start at.
+  - `ends_at`: `null` | `Date` (optional) — The date the campaign and its promotions end at.
+  - `budget`: `null` | `object` (optional) — The campaign's budget.
+    - `type`: [CampaignBudgetTypeValues](/resources/references/promotion/types/promotionCampaignBudgetTypeValues) (optional) — The budget's type. `spend` means the limit is set on the total amount discounted by the campaign's promotions; `usage` means the limit is set on the total number of times the campaign's promotions can be used. `use_by_attribute` means the limit is set for a specific condition, such as per customer.
+    - `currency_code`: `null` | `string` (optional) — The budget's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `limit`: `null` | `number` (optional) — The budget's limit.
+    - `attribute`: `null` | `string` (optional) — The attribute that the budget limit is applied to. By default, the budget is applied globally. If the type is `use_by_attribute`, this field indicates the attribute the budget is tracked by. For example, `customer_id` means the budget is tracked per customer.
+
+      Example:
+
+      ```
+      customer_id
+      ```
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminCampaignResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaignResponse)> — The campaign's details.
+  - `campaign`: [AdminCampaign](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaign) — The campaign's details.
+    - `id`: `string` — The campaign's ID.
+    - `name`: `string` — The campaign's name.
+    - `description`: `string` — The campaign's description.
+    - `currency`: `string` — The campaign's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `campaign_identifier`: `string` — The campaign's identifier.
+    - `starts_at`: `string` — The date the campaign and its promotions start at.
+    - `ends_at`: `string` — The date the campaign and its promotions end at.
+    - `budget`: `object` — The campaign's budget.
+    - `created_at`: `string`
+    - `updated_at`: `string`
+    - `deleted_at`: `null` | `string`
+
+## update
+
+This method updates a campaign. It sends a request to the
+[Update Campaign](/api/admin/campaigns/update-a-campaign) API route.
+
+### Example
+
+```ts
+sdk.admin.campaign.update("procamp_123", {
+  name: "Summer Campaign"
+})
+.then(({ campaign }) => {
+  console.log(campaign)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `id`: `string` — The campaign's ID.
+- `payload`: [AdminUpdateCampaign](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateCampaign) — The data to update in the campaign.
+  - `name`: `string` (optional) — The campaign's name.
+  - `description`: `null` | `string` (optional) — The campaign's description.
+  - `campaign_identifier`: `string` (optional) — The campaign's identifier.
+  - `starts_at`: `null` | `Date` (optional) — The date the campaign and its promotions start at.
+  - `ends_at`: `null` | `Date` (optional) — The date the campaign and its promotions end at.
+  - `budget`: `object` (optional) — The campaign's budget.
+    - `limit`: `null` | `number` (optional) — The budget's limit.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminCampaignResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaignResponse)> — The campaign's details.
+  - `campaign`: [AdminCampaign](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaign) — The campaign's details.
+    - `id`: `string` — The campaign's ID.
+    - `name`: `string` — The campaign's name.
+    - `description`: `string` — The campaign's description.
+    - `currency`: `string` — The campaign's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `campaign_identifier`: `string` — The campaign's identifier.
+    - `starts_at`: `string` — The date the campaign and its promotions start at.
+    - `ends_at`: `string` — The date the campaign and its promotions end at.
+    - `budget`: `object` — The campaign's budget.
+    - `created_at`: `string`
+    - `updated_at`: `string`
+    - `deleted_at`: `null` | `string`
+
+## delete
+
+This method deletes a campaign by its ID. It sends a request to the
+[Delete Campaign](/api/admin/campaigns/delete-a-campaign) API route.
+
+### Example
+
+```ts
+sdk.admin.campaign.delete("procamp_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The campaign's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[DeleteResponse](/resources/references/types/HttpTypes/types/typesHttpTypesDeleteResponse)\<"campaign">> — The deletion's details.
+  - `"campaign"`: `"campaign"`
+
+## batchPromotions
+
+This method manages the promotions of a campaign to either add or remove the association between them.
+It sends a request to the [Manage Promotions](/api/admin/campaigns/manage-promotions)
+API route.
+
+### Example
+
+```ts
+sdk.admin.campaign.batchPromotions("procamp_123", {
+  add: ["prom_123", "prom_456"],
+  remove: ["prom_789"]
+})
+.then(({ campaign }) => {
+  console.log(campaign)
+})
+```
+
+<a id="batchpromotions-parameters" />
+
+### Parameters
+
+**batchPromotions**
+
+- `id`: `string` — The campaign's ID.
+- `payload`: [AdminBatchLink](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchLink) — The promotions to add or remove associations to them.
+  - `add`: `string`\[] (optional) — The IDs of the items to create an association to.
+  - `remove`: `string`\[] (optional) — The IDs of the items to remove the association from.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchpromotions-returns" />
+
+### Returns
+
+**batchPromotions**
+
+- `Promise`: Promise\<[AdminCampaignResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaignResponse)> — The campaign's details.
+  - `campaign`: [AdminCampaign](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaign) — The campaign's details.
+    - `id`: `string` — The campaign's ID.
+    - `name`: `string` — The campaign's name.
+    - `description`: `string` — The campaign's description.
+    - `currency`: `string` — The campaign's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `campaign_identifier`: `string` — The campaign's identifier.
+    - `starts_at`: `string` — The date the campaign and its promotions start at.
+    - `ends_at`: `string` — The date the campaign and its promotions end at.
+    - `budget`: `object` — The campaign's budget.
+    - `created_at`: `string`
+    - `updated_at`: `string`
+    - `deleted_at`: `null` | `string`

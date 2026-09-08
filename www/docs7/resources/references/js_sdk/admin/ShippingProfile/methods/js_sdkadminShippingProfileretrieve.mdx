@@ -1,0 +1,59 @@
+---
+title: retrieve
+---
+
+This method retrieves a shipping profile. It sends a request to the
+[Get Shipping Profile](/api/admin/shipping-profiles/get-a-shipping-profile)
+API route.
+
+## Example
+
+To retrieve a shipping profile by its ID:
+
+```ts
+sdk.admin.shippingProfile.retrieve("sp_123")
+.then(({ shipping_profile }) => {
+  console.log(shipping_profile)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.shippingProfile.retrieve("sp_123", {
+  fields: "id,name"
+})
+.then(({ shipping_profile }) => {
+  console.log(shipping_profile)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The ID of the shipping profile to retrieve.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the shipping profile.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminShippingProfileResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfileResponse)> — The shipping profile's details.
+  - `shipping_profile`: [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) — The shipping profile's details.
+    - `id`: `string` — The ID of the shipping profile.
+    - `name`: `string` — The name of the shipping profile.
+    - `type`: `string` — The type of the shipping profile.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the shipping profile.
+    - `created_at`: `string` — The date when the shipping profile was created.
+    - `updated_at`: `string` — The date when the shipping profile was updated.
+    - `deleted_at`: `null` | `string` — The date when the shipping profile was deleted.

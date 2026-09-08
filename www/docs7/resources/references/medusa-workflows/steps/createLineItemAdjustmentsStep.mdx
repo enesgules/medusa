@@ -1,0 +1,50 @@
+---
+title: createLineItemAdjustmentsStep - Medusa Core Workflows Reference
+sidebarTitle: createLineItemAdjustmentsStep
+---
+
+This documentation provides a reference to the `createLineItemAdjustmentsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates line item adjustments in a cart, such as when a promotion is applied.
+
+## Example
+
+```ts
+createLineItemAdjustmentsStep({
+  lineItemAdjustmentsToCreate: [
+    {
+      item_id: "litem_123",
+      code: "10OFF",
+      amount: 10,
+    }
+  ]
+})
+```
+
+<a id="createlineitemadjustmentsstep-input" />
+
+## Input
+
+**createLineItemAdjustmentsStep**
+
+- `CreateLineItemAdjustmentsCartStepInput`: [CreateLineItemAdjustmentsCartStepInput](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcCreateLineItemAdjustmentsCartStepInput)
+  - `lineItemAdjustmentsToCreate`: [CreateLineItemAdjustmentDTO](/resources/references/cart/interfaces/cartCreateLineItemAdjustmentDTO)\[] — The line item adjustments to create.
+    - `code`: `string` — The code of the promotion that lead to this adjustment.
+    - `amount`: [BigNumberInput](/resources/references/cart/types/cartBigNumberInput) — The amount to adjust the original amount with.
+      - `value`: `string` | `number`
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the adjustment amount includes tax.
+    - `description`: `string` (optional) — The description of the adjustment.
+    - `promotion_id`: `string` (optional) — The associated promotion's ID.
+    - `provider_id`: `string` (optional) — The associated provider's ID.
+    - `item_id`: `string` — The associated item's ID.
+
+<a id="createlineitemadjustmentsstep-output" />
+
+## Output
+
+**createLineItemAdjustmentsStep**
+
+- `never[]`: `never`\[]

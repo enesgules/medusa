@@ -1,0 +1,83 @@
+---
+title: retrieve
+---
+
+This method retrieves a notification's details. It sends a request to the
+[Get Notification](/api/admin/notifications/get-a-notification)
+API route.
+
+## Example
+
+To retrieve a notification by its ID:
+
+```ts
+sdk.admin.notification.retrieve("notif_123")
+.then(({ notification }) => {
+  console.log(notification)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.notification.retrieve("notif_123", {
+  fields: "id,to"
+})
+.then(({ notification }) => {
+  console.log(notification)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The notification's ID.
+- `query`: [AdminNotificationParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationParams) (optional) — Configure the fields to retrieve in the notification.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminNotificationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotificationResponse)> — The notification's details.
+  - `notification`: [AdminNotification](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminNotification) — The notification's details.
+    - `id`: `string` — The notification's ID.
+    - `to`: `string` — The identifier the notification is sent to. For example, an email, phone number, or username.
+    - `channel`: `string` — The channel to send the notification through.
+
+      Example:
+
+      ```
+      email
+      ```
+    - `template`: `string` — A template ID to use for the notification's content. For example, the ID of a template in SendGrid.
+    - `data`: `null` | `Record<string, unknown>` (optional) — Data to pass to the template.
+    - `trigger_type`: `null` | `string` (optional) — What triggered this notification.
+
+      Example:
+
+      ```
+      order.created
+      ```
+    - `resource_id`: `null` | `string` (optional) — The ID of the associated resource. for example, if the notification was triggered because an order was created, this would be the ID of the order.
+    - `resource_type`: `null` | `string` (optional) — The type of the resource that triggered the notification.
+
+      Example:
+
+      ```
+      order
+      ```
+    - `receiver_id`: `null` | `string` (optional) — The ID of the user or customer that received the notification.
+    - `original_notification_id`: `null` | `string` (optional) — The ID of the original notification if this is a resend of it.
+    - `external_id`: `null` | `string` (optional) — The ID of the notification in an external or third-party system.
+    - `provider_id`: `string` — The ID of the notification provider used.
+    - `created_at`: `string` — The date the notification was created.

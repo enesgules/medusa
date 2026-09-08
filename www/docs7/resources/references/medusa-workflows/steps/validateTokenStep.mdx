@@ -1,0 +1,48 @@
+---
+title: validateTokenStep - Medusa Core Workflows Reference
+sidebarTitle: validateTokenStep
+---
+
+This documentation provides a reference to the `validateTokenStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates a specified token and returns its associated invite.
+If not valid, the step throws an error.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { validateTokenStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = validateTokenStep("{value}")
+  }
+)
+```
+
+<a id="validatetokenstep-input" />
+
+## Input
+
+**validateTokenStep**
+
+- `string`: `string`
+  - `string`: `string`
+
+<a id="validatetokenstep-output" />
+
+## Output
+
+**validateTokenStep**
+
+- `InviteDTO`: [InviteDTO](/resources/references/user/interfaces/userInviteDTO) — The invite details.
+  - `id`: `string` — The ID of the invite.
+  - `email`: `string` — The email of the invite.
+  - `accepted`: `boolean` — Whether the invite is accepted.
+  - `token`: `string` — The token of the invite.
+  - `expires_at`: `Date` — The invite's expiry date.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `roles`: `null` | `string`\[] (optional) — The RBAC roles to assign to the user when the invite is accepted.
+  - `created_at`: `Date` — The invite's creation date.
+  - `updated_at`: `Date` — The invite's update date.
+  - `deleted_at`: `null` | `Date` — The invite's deletion date.

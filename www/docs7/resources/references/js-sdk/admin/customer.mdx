@@ -1,0 +1,890 @@
+---
+title: customer - JS SDK Admin Reference
+sidebarTitle: customer
+---
+
+This documentation provides a reference to the `sdk.admin.customer` set of methods used to send requests to Medusa's Admin API routes.
+
+## create
+
+This method creates a customer. It sends a request to the
+[Create Customer](/api/admin/customers/create-customer) API route.
+
+### Example
+
+```ts
+sdk.admin.customer.create({
+  email: "customer@gmail.com"
+})
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [AdminCreateCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateCustomer) — The customer's details.
+  - `email`: `null` | `string` (optional) — The customer's email.
+  - `company_name`: `null` | `string` (optional) — The customer's company name.
+  - `first_name`: `null` | `string` (optional) — The customer's first name.
+  - `last_name`: `null` | `string` (optional) — The customer's last name.
+  - `phone`: `null` | `string` (optional) — The customer's phone number.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the customer.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerResponse)> — The customer's details.
+  - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) — The customer's details.
+    - `has_account`: `boolean` — Whether the customer is a guest.
+    - `groups`: [AdminCustomerGroup](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerGroup)\[] (optional) — The groups the customer is in.
+    - `addresses`: [AdminCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerAddress)\[] — The customer's addresses.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_by`: `null` | `string` (optional) — The ID of the user that created the customer.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.
+
+## update
+
+This method updates a customer's details. It sends a request to the
+[Update Customer](/api/admin/customers/update-a-customer) API route.
+
+### Example
+
+```ts
+sdk.admin.customer.update("cus_123", {
+  first_name: "John"
+})
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `id`: `string` — The customer's ID.
+- `body`: [AdminUpdateCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateCustomer) — The details to update of the customer.
+  - `email`: `null` | `string` (optional) — The customer's email.
+  - `company_name`: `null` | `string` (optional) — The customer's company name.
+  - `first_name`: `null` | `string` (optional) — The customer's first name.
+  - `last_name`: `null` | `string` (optional) — The customer's last name.
+  - `phone`: `null` | `string` (optional) — The customer's phone number.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the customer.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerResponse)> — The customer's details.
+  - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) — The customer's details.
+    - `has_account`: `boolean` — Whether the customer is a guest.
+    - `groups`: [AdminCustomerGroup](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerGroup)\[] (optional) — The groups the customer is in.
+    - `addresses`: [AdminCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerAddress)\[] — The customer's addresses.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_by`: `null` | `string` (optional) — The ID of the user that created the customer.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.
+
+## list
+
+This method retrieves a paginated list of customers. It sends a request to the
+[List Customers](/api/admin/customers/list-customers)
+API route.
+
+### Example
+
+To retrieve the list of customers:
+
+```ts
+sdk.admin.customer.list()
+.then(({ customers, count, limit, offset }) => {
+  console.log(customers)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.customer.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ customers, count, limit, offset }) => {
+  console.log(customers)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each customer:
+
+```ts
+sdk.admin.customer.list({
+  fields: "id,*groups"
+})
+.then(({ customers, count, limit, offset }) => {
+  console.log(customers)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `queryParams`: [AdminCustomerFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerFilters) (optional) — Filters and pagination configurations.
+  - `$and`: ([BaseCustomerFilters](/resources/references/types/interfaces/typesBaseCustomerFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCustomerFilters](/resources/references/types/interfaces/typesBaseCustomerFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([BaseCustomerFilters](/resources/references/types/interfaces/typesBaseCustomerFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCustomerFilters](/resources/references/types/interfaces/typesBaseCustomerFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseCustomerFilters](/resources/references/types/interfaces/typesBaseCustomerFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCustomerFilters](/resources/references/types/interfaces/typesBaseCustomerFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keywords to apply on the customer's searchable fields.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by customer ID(s).
+    - `email`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by email(s).
+    - `company_name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by company name(s).
+    - `first_name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by first name(s).
+    - `last_name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by last name(s).
+    - `created_by`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by user ID(s) to retrieve the customers they created.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the customer's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the customer's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the customer's deletion date.
+  - `$or`: ([BaseCustomerFilters](/resources/references/types/interfaces/typesBaseCustomerFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCustomerFilters](/resources/references/types/interfaces/typesBaseCustomerFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([BaseCustomerFilters](/resources/references/types/interfaces/typesBaseCustomerFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCustomerFilters](/resources/references/types/interfaces/typesBaseCustomerFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseCustomerFilters](/resources/references/types/interfaces/typesBaseCustomerFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseCustomerFilters](/resources/references/types/interfaces/typesBaseCustomerFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keywords to apply on the customer's searchable fields.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by customer ID(s).
+    - `email`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by email(s).
+    - `company_name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by company name(s).
+    - `first_name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by first name(s).
+    - `last_name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by last name(s).
+    - `created_by`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by user ID(s) to retrieve the customers they created.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the customer's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the customer's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the customer's deletion date.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `groups`: `string` | `string`\[] | [CustomerGroupInCustomerFilters](/resources/references/types/interfaces/typesCustomerGroupInCustomerFilters) (optional) — Apply customer group filters to retrieve their customers.
+    - `id`: `string` | `string`\[] (optional) — Filter by customer group ID(s).
+    - `name`: `string` | `string`\[] (optional) — Filter by name(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the group's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the group's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the group's deletion date.
+  - `has_account`: `boolean` (optional) — Filter by whether the customer is registered.
+  - `q`: `string` (optional) — Query or keywords to apply on the customer's searchable fields.
+  - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by customer ID(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `email`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by email(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `company_name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by company name(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `first_name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by first name(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `last_name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by last name(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_by`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by user ID(s) to retrieve the customers they created.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the customer's creation date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the customer's update date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the customer's deletion date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminCustomerListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminCustomerListResponse)> — The paginated list of customers.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## retrieve
+
+This method retrieves a customer by its ID. It sends a request to the
+[Get Customer](/api/admin/customers/get-a-customer)
+API route.
+
+### Example
+
+To retrieve a customer by its ID:
+
+```ts
+sdk.admin.customer.retrieve("cus_123")
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.customer.retrieve("cus_123", {
+  fields: "id,*groups"
+})
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The customer's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the customer.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerResponse)> — The customer's details.
+  - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) — The customer's details.
+    - `has_account`: `boolean` — Whether the customer is a guest.
+    - `groups`: [AdminCustomerGroup](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerGroup)\[] (optional) — The groups the customer is in.
+    - `addresses`: [AdminCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerAddress)\[] — The customer's addresses.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_by`: `null` | `string` (optional) — The ID of the user that created the customer.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.
+
+## delete
+
+This method deletes a customer by its ID. It sends a request to the
+[Delete Customer](/api/admin/customers/delete-a-customer)
+API route.
+
+### Example
+
+```ts
+sdk.admin.customer.delete("cus_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The customer's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminCustomerDeleteResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminCustomerDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: TObject — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## batchCustomerGroups
+
+This method manages customer groups for a customer.
+It sends a request to the [Manage Customers](/api/admin/customers/manage-customer-groups)
+API route.
+
+### Example
+
+```ts
+sdk.admin.customer.batchCustomerGroups("cus_123", {
+  add: ["cusgroup_123"],
+  remove: ["cusgroup_321"]
+})
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="batchcustomergroups-parameters" />
+
+### Parameters
+
+**batchCustomerGroups**
+
+- `id`: `string` — The customer's ID.
+- `body`: [AdminBatchLink](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchLink) — The groups to add customer to or remove customer from.
+  - `add`: `string`\[] (optional) — The IDs of the items to create an association to.
+  - `remove`: `string`\[] (optional) — The IDs of the items to remove the association from.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchcustomergroups-returns" />
+
+### Returns
+
+**batchCustomerGroups**
+
+- `Promise`: Promise\<[AdminCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerResponse)> — The customers details.
+  - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) — The customer's details.
+    - `has_account`: `boolean` — Whether the customer is a guest.
+    - `groups`: [AdminCustomerGroup](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerGroup)\[] (optional) — The groups the customer is in.
+    - `addresses`: [AdminCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerAddress)\[] — The customer's addresses.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_by`: `null` | `string` (optional) — The ID of the user that created the customer.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.
+
+## createAddress
+
+This method creates a customer address. It sends a request to the
+[Create Customer Address](/api/admin/customers/add-address)
+API route.
+
+### Example
+
+```ts
+sdk.admin.customer.createAddress("cus_123", {
+  address_1: "123 Main St",
+  city: "Anytown",
+  country_code: "US",
+  postal_code: "12345"
+})
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="createaddress-parameters" />
+
+### Parameters
+
+**createAddress**
+
+- `id`: `string` — The customer's ID.
+- `body`: [AdminCreateCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateCustomerAddress) — The customer address's details.
+  - `first_name`: `null` | `string` (optional) — The address's first name.
+  - `last_name`: `null` | `string` (optional) — The address's last name.
+  - `phone`: `null` | `string` (optional) — The address's phone.
+  - `company`: `null` | `string` (optional) — The address's company.
+  - `address_1`: `null` | `string` (optional) — The address's first line.
+  - `address_2`: `null` | `string` (optional) — The address's second line.
+  - `city`: `null` | `string` (optional) — The address's city.
+  - `country_code`: `null` | `string` (optional) — The address's country code.
+
+    Example:
+
+    ```
+    us
+    ```
+  - `province`: `null` | `string` (optional) — The address's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province.
+  - `postal_code`: `null` | `string` (optional) — The address's postal code.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `address_name`: `null` | `string` (optional) — The address's name.
+  - `is_default_shipping`: `boolean` (optional) — Whether the address is used by default for shipping.
+  - `is_default_billing`: `boolean` (optional) — Whether the address is used by default for billing.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="createaddress-returns" />
+
+### Returns
+
+**createAddress**
+
+- `Promise`: Promise\<[AdminCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerResponse)> — The customer address's details.
+  - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) — The customer's details.
+    - `has_account`: `boolean` — Whether the customer is a guest.
+    - `groups`: [AdminCustomerGroup](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerGroup)\[] (optional) — The groups the customer is in.
+    - `addresses`: [AdminCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerAddress)\[] — The customer's addresses.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_by`: `null` | `string` (optional) — The ID of the user that created the customer.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.
+
+## updateAddress
+
+This method updates a customer address. It sends a request to the
+[Update Customer Address](/api/admin/customers/update-address)
+API route.
+
+### Example
+
+```ts
+sdk.admin.customer.updateAddress("cus_123", "cus_addr_123", {
+  address_1: "123 Main St",
+  city: "Anytown",
+  country_code: "US",
+  postal_code: "12345"
+})
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="updateaddress-parameters" />
+
+### Parameters
+
+**updateAddress**
+
+- `id`: `string` — The customer's ID.
+- `addressId`: `string` — The customer address's ID.
+- `body`: [AdminUpdateCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateCustomerAddress) — The customer address's details.
+  - `first_name`: `null` | `string` (optional) — The address's first name.
+  - `last_name`: `null` | `string` (optional) — The address's last name.
+  - `phone`: `null` | `string` (optional) — The address's phone.
+  - `company`: `null` | `string` (optional) — The address's company.
+  - `address_1`: `null` | `string` (optional) — The address's first line.
+  - `address_2`: `null` | `string` (optional) — The address's second line.
+  - `city`: `null` | `string` (optional) — The address's city.
+  - `country_code`: `null` | `string` (optional) — The address's country code.
+
+    Example:
+
+    ```
+    us
+    ```
+  - `province`: `null` | `string` (optional) — The address's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province.
+  - `postal_code`: `null` | `string` (optional) — The address's postal code.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `address_name`: `null` | `string` (optional) — The address's name.
+  - `is_default_shipping`: `boolean` (optional) — Whether the address is used by default for shipping.
+  - `is_default_billing`: `boolean` (optional) — Whether the address is used by default for billing.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updateaddress-returns" />
+
+### Returns
+
+**updateAddress**
+
+- `Promise`: Promise\<[AdminCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerResponse)> — The customer address's details.
+  - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) — The customer's details.
+    - `has_account`: `boolean` — Whether the customer is a guest.
+    - `groups`: [AdminCustomerGroup](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerGroup)\[] (optional) — The groups the customer is in.
+    - `addresses`: [AdminCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerAddress)\[] — The customer's addresses.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_by`: `null` | `string` (optional) — The ID of the user that created the customer.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.
+
+## deleteAddress
+
+This method deletes a customer address. It sends a request to the
+[Delete Customer Address](/api/admin/customers/remove-an-address-from-customer)
+API route.
+
+### Example
+
+```ts
+sdk.admin.customer.deleteAddress("cus_123", "cus_addr_123")
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="deleteaddress-parameters" />
+
+### Parameters
+
+**deleteAddress**
+
+- `id`: `string` — The customer's ID.
+- `addressId`: `string` — The customer address's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="deleteaddress-returns" />
+
+### Returns
+
+**deleteAddress**
+
+- `Promise`: Promise\<[AdminCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerResponse)> — The customer address's details.
+  - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) — The customer's details.
+    - `has_account`: `boolean` — Whether the customer is a guest.
+    - `groups`: [AdminCustomerGroup](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerGroup)\[] (optional) — The groups the customer is in.
+    - `addresses`: [AdminCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerAddress)\[] — The customer's addresses.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_by`: `null` | `string` (optional) — The ID of the user that created the customer.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.
+
+## retrieveAddress
+
+This method retrieves a customer address by its ID. It sends a request to the
+[Get Customer Address](/api/admin/customers/list-addresses-2)
+API route.
+
+### Example
+
+```ts
+sdk.admin.customer.retrieveAddress("cus_123", "cus_addr_123")
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="retrieveaddress-parameters" />
+
+### Parameters
+
+**retrieveAddress**
+
+- `id`: `string` — The customer's ID.
+- `addressId`: `string` — The customer address's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieveaddress-returns" />
+
+### Returns
+
+**retrieveAddress**
+
+- `Promise`: Promise\<[AdminCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerResponse)> — The customer address's details.
+  - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) — The customer's details.
+    - `has_account`: `boolean` — Whether the customer is a guest.
+    - `groups`: [AdminCustomerGroup](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerGroup)\[] (optional) — The groups the customer is in.
+    - `addresses`: [AdminCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerAddress)\[] — The customer's addresses.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_by`: `null` | `string` (optional) — The ID of the user that created the customer.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.
+
+## listAddresses
+
+This method retrieves a list of customer addresses. It sends a request to the
+[List Customer Addresses](/api/admin/customers/list-addresses)
+API route.
+
+### Example
+
+```ts
+sdk.admin.customer.listAddresses("cus_123")
+.then(({ addresses }) => {
+  console.log(addresses)
+})
+```
+
+<a id="listaddresses-parameters" />
+
+### Parameters
+
+**listAddresses**
+
+- `id`: `string` — The customer's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listaddresses-returns" />
+
+### Returns
+
+**listAddresses**
+
+- `Promise`: Promise\<[AdminCustomerAddressListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminCustomerAddressListResponse)> — The list of customer addresses.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.

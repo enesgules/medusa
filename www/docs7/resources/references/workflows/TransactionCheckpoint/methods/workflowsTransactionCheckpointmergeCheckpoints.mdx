@@ -1,0 +1,111 @@
+---
+title: mergeCheckpoints
+---
+
+Merge the current checkpoint with incoming data from a concurrent save operation.
+This handles race conditions when multiple steps complete simultaneously.
+
+<a id="mergecheckpoints-parameters" />
+
+## Parameters
+
+**mergeCheckpoints**
+
+- `currentTransactionData`: [TransactionCheckpoint](/resources/references/workflows/classes/workflowsTransactionCheckpoint)
+  - `#private`: `any`
+  - `flow`: [TransactionFlow](/resources/references/workflows/types/workflowsTransactionFlow)
+    - `modelId`: `string`
+    - `options`: [TransactionModelOptions](/resources/references/workflows/types/workflowsTransactionModelOptions) (optional) — Defines the options for a transaction model, which are applicable to the entire workflow.
+    - `definition`: [TransactionStepsDefinition](/resources/references/workflows/types/workflowsTransactionStepsDefinition) — Defines the structure and behavior of a single step within a transaction workflow.
+    - `transactionId`: `string`
+    - `runId`: `string`
+    - `metadata`: `object` (optional)
+    - `hasAsyncSteps`: `boolean`
+    - `hasFailedSteps`: `boolean`
+    - `hasSkippedOnFailureSteps`: `boolean`
+    - `hasWaitingSteps`: `boolean`
+    - `hasSkippedSteps`: `boolean`
+    - `hasRevertedSteps`: `boolean`
+    - `timedOutAt`: `number` | `null`
+    - `startedAt`: `number` (optional)
+    - `cancelledAt`: `number` (optional)
+    - `temporaryFailedAt`: `number` | `null` (optional)
+    - `state`: [TransactionState](/resources/references/workflows/enums/workflowsTransactionState)
+    - `steps`: `object`
+    - `_v`: `number`
+  - `context`: [TransactionContext](/resources/references/workflows/classes/workflowsTransactionContext)
+    - `payload`: `unknown` — Object containing the initial payload.
+    - `invoke`: `Record<string, unknown>` — Object containing responses of Invoke handlers on steps flagged with saveResponse.
+    - `compensate`: `Record<string, unknown>` — Object containing responses of Compensate handlers on steps flagged with saveResponse.
+  - `errors`: [TransactionStepError](/resources/references/workflows/classes/workflowsTransactionStepError)\[]
+    - `action`: `string`
+    - `handlerType`: [TransactionHandlerType](/resources/references/workflows/enums/workflowsTransactionHandlerType)
+    - `error`: `any`
+- `storedData`: [TransactionCheckpoint](/resources/references/workflows/classes/workflowsTransactionCheckpoint) (optional) — The checkpoint data being saved
+  - `#private`: `any`
+  - `flow`: [TransactionFlow](/resources/references/workflows/types/workflowsTransactionFlow)
+    - `modelId`: `string`
+    - `options`: [TransactionModelOptions](/resources/references/workflows/types/workflowsTransactionModelOptions) (optional) — Defines the options for a transaction model, which are applicable to the entire workflow.
+    - `definition`: [TransactionStepsDefinition](/resources/references/workflows/types/workflowsTransactionStepsDefinition) — Defines the structure and behavior of a single step within a transaction workflow.
+    - `transactionId`: `string`
+    - `runId`: `string`
+    - `metadata`: `object` (optional)
+    - `hasAsyncSteps`: `boolean`
+    - `hasFailedSteps`: `boolean`
+    - `hasSkippedOnFailureSteps`: `boolean`
+    - `hasWaitingSteps`: `boolean`
+    - `hasSkippedSteps`: `boolean`
+    - `hasRevertedSteps`: `boolean`
+    - `timedOutAt`: `number` | `null`
+    - `startedAt`: `number` (optional)
+    - `cancelledAt`: `number` (optional)
+    - `temporaryFailedAt`: `number` | `null` (optional)
+    - `state`: [TransactionState](/resources/references/workflows/enums/workflowsTransactionState)
+    - `steps`: `object`
+    - `_v`: `number`
+  - `context`: [TransactionContext](/resources/references/workflows/classes/workflowsTransactionContext)
+    - `payload`: `unknown` — Object containing the initial payload.
+    - `invoke`: `Record<string, unknown>` — Object containing responses of Invoke handlers on steps flagged with saveResponse.
+    - `compensate`: `Record<string, unknown>` — Object containing responses of Compensate handlers on steps flagged with saveResponse.
+  - `errors`: [TransactionStepError](/resources/references/workflows/classes/workflowsTransactionStepError)\[]
+    - `action`: `string`
+    - `handlerType`: [TransactionHandlerType](/resources/references/workflows/enums/workflowsTransactionHandlerType)
+    - `error`: `any`
+
+<a id="mergecheckpoints-returns" />
+
+## Returns
+
+**mergeCheckpoints**
+
+- `#private`: `any`
+- `flow`: [TransactionFlow](/resources/references/workflows/types/workflowsTransactionFlow)
+  - `modelId`: `string`
+  - `options`: [TransactionModelOptions](/resources/references/workflows/types/workflowsTransactionModelOptions) (optional) — Defines the options for a transaction model, which are applicable to the entire workflow.
+  - `definition`: [TransactionStepsDefinition](/resources/references/workflows/types/workflowsTransactionStepsDefinition) — Defines the structure and behavior of a single step within a transaction workflow.
+  - `transactionId`: `string`
+  - `runId`: `string`
+  - `metadata`: `object` (optional)
+  - `hasAsyncSteps`: `boolean`
+  - `hasFailedSteps`: `boolean`
+  - `hasSkippedOnFailureSteps`: `boolean`
+  - `hasWaitingSteps`: `boolean`
+  - `hasSkippedSteps`: `boolean`
+  - `hasRevertedSteps`: `boolean`
+  - `timedOutAt`: `number` | `null`
+  - `startedAt`: `number` (optional)
+  - `cancelledAt`: `number` (optional)
+  - `temporaryFailedAt`: `number` | `null` (optional)
+  - `state`: [TransactionState](/resources/references/workflows/enums/workflowsTransactionState)
+  - `steps`: `object`
+  - `_v`: `number`
+- `context`: [TransactionContext](/resources/references/workflows/classes/workflowsTransactionContext)
+  - `payload`: `unknown` — Object containing the initial payload.
+  - `invoke`: `Record<string, unknown>` — Object containing responses of Invoke handlers on steps flagged with saveResponse.
+  - `compensate`: `Record<string, unknown>` — Object containing responses of Compensate handlers on steps flagged with saveResponse.
+- `errors`: [TransactionStepError](/resources/references/workflows/classes/workflowsTransactionStepError)\[]
+  - `action`: `string`
+  - `handlerType`: [TransactionHandlerType](/resources/references/workflows/enums/workflowsTransactionHandlerType)
+  - `error`: `any`
+- `constructor`: (`flow`: [TransactionFlow](/resources/references/workflows/types/workflowsTransactionFlow), `context`: [TransactionContext](/resources/references/workflows/classes/workflowsTransactionContext), `errors?`: [TransactionStepError](/resources/references/workflows/classes/workflowsTransactionStepError)\[]) => [TransactionCheckpoint](/resources/references/workflows/classes/workflowsTransactionCheckpoint)
+- `mergeCheckpoints`: (`currentTransactionData`: [TransactionCheckpoint](/resources/references/workflows/classes/workflowsTransactionCheckpoint), `storedData?`: [TransactionCheckpoint](/resources/references/workflows/classes/workflowsTransactionCheckpoint)) => [TransactionCheckpoint](/resources/references/workflows/classes/workflowsTransactionCheckpoint)

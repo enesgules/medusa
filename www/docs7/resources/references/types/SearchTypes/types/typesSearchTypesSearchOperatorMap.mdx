@@ -1,0 +1,28 @@
+---
+title: SearchOperatorMap
+---
+
+The operators a search filter can apply to a field.
+
+Filters are a tree rather than a string, because no two engines agree on a
+filter syntax — Meilisearch, Typesense and Algolia each have their own DSL;
+engines that take JSON filters compile from the same tree. A tree compiles to
+all of them.
+
+`$prefix` and `$like` are not universal — Meilisearch has no substring filter
+at all — so a provider without them rejects them.
+
+- `SearchOperatorMap`: `object` — The operators a search filter can apply to a field. Filters are a tree rather than a string, because no two engines agree on a filter syntax — Meilisearch, Typesense and Algolia each have their own DSL; engines that take JSON filters compile from the same tree. A tree compiles to all of them. `$prefix` and `$like` are not universal — Meilisearch has no substring filter at all — so a provider without them rejects them.
+  - `$eq`: T (optional) — The field must equal this value.
+  - `$ne`: T (optional) — The field must not equal this value.
+  - `$in`: T\[] (optional) — The field must equal one of these values.
+  - `$nin`: T\[] (optional) — The field must not equal any of these values.
+  - `$lt`: T (optional) — The field must be less than this value.
+  - `$lte`: T (optional) — The field must be less than or equal to this value.
+  - `$gt`: T (optional) — The field must be greater than this value.
+  - `$gte`: T (optional) — The field must be greater than or equal to this value.
+  - `$exists`: `boolean` (optional) — Whether the field must be set on the document.
+  - `$contains`: T | T\[] (optional) — The array field must contain all of the given values.
+  - `$overlaps`: T\[] (optional) — The array field must contain at least one of the given values.
+  - `$prefix`: `string` (optional) — The field must start with this string.
+  - `$like`: `string` (optional) — The field must contain this substring.

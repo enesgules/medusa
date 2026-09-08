@@ -1,0 +1,58 @@
+---
+title: batchPromotions
+---
+
+This method manages the promotions of a campaign to either add or remove the association between them.
+It sends a request to the [Manage Promotions](/api/admin/campaigns/manage-promotions)
+API route.
+
+## Example
+
+```ts
+sdk.admin.campaign.batchPromotions("procamp_123", {
+  add: ["prom_123", "prom_456"],
+  remove: ["prom_789"]
+})
+.then(({ campaign }) => {
+  console.log(campaign)
+})
+```
+
+<a id="batchpromotions-parameters" />
+
+## Parameters
+
+**batchPromotions**
+
+- `id`: `string` — The campaign's ID.
+- `payload`: [AdminBatchLink](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchLink) — The promotions to add or remove associations to them.
+  - `add`: `string`\[] (optional) — The IDs of the items to create an association to.
+  - `remove`: `string`\[] (optional) — The IDs of the items to remove the association from.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchpromotions-returns" />
+
+## Returns
+
+**batchPromotions**
+
+- `Promise`: Promise\<[AdminCampaignResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaignResponse)> — The campaign's details.
+  - `campaign`: [AdminCampaign](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaign) — The campaign's details.
+    - `id`: `string` — The campaign's ID.
+    - `name`: `string` — The campaign's name.
+    - `description`: `string` — The campaign's description.
+    - `currency`: `string` — The campaign's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `campaign_identifier`: `string` — The campaign's identifier.
+    - `starts_at`: `string` — The date the campaign and its promotions start at.
+    - `ends_at`: `string` — The date the campaign and its promotions end at.
+    - `budget`: `object` — The campaign's budget.
+    - `created_at`: `string`
+    - `updated_at`: `string`
+    - `deleted_at`: `null` | `string`

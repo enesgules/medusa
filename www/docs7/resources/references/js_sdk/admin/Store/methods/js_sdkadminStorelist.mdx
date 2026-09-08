@@ -1,0 +1,127 @@
+---
+title: list
+---
+
+This method retrieves a list of stores. It sends a request to the
+[List Stores](/api/admin/stores/list-stores)
+API route.
+
+## Example
+
+To retrieve the list of stores:
+
+```ts
+sdk.admin.store.list()
+.then(({ stores, count, limit, offset }) => {
+  console.log(stores)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.store.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ stores, count, limit, offset }) => {
+  console.log(stores)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each store:
+
+```ts
+sdk.admin.store.list({
+  fields: "id,*supported_currencies"
+})
+.then(({ stores, count, limit, offset }) => {
+  console.log(stores)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+## Parameters
+
+**list**
+
+- `query`: [AdminStoreListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreListParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminStoreListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminStoreListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminStoreListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminStoreListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminStoreListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminStoreListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keywords to search the store's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by store ID(s).
+    - `name`: `string` | `string`\[] (optional) — Filter by store name.
+  - `$or`: ([AdminStoreListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminStoreListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminStoreListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminStoreListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminStoreListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminStoreListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keywords to search the store's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by store ID(s).
+    - `name`: `string` | `string`\[] (optional) — Filter by store name.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keywords to search the store's searchable fields.
+  - `id`: `string` | `string`\[] (optional) — Filter by store ID(s).
+  - `name`: `string` | `string`\[] (optional) — Filter by store name.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+## Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminStoreListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreListResponse)> — The list of stores.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `stores`: [AdminStore](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStore)\[] — The list of stores.
+    - `id`: `string` — The store's ID.
+    - `name`: `string` — The store's name.
+    - `supported_currencies`: [AdminStoreCurrency](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreCurrency)\[] — The store's supported currencies.
+    - `supported_locales`: [AdminStoreLocale](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStoreLocale)\[] — The store's supported locales.
+    - `default_sales_channel_id`: `null` | `string` — The store's default sales channel ID.
+    - `default_region_id`: `null` | `string` — The store's default region ID.
+    - `default_location_id`: `null` | `string` — The store's default location ID.
+    - `metadata`: `null` | `Record<string, any>` — Custom key-value pairs that can be added to the store.
+    - `created_at`: `string` — The date the store was created.
+    - `updated_at`: `string` — The date the store was updated.

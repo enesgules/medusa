@@ -1,0 +1,284 @@
+---
+title: category - JS SDK Store Reference
+sidebarTitle: category
+---
+
+This documentation provides a reference to the `sdk.store.category` set of methods used to send requests to Medusa's Store API routes.
+
+## list
+
+This method retrieves a paginated list of product categories. It sends a request to the
+[List Categories](/api/store/product-categories/list-product-categories) API route.
+
+Related guide: [How to retrieve list of categories in the storefront](/resources/storefront-development/products/categories/list).
+
+### Example
+
+To retrieve the list of categories:
+
+```ts
+sdk.store.category.list()
+.then(({ product_categories, count, offset, limit }) => {
+  console.log(product_categories)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.store.category.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ product_categories, count, offset, limit }) => {
+  console.log(product_categories)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each category:
+
+```ts
+sdk.store.category.list({
+  fields: "id,*parent_category"
+})
+.then(({ product_categories, count, offset, limit }) => {
+  console.log(product_categories)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [FindParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesFindParams) & [StoreProductCategoryListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductCategoryListParams) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `$and`: ([BaseProductCategoryListParams](/resources/references/types/interfaces/typesBaseProductCategoryListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductCategoryListParams](/resources/references/types/interfaces/typesBaseProductCategoryListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([BaseProductCategoryListParams](/resources/references/types/interfaces/typesBaseProductCategoryListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductCategoryListParams](/resources/references/types/interfaces/typesBaseProductCategoryListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseProductCategoryListParams](/resources/references/types/interfaces/typesBaseProductCategoryListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductCategoryListParams](/resources/references/types/interfaces/typesBaseProductCategoryListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — A query or keywords to search the category's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by the category's ID(s).
+    - `name`: `string` | `string`\[] (optional) — Filter by the category's name(s).
+    - `description`: `string` | `string`\[] (optional) — Filter by the category's description(s).
+    - `parent_category_id`: `null` | `string` | `string`\[] (optional) — Retrieve the child categories of the specified parent ID(s).
+    - `handle`: `string` | `string`\[] (optional) — Filter by the category's handle(s).
+    - `external_id`: `null` | `string` | `string`\[] (optional) — Filter by the category's external ID(s).
+    - `is_active`: `boolean` (optional) — Filter by whether the category is active.
+    - `is_internal`: `boolean` (optional) — Filter by whether the category is internal.
+    - `include_descendants_tree`: `boolean` (optional) — Whether to retrieve the child categories. If enabled, the child categories are retrieved in the `category_children` field.
+    - `include_ancestors_tree`: `boolean` (optional) — Whether to retrieve the parent category. If enabled, the parent category is retrieved in the `parent_category` field.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the category's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the category's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the category's deletion date.
+  - `$or`: ([BaseProductCategoryListParams](/resources/references/types/interfaces/typesBaseProductCategoryListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductCategoryListParams](/resources/references/types/interfaces/typesBaseProductCategoryListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([BaseProductCategoryListParams](/resources/references/types/interfaces/typesBaseProductCategoryListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductCategoryListParams](/resources/references/types/interfaces/typesBaseProductCategoryListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseProductCategoryListParams](/resources/references/types/interfaces/typesBaseProductCategoryListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductCategoryListParams](/resources/references/types/interfaces/typesBaseProductCategoryListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — A query or keywords to search the category's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by the category's ID(s).
+    - `name`: `string` | `string`\[] (optional) — Filter by the category's name(s).
+    - `description`: `string` | `string`\[] (optional) — Filter by the category's description(s).
+    - `parent_category_id`: `null` | `string` | `string`\[] (optional) — Retrieve the child categories of the specified parent ID(s).
+    - `handle`: `string` | `string`\[] (optional) — Filter by the category's handle(s).
+    - `external_id`: `null` | `string` | `string`\[] (optional) — Filter by the category's external ID(s).
+    - `is_active`: `boolean` (optional) — Filter by whether the category is active.
+    - `is_internal`: `boolean` (optional) — Filter by whether the category is internal.
+    - `include_descendants_tree`: `boolean` (optional) — Whether to retrieve the child categories. If enabled, the child categories are retrieved in the `category_children` field.
+    - `include_ancestors_tree`: `boolean` (optional) — Whether to retrieve the parent category. If enabled, the parent category is retrieved in the `parent_category` field.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the category's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the category's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the category's deletion date.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — A query or keywords to search the category's searchable fields.
+  - `id`: `string` | `string`\[] (optional) — Filter by the category's ID(s).
+  - `name`: `string` | `string`\[] (optional) — Filter by the category's name(s).
+  - `description`: `string` | `string`\[] (optional) — Filter by the category's description(s).
+  - `parent_category_id`: `null` | `string` | `string`\[] (optional) — Retrieve the child categories of the specified parent ID(s).
+  - `handle`: `string` | `string`\[] (optional) — Filter by the category's handle(s).
+  - `external_id`: `null` | `string` | `string`\[] (optional) — Filter by the category's external ID(s).
+  - `include_descendants_tree`: `boolean` (optional) — Whether to retrieve the child categories. If enabled, the child categories are retrieved in the `category_children` field.
+  - `include_ancestors_tree`: `boolean` (optional) — Whether to retrieve the parent category. If enabled, the parent category is retrieved in the `parent_category` field.
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the category's creation date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the category's update date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[StoreProductCategoryListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductCategoryListResponse)> — The paginated list of categories.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `product_categories`: [StoreProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductCategory)\[] — The paginated list of categories.
+    - `id`: `string` — The category's ID.
+    - `name`: `string` — The category's name.
+    - `description`: `string` — The category's description.
+    - `handle`: `string` — The product category's unique handle. Can be used to create human-readable URLs.
+    - `rank`: `null` | `number` — The category's ranking among sibling categories.
+    - `external_id`: `null` | `string` — An external identifier for the product category.
+    - `parent_category_id`: `null` | `string` — The ID of the category's parent.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` — The date the category was created.
+    - `updated_at`: `string` — The date the category was updated.
+    - `deleted_at`: `null` | `string` — The date the category was deleted.
+    - `products`: [StoreProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProduct)\[] (optional) — The category's products.
+    - `parent_category`: `null` | [StoreProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductCategory) — The parent category.
+    - `category_children`: [StoreProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductCategory)\[] — The category's children.
+
+## retrieve
+
+This method retrieves a category by its ID. It sends a request to the
+[Retrieve Product Category](/api/store/product-categories/get-a-product-category).
+
+Related guide: [How to retrieve a category in the storefront](/resources/storefront-development/products/categories/retrieve).
+
+### Example
+
+To retrieve a category by its ID:
+
+```ts
+sdk.store.category.retrieve("pcat_123")
+.then(({ product_category }) => {
+  console.log(product_category)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.store.category.retrieve("pcat_123", {
+  fields: "id,*parent_category"
+})
+.then(({ product_category }) => {
+  console.log(product_category)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The ID of the category to retrieve.
+- `query`: [StoreProductCategoryParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductCategoryParams) (optional) — Configure the fields to retrieve in the category.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `include_ancestors_tree`: `boolean` (optional) — Whether to retrieve the parent category. If enabled, the parent category is retrieved in the `parent_category` field.
+  - `include_descendants_tree`: `boolean` (optional) — Whether to retrieve the child categories. If enabled, the child categories are retrieved in the `category_children` field.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[StoreProductCategoryResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductCategoryResponse)> — The category.
+  - `product_category`: [StoreProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductCategory) — The category's details.
+    - `id`: `string` — The category's ID.
+    - `name`: `string` — The category's name.
+    - `description`: `string` — The category's description.
+    - `handle`: `string` — The product category's unique handle. Can be used to create human-readable URLs.
+    - `rank`: `null` | `number` — The category's ranking among sibling categories.
+    - `external_id`: `null` | `string` — An external identifier for the product category.
+    - `parent_category_id`: `null` | `string` — The ID of the category's parent.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` — The date the category was created.
+    - `updated_at`: `string` — The date the category was updated.
+    - `deleted_at`: `null` | `string` — The date the category was deleted.
+    - `products`: [StoreProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProduct)\[] (optional) — The category's products.
+    - `parent_category`: `null` | [StoreProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductCategory) — The parent category.
+    - `category_children`: [StoreProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductCategory)\[] — The category's children.

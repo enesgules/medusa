@@ -1,0 +1,98 @@
+---
+title: IAnalyticsProvider
+---
+
+## Methods
+
+### track
+
+This method is used to track an event in the analytics provider
+
+<a id="track-parameters" />
+
+#### Parameters
+
+**track**
+
+- `data`: [TrackAnalyticsEventDTO](/resources/references/types/interfaces/typesTrackAnalyticsEventDTO) — The data for the event.
+  - `event`: `string` — The event name
+  - `actor_id`: `string` (optional) — The actor of the event, if there is any
+  - `group`: `object` (optional) — The group that the event is for, such as an organization or team.
+    - `type`: `string` (optional) — The name of the group.
+
+      Example:
+
+      ```
+      "organization"
+      ```
+    - `id`: `string` (optional) — The group's ID.
+  - `properties`: `Record<string, any>` (optional) — The properties of the event. The format and content is dynamic and depends on the integrated provider.
+
+<a id="track-returns" />
+
+#### Returns
+
+**track**
+
+- `Promise`: Promise\<void> — Resolves when the event is tracked successfully.
+
+### identify
+
+This method is used to identify an actor or group in the analytics provider
+
+<a id="identify-parameters" />
+
+#### Parameters
+
+**identify**
+
+- `data`: [IdentifyAnalyticsEventDTO](/resources/references/types/types/typesIdentifyAnalyticsEventDTO) — The data for the actor or group..
+  - `actor_id`: `string` — The actor of the event, if there is any.
+  - `properties`: `Record<string, any>` (optional) — The properties of the actor. The format and content is dynamic and depends on the integrated provider.
+  - `group`: `object` — The group that the event is for, such as an organization or team.
+    - `type`: `string` — The name of the group.
+
+      Example:
+
+      ```
+      "organization"
+      ```
+    - `id`: `string` — The group's ID.
+
+<a id="identify-returns" />
+
+#### Returns
+
+**identify**
+
+- `Promise`: Promise\<void> — Resolves when the event is tracked successfully.
+
+### shutdown
+
+**Optional.**
+
+This method is used to shutdown the analytics provider, and flush all data before shutting down.
+
+This method is called by the Analytics Module when the Medusa application is shutting down.
+
+#### Example
+
+```ts
+class MyAnalyticsProviderService extends AbstractAnalyticsProviderService {
+  // ...
+  async shutdown(): Promise<void> {
+    // perform any cleanup or shutdown logic
+    // in the analytics provider or using custom logic
+    // for example:
+    await this.client.shutdown()
+  }
+}
+```
+
+<a id="shutdown-returns" />
+
+#### Returns
+
+**shutdown**
+
+- `Promise`: Promise\<void> — Resolves when the provider is shutdown successfully.

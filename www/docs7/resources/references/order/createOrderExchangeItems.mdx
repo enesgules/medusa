@@ -1,0 +1,130 @@
+---
+title: createOrderExchangeItems - Order Module Reference
+sidebarTitle: createOrderExchangeItems
+---
+
+This documentation provides a reference to the `createOrderExchangeItems` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createorderexchangeitems-data-sharedcontext-promiseorderexchangeitemdto" />
+
+## createOrderExchangeItems(data, sharedContext?): Promise\<[OrderExchangeItemDTO](/resources/references/order/interfaces/orderOrderExchangeItemDTO)>
+
+This method creates an order exchange item.
+
+### Example
+
+```ts
+const orderExchangeItem = await orderModuleService.createOrderExchangeItems({
+  exchange_id: "123",
+  item_id: "321",
+  quantity: 1
+})
+```
+
+<a id="createorderexchangeitems-parameters" />
+
+### Parameters
+
+**createOrderExchangeItems**
+
+- `data`: [CreateOrderExchangeItemDTO](/resources/references/order/interfaces/orderCreateOrderExchangeItemDTO) — The order exchange item to be created.
+  - `exchange_id`: `string` — The associated exchange's ID.
+  - `item_id`: `string` — The associated item's ID.
+  - `quantity`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The quantity of the order exchange item
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `note`: `string` (optional) — The note of the order exchange item
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createorderexchangeitems-returns" />
+
+### Returns
+
+**createOrderExchangeItems**
+
+- `Promise`: Promise\<[OrderExchangeItemDTO](/resources/references/order/interfaces/orderOrderExchangeItemDTO)> — The created order exchange item.
+
+<a id="createorderexchangeitems-data-sharedcontext-promiseorderexchangeitemdto-1" />
+
+## createOrderExchangeItems(data, sharedContext?): Promise\<[OrderExchangeItemDTO](/resources/references/order/interfaces/orderOrderExchangeItemDTO)\[]>
+
+This method creates order exchange items.
+
+### Example
+
+```ts
+const orderExchangeItems = await orderModuleService.createOrderExchangeItems([
+  {
+    exchange_id: "123",
+    item_id: "321",
+    quantity: 1
+  },
+  {
+    exchange_id: "321",
+    item_id: "123",
+    quantity: 1
+  }
+])
+```
+
+<a id="createorderexchangeitems-parameters-1" />
+
+### Parameters
+
+**createOrderExchangeItems**
+
+- `data`: [CreateOrderExchangeItemDTO](/resources/references/order/interfaces/orderCreateOrderExchangeItemDTO)\[] — The order exchange items to be created.
+  - `exchange_id`: `string` — The associated exchange's ID.
+  - `item_id`: `string` — The associated item's ID.
+  - `quantity`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The quantity of the order exchange item
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `note`: `string` (optional) — The note of the order exchange item
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createorderexchangeitems-returns-1" />
+
+### Returns
+
+**createOrderExchangeItems**
+
+- `Promise`: Promise\<[OrderExchangeItemDTO](/resources/references/order/interfaces/orderOrderExchangeItemDTO)\[]> — The created order exchange items.
+  - `OrderExchangeItemDTO[]`: [OrderExchangeItemDTO](/resources/references/order/interfaces/orderOrderExchangeItemDTO)\[]

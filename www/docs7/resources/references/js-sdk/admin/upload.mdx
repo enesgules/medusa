@@ -1,0 +1,178 @@
+---
+title: upload - JS SDK Admin Reference
+sidebarTitle: upload
+---
+
+This documentation provides a reference to the `sdk.admin.upload` set of methods used to send requests to Medusa's Admin API routes.
+
+## create
+
+This method creates a new upload. It sends a request to the
+[Upload Files](/api/admin/uploads/upload-files)
+API route.
+
+### Example
+
+```ts
+sdk.admin.upload.create(
+  {
+    files: [
+       // file uploaded as a binary string
+      {
+        name: "test.txt",
+        content: "test", // Should be the binary string of the file
+      },
+      // file uploaded as a File object
+      new File(["test"], "test.txt", { type: "text/plain" })
+    ],
+  }
+)
+.then(({ files }) => {
+  console.log(files)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [BaseUploadFile](/resources/references/types/types/typesBaseUploadFile) — The details of the files to upload.
+  - `files`: (`object` | [File](/resources/references/core_flows/core_flowsFile))\[] — The list of files to upload.
+    - `name`: `string` — The name of the file.
+    - `content`: `string` — The content of the file.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the uploaded files.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminFileListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFileListResponse)> — The upload files' details.
+  - `files`: [AdminFile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFile)\[] — The list of uploaded files.
+    - `id`: `string` — The ID of the file in the configured File Module Provider. For example, when using the Local File Provider Module (default provider), the ID is the file's path relative to the `static` directory.
+    - `url`: `string` — The URL of the file.
+
+## retrieve
+
+This method retrieves a file's details by its ID. It sends a request to the
+[Get File](/api/admin/uploads/get-a-file)
+API route.
+
+### Example
+
+```ts
+sdk.admin.upload.retrieve("test.txt")
+.then(({ file }) => {
+  console.log(file)
+})
+```
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The ID of the file to retrieve.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Query parameters to pass in the request.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminFileResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFileResponse)> — The file's details.
+  - `file`: [AdminFile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFile) — The file's details.
+    - `id`: `string` — The ID of the file in the configured File Module Provider. For example, when using the Local File Provider Module (default provider), the ID is the file's path relative to the `static` directory.
+    - `url`: `string` — The URL of the file.
+
+## delete
+
+This method deletes a file by its ID from the configured File Module Provider. It sends a request to the
+[Delete File](/api/admin/uploads/delete-a-file)
+API route.
+
+### Example
+
+```ts
+sdk.admin.upload.delete("test.txt")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The ID of the file to delete.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminFileDeleteResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminFileDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: TObject — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## presignedUrl
+
+This method creates a presigned URL for a file upload. It sends a request to the
+`/admin/uploads/presigned-urls` API route.
+
+### Example
+
+```ts
+sdk.admin.upload.presignedUrl({
+  name: "test.txt",
+  size: 1000,
+  type: "text/plain",
+}))
+```
+
+<a id="presignedurl-parameters" />
+
+### Parameters
+
+**presignedUrl**
+
+- `body`: [AdminUploadPreSignedUrlRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUploadPreSignedUrlRequest) — The details of the file to upload.
+  - `originalname`: `string` — The original name of the file on the user's computer (aka clientName)
+  - `mime_type`: `string` — The mime type of the file.
+  - `size`: `number` — The size of the file in bytes.
+  - `access`: `"public"` | `"private"` (optional) — The access level of the file.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Query parameters to pass in the request.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="presignedurl-returns" />
+
+### Returns
+
+**presignedUrl**
+
+- `Promise`: Promise\<[AdminUploadPreSignedUrlResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUploadPreSignedUrlResponse)> — The presigned URL for the file upload.
+  - `url`: `string` — The URL to be used for uploading the file
+  - `filename`: `string` — The unique filename that can be used with the file provider to fetch the file
+  - `originalname`: `string` — The original name of the file on the user's computer (aka clientName)
+  - `mime_type`: `string` — The mime type of the file.
+  - `extension`: `string` — Extension of the file to be uploaded
+  - `size`: `number` — Size of the file to be uploaded (in bytes)

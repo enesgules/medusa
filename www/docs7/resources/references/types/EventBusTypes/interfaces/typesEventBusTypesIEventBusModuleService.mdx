@@ -1,0 +1,237 @@
+---
+title: IEventBusModuleService
+---
+
+## Methods
+
+### emit
+
+This method emits one or more events. Subscribers listening to the event(s) are executed asynchronously.
+
+#### Example
+
+```ts
+await eventModuleService.emit({
+  name: "user.created",
+  data: {
+    user_id: "user_123"
+  }
+})
+```
+
+<a id="emit-type-parameters" />
+
+#### Type Parameters
+
+**emit**
+
+- `T`: `object` (optional)
+
+<a id="emit-parameters" />
+
+#### Parameters
+
+**emit**
+
+- `data`: [Message](/resources/references/types/EventBusTypes/types/typesEventBusTypesMessage)\<T> | [Message](/resources/references/types/EventBusTypes/types/typesEventBusTypesMessage)\<T>\[] — The details of the events to emit.
+  - `name`: `string` — The event's name.
+
+    Example:
+
+    ```
+    user.created
+    ```
+  - `metadata`: [EventMetadata](/resources/references/types/EventBusTypes/types/typesEventBusTypesEventMetadata) (optional) — Additional meadata to pass with the event.
+    - `eventGroupId`: `string` (optional) — The ID of the event's group. Grouped events are useful when you have distributed transactions where you need to explicitly group, release and clear events upon lifecycle events of a transaction. When set, you must release the grouped events using the Event Module's `releaseGroupedEvents` method to emit the events.
+    - `created_at`: `Date` (optional) — The date the event was emitted.
+    - `published_at`: `Date` (optional) — The date the event was published to the event bus. If it's a grouped event, this will be the date the group was released.
+  - `data`: TData — The data payload that subscribers receive. For example, the ID or IDs of the created user. (e.g. \{ id: "123" } or \{ ids: \["123", "456"] })
+  - `options`: `Record<string, unknown>` (optional)
+- `options`: `Record<string, unknown>` (optional) — Additional options for the event.
+
+<a id="emit-returns" />
+
+#### Returns
+
+**emit**
+
+- `Promise`: Promise\<void> — This method emits one or more events. Subscribers listening to the event(s) are executed asynchronously.
+
+### subscribe
+
+This method adds a subscriber to an event. It's mainly used internally to register subscribers.
+
+#### Example
+
+```ts
+eventModuleService.subscribe("user.created", async (data) => {
+  console.log("User created", data)
+})
+```
+
+<a id="subscribe-parameters" />
+
+#### Parameters
+
+**subscribe**
+
+- `eventName`: `string` | `symbol` — The name of the event to subscribe to.
+- `subscriber`: [Subscriber](/resources/references/types/EventBusTypes/types/typesEventBusTypesSubscriber) — The subscriber function to execute when the event is emitted.
+- `context`: [SubscriberContext](/resources/references/types/EventBusTypes/types/typesEventBusTypesSubscriberContext) (optional) — The context of the subscriber.
+  - `subscriberId`: `string` — The ID of the subscriber. Useful when retrying failed subscribers.
+
+<a id="subscribe-returns" />
+
+#### Returns
+
+**subscribe**
+
+- `this`: `this` — The instance of the Event Module
+
+### unsubscribe
+
+This method removes a subscriber from an event. It's mainly used internally to unregister subscribers.
+
+#### Example
+
+```ts
+eventModuleService.unsubscribe("user.created", async (data) => {
+  console.log("User created", data)
+})
+```
+
+<a id="unsubscribe-parameters" />
+
+#### Parameters
+
+**unsubscribe**
+
+- `eventName`: `string` | `symbol` — The name of the event to unsubscribe from.
+- `subscriber`: [Subscriber](/resources/references/types/EventBusTypes/types/typesEventBusTypesSubscriber) — The subscriber function to remove.
+- `context`: [SubscriberContext](/resources/references/types/EventBusTypes/types/typesEventBusTypesSubscriberContext) (optional) — The context of the subscriber.
+  - `subscriberId`: `string` — The ID of the subscriber. Useful when retrying failed subscribers.
+
+<a id="unsubscribe-returns" />
+
+#### Returns
+
+**unsubscribe**
+
+- `this`: `this` — The instance of the Event Module
+
+### releaseGroupedEvents
+
+This method emits all events in the specified group. Grouped events are useful when you have distributed transactions
+where you need to explicitly group, release and clear events upon lifecycle events of a transaction.
+
+#### Example
+
+```ts
+await eventModuleService.releaseGroupedEvents("group_123")
+```
+
+<a id="releasegroupedevents-parameters" />
+
+#### Parameters
+
+**releaseGroupedEvents**
+
+- `eventGroupId`: `string` — The ID of the event group.
+
+<a id="releasegroupedevents-returns" />
+
+#### Returns
+
+**releaseGroupedEvents**
+
+- `Promise`: Promise\<void> — This method emits all events in the specified group. Grouped events are useful when you have distributed transactions where you need to explicitly group, release and clear events upon lifecycle events of a transaction.
+
+### clearGroupedEvents
+
+This method removes all events in the specified group. Grouped events are useful when you have distributed transactions
+where you need to explicitly group, release and clear events upon lifecycle events of a transaction.
+
+#### Example
+
+```ts
+await eventModuleService.clearGroupedEvents("group_123")
+```
+
+<a id="cleargroupedevents-parameters" />
+
+#### Parameters
+
+**clearGroupedEvents**
+
+- `eventGroupId`: `string` — The ID of the event group.
+- `options`: `object` (optional) — Additional options for the event.
+  - `eventNames`: `string`\[] (optional) — The names of the events to clear. If not provided, The group will be entirely cleared.
+
+<a id="cleargroupedevents-returns" />
+
+#### Returns
+
+**clearGroupedEvents**
+
+- `Promise`: Promise\<void> — This method removes all events in the specified group. Grouped events are useful when you have distributed transactions where you need to explicitly group, release and clear events upon lifecycle events of a transaction.
+
+### addInterceptor
+
+**Optional.**
+
+This method adds an interceptor to the event bus. This means that the interceptor will be
+called before the event is emitted.
+
+#### Example
+
+```ts
+eventModuleService.addInterceptor((message, context) => {
+  console.log("Interceptor", message, context)
+})
+```
+
+<a id="addinterceptor-parameters" />
+
+#### Parameters
+
+**addInterceptor**
+
+- `interceptor`: [InterceptorSubscriber](/resources/references/types/EventBusTypes/types/typesEventBusTypesInterceptorSubscriber) — The interceptor to add.
+
+<a id="addinterceptor-returns" />
+
+#### Returns
+
+**addInterceptor**
+
+- `this`: `this` — The instance of the Event Module
+
+### removeInterceptor
+
+**Optional.**
+
+This method removes an interceptor from the event bus.
+
+#### Example
+
+```ts
+eventModuleService.removeInterceptor((message, context) => {
+  console.log("Interceptor", message, context)
+})
+```
+
+<a id="removeinterceptor-parameters" />
+
+#### Parameters
+
+**removeInterceptor**
+
+- `interceptor`: [InterceptorSubscriber](/resources/references/types/EventBusTypes/types/typesEventBusTypesInterceptorSubscriber) — The interceptor to remove.
+
+<a id="removeinterceptor-returns" />
+
+#### Returns
+
+**removeInterceptor**
+
+- `this`: `this` — The instance of the Event Module

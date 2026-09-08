@@ -1,0 +1,37 @@
+---
+title: CreatePaymentSessionStepInput
+---
+
+The data to create a payment session.
+
+**CreatePaymentSessionStepInput**
+
+- `payment_collection_id`: `string` — The ID of the payment collection that the session belongs to.
+- `provider_id`: `string` — The ID of the payment provider that the payment session is associated with.
+- `amount`: [BigNumberInput](/resources/references/types/types/typesBigNumberInput) — The payment session's amount.
+  - `value`: `string` | `number`
+  - `numeric`: `number`
+  - `raw`: [BigNumberRawValue](/resources/references/types/types/typesBigNumberRawValue) (optional)
+    - `value`: `string` | `number`
+  - `bigNumber`: `BigNumber` (optional)
+- `currency_code`: `string` — The currency code of the payment session.
+
+  Example:
+
+  ```
+  usd
+  ```
+- `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — Additional context that's useful for the payment provider to process the payment session.
+  - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `data`: `Record<string, unknown>` — Account holder's details as stored in the third-party payment provider.
+  - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `id`: `string` — The ID of the customer in Medusa.
+    - `email`: `string` — The email of the customer.
+    - `company_name`: `string` | `null` (optional) — The customer's company name.
+    - `first_name`: `string` | `null` (optional) — The customer's first name.
+    - `last_name`: `string` | `null` (optional) — The customer's last name.
+    - `phone`: `string` | `null` (optional) — The customer's phone number.
+    - `billing_address`: [PaymentAddressDTO](/resources/references/types/types/typesPaymentAddressDTO) | `null` (optional) — The customer's billing address.
+  - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+- `data`: `Record<string, unknown>` (optional) — Custom data relevant for the payment provider to process the payment session. Learn more in [this documentation](/resources/commerce-modules/payment/payment-session#data-property).
+- `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.

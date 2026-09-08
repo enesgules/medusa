@@ -1,0 +1,384 @@
+---
+title: Query
+---
+
+Public query API for Medusa's cross-module graph query system.
+
+Accepts several input shapes (graph config, legacy string config, GraphQL,
+or a pre-built [RemoteJoinerQuery](/resources/references/types/interfaces/typesRemoteJoinerQuery)), normalizes them via
+normalizeQuery, and delegates execution to [RemoteJoiner](/resources/references/modules_sdk/classes/modules_sdkRemoteJoiner).
+
+[RemoteJoiner](/resources/references/modules_sdk/classes/modules_sdkRemoteJoiner) resolves relationships from module joiner configs,
+plans nested expands, and loads data through ModuleDataFetcher
+(IRemoteDataFetcher). This class adds response shaping, caching,
+locale translation, and index-assisted querying on top of that pipeline.
+
+```
+user input → normalizeQuery() → RemoteJoiner.query() → ModuleDataFetcher.fetch()
+```
+
+## constructor
+
+<a id="constructor-parameters" />
+
+### Parameters
+
+**constructor**
+
+- `__namedParameters`: `object`
+  - `remoteJoiner`: [RemoteJoiner](/resources/references/modules_sdk/classes/modules_sdkRemoteJoiner) — Executes cross-module graph queries by resolving relationships from module joiner configs. Pipeline: GraphCatalog (index configs) → compileQuery (query → plan) → executePlan (fetch + join + shortcuts). Data loading is delegated to IRemoteDataFetcher (typically ModuleDataFetcher). Query is the public entry point that normalizes user input and invokes RemoteJoiner.query .
+  - `joinerConfigs`: [ModuleJoinerConfig](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesModuleJoinerConfig)\[]
+    - `schema`: `string` (optional) — GraphQL schema for the all module's available entities and fields
+    - `idPrefixToEntityName`: `Record<string, string>` (optional)
+    - `relationships`: [ModuleJoinerRelationship](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesModuleJoinerRelationship)\[] (optional)
+    - `extends`: `object`\[] (optional)
+    - `serviceName`: `string` (optional)
+    - `primaryKeys`: `string`\[] (optional)
+    - `isLink`: `boolean` (optional) — If the module is a link module
+    - `linkableKeys`: `Record<string, string>` (optional) — Keys that can be used to link to other modules. e.g \{ product\_id: "Product" } "Product" being the entity it refers to
+    - `isReadOnlyLink`: `boolean` (optional) — If true it expands a RemoteQuery property but doesn't create a pivot table
+    - `extraDataFields`: `string`\[] (optional) — Fields that will be part of the link record aside from the primary keys that can be updated If not explicitly defined, this array will be populated by databaseConfig.extraFields
+    - `databaseConfig`: `object` (optional)
+  - `indexModule`: [IIndexService](/resources/references/types/IndexTypes/interfaces/typesIndexTypesIIndexService)
+  - `searchModule`: [ISearchModuleService](/resources/references/types/SearchTypes/interfaces/typesSearchTypesISearchModuleService) (optional)
+  - `container`: [MedusaContainer](/resources/references/medusa/types/medusaMedusaContainer)
+
+## Properties
+
+**Query**
+
+- `container`: [MedusaContainer](/resources/references/medusa/types/medusaMedusaContainer)
+- `traceGraphQuery`: (`queryFn`: () => Promise\<any>, `queryOptions`: `{ entity: never ; fields: string[] ; pagination?: { skip?: number ; take?: number ; order?: undefined  } ; filters?: undefined ; context?: [QueryContextType](/references/types/CommonTypes/types/types.CommonTypes.QueryContextType) ; withDeleted?: boolean ; strategy?: "joined" \| "select-in" \| "balanced"  }` | `{ entity: any ; fields: string[] ; pagination?: { skip?: number ; take?: number ; order?: Record<string, any> \| {}  } ; filters?: [RemoteQueryFilters](/references/types/ModulesSdkTypes/types/types.ModulesSdkTypes.RemoteQueryFilters)<any> ; context?: [QueryContextType](/references/types/CommonTypes/types/types.CommonTypes.QueryContextType) ; withDeleted?: boolean ; strategy?: "joined" \| "select-in" \| "balanced"  }`) => Promise\<any> (optional)
+- `traceRemoteQuery`: (`queryFn`: () => Promise\<any>, `queryOptions`: [RemoteJoinerQuery](/resources/references/types/interfaces/typesRemoteJoinerQuery) | [RemoteQueryObjectConfig](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesRemoteQueryObjectConfig)\<any> | [RemoteQueryObjectFromStringResult](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesRemoteQueryObjectFromStringResult)\<any>) => Promise\<any> (optional)
+- `instrument`: `object`
+
+## Methods
+
+### query
+
+<a id="query-parameters" />
+
+#### Parameters
+
+**query**
+
+- `queryOptions`: [RemoteJoinerQuery](/resources/references/types/interfaces/typesRemoteJoinerQuery) | `object` | `object` | [RemoteQueryObjectConfig](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesRemoteQueryObjectConfig)\<any> | [RemoteQueryObjectFromStringResult](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesRemoteQueryObjectFromStringResult)\<any>
+  - `service`: `string` (optional) — The name of the service to query.
+  - `alias`: `string` (optional) — The alias of the service entry point to query.
+  - `expands`: `object`\[] (optional) — Nested relationships to expand in the query result.
+    - `property`: `string` — The property path to the relationship to expand.
+    - `fields`: `string`\[] — The fields to retrieve for the expanded relationship.
+    - `args`: [JoinerArgument](/resources/references/types/interfaces/typesJoinerArgument)\[] (optional) — Arguments to pass to the expanded relationship query.
+    - `directives`: `object` (optional) — Directives to apply to fields in the expanded relationship.
+  - `fields`: `string`\[] — The fields to retrieve from the queried service.
+  - `args`: [JoinerArgument](/resources/references/types/interfaces/typesJoinerArgument)\[] (optional) — Arguments to pass to the service query.
+    - `name`: `string` — The name of the argument.
+    - `value`: `any` (optional) — The value of the argument.
+  - `directives`: `object` (optional) — Directives to apply to fields in the query.
+  - `entity`: `never` — The name of the entity to retrieve. For example, `product`.
+  - `pagination`: `object` (optional) — Pagination configurations for the returned list of items.
+    - `skip`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `take`: `number` (optional) — The maximum number of items to return.
+    - `order`: `undefined` (optional) — Sort by field names in ascending or descending order.
+  - `filters`: `undefined` (optional) — Filters to apply on the retrieved items.
+  - `context`: [QueryContextType](/resources/references/types/CommonTypes/types/typesCommonTypesQueryContextType) (optional) — Apply a query context on the retrieved data. For example, to retrieve product prices for a certain context.
+  - `withDeleted`: `boolean` (optional) — Apply a `withDeleted` flag on the retrieved data to retrieve soft deleted items.
+  - `strategy`: `"joined"` | `"select-in"` | `"balanced"` (optional) — Strategy will be send to the entry module called method
+  - `entryPoint`: TEntry | keyof [RemoteQueryEntryPoints](/resources/references/types/ModulesSdkTypes/interfaces/typesModulesSdkTypesRemoteQueryEntryPoints)
+  - `variables`: `any` (optional)
+  - `__TConfig`: TConfig
+  - `__value`: `object`
+- `options`: [RemoteJoinerOptions](/resources/references/types/interfaces/typesRemoteJoinerOptions) (optional) — Options controlling the behavior of a remote joiner query execution.
+  - `throwIfKeyNotFound`: `boolean` (optional) — Whether to throw an error if a requested key is not found in the result.
+  - `throwIfRelationNotFound`: `boolean` | `string`\[] (optional) — Whether to throw an error if a requested relation is not found, or a list of relation names to check.
+  - `initialData`: `object` | `object`\[] (optional) — Initial data to use as the starting dataset for the query instead of fetching from a service.
+  - `initialDataOnly`: `boolean` (optional) — Whether to use only the initial data without fetching additional data from services.
+  - `locale`: `string` (optional) — The locale to use for the query. Translation will be applied to the query result based on the locale.
+  - `cache`: `object` (optional)
+    - `enable`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to enable the cache. This is only useful if you want to enable without providing any other options or if you want to enable/disable the cache based on the arguments.
+    - `key`: `string` | (`args`: `any`\[], `cachingModule`: [ICachingModuleService](/resources/references/types/CachingTypes/interfaces/typesCachingTypesICachingModuleService)) => `string` | Promise\<string> (optional) — The key to use for the cache. If a function is provided, it will be called with the arguments as the first argument and the container as the second argument.
+    - `tags`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The tags to use for the cache. Used on their own unless `computeAutomaticTags` is set, in which case the automatically computed tags are stored alongside them.
+    - `computeAutomaticTags`: `boolean` (optional, default: false) — Whether the automatically computed tags should be applied along with the ones given in `tags`, rather than `tags` being used on its own. Automatic tags are computed from the result, which only exposes entities that carry an `id`. They therefore never cover link tables (whose rows are usually not selected), relations queried without their `id`, or entities that affect the result without appearing in it - pass only those in `tags` and enable this, instead of restating every entity the result already exposes. Has no effect when `tags` is omitted, since tags are computed either way.
+    - `ttl`: `number` | (`args`: `any`\[]) => `undefined` | `number` (optional) — The time-to-live (TTL) value in seconds.
+    - `autoInvalidate`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to auto invalidate the cache whenever it is possible.
+    - `providers`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The providers to use for the cache.
+
+<a id="query-returns" />
+
+#### Returns
+
+**query**
+
+- `Promise`: Promise\<any>
+  - `any`: `any`
+
+### gql
+
+<a id="gql-parameters" />
+
+#### Parameters
+
+**gql**
+
+- `query`: `string`
+- `variables`: `Record<string, unknown>` (optional)
+- `options`: [RemoteJoinerOptions](/resources/references/types/interfaces/typesRemoteJoinerOptions) (optional) — Options controlling the behavior of a remote joiner query execution.
+  - `throwIfKeyNotFound`: `boolean` (optional) — Whether to throw an error if a requested key is not found in the result.
+  - `throwIfRelationNotFound`: `boolean` | `string`\[] (optional) — Whether to throw an error if a requested relation is not found, or a list of relation names to check.
+  - `initialData`: `object` | `object`\[] (optional) — Initial data to use as the starting dataset for the query instead of fetching from a service.
+  - `initialDataOnly`: `boolean` (optional) — Whether to use only the initial data without fetching additional data from services.
+  - `locale`: `string` (optional) — The locale to use for the query. Translation will be applied to the query result based on the locale.
+  - `cache`: `object` (optional)
+    - `enable`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to enable the cache. This is only useful if you want to enable without providing any other options or if you want to enable/disable the cache based on the arguments.
+    - `key`: `string` | (`args`: `any`\[], `cachingModule`: [ICachingModuleService](/resources/references/types/CachingTypes/interfaces/typesCachingTypesICachingModuleService)) => `string` | Promise\<string> (optional) — The key to use for the cache. If a function is provided, it will be called with the arguments as the first argument and the container as the second argument.
+    - `tags`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The tags to use for the cache. Used on their own unless `computeAutomaticTags` is set, in which case the automatically computed tags are stored alongside them.
+    - `computeAutomaticTags`: `boolean` (optional, default: false) — Whether the automatically computed tags should be applied along with the ones given in `tags`, rather than `tags` being used on its own. Automatic tags are computed from the result, which only exposes entities that carry an `id`. They therefore never cover link tables (whose rows are usually not selected), relations queried without their `id`, or entities that affect the result without appearing in it - pass only those in `tags` and enable this, instead of restating every entity the result already exposes. Has no effect when `tags` is omitted, since tags are computed either way.
+    - `ttl`: `number` | (`args`: `any`\[]) => `undefined` | `number` (optional) — The time-to-live (TTL) value in seconds.
+    - `autoInvalidate`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to auto invalidate the cache whenever it is possible.
+    - `providers`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The providers to use for the cache.
+
+<a id="gql-returns" />
+
+#### Returns
+
+**gql**
+
+- `Promise`: Promise\<any>
+  - `any`: `any`
+
+### graph
+
+<a id="graph-type-parameters" />
+
+#### Type Parameters
+
+**graph**
+
+- `TEntry`: `string` (optional)
+
+<a id="graph-parameters" />
+
+#### Parameters
+
+**graph**
+
+- `queryOptions`: [RemoteQueryInput](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesRemoteQueryInput)\<TEntry>
+- `options`: [RemoteJoinerOptions](/resources/references/types/interfaces/typesRemoteJoinerOptions) (optional) — Options controlling the behavior of a remote joiner query execution.
+  - `throwIfKeyNotFound`: `boolean` (optional) — Whether to throw an error if a requested key is not found in the result.
+  - `throwIfRelationNotFound`: `boolean` | `string`\[] (optional) — Whether to throw an error if a requested relation is not found, or a list of relation names to check.
+  - `initialData`: `object` | `object`\[] (optional) — Initial data to use as the starting dataset for the query instead of fetching from a service.
+  - `initialDataOnly`: `boolean` (optional) — Whether to use only the initial data without fetching additional data from services.
+  - `locale`: `string` (optional) — The locale to use for the query. Translation will be applied to the query result based on the locale.
+  - `cache`: `object` (optional)
+    - `enable`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to enable the cache. This is only useful if you want to enable without providing any other options or if you want to enable/disable the cache based on the arguments.
+    - `key`: `string` | (`args`: `any`\[], `cachingModule`: [ICachingModuleService](/resources/references/types/CachingTypes/interfaces/typesCachingTypesICachingModuleService)) => `string` | Promise\<string> (optional) — The key to use for the cache. If a function is provided, it will be called with the arguments as the first argument and the container as the second argument.
+    - `tags`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The tags to use for the cache. Used on their own unless `computeAutomaticTags` is set, in which case the automatically computed tags are stored alongside them.
+    - `computeAutomaticTags`: `boolean` (optional, default: false) — Whether the automatically computed tags should be applied along with the ones given in `tags`, rather than `tags` being used on its own. Automatic tags are computed from the result, which only exposes entities that carry an `id`. They therefore never cover link tables (whose rows are usually not selected), relations queried without their `id`, or entities that affect the result without appearing in it - pass only those in `tags` and enable this, instead of restating every entity the result already exposes. Has no effect when `tags` is omitted, since tags are computed either way.
+    - `ttl`: `number` | (`args`: `any`\[]) => `undefined` | `number` (optional) — The time-to-live (TTL) value in seconds.
+    - `autoInvalidate`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to auto invalidate the cache whenever it is possible.
+    - `providers`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The providers to use for the cache.
+
+<a id="graph-returns" />
+
+#### Returns
+
+**graph**
+
+- `Promise`: Promise\<[GraphResultSet](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesGraphResultSet)\<TEntry>>
+
+### search
+
+`**search**<TypeParameter TEntry>(queryOptions, options?): Promise<[SearchResultSet](/references/types/ModulesSdkTypes/types/types.ModulesSdkTypes.SearchResultSet)<TEntry>[]>`
+
+Runs a search and expands the hits with `query.graph`.
+
+The engine only holds what its index was defined with, so the requested
+fields are split: what the index can return comes back from the search, and
+the rest is fetched by id. Search order is preserved through the expand.
+
+Pass an array to run several queries in one provider round-trip — InstantSearch
+extra facet requests, or `disjunctive_facets` expansion, go through this path.
+
+<a id="search-type-parameters" />
+
+#### Type Parameters
+
+**search**
+
+- `TEntry`: `string` (optional)
+
+<a id="search-parameters" />
+
+#### Parameters
+
+**search**
+
+- `queryOptions`: [SearchQuery](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchQuery)\<TEntry>\[]
+  - `entity`: TEntry — The name of the index to query, which defaults to the index whose name equals the entity.
+  - `fields`: `string`\[] (optional) — The dotted paths of the fields the search engine should return. Only fields available in the search engine can be passed here.
+  - `filters`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — The filters to apply, including the free-text query as `q`.
+    - `$and`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters that must all match.
+    - `$or`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters of which at least one must match.
+    - `$not`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — Filters that must not match.
+    - `q`: `string` (optional) — The free-text query. Sits among the filters so a `query.graph` call converts to `query.search` unchanged; the module lifts it out before compiling the rest, so a provider never sees `q` as a field.
+  - `pagination`: [SearchPagination](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchPagination) (optional) — How the results are paginated and sorted.
+    - `skip`: `number` (optional) — The number of documents to skip before the returned hits. Mutually exclusive with `cursor`.
+    - `take`: `number` (optional) — The maximum number of hits to return.
+    - `order`: `Record<string, [SearchOrderBy](/references/types/SearchTypes/types/types.SearchTypes.SearchOrderBy)>` (optional) — The fields to sort the hits by, keyed by the field's dotted path. The reserved `_score` key sorts by relevance.
+    - `cursor`: `string` (optional) — An opaque provider cursor, as returned in a previous result's `metadata.next_cursor`. Mutually exclusive with `skip`.
+  - `search_options`: [SearchOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchOptions) (optional) — The options changing how the query is matched, scored, and aggregated.
+    - `attributes_to_search_on`: `string`\[] (optional) — The dotted paths of the fields to match the free-text query against. Defaults to every field marked `searchable` on the index.
+    - `match_strategy`: [SearchMatchStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMatchStrategy) (optional) — How query terms combine. - `"all"` (default): every term must appear as a complete token. - `"any"`: at least one term must match. - `"last"`: typeahead. Completed terms must match in full; the last term is a prefix, so `"my sear"` matches `"My search results"`.
+    - `typo_tolerance`: `boolean` (optional) — Whether to match terms that are misspelled by a character or two.
+    - `facets`: (`string` | [SearchFacetRequest](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetRequest))\[] (optional) — The facets to compute alongside the hits. A string is shorthand for a `value` facet on that field.
+    - `disjunctive_facets`: `boolean` (optional) — Compute each facet ignoring the filter on that same field, so a storefront keeps showing sibling values of an active filter. Needs one query per facet on every engine reviewed, so the module expands them and hands the set to `provider.searchMany`.
+    - `highlight`: [SearchHighlightOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchHighlightOptions) (optional) — How the matched terms are highlighted in the returned hits.
+    - `distinct`: `string` (optional) — Return at most one hit per distinct value of this field.
+    - `min_score`: `number` (optional) — Discard hits scoring below this threshold.
+    - `include_score`: `boolean` (optional) — Whether to return each hit's relevance score.
+    - `locales`: `string`\[] (optional) — Query-time language hint, e.g. `["en"]`. Engines that analyze per language (Meilisearch, Algolia) use it to pick the analyzer; a provider that cannot honour it rejects it rather than silently matching differently. Defaults to the index' `settings.locales`.
+    - `vector`: [SearchVectorOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchVectorOptions) (optional) — The options of a vector, or semantic, search to run instead of, or alongside, the free-text query.
+    - `count`: [SearchCountStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchCountStrategy) (optional) — How the total number of matching documents is computed. `"exact"` may be rejected or slow depending on the provider.
+    - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Escape hatch for engine features the interface does not model, keyed by provider identifier, e.g. `{ typesense: { drop_tokens_threshold: 0 } }`.
+- `options`: [RemoteJoinerOptions](/resources/references/types/interfaces/typesRemoteJoinerOptions) (optional) — Options controlling the behavior of a remote joiner query execution.
+  - `throwIfKeyNotFound`: `boolean` (optional) — Whether to throw an error if a requested key is not found in the result.
+  - `throwIfRelationNotFound`: `boolean` | `string`\[] (optional) — Whether to throw an error if a requested relation is not found, or a list of relation names to check.
+  - `initialData`: `object` | `object`\[] (optional) — Initial data to use as the starting dataset for the query instead of fetching from a service.
+  - `initialDataOnly`: `boolean` (optional) — Whether to use only the initial data without fetching additional data from services.
+  - `locale`: `string` (optional) — The locale to use for the query. Translation will be applied to the query result based on the locale.
+  - `cache`: `object` (optional)
+    - `enable`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to enable the cache. This is only useful if you want to enable without providing any other options or if you want to enable/disable the cache based on the arguments.
+    - `key`: `string` | (`args`: `any`\[], `cachingModule`: [ICachingModuleService](/resources/references/types/CachingTypes/interfaces/typesCachingTypesICachingModuleService)) => `string` | Promise\<string> (optional) — The key to use for the cache. If a function is provided, it will be called with the arguments as the first argument and the container as the second argument.
+    - `tags`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The tags to use for the cache. Used on their own unless `computeAutomaticTags` is set, in which case the automatically computed tags are stored alongside them.
+    - `computeAutomaticTags`: `boolean` (optional, default: false) — Whether the automatically computed tags should be applied along with the ones given in `tags`, rather than `tags` being used on its own. Automatic tags are computed from the result, which only exposes entities that carry an `id`. They therefore never cover link tables (whose rows are usually not selected), relations queried without their `id`, or entities that affect the result without appearing in it - pass only those in `tags` and enable this, instead of restating every entity the result already exposes. Has no effect when `tags` is omitted, since tags are computed either way.
+    - `ttl`: `number` | (`args`: `any`\[]) => `undefined` | `number` (optional) — The time-to-live (TTL) value in seconds.
+    - `autoInvalidate`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to auto invalidate the cache whenever it is possible.
+    - `providers`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The providers to use for the cache.
+
+<a id="search-returns" />
+
+#### Returns
+
+**search**
+
+- `Promise`: Promise\<[SearchResultSet](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesSearchResultSet)\<TEntry>\[]> — Runs a search and expands the hits with `query.graph`. The engine only holds what its index was defined with, so the requested fields are split: what the index can return comes back from the search, and the rest is fetched by id. Search order is preserved through the expand. Pass an array to run several queries in one provider round-trip — InstantSearch extra facet requests, or `disjunctive_facets` expansion, go through this path.
+  - `SearchResultSet<TEntry>[]`: [SearchResultSet](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesSearchResultSet)\<TEntry>\[]
+
+`**search**<TypeParameter TEntry>(queryOptions, options?): Promise<[SearchResultSet](/references/types/ModulesSdkTypes/types/types.ModulesSdkTypes.SearchResultSet)<TEntry>>`
+
+Runs a search and expands the hits with `query.graph`.
+
+The engine only holds what its index was defined with, so the requested
+fields are split: what the index can return comes back from the search, and
+the rest is fetched by id. Search order is preserved through the expand.
+
+Pass an array to run several queries in one provider round-trip — InstantSearch
+extra facet requests, or `disjunctive_facets` expansion, go through this path.
+
+<a id="search-type-parameters-1" />
+
+#### Type Parameters
+
+**search**
+
+- `TEntry`: `string` (optional)
+
+<a id="search-parameters-1" />
+
+#### Parameters
+
+**search**
+
+- `queryOptions`: [SearchQuery](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchQuery)\<TEntry>
+  - `entity`: TEntry — The name of the index to query, which defaults to the index whose name equals the entity.
+  - `fields`: `string`\[] (optional) — The dotted paths of the fields the search engine should return. Only fields available in the search engine can be passed here.
+  - `filters`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — The filters to apply, including the free-text query as `q`.
+    - `$and`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters that must all match.
+    - `$or`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters of which at least one must match.
+    - `$not`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — Filters that must not match.
+    - `q`: `string` (optional) — The free-text query. Sits among the filters so a `query.graph` call converts to `query.search` unchanged; the module lifts it out before compiling the rest, so a provider never sees `q` as a field.
+  - `pagination`: [SearchPagination](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchPagination) (optional) — How the results are paginated and sorted.
+    - `skip`: `number` (optional) — The number of documents to skip before the returned hits. Mutually exclusive with `cursor`.
+    - `take`: `number` (optional) — The maximum number of hits to return.
+    - `order`: `Record<string, [SearchOrderBy](/references/types/SearchTypes/types/types.SearchTypes.SearchOrderBy)>` (optional) — The fields to sort the hits by, keyed by the field's dotted path. The reserved `_score` key sorts by relevance.
+    - `cursor`: `string` (optional) — An opaque provider cursor, as returned in a previous result's `metadata.next_cursor`. Mutually exclusive with `skip`.
+  - `search_options`: [SearchOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchOptions) (optional) — The options changing how the query is matched, scored, and aggregated.
+    - `attributes_to_search_on`: `string`\[] (optional) — The dotted paths of the fields to match the free-text query against. Defaults to every field marked `searchable` on the index.
+    - `match_strategy`: [SearchMatchStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMatchStrategy) (optional) — How query terms combine. - `"all"` (default): every term must appear as a complete token. - `"any"`: at least one term must match. - `"last"`: typeahead. Completed terms must match in full; the last term is a prefix, so `"my sear"` matches `"My search results"`.
+    - `typo_tolerance`: `boolean` (optional) — Whether to match terms that are misspelled by a character or two.
+    - `facets`: (`string` | [SearchFacetRequest](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetRequest))\[] (optional) — The facets to compute alongside the hits. A string is shorthand for a `value` facet on that field.
+    - `disjunctive_facets`: `boolean` (optional) — Compute each facet ignoring the filter on that same field, so a storefront keeps showing sibling values of an active filter. Needs one query per facet on every engine reviewed, so the module expands them and hands the set to `provider.searchMany`.
+    - `highlight`: [SearchHighlightOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchHighlightOptions) (optional) — How the matched terms are highlighted in the returned hits.
+    - `distinct`: `string` (optional) — Return at most one hit per distinct value of this field.
+    - `min_score`: `number` (optional) — Discard hits scoring below this threshold.
+    - `include_score`: `boolean` (optional) — Whether to return each hit's relevance score.
+    - `locales`: `string`\[] (optional) — Query-time language hint, e.g. `["en"]`. Engines that analyze per language (Meilisearch, Algolia) use it to pick the analyzer; a provider that cannot honour it rejects it rather than silently matching differently. Defaults to the index' `settings.locales`.
+    - `vector`: [SearchVectorOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchVectorOptions) (optional) — The options of a vector, or semantic, search to run instead of, or alongside, the free-text query.
+    - `count`: [SearchCountStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchCountStrategy) (optional) — How the total number of matching documents is computed. `"exact"` may be rejected or slow depending on the provider.
+    - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Escape hatch for engine features the interface does not model, keyed by provider identifier, e.g. `{ typesense: { drop_tokens_threshold: 0 } }`.
+- `options`: [RemoteJoinerOptions](/resources/references/types/interfaces/typesRemoteJoinerOptions) (optional) — Options controlling the behavior of a remote joiner query execution.
+  - `throwIfKeyNotFound`: `boolean` (optional) — Whether to throw an error if a requested key is not found in the result.
+  - `throwIfRelationNotFound`: `boolean` | `string`\[] (optional) — Whether to throw an error if a requested relation is not found, or a list of relation names to check.
+  - `initialData`: `object` | `object`\[] (optional) — Initial data to use as the starting dataset for the query instead of fetching from a service.
+  - `initialDataOnly`: `boolean` (optional) — Whether to use only the initial data without fetching additional data from services.
+  - `locale`: `string` (optional) — The locale to use for the query. Translation will be applied to the query result based on the locale.
+  - `cache`: `object` (optional)
+    - `enable`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to enable the cache. This is only useful if you want to enable without providing any other options or if you want to enable/disable the cache based on the arguments.
+    - `key`: `string` | (`args`: `any`\[], `cachingModule`: [ICachingModuleService](/resources/references/types/CachingTypes/interfaces/typesCachingTypesICachingModuleService)) => `string` | Promise\<string> (optional) — The key to use for the cache. If a function is provided, it will be called with the arguments as the first argument and the container as the second argument.
+    - `tags`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The tags to use for the cache. Used on their own unless `computeAutomaticTags` is set, in which case the automatically computed tags are stored alongside them.
+    - `computeAutomaticTags`: `boolean` (optional, default: false) — Whether the automatically computed tags should be applied along with the ones given in `tags`, rather than `tags` being used on its own. Automatic tags are computed from the result, which only exposes entities that carry an `id`. They therefore never cover link tables (whose rows are usually not selected), relations queried without their `id`, or entities that affect the result without appearing in it - pass only those in `tags` and enable this, instead of restating every entity the result already exposes. Has no effect when `tags` is omitted, since tags are computed either way.
+    - `ttl`: `number` | (`args`: `any`\[]) => `undefined` | `number` (optional) — The time-to-live (TTL) value in seconds.
+    - `autoInvalidate`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to auto invalidate the cache whenever it is possible.
+    - `providers`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The providers to use for the cache.
+
+<a id="search-returns-1" />
+
+#### Returns
+
+**search**
+
+- `Promise`: Promise\<[SearchResultSet](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesSearchResultSet)\<TEntry>> — Runs a search and expands the hits with `query.graph`. The engine only holds what its index was defined with, so the requested fields are split: what the index can return comes back from the search, and the rest is fetched by id. Search order is preserved through the expand. Pass an array to run several queries in one provider round-trip — InstantSearch extra facet requests, or `disjunctive_facets` expansion, go through this path.
+
+### index
+
+<a id="index-type-parameters" />
+
+#### Type Parameters
+
+**index**
+
+- `TEntry`: `string` (optional)
+
+<a id="index-parameters" />
+
+#### Parameters
+
+**index**
+
+- `queryOptions`: [RemoteQueryInput](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesRemoteQueryInput)\<TEntry> & `object`
+  - `joinFilters`: [RemoteQueryFilters](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesRemoteQueryFilters)\<TEntry> (optional)
+    - `$or`: T & [RemoteQueryFilterOperators](/resources/references/types/types/typesRemoteQueryFilterOperators)\<T>\[] (optional)
+    - `$and`: T & [RemoteQueryFilterOperators](/resources/references/types/types/typesRemoteQueryFilterOperators)\<T>\[] (optional)
+    - `$not`: T & [RemoteQueryFilterOperators](/resources/references/types/types/typesRemoteQueryFilterOperators)\<T> (optional)
+- `options`: [RemoteJoinerOptions](/resources/references/types/interfaces/typesRemoteJoinerOptions) (optional) — Options controlling the behavior of a remote joiner query execution.
+  - `throwIfKeyNotFound`: `boolean` (optional) — Whether to throw an error if a requested key is not found in the result.
+  - `throwIfRelationNotFound`: `boolean` | `string`\[] (optional) — Whether to throw an error if a requested relation is not found, or a list of relation names to check.
+  - `initialData`: `object` | `object`\[] (optional) — Initial data to use as the starting dataset for the query instead of fetching from a service.
+  - `initialDataOnly`: `boolean` (optional) — Whether to use only the initial data without fetching additional data from services.
+  - `locale`: `string` (optional) — The locale to use for the query. Translation will be applied to the query result based on the locale.
+  - `cache`: `object` (optional)
+    - `enable`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to enable the cache. This is only useful if you want to enable without providing any other options or if you want to enable/disable the cache based on the arguments.
+    - `key`: `string` | (`args`: `any`\[], `cachingModule`: [ICachingModuleService](/resources/references/types/CachingTypes/interfaces/typesCachingTypesICachingModuleService)) => `string` | Promise\<string> (optional) — The key to use for the cache. If a function is provided, it will be called with the arguments as the first argument and the container as the second argument.
+    - `tags`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The tags to use for the cache. Used on their own unless `computeAutomaticTags` is set, in which case the automatically computed tags are stored alongside them.
+    - `computeAutomaticTags`: `boolean` (optional, default: false) — Whether the automatically computed tags should be applied along with the ones given in `tags`, rather than `tags` being used on its own. Automatic tags are computed from the result, which only exposes entities that carry an `id`. They therefore never cover link tables (whose rows are usually not selected), relations queried without their `id`, or entities that affect the result without appearing in it - pass only those in `tags` and enable this, instead of restating every entity the result already exposes. Has no effect when `tags` is omitted, since tags are computed either way.
+    - `ttl`: `number` | (`args`: `any`\[]) => `undefined` | `number` (optional) — The time-to-live (TTL) value in seconds.
+    - `autoInvalidate`: `boolean` | (`args`: `any`\[]) => `undefined` | `boolean` (optional) — Whether to auto invalidate the cache whenever it is possible.
+    - `providers`: `string`\[] | (`args`: `any`\[]) => `undefined` | `string`\[] (optional) — The providers to use for the cache.
+
+<a id="index-returns" />
+
+#### Returns
+
+**index**
+
+- `Promise`: Promise\<[GraphResultSet](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesGraphResultSet)\<TEntry>>

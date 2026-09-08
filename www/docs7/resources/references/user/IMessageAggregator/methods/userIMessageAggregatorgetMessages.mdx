@@ -1,0 +1,37 @@
+---
+title: getMessages
+---
+
+<a id="getmessages-parameters" />
+
+## Parameters
+
+**getMessages**
+
+- `format`: [MessageAggregatorFormat](/resources/references/user/interfaces/userMessageAggregatorFormat) (optional)
+  - `groupBy`: `string`\[] (optional)
+  - `sortBy`: `object` (optional)
+  - `internal`: `boolean` (optional) — will prevent the info log to be displayed about those events
+
+<a id="getmessages-returns" />
+
+## Returns
+
+**getMessages**
+
+- `Record`: `Record<string, [Message](/references/user/types/user.Message)[]>`
+  - `string`: `string`
+  - `Message[]`: [Message](/resources/references/user/types/userMessage)\[]
+    - `name`: `string` — The event's name.
+
+      Example:
+
+      ```
+      user.created
+      ```
+    - `metadata`: [EventMetadata](/resources/references/user/types/userEventMetadata) (optional) — Additional meadata to pass with the event.
+      - `eventGroupId`: `string` (optional) — The ID of the event's group. Grouped events are useful when you have distributed transactions where you need to explicitly group, release and clear events upon lifecycle events of a transaction. When set, you must release the grouped events using the Event Module's `releaseGroupedEvents` method to emit the events.
+      - `created_at`: `Date` (optional) — The date the event was emitted.
+      - `published_at`: `Date` (optional) — The date the event was published to the event bus. If it's a grouped event, this will be the date the group was released.
+    - `data`: TData — The data payload that subscribers receive. For example, the ID or IDs of the created user. (e.g. \{ id: "123" } or \{ ids: \["123", "456"] })
+    - `options`: `Record<string, unknown>` (optional)

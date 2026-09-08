@@ -1,0 +1,66 @@
+---
+title: listRules
+---
+
+This method retrieves the rules of a promotion. It can be the promotion's rules,
+or its application method's buy or target rules. That depends on the rule type
+you specify as a parameter.
+
+This method sends a request to the
+[List Rules of a Promotion API Route](/api/admin/promotions/list-rules)
+
+## Example
+
+```ts
+sdk.admin.promotion.listRules("promo_123", "rules")
+.then(({ rules }) => {
+  console.log(rules)
+})
+```
+
+<a id="listrules-parameters" />
+
+## Parameters
+
+**listRules**
+
+- `id`: `null` | `string` — The promotion's ID.
+- `ruleType`: `string` — The type of rules to retrieve. Can be `rules`, `buy-rules`, or `target-rules`.
+- `query`: [AdminGetPromotionRuleParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPromotionRuleParams) (optional) — Configure the fields to retrieve in the rules.
+  - `promotion_type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues) (optional) — The type of promotion to retrieve the attributes for.
+  - `application_method_type`: [ApplicationMethodTypeValues](/resources/references/promotion/types/promotionApplicationMethodTypeValues) (optional) — The type of application method to retrieve the attributes for.
+  - `application_method_target_type`: [ApplicationMethodTargetTypeValues](/resources/references/promotion/types/promotionApplicationMethodTargetTypeValues) (optional) — The target type of application method to retrieve the attributes for.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listrules-returns" />
+
+## Returns
+
+**listRules**
+
+- `Promise`: Promise\<[AdminPromotionRuleListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminPromotionRuleListResponse)> — The promotion's rules.
+  - `rules`: [AdminPromotionRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPromotionRule)\[] — The list of promotion rules.
+    - `id`: `string` — The rule's ID.
+    - `description`: `null` | `string` (optional) — The rule's description.
+    - `attribute`: `string` (optional) — The attribute to compare against when checking whether a promotion can be applied on a cart.
+
+      Example:
+
+      ```
+      items.product_id
+      ```
+    - `operator`: [PromotionRuleOperatorValues](/resources/references/promotion/types/promotionPromotionRuleOperatorValues) (optional) — The operator used to check whether the buy rule applies on a cart. For example, `eq` means that the cart's value for the specified attribute must match the specified value.
+
+      Example:
+
+      ```
+      eq
+      ```
+    - `values`: [BasePromotionRuleValue](/resources/references/types/interfaces/typesBasePromotionRuleValue)\[] — The values to compare against when checking whether a promotion can be applied on a cart.
+
+      Example:
+
+      ```
+      prod_123
+      ```

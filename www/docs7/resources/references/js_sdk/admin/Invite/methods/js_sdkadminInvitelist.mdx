@@ -1,0 +1,79 @@
+---
+title: list
+---
+
+This method retrieves a paginated list of invites. It sends a request to the
+[List Invites](/api/admin/invites/list-invites)
+API route.
+
+## Example
+
+To retrieve the list of invites:
+
+```ts
+sdk.admin.invite.list()
+.then(({ invites, count, limit, offset }) => {
+  console.log(invites)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.invite.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ invites, count, limit, offset }) => {
+  console.log(invites)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each invite:
+
+```ts
+sdk.admin.invite.list({
+  fields: "id,email"
+})
+.then(({ invites, count, limit, offset }) => {
+  console.log(invites)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+## Parameters
+
+**list**
+
+- `queryParams`: [FindParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesFindParams) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+## Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminInviteListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminInviteListResponse)> — The paginated list of invites.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.

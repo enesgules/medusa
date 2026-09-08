@@ -1,0 +1,696 @@
+---
+title: priceList - JS SDK Admin Reference
+sidebarTitle: priceList
+---
+
+This documentation provides a reference to the `sdk.admin.priceList` set of methods used to send requests to Medusa's Admin API routes.
+
+## retrieve
+
+This method retrieves a price list. It sends a request to the
+[Get Price List](/api/admin/price-lists/get-a-price-list)
+API route.
+
+### Example
+
+To retrieve a price list by its ID:
+
+```ts
+sdk.admin.priceList.retrieve("plist_123")
+.then(({ price_list }) => {
+  console.log(price_list)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.priceList.retrieve("plist_123", {
+  fields: "id,*prices"
+})
+.then(({ price_list }) => {
+  console.log(price_list)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The price list's ID.
+- `query`: [AdminPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListParams) (optional) — Configure the fields to retrieve in the price list.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminPriceListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListResponse)> — The price list's details.
+  - `price_list`: [AdminPriceList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceList) — The price list's details.
+    - `id`: `string` — The price list's ID.
+    - `title`: `string` — The price list's title.
+    - `description`: `string` — The price list's description.
+    - `rules`: `Record<string, any>` — The price list's rules.
+    - `starts_at`: `null` | `string` — The price list's start date.
+    - `ends_at`: `null` | `string` — The price list's end date.
+    - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus) — The price list's status.
+    - `type`: [PriceListType](/resources/references/pricing/types/pricingPriceListType) — The price list's type.
+    - `prices`: [AdminPriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPrice)\[] — The price list's prices.
+    - `created_at`: `string` — The date the price list was created.
+    - `updated_at`: `string` — The date the price list was updated.
+    - `deleted_at`: `null` | `string` — The date the price list was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+
+## list
+
+This method retrieves a paginated list of price lists. It sends a request to the
+[List Price Lists](/api/admin/price-lists/list-price-lists) API route.
+
+### Example
+
+To retrieve the list of price lists:
+
+```ts
+sdk.admin.priceList.list()
+.then(({ price_lists, count, limit, offset }) => {
+  console.log(price_lists)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.priceList.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ price_lists, count, limit, offset }) => {
+  console.log(price_lists)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each price list:
+
+```ts
+sdk.admin.priceList.list({
+  fields: "id,*prices"
+})
+.then(({ price_lists, count, limit, offset }) => {
+  console.log(price_lists)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keyword to filter the price list's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by price list ID(s).
+    - `starts_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the price list's start date.
+    - `ends_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the price list's end date.
+    - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus)\[] (optional) — Filter by statuses.
+    - `rules_count`: `number`\[] (optional) — Filter by the number of rules.
+  - `$or`: ([AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keyword to filter the price list's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by price list ID(s).
+    - `starts_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the price list's start date.
+    - `ends_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the price list's end date.
+    - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus)\[] (optional) — Filter by statuses.
+    - `rules_count`: `number`\[] (optional) — Filter by the number of rules.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keyword to filter the price list's searchable fields.
+  - `id`: `string` | `string`\[] (optional) — Filter by price list ID(s).
+  - `starts_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the price list's start date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `ends_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the price list's end date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus)\[] (optional) — Filter by statuses.
+  - `rules_count`: `number`\[] (optional) — Filter by the number of rules.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminPriceListListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListResponse)> — The paginated list of price lists.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `price_lists`: [AdminPriceList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceList)\[] — The list of price lists.
+    - `id`: `string` — The price list's ID.
+    - `title`: `string` — The price list's title.
+    - `description`: `string` — The price list's description.
+    - `rules`: `Record<string, any>` — The price list's rules.
+    - `starts_at`: `null` | `string` — The price list's start date.
+    - `ends_at`: `null` | `string` — The price list's end date.
+    - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus) — The price list's status.
+    - `type`: [PriceListType](/resources/references/pricing/types/pricingPriceListType) — The price list's type.
+    - `prices`: [AdminPriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPrice)\[] — The price list's prices.
+    - `created_at`: `string` — The date the price list was created.
+    - `updated_at`: `string` — The date the price list was updated.
+    - `deleted_at`: `null` | `string` — The date the price list was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+
+## create
+
+This method creates a price list. It sends a request to the
+[Create Price List](/api/admin/price-lists/create-price-list)
+API route.
+
+### Example
+
+```ts
+sdk.admin.priceList.create({
+  title: "My Price List",
+  status: "active",
+  type: "sale",
+  prices: [
+    {
+      variant_id: "variant_123",
+      amount: 10,
+      currency_code: "usd",
+      rules: {
+        region_id: "reg_123"
+      }
+    }
+  ]
+})
+.then(({ price_list }) => {
+  console.log(price_list)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [AdminCreatePriceList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreatePriceList) — The details of the price list to create.
+  - `title`: `string` — The price list's title.
+  - `description`: `string` — The price list's description.
+  - `starts_at`: `null` | `string` (optional) — The price list's start date.
+  - `ends_at`: `null` | `string` (optional) — The price list's end date.
+  - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus) (optional) — The price list's status.
+  - `type`: [PriceListType](/resources/references/pricing/types/pricingPriceListType) (optional) — The price list's type.
+  - `rules`: `Record<string, string[]>` (optional) — The price list's rules.
+  - `prices`: [AdminCreatePriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreatePriceListPrice)\[] (optional) — The price list's prices.
+    - `currency_code`: `string` — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` — The price's amount.
+    - `variant_id`: `string` — The ID of the variant this price applies to.
+    - `min_quantity`: `null` | `number` (optional) — The minimum quantity that must be available in the cart for the price to be applied.
+    - `max_quantity`: `null` | `number` (optional) — The maximum quantity allowed to be available in the cart for the price to be applied.
+    - `rules`: `Record<string, string>` (optional) — The price's rules.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `query`: [AdminPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListParams) (optional) — Configure the fields to retrieve in the price list.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminPriceListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListResponse)> — The price list's details.
+  - `price_list`: [AdminPriceList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceList) — The price list's details.
+    - `id`: `string` — The price list's ID.
+    - `title`: `string` — The price list's title.
+    - `description`: `string` — The price list's description.
+    - `rules`: `Record<string, any>` — The price list's rules.
+    - `starts_at`: `null` | `string` — The price list's start date.
+    - `ends_at`: `null` | `string` — The price list's end date.
+    - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus) — The price list's status.
+    - `type`: [PriceListType](/resources/references/pricing/types/pricingPriceListType) — The price list's type.
+    - `prices`: [AdminPriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPrice)\[] — The price list's prices.
+    - `created_at`: `string` — The date the price list was created.
+    - `updated_at`: `string` — The date the price list was updated.
+    - `deleted_at`: `null` | `string` — The date the price list was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+
+## update
+
+This method updates a price list. It sends a request to the
+[Update Price List](/api/admin/price-lists/update-a-price-list)
+API route.
+
+### Example
+
+```ts
+sdk.admin.priceList.update("plist_123", {
+  title: "My Price List",
+})
+.then(({ price_list }) => {
+  console.log(price_list)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `id`: `string` — The price list's ID.
+- `body`: [AdminUpdatePriceList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdatePriceList) — The data to update in the price list.
+  - `title`: `string` (optional) — The price list's title.
+  - `description`: `string` (optional) — The price list's description.
+  - `starts_at`: `null` | `string` (optional) — The price list's start date.
+  - `ends_at`: `null` | `string` (optional) — The price list's end date.
+  - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus) (optional) — The price list's status.
+  - `type`: [PriceListType](/resources/references/pricing/types/pricingPriceListType) (optional) — The price list's type.
+  - `rules`: `Record<string, string[]>` (optional) — The price list's rules.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `query`: [AdminPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListParams) (optional) — Configure the fields to retrieve in the price list.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminPriceListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListResponse)> — The price list's details.
+  - `price_list`: [AdminPriceList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceList) — The price list's details.
+    - `id`: `string` — The price list's ID.
+    - `title`: `string` — The price list's title.
+    - `description`: `string` — The price list's description.
+    - `rules`: `Record<string, any>` — The price list's rules.
+    - `starts_at`: `null` | `string` — The price list's start date.
+    - `ends_at`: `null` | `string` — The price list's end date.
+    - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus) — The price list's status.
+    - `type`: [PriceListType](/resources/references/pricing/types/pricingPriceListType) — The price list's type.
+    - `prices`: [AdminPriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPrice)\[] — The price list's prices.
+    - `created_at`: `string` — The date the price list was created.
+    - `updated_at`: `string` — The date the price list was updated.
+    - `deleted_at`: `null` | `string` — The date the price list was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+
+## delete
+
+This method deletes a price list. It sends a request to the
+[Delete Price List](/api/admin/price-lists/delete-a-price-list)
+API route.
+
+### Example
+
+```ts
+sdk.admin.priceList.delete("plist_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The price list's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminPriceListDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: `"price_list"` — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## batchPrices
+
+This method manages the prices of a price list to create, update, or delete them.
+It sends a request to the [Manage Prices](/api/admin/price-lists/manage-prices)
+API route.
+
+### Example
+
+```ts
+sdk.admin.priceList.batchPrices("plist_123", {
+  create: [{
+    variant_id: "variant_123",
+    currency_code: "usd",
+    amount: 10,
+    rules: {
+      region_id: "reg_123"
+    }
+  }],
+  update: [{
+    id: "price_123",
+    variant_id: "variant_123",
+    amount: 20,
+  }],
+  delete: ["price_123"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+<a id="batchprices-parameters" />
+
+### Parameters
+
+**batchPrices**
+
+- `id`: `string` — The price list's ID.
+- `body`: [AdminBatchPriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchPriceListPrice) — The prices to create, update, or delete.
+  - `create`: [AdminCreatePriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreatePriceListPrice)\[] (optional) — The prices to create and add to the price list.
+    - `currency_code`: `string` — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` — The price's amount.
+    - `variant_id`: `string` — The ID of the variant this price applies to.
+    - `min_quantity`: `null` | `number` (optional) — The minimum quantity that must be available in the cart for the price to be applied.
+    - `max_quantity`: `null` | `number` (optional) — The maximum quantity allowed to be available in the cart for the price to be applied.
+    - `rules`: `Record<string, string>` (optional) — The price's rules.
+  - `update`: [AdminUpdatePriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdatePriceListPrice)\[] (optional) — The prices to update in the price list.
+    - `id`: `string` — The ID of the price to update.
+    - `currency_code`: `string` (optional) — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` (optional) — The price's amount.
+    - `variant_id`: `string` — The ID of the variant this price applies to.
+    - `min_quantity`: `null` | `number` (optional) — The minimum quantity that must be available in the cart for the price to be applied.
+    - `max_quantity`: `null` | `number` (optional) — The maximum quantity allowed to be available in the cart for the price to be applied.
+    - `rules`: `Record<string, string>` (optional) — The price's rules.
+  - `delete`: `string`\[] (optional) — The prices to delete from the price list.
+- `query`: [AdminPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListParams) (optional) — Configure the fields to retrieve in the price list.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchprices-returns" />
+
+### Returns
+
+**batchPrices**
+
+- `Promise`: Promise\<[AdminPriceListBatchResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListBatchResponse)> — The price list's details.
+  - `created`: [AdminPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPrice)\[] — The created prices.
+    - `id`: `string` — The price's ID.
+    - `title`: `string` — The price's title.
+    - `currency_code`: `string` — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` — The price's amount.
+    - `raw_amount`: `Record<string, unknown>` — The price's raw amount.
+    - `min_quantity`: `null` | `number` — The minimum quantity that must be available in the cart for the price to be applied.
+    - `max_quantity`: `null` | `number` — The maximum quantity allowed to be available in the cart for the price to be applied.
+    - `price_set_id`: `string` — The ID of the price set this price belongs to.
+    - `created_at`: `string` — The date the price was created.
+    - `updated_at`: `string` — The date the price was updated.
+    - `deleted_at`: `null` | `string` — The date the price was deleted.
+  - `updated`: [AdminPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPrice)\[] — The updated prices.
+    - `id`: `string` — The price's ID.
+    - `title`: `string` — The price's title.
+    - `currency_code`: `string` — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` — The price's amount.
+    - `raw_amount`: `Record<string, unknown>` — The price's raw amount.
+    - `min_quantity`: `null` | `number` — The minimum quantity that must be available in the cart for the price to be applied.
+    - `max_quantity`: `null` | `number` — The maximum quantity allowed to be available in the cart for the price to be applied.
+    - `price_set_id`: `string` — The ID of the price set this price belongs to.
+    - `created_at`: `string` — The date the price was created.
+    - `updated_at`: `string` — The date the price was updated.
+    - `deleted_at`: `null` | `string` — The date the price was deleted.
+  - `deleted`: `object` — Details about the deleted prices.
+    - `ids`: `string`\[]
+    - `object`: `"price"`
+    - `deleted`: `boolean`
+
+## prices
+
+This method retrieves the prices of a price list. It sends a request to the
+[Get Prices](/api/admin/price-lists/list-prices)
+API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.12.3](https://github.com/medusajs/medusa/releases/tag/v2.12.3).
+
+### Example
+
+```ts
+sdk.admin.priceList.prices("plist_123")
+.then(({ prices }) => {
+  console.log(prices)
+})
+```
+
+<a id="prices-parameters" />
+
+### Parameters
+
+**prices**
+
+- `id`: `string` — The price list's ID.
+- `query`: [AdminPriceListPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPriceListParams) (optional) — Configure the fields to retrieve in the price list.
+  - `$and`: ([AdminPriceListPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPriceListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPriceListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminPriceListPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPriceListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPriceListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminPriceListPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPriceListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPriceListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `$or`: ([AdminPriceListPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPriceListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPriceListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminPriceListPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPriceListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPriceListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminPriceListPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPriceListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPriceListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="prices-returns" />
+
+### Returns
+
+**prices**
+
+- `Promise`: Promise\<[AdminPriceListPriceListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPriceListResponse)> — The price list's prices.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `prices`: [AdminPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPrice)\[]
+    - `id`: `string` — The price's ID.
+    - `title`: `string` — The price's title.
+    - `currency_code`: `string` — The price's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `amount`: `number` — The price's amount.
+    - `raw_amount`: `Record<string, unknown>` — The price's raw amount.
+    - `min_quantity`: `null` | `number` — The minimum quantity that must be available in the cart for the price to be applied.
+    - `max_quantity`: `null` | `number` — The maximum quantity allowed to be available in the cart for the price to be applied.
+    - `price_set_id`: `string` — The ID of the price set this price belongs to.
+    - `created_at`: `string` — The date the price was created.
+    - `updated_at`: `string` — The date the price was updated.
+    - `deleted_at`: `null` | `string` — The date the price was deleted.
+
+## linkProducts
+
+This method removes products from a price list. It sends a request to the
+[Remove Product](/api/admin/price-lists/remove-products-from-price-list)
+API route.
+
+### Example
+
+```ts
+sdk.admin.priceList.linkProducts("plist_123", {
+  remove: ["prod_123"]
+})
+.then(({ price_list }) => {
+  console.log(price_list)
+})
+```
+
+<a id="linkproducts-parameters" />
+
+### Parameters
+
+**linkProducts**
+
+- `id`: `string` — The price list's ID.
+- `body`: [AdminLinkPriceListProducts](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLinkPriceListProducts) — The details of the products to remove.
+  - `remove`: `string`\[] (optional) — The IDs of products to remove from the price list.
+- `query`: [AdminPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListParams) (optional) — Configure the fields to retrieve in the price list.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="linkproducts-returns" />
+
+### Returns
+
+**linkProducts**
+
+- `Promise`: Promise\<[AdminPriceListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListResponse)> — The price list's details.
+  - `price_list`: [AdminPriceList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceList) — The price list's details.
+    - `id`: `string` — The price list's ID.
+    - `title`: `string` — The price list's title.
+    - `description`: `string` — The price list's description.
+    - `rules`: `Record<string, any>` — The price list's rules.
+    - `starts_at`: `null` | `string` — The price list's start date.
+    - `ends_at`: `null` | `string` — The price list's end date.
+    - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus) — The price list's status.
+    - `type`: [PriceListType](/resources/references/pricing/types/pricingPriceListType) — The price list's type.
+    - `prices`: [AdminPriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPrice)\[] — The price list's prices.
+    - `created_at`: `string` — The date the price list was created.
+    - `updated_at`: `string` — The date the price list was updated.
+    - `deleted_at`: `null` | `string` — The date the price list was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.

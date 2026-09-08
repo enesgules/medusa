@@ -1,0 +1,31 @@
+---
+title: SchemaObjectEntityRepresentation
+---
+
+- `SchemaObjectEntityRepresentation`: `object`
+  - `entity`: `string` — The name of the type/entity in the schema
+  - `parents`: `object`\[] — All parents a type/entity refers to in the schema or through links
+    - `ref`: [SchemaObjectEntityRepresentation](/resources/references/types/IndexTypes/types/typesIndexTypesSchemaObjectEntityRepresentation) — The reference to the schema object representation of the parent
+    - `inSchemaRef`: [SchemaObjectEntityRepresentation](/resources/references/types/IndexTypes/types/typesIndexTypesSchemaObjectEntityRepresentation) (optional) — When a link is inferred between two types/entities we are configuring the link tree, and therefore we are storing the reference to the parent type/entity within the schema which defer from the true parent from a pure entity point of view
+    - `targetProp`: `string` — The property the data should be assigned to in the parent
+    - `inverseSideProp`: `string` — The property the parent is assigned to in my side
+    - `isList`: `boolean` (optional) — Are the data expected to be a list or not
+    - `isInverse`: `boolean` (optional) — Whether the entity is the inverse of the link (not the owner.): e.g: order -> cart, order is the owner, cart is the inverse
+  - `fields`: `string`\[] — The default fields to query for the type/entity
+  - `listeners`: `string`\[] — `@Listerners` directive is required and all listeners found for the type will be stored here
+  - `alias`: `string` — The alias for the type/entity retrieved in the corresponding module
+  - `moduleConfig`: [ModuleJoinerConfig](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesModuleJoinerConfig) — The module joiner config corresponding to the module the type/entity refers to
+    - `alias`: [JoinerServiceConfigAlias](/resources/references/types/interfaces/typesJoinerServiceConfigAlias) | [JoinerServiceConfigAlias](/resources/references/types/interfaces/typesJoinerServiceConfigAlias)\[] (optional) — Property name to use as entrypoint to the service
+    - `fieldAlias`: `Record<string, string \| object>` (optional) — alias for deeper nested relationships (e.g. \{ 'price': 'prices.calculated\_price\_set.amount' })
+    - `args`: `Record<string, any>` (optional) — Extra arguments to pass to the remoteFetchData callback
+    - `schema`: `string` (optional) — GraphQL schema for the all module's available entities and fields
+    - `idPrefixToEntityName`: `Record<string, string>` (optional)
+    - `relationships`: [ModuleJoinerRelationship](/resources/references/types/ModulesSdkTypes/types/typesModulesSdkTypesModuleJoinerRelationship)\[] (optional)
+    - `extends`: `object`\[] (optional)
+    - `serviceName`: `string` (optional)
+    - `primaryKeys`: `string`\[] (optional)
+    - `isLink`: `boolean` (optional) — If the module is a link module
+    - `linkableKeys`: `Record<string, string>` (optional) — Keys that can be used to link to other modules. e.g \{ product\_id: "Product" } "Product" being the entity it refers to
+    - `isReadOnlyLink`: `boolean` (optional) — If true it expands a RemoteQuery property but doesn't create a pivot table
+    - `extraDataFields`: `string`\[] (optional) — Fields that will be part of the link record aside from the primary keys that can be updated If not explicitly defined, this array will be populated by databaseConfig.extraFields
+    - `databaseConfig`: `object` (optional)

@@ -1,0 +1,597 @@
+---
+title: ISearchModuleService
+---
+
+## Methods
+
+### search
+
+This method searches an index for documents matching the given query. The
+Search Module resolves the index's provider and delegates the query to it.
+
+The free-text query is passed as `q` among the `filters`.
+
+#### Example
+
+A simple example that searches an index for a free-text query:
+
+```ts
+const result = await searchModuleService.search({
+  entity: "product",
+  filters: {
+    q: "shirt",
+  },
+})
+```
+
+To filter, paginate, sort, and retrieve facets:
+
+```ts
+const result = await searchModuleService.search({
+  entity: "product",
+  fields: ["id", "title", "variants.sku"],
+  filters: {
+    q: "shirt",
+    status: "published",
+    "variants.price": { $lte: 5000 },
+  },
+  pagination: {
+    skip: 0,
+    take: 20,
+    order: { _score: "DESC" },
+  },
+  search_options: {
+    facets: ["type_id"],
+  },
+})
+```
+
+<a id="search-type-parameters" />
+
+#### Type Parameters
+
+**search**
+
+- `T`: `object` (optional)
+
+<a id="search-parameters" />
+
+#### Parameters
+
+**search**
+
+- `query`: [SearchQuery](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchQuery) — The query to run against the search index.
+  - `entity`: TEntry — The name of the index to query, which defaults to the index whose name equals the entity.
+  - `fields`: `string`\[] (optional) — The dotted paths of the fields the search engine should return. Only fields available in the search engine can be passed here.
+  - `filters`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — The filters to apply, including the free-text query as `q`.
+    - `$and`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters that must all match.
+    - `$or`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters of which at least one must match.
+    - `$not`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — Filters that must not match.
+    - `q`: `string` (optional) — The free-text query. Sits among the filters so a `query.graph` call converts to `query.search` unchanged; the module lifts it out before compiling the rest, so a provider never sees `q` as a field.
+  - `pagination`: [SearchPagination](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchPagination) (optional) — How the results are paginated and sorted.
+    - `skip`: `number` (optional) — The number of documents to skip before the returned hits. Mutually exclusive with `cursor`.
+    - `take`: `number` (optional) — The maximum number of hits to return.
+    - `order`: `Record<string, [SearchOrderBy](/references/types/SearchTypes/types/types.SearchTypes.SearchOrderBy)>` (optional) — The fields to sort the hits by, keyed by the field's dotted path. The reserved `_score` key sorts by relevance.
+    - `cursor`: `string` (optional) — An opaque provider cursor, as returned in a previous result's `metadata.next_cursor`. Mutually exclusive with `skip`.
+  - `search_options`: [SearchOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchOptions) (optional) — The options changing how the query is matched, scored, and aggregated.
+    - `attributes_to_search_on`: `string`\[] (optional) — The dotted paths of the fields to match the free-text query against. Defaults to every field marked `searchable` on the index.
+    - `match_strategy`: [SearchMatchStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMatchStrategy) (optional) — How query terms combine. - `"all"` (default): every term must appear as a complete token. - `"any"`: at least one term must match. - `"last"`: typeahead. Completed terms must match in full; the last term is a prefix, so `"my sear"` matches `"My search results"`.
+    - `typo_tolerance`: `boolean` (optional) — Whether to match terms that are misspelled by a character or two.
+    - `facets`: (`string` | [SearchFacetRequest](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetRequest))\[] (optional) — The facets to compute alongside the hits. A string is shorthand for a `value` facet on that field.
+    - `disjunctive_facets`: `boolean` (optional) — Compute each facet ignoring the filter on that same field, so a storefront keeps showing sibling values of an active filter. Needs one query per facet on every engine reviewed, so the module expands them and hands the set to `provider.searchMany`.
+    - `highlight`: [SearchHighlightOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchHighlightOptions) (optional) — How the matched terms are highlighted in the returned hits.
+    - `distinct`: `string` (optional) — Return at most one hit per distinct value of this field.
+    - `min_score`: `number` (optional) — Discard hits scoring below this threshold.
+    - `include_score`: `boolean` (optional) — Whether to return each hit's relevance score.
+    - `locales`: `string`\[] (optional) — Query-time language hint, e.g. `["en"]`. Engines that analyze per language (Meilisearch, Algolia) use it to pick the analyzer; a provider that cannot honour it rejects it rather than silently matching differently. Defaults to the index' `settings.locales`.
+    - `vector`: [SearchVectorOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchVectorOptions) (optional) — The options of a vector, or semantic, search to run instead of, or alongside, the free-text query.
+    - `count`: [SearchCountStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchCountStrategy) (optional) — How the total number of matching documents is computed. `"exact"` may be rejected or slow depending on the provider.
+    - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Escape hatch for engine features the interface does not model, keyed by provider identifier, e.g. `{ typesense: { drop_tokens_threshold: 0 } }`.
+
+<a id="search-returns" />
+
+#### Returns
+
+**search**
+
+- `Promise`: Promise\<[SearchResult](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchResult)\<T>> — The matching hits, any requested facets, and the result's metadata.
+
+### searchMany
+
+This method runs multiple search queries in a single call. Use it to run
+queries against different indexes, or the same index with different filters,
+without paying for a round trip per query.
+
+Disjunctive facets are expanded here, then every query targeting the same
+provider is handed to that provider's `searchMany` so the engine can pack
+them into one request. Prefer `query.search` from application code, which
+hydrates the hits through graph.
+
+#### Example
+
+```ts
+const results = await searchModuleService.searchMany([
+  {
+    entity: "product",
+    filters: { q: "shirt" },
+  },
+  {
+    entity: "product",
+    filters: { q: "pants" },
+  },
+])
+```
+
+<a id="searchmany-parameters" />
+
+#### Parameters
+
+**searchMany**
+
+- `queries`: [SearchQuery](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchQuery)\<string>\[] — The queries to run against search indexes.
+  - `entity`: TEntry — The name of the index to query, which defaults to the index whose name equals the entity.
+  - `fields`: `string`\[] (optional) — The dotted paths of the fields the search engine should return. Only fields available in the search engine can be passed here.
+  - `filters`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — The filters to apply, including the free-text query as `q`.
+    - `$and`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters that must all match.
+    - `$or`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters of which at least one must match.
+    - `$not`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — Filters that must not match.
+    - `q`: `string` (optional) — The free-text query. Sits among the filters so a `query.graph` call converts to `query.search` unchanged; the module lifts it out before compiling the rest, so a provider never sees `q` as a field.
+  - `pagination`: [SearchPagination](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchPagination) (optional) — How the results are paginated and sorted.
+    - `skip`: `number` (optional) — The number of documents to skip before the returned hits. Mutually exclusive with `cursor`.
+    - `take`: `number` (optional) — The maximum number of hits to return.
+    - `order`: `Record<string, [SearchOrderBy](/references/types/SearchTypes/types/types.SearchTypes.SearchOrderBy)>` (optional) — The fields to sort the hits by, keyed by the field's dotted path. The reserved `_score` key sorts by relevance.
+    - `cursor`: `string` (optional) — An opaque provider cursor, as returned in a previous result's `metadata.next_cursor`. Mutually exclusive with `skip`.
+  - `search_options`: [SearchOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchOptions) (optional) — The options changing how the query is matched, scored, and aggregated.
+    - `attributes_to_search_on`: `string`\[] (optional) — The dotted paths of the fields to match the free-text query against. Defaults to every field marked `searchable` on the index.
+    - `match_strategy`: [SearchMatchStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMatchStrategy) (optional) — How query terms combine. - `"all"` (default): every term must appear as a complete token. - `"any"`: at least one term must match. - `"last"`: typeahead. Completed terms must match in full; the last term is a prefix, so `"my sear"` matches `"My search results"`.
+    - `typo_tolerance`: `boolean` (optional) — Whether to match terms that are misspelled by a character or two.
+    - `facets`: (`string` | [SearchFacetRequest](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetRequest))\[] (optional) — The facets to compute alongside the hits. A string is shorthand for a `value` facet on that field.
+    - `disjunctive_facets`: `boolean` (optional) — Compute each facet ignoring the filter on that same field, so a storefront keeps showing sibling values of an active filter. Needs one query per facet on every engine reviewed, so the module expands them and hands the set to `provider.searchMany`.
+    - `highlight`: [SearchHighlightOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchHighlightOptions) (optional) — How the matched terms are highlighted in the returned hits.
+    - `distinct`: `string` (optional) — Return at most one hit per distinct value of this field.
+    - `min_score`: `number` (optional) — Discard hits scoring below this threshold.
+    - `include_score`: `boolean` (optional) — Whether to return each hit's relevance score.
+    - `locales`: `string`\[] (optional) — Query-time language hint, e.g. `["en"]`. Engines that analyze per language (Meilisearch, Algolia) use it to pick the analyzer; a provider that cannot honour it rejects it rather than silently matching differently. Defaults to the index' `settings.locales`.
+    - `vector`: [SearchVectorOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchVectorOptions) (optional) — The options of a vector, or semantic, search to run instead of, or alongside, the free-text query.
+    - `count`: [SearchCountStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchCountStrategy) (optional) — How the total number of matching documents is computed. `"exact"` may be rejected or slow depending on the provider.
+    - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Escape hatch for engine features the interface does not model, keyed by provider identifier, e.g. `{ typesense: { drop_tokens_threshold: 0 } }`.
+
+<a id="searchmany-returns" />
+
+#### Returns
+
+**searchMany**
+
+- `Promise`: Promise\<[SearchResult](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchResult)\<Record\<string, unknown>>\[]> — The list of search results, in the same order as the queries.
+  - `SearchResult<Record<string, unknown>>[]`: [SearchResult](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchResult)\<Record\<string, unknown>>\[]
+
+### upsertDocuments
+
+This method adds documents to an index, replacing any document that already
+exists under the same ID.
+
+Prefer keeping an index up to date through its definition's `events` and
+`consume` functions. Use this method for documents that no event describes,
+such as data coming from a third-party system.
+
+The returned task isn't waited on. A provider that applies writes lazily
+leaves the task's status as `enqueued`, and it's the caller's choice whether
+reading its own write back matters enough to wait for the task.
+
+#### Example
+
+```ts
+const task = await searchModuleService.upsertDocuments({
+  index: "product",
+  documents: [
+    {
+      id: "prod_123",
+      title: "Shirt",
+    },
+  ],
+})
+```
+
+<a id="upsertdocuments-parameters" />
+
+#### Parameters
+
+**upsertDocuments**
+
+- `input`: `object` — The documents to write.
+  - `index`: `string` — The name of the index to write to.
+  - `documents`: [SearchDocument](/resources/references/types/SearchTypes/types/typesSearchTypesSearchDocument)\[] — The documents to write. Each document must have an `id` property holding the index's primary key.
+    - `id`: `string`
+
+<a id="upsertdocuments-returns" />
+
+#### Returns
+
+**upsertDocuments**
+
+- `Promise`: Promise\<[SearchTask](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchTask)> — The write's task.
+  - `id`: `string` (optional) — The ID identifying the write in the search engine, which is passed back to the provider's `waitForTask` method. It's set only for a deferred write, since a provider applying writes inline has nothing to identify.
+  - `index`: `string` (optional) — The name of the index the write was applied to.
+  - `status`: [SearchTaskStatus](/resources/references/types/SearchTypes/types/typesSearchTypesSearchTaskStatus) — The write's status.
+  - `error`: `object` (optional) — The error that made the write fail, if its `status` is `failed`.
+    - `message`: `string` — The error's message.
+    - `code`: `string` (optional) — The error's code, as reported by the search engine.
+
+### deleteDocuments
+
+This method removes every document in an index matching the specified filters.
+
+Deleting by ID isn't a special case: it's a filter on the index's primary
+key, such as `{ id: ["prod_1"] }`.
+
+#### Example
+
+To delete documents by ID:
+
+```ts
+const task = await searchModuleService.deleteDocuments({
+  index: "product",
+  filters: {
+    id: ["prod_123", "prod_456"],
+  },
+})
+```
+
+To delete every document matching a filter:
+
+```ts
+const task = await searchModuleService.deleteDocuments({
+  index: "product",
+  filters: {
+    status: "draft",
+  },
+})
+```
+
+<a id="deletedocuments-parameters" />
+
+#### Parameters
+
+**deleteDocuments**
+
+- `input`: `object` — The documents to remove.
+  - `index`: `string` — The name of the index to delete from.
+  - `filters`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) — The filters selecting the documents to remove. At least one filter is required.
+    - `$and`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters that must all match.
+    - `$or`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters of which at least one must match.
+    - `$not`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — Filters that must not match.
+    - `q`: `string` (optional) — The free-text query. Sits among the filters so a `query.graph` call converts to `query.search` unchanged; the module lifts it out before compiling the rest, so a provider never sees `q` as a field.
+
+<a id="deletedocuments-returns" />
+
+#### Returns
+
+**deleteDocuments**
+
+- `Promise`: Promise\<[SearchTask](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchTask)> — The write's task.
+  - `id`: `string` (optional) — The ID identifying the write in the search engine, which is passed back to the provider's `waitForTask` method. It's set only for a deferred write, since a provider applying writes inline has nothing to identify.
+  - `index`: `string` (optional) — The name of the index the write was applied to.
+  - `status`: [SearchTaskStatus](/resources/references/types/SearchTypes/types/typesSearchTypesSearchTaskStatus) — The write's status.
+  - `error`: `object` (optional) — The error that made the write fail, if its `status` is `failed`.
+    - `message`: `string` — The error's message.
+    - `code`: `string` (optional) — The error's code, as reported by the search engine.
+
+### ingest
+
+This method applies an event to every index that declared it in its
+definition's `events`, using each index's `consume` function to turn the
+event into document writes or deletions.
+
+The Search Module subscribes to the declared events and calls this method for
+you. You only need to call it directly to replay an event, or to ingest an
+event that wasn't emitted through the Event Bus Module.
+
+The returned promise resolves once the search engine has accepted the
+writes. Failures are thrown, leaving redelivery to the event bus.
+
+#### Example
+
+```ts
+const tasks = await searchModuleService.ingest({
+  name: "product.updated",
+  data: {
+    id: "prod_123",
+  },
+})
+```
+
+<a id="ingest-parameters" />
+
+#### Parameters
+
+**ingest**
+
+- `event`: [Event](/resources/references/types/EventBusTypes/types/typesEventBusTypesEvent)\<any> — The event to apply.
+  - `name`: `string` — The event's name.
+
+    Example:
+
+    ```
+    user.created
+    ```
+  - `metadata`: [EventMetadata](/resources/references/types/EventBusTypes/types/typesEventBusTypesEventMetadata) (optional) — Additional meadata to pass with the event.
+    - `eventGroupId`: `string` (optional) — The ID of the event's group. Grouped events are useful when you have distributed transactions where you need to explicitly group, release and clear events upon lifecycle events of a transaction. When set, you must release the grouped events using the Event Module's `releaseGroupedEvents` method to emit the events.
+    - `created_at`: `Date` (optional) — The date the event was emitted.
+    - `published_at`: `Date` (optional) — The date the event was published to the event bus. If it's a grouped event, this will be the date the group was released.
+  - `data`: TData — The data payload that subscribers receive. For example, the ID or IDs of the created user. (e.g. \{ id: "123" } or \{ ids: \["123", "456"] })
+
+<a id="ingest-returns" />
+
+#### Returns
+
+**ingest**
+
+- `Promise`: Promise\<[SearchTask](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchTask)\[]> — One task per write. An event that no index declared resolves to an empty array.
+  - `SearchTask[]`: [SearchTask](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchTask)\[]
+    - `id`: `string` (optional) — The ID identifying the write in the search engine, which is passed back to the provider's `waitForTask` method. It's set only for a deferred write, since a provider applying writes inline has nothing to identify.
+    - `index`: `string` (optional) — The name of the index the write was applied to.
+    - `status`: [SearchTaskStatus](/resources/references/types/SearchTypes/types/typesSearchTypesSearchTaskStatus) — The write's status.
+    - `error`: `object` (optional) — The error that made the write fail, if its `status` is `failed`.
+      - `message`: `string` — The error's message.
+      - `code`: `string` (optional) — The error's code, as reported by the search engine.
+
+### listIndexes
+
+This method retrieves the registered indexes, their status, and the leaf
+fields each of them stores. Definitions that haven't been migrated yet are
+included with a `pending` status.
+
+#### Example
+
+```ts
+const indexes = await searchModuleService.listIndexes()
+```
+
+<a id="listindexes-returns" />
+
+#### Returns
+
+**listIndexes**
+
+- `Promise`: Promise\<[SearchIndexDetails](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIndexDetails)\[]> — The registered indexes.
+  - `SearchIndexDetails[]`: [SearchIndexDetails](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIndexDetails)\[]
+    - `name`: `string` — Unique index name, as used in `query.search({ entity })`.
+    - `entity`: `string` — The `query.graph` entrypoint used to hydrate non-indexed fields.
+    - `provider`: `string` — Identifier of the provider backing this index.
+    - `status`: [SearchIndexStatus](/resources/references/types/SearchTypes/types/typesSearchTypesSearchIndexStatus) — Lifecycle status of the index.
+    - `fields`: [SearchIndexFieldInfo](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIndexFieldInfo)\[] — Leaf fields stored in the index.
+      - `name`: `string` — Dotted path of the field in the index, e.g. `title` or `variants.sku`.
+      - `type`: [SearchFieldKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFieldKind) — The field's index type.
+      - `searchable`: `boolean` — Whether the field is used for free-text matching.
+      - `filterable`: `boolean` — Whether the field can be used in filters.
+      - `sortable`: `boolean` — Whether results can be sorted by this field.
+      - `facetable`: `boolean` — Whether the field can be faceted.
+
+### listRetrievableFields
+
+This method retrieves the field paths an index can return. `query.search`
+uses it to split the fields a caller asked for between the search engine and
+`query.graph`.
+
+#### Example
+
+```ts
+const fields = searchModuleService.listRetrievableFields("product")
+```
+
+<a id="listretrievablefields-parameters" />
+
+#### Parameters
+
+**listRetrievableFields**
+
+- `index`: `string` — The name of the index.
+
+<a id="listretrievablefields-returns" />
+
+#### Returns
+
+**listRetrievableFields**
+
+- `string[]`: `string`\[] — The retrievable field paths, such as `title` or `variants.sku`.
+  - `string`: `string`
+
+### getIndex
+
+This method retrieves an index's definition with the module's defaults
+applied: the provider it resolved to, the physical index behind it, and the
+`primary_key` its documents are keyed by, which is what a hit's `id` holds.
+
+#### Example
+
+```ts
+const definition = searchModuleService.getIndex("product")
+```
+
+<a id="getindex-parameters" />
+
+#### Parameters
+
+**getIndex**
+
+- `index`: `string` — The name of the index.
+
+<a id="getindex-returns" />
+
+#### Returns
+
+**getIndex**
+
+- `name`: `string` — The index's unique name, which is what `query.search({ entity })` resolves against.
+- `entity`: `string` — The `query.graph` entrypoint used to hydrate non-indexed fields.
+- `fields`: `Record<string, [SearchFieldDefinition](/references/types/SearchTypes/interfaces/types.SearchTypes.SearchFieldDefinition)>` — The fields the index holds, keyed by their path in the document.
+  - `type`: [SearchFieldKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFieldKind) — The field's type.
+  - `array`: `boolean` (optional) — Whether the field holds an array of the declared `type`.
+  - `searchable`: `boolean` | `object` (optional) — Whether the field is matched against a free-text query, optionally with a `weight` boosting its relevance. The weight is applied at build time on some engines, such as Meilisearch and Algolia, and at query time on others, such as Typesense and Elasticsearch.
+    - `weight`: `number` (optional)
+  - `filterable`: `boolean` (optional) — Whether the field can be used in a query's filters.
+  - `sortable`: `boolean` (optional) — Whether results can be sorted by the field.
+  - `facetable`: `boolean` | `object` (optional) — Whether the field can be faceted, and which facet types it supports. Defaults to `["value"]`, or `["range"]` for numeric and date fields. `"stats"` is opt-in, since implying it would make numeric fields unusable on providers without aggregations.
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `retrievable`: `boolean` (optional) — Whether the field comes back on hits. `false` for index-only fields, such as a blob used purely for matching. `query.search` reads this to decide which requested fields the engine can serve and which need `query.graph`. Vector fields default to not retrievable — embeddings are not useful on hits. Set `retrievable: true`, or `.retrievable()` in the DSL, to return them.
+  - `fields`: `Record<string, [SearchFieldDefinition](/references/types/SearchTypes/interfaces/types.SearchTypes.SearchFieldDefinition)>` (optional) — The fields of a nested object, only used when `type` is `object`.
+    - `type`: [SearchFieldKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFieldKind) — The field's type.
+    - `array`: `boolean` (optional) — Whether the field holds an array of the declared `type`.
+    - `searchable`: `boolean` | `object` (optional) — Whether the field is matched against a free-text query, optionally with a `weight` boosting its relevance. The weight is applied at build time on some engines, such as Meilisearch and Algolia, and at query time on others, such as Typesense and Elasticsearch.
+    - `filterable`: `boolean` (optional) — Whether the field can be used in a query's filters.
+    - `sortable`: `boolean` (optional) — Whether results can be sorted by the field.
+    - `facetable`: `boolean` | `object` (optional) — Whether the field can be faceted, and which facet types it supports. Defaults to `["value"]`, or `["range"]` for numeric and date fields. `"stats"` is opt-in, since implying it would make numeric fields unusable on providers without aggregations.
+    - `retrievable`: `boolean` (optional) — Whether the field comes back on hits. `false` for index-only fields, such as a blob used purely for matching. `query.search` reads this to decide which requested fields the engine can serve and which need `query.graph`. Vector fields default to not retrievable — embeddings are not useful on hits. Set `retrievable: true`, or `.retrievable()` in the DSL, to return them.
+    - `fields`: `Record<string, [SearchFieldDefinition](/references/types/SearchTypes/interfaces/types.SearchTypes.SearchFieldDefinition)>` (optional) — The fields of a nested object, only used when `type` is `object`.
+    - `dimensions`: `number` (optional) — The dimensionality of the embedding stored in a `type: "vector"` field. Required for vector fields; meaningless on any other type. When `embed` is omitted, every vector written to the field must have exactly this many components.
+    - `embed`: `boolean` (optional) — When `true` on a vector field, documents pass a string and the engine embeds it at write time, and for `search_options.vector.query` at query time. Omit `embed` to supply embeddings yourself as a `number[]`.
+    - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Field options specific to a search engine, keyed by provider identifier, such as `{ meilisearch: { ... } }`.
+  - `dimensions`: `number` (optional) — The dimensionality of the embedding stored in a `type: "vector"` field. Required for vector fields; meaningless on any other type. When `embed` is omitted, every vector written to the field must have exactly this many components.
+  - `embed`: `boolean` (optional) — When `true` on a vector field, documents pass a string and the engine embeds it at write time, and for `search_options.vector.query` at query time. Omit `embed` to supply embeddings yourself as a `number[]`.
+  - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Field options specific to a search engine, keyed by provider identifier, such as `{ meilisearch: { ... } }`.
+- `events`: `string`\[] (optional) — Events related and that can affect the data for this index.
+- `consume`: (`event`: [Event](/resources/references/types/EventBusTypes/types/typesEventBusTypesEvent)\<any>, `context`: [SearchIngestionContext](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIngestionContext)) => Promise\<[SearchMutation](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMutation)\[]> (optional) — Executed on event ingestion to determine the action that needs to be performed on the index.
+- `seed`: (`context`: [SearchSeedContext](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchSeedContext)) => AsyncIterable\<[SearchDocument](/resources/references/types/SearchTypes/types/typesSearchTypesSearchDocument)\[]> — Yields the index's documents in batches. Ran when there is no data in the index or on reindex.
+- `primary_key`: `string` — The field whose value keys the index's documents.
+- `provider`: `string` — The identifier of the provider backing this index.
+- `settings`: [SearchIndexSettings](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIndexSettings) — The settings applied to the index.
+  - `synonyms`: `Record<string, string[]>` (optional) — Terms treated as equivalent when matching, keyed by the term they expand to.
+  - `stop_words`: `string`\[] (optional) — Terms ignored when matching, such as `the` or `a`.
+  - `typo_tolerance`: `object` (optional) — How misspelled terms are matched.
+    - `enabled`: `boolean` (optional) — Whether typo tolerance is enabled at all.
+    - `min_word_size_for_one_typo`: `number` (optional) — The shortest term length that tolerates a single typo.
+    - `min_word_size_for_two_typos`: `number` (optional) — The shortest term length that tolerates two typos.
+    - `disabled_on_attributes`: `string`\[] (optional) — The dotted paths of the fields that must always match exactly.
+  - `faceting`: `object` (optional) — The defaults applied to the facets computed on this index.
+    - `max_values_per_facet`: `number` (optional) — The maximum number of values returned for a facet.
+    - `sort_by`: `"count"` | `"alpha"` (optional) — Whether facet values are ordered by their count or alphabetically.
+  - `pagination`: `object` (optional) — The limits applied when paginating this index.
+    - `max_total_hits`: `number` (optional) — The maximum number of hits a query can page through.
+  - `distinct_attribute`: `string` (optional) — The dotted path of a field that hits are deduplicated by, returning at most one hit per distinct value.
+  - `locales`: `string`\[] (optional) — The languages the index's text is analyzed for, such as `["en"]`.
+  - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Index settings specific to a search engine, keyed by provider identifier.
+- `definition_hash`: `string` — A hash of the definition, which the module compares to detect that an index drifted from its definition and must be migrated.
+- `physical_name`: `string` — The concrete index the provider reads and writes. Differs from `name` under an index prefix, or while a `swap` builds into a replacement.
+
+### reindex
+
+This method triggers a background job that rebuilds one or more indexes from
+their definitions' `seed` functions. Medusa handles reindexing automatically.
+This method is useful to trigger the reindex manually after changing what a `seed`
+produces, or to recover an index whose documents drifted from their source
+of truth.
+
+The job is started, not awaited: the returned result only tells you which
+indexes are being rebuilt.
+
+#### Example
+
+To rebuild a single index:
+
+```ts
+const { job_id } = await searchModuleService.reindex({
+  index: "product",
+})
+```
+
+To rebuild part of an index in place:
+
+```ts
+const { job_id } = await searchModuleService.reindex({
+  index: "product",
+  strategy: "in_place",
+  filters: {
+    collection_id: "pcol_123",
+  },
+})
+```
+
+<a id="reindex-parameters" />
+
+#### Parameters
+
+**reindex**
+
+- `input`: [SearchReindexInput](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchReindexInput) (optional) — The reindex options, such as which indexes to rebuild and what strategy to use. If not provided, every index is rebuilt with the `swap` strategy.
+  - `index`: `string` | `string`\[] (optional) — The name of the index, or the names of the indexes, to rebuild. If not provided, every registered index is rebuilt.
+  - `strategy`: [SearchReindexStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchReindexStrategy) (optional) — The strategy to rebuild the index with.
+  - `filters`: `Record<string, unknown>` (optional) — Filters passed to the index definition's `seed` function to rebuild only a subset of the index's documents.
+
+<a id="reindex-returns" />
+
+#### Returns
+
+**reindex**
+
+- `Promise`: Promise\<[SearchReindexResult](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchReindexResult)> — The ID of the job performing the reindex, and the indexes it rebuilds.
+  - `job_id`: `string` — The ID of the background job performing the reindex.
+  - `indexes`: `string`\[] — The names of the indexes being rebuilt.
+
+### createIndexMigrationPlan
+
+This method plans what it would take to bring the physical indexes in line
+with the loaded index definitions. Planning is separate from executing it. It's
+useful for printing the actions, or executing them later with [executeIndexMigrationPlan](/resources/references/types/SearchTypes/interfaces/typesSearchTypesISearchModuleService#executeindexmigrationplan).
+
+#### Example
+
+```ts
+const actions = await searchModuleService.createIndexMigrationPlan()
+```
+
+<a id="createindexmigrationplan-returns" />
+
+#### Returns
+
+**createIndexMigrationPlan**
+
+- `Promise`: Promise\<[SearchIndexMigrationAction](/resources/references/types/SearchTypes/types/typesSearchTypesSearchIndexMigrationAction)\[]> — The actions required to bring the physical indexes in line with the definitions. Indexes that are already up to date are returned as `noop` actions.
+  - `SearchIndexMigrationAction[]`: [SearchIndexMigrationAction](/resources/references/types/SearchTypes/types/typesSearchTypesSearchIndexMigrationAction)\[]
+    - `action`: `"create"` — The index does not exist yet. Nothing is serving it, so it is built directly under its live name and filled in place.
+    - `index`: `string` — The name of the index to create.
+    - `physical_name`: `string` — The physical index to create it under.
+    - `definition_hash`: `string` — A hash of the definition the index is created from.
+    - `live_physical_name`: `string` — The index serving reads now.
+    - `live_definition_hash`: `string` — A hash of the definition the index currently serving reads was built from.
+    - `provider`: `string` — The provider the definition now binds to.
+    - `previous_provider`: `string` (optional) — The provider that currently holds this index. Set only when it differs from `provider`, so execute can drop the previous engine's data.
+
+### executeIndexMigrationPlan
+
+This method executes a migration plan, creating and altering physical
+indexes. Every action is idempotent, so executing the same plan twice is a
+no-op.
+
+The indexes this method creates are filled by the seed that runs at
+application start, so an index it creates serves nothing until then.
+
+#### Example
+
+```ts
+const actions = await searchModuleService.createIndexMigrationPlan()
+await searchModuleService.executeIndexMigrationPlan(actions)
+```
+
+<a id="executeindexmigrationplan-parameters" />
+
+#### Parameters
+
+**executeIndexMigrationPlan**
+
+- `actions`: [SearchIndexMigrationAction](/resources/references/types/SearchTypes/types/typesSearchTypesSearchIndexMigrationAction)\[] — The actions to execute, as returned by [createIndexMigrationPlan](/resources/references/types/SearchTypes/interfaces/typesSearchTypesISearchModuleService#createindexmigrationplan).
+  - `action`: `"create"` — The index does not exist yet. Nothing is serving it, so it is built directly under its live name and filled in place.
+  - `index`: `string` — The name of the index to create.
+  - `physical_name`: `string` — The physical index to create it under.
+  - `definition_hash`: `string` — A hash of the definition the index is created from.
+  - `live_physical_name`: `string` — The index serving reads now.
+  - `live_definition_hash`: `string` — A hash of the definition the index currently serving reads was built from.
+  - `provider`: `string` — The provider the definition now binds to.
+  - `previous_provider`: `string` (optional) — The provider that currently holds this index. Set only when it differs from `provider`, so execute can drop the previous engine's data.
+
+<a id="executeindexmigrationplan-returns" />
+
+#### Returns
+
+**executeIndexMigrationPlan**
+
+- `Promise`: Promise\<void> — Resolves when the physical indexes are created and altered.

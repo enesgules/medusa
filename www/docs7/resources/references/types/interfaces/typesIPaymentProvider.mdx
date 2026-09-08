@@ -1,0 +1,725 @@
+---
+title: IPaymentProvider
+---
+
+## Methods
+
+### initiatePayment
+
+<a id="initiatepayment-parameters" />
+
+#### Parameters
+
+**initiatePayment**
+
+- `data`: [InitiatePaymentInput](/resources/references/types/interfaces/typesInitiatePaymentInput) — The data used initiate a payment in a provider when a payment session is created.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+  - `amount`: [BigNumberInput](/resources/references/types/types/typesBigNumberInput) — The amount to be authorized.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/types/types/typesBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `currency_code`: `string` — The ISO 3 character currency code.
+
+<a id="initiatepayment-returns" />
+
+#### Returns
+
+**initiatePayment**
+
+- `Promise`: Promise\<[InitiatePaymentOutput](/resources/references/types/interfaces/typesInitiatePaymentOutput)>
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+  - `id`: `string` — The ID of the payment session in the payment provider.
+  - `status`: [PaymentSessionStatus](/resources/references/payment/types/paymentPaymentSessionStatus) (optional) — The status of the payment session, which will be stored in the payment session's `status` field.
+
+### updatePayment
+
+<a id="updatepayment-parameters" />
+
+#### Parameters
+
+**updatePayment**
+
+- `data`: [UpdatePaymentInput](/resources/references/types/interfaces/typesUpdatePaymentInput) — The attributes to update a payment related to a payment session in a provider.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+  - `amount`: [BigNumberInput](/resources/references/types/types/typesBigNumberInput) — The payment session's amount.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/types/types/typesBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `currency_code`: `string` — The ISO 3 character code of the payment session.
+
+<a id="updatepayment-returns" />
+
+#### Returns
+
+**updatePayment**
+
+- `Promise`: Promise\<[UpdatePaymentOutput](/resources/references/types/interfaces/typesUpdatePaymentOutput)>
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+  - `status`: [PaymentSessionStatus](/resources/references/payment/types/paymentPaymentSessionStatus) (optional) — The status of the payment, which will be stored in the payment session's `status` field.
+
+### deletePayment
+
+<a id="deletepayment-parameters" />
+
+#### Parameters
+
+**deletePayment**
+
+- `data`: [DeletePaymentInput](/resources/references/types/interfaces/typesDeletePaymentInput) — The data to delete a payment.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+
+<a id="deletepayment-returns" />
+
+#### Returns
+
+**deletePayment**
+
+- `Promise`: Promise\<[DeletePaymentOutput](/resources/references/types/interfaces/typesDeletePaymentOutput)>
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+
+### authorizePayment
+
+<a id="authorizepayment-parameters" />
+
+#### Parameters
+
+**authorizePayment**
+
+- `data`: [AuthorizePaymentInput](/resources/references/types/interfaces/typesAuthorizePaymentInput) — The data to authorize a payment.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+
+<a id="authorizepayment-returns" />
+
+#### Returns
+
+**authorizePayment**
+
+- `Promise`: Promise\<[AuthorizePaymentOutput](/resources/references/types/interfaces/typesAuthorizePaymentOutput)>
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+  - `status`: [PaymentSessionStatus](/resources/references/payment/types/paymentPaymentSessionStatus) — The status of the payment, which will be stored in the payment session's `status` field.
+
+### capturePayment
+
+<a id="capturepayment-parameters" />
+
+#### Parameters
+
+**capturePayment**
+
+- `data`: [CapturePaymentInput](/resources/references/types/interfaces/typesCapturePaymentInput) — The data to capture a payment.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+
+<a id="capturepayment-returns" />
+
+#### Returns
+
+**capturePayment**
+
+- `Promise`: Promise\<[CapturePaymentOutput](/resources/references/types/interfaces/typesCapturePaymentOutput)>
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+
+### refundPayment
+
+<a id="refundpayment-parameters" />
+
+#### Parameters
+
+**refundPayment**
+
+- `data`: [RefundPaymentInput](/resources/references/types/interfaces/typesRefundPaymentInput) — The data to refund a payment.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+  - `amount`: [BigNumberInput](/resources/references/types/types/typesBigNumberInput) — The amount to refund.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/types/types/typesBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+
+<a id="refundpayment-returns" />
+
+#### Returns
+
+**refundPayment**
+
+- `Promise`: Promise\<[RefundPaymentOutput](/resources/references/types/interfaces/typesRefundPaymentOutput)>
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+
+### retrievePayment
+
+<a id="retrievepayment-parameters" />
+
+#### Parameters
+
+**retrievePayment**
+
+- `data`: [RetrievePaymentInput](/resources/references/types/interfaces/typesRetrievePaymentInput) — The data to retrieve a payment.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+
+<a id="retrievepayment-returns" />
+
+#### Returns
+
+**retrievePayment**
+
+- `Promise`: Promise\<[RetrievePaymentOutput](/resources/references/types/interfaces/typesRetrievePaymentOutput)>
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+
+### cancelPayment
+
+<a id="cancelpayment-parameters" />
+
+#### Parameters
+
+**cancelPayment**
+
+- `data`: [CancelPaymentInput](/resources/references/types/interfaces/typesCancelPaymentInput) — The data to cancel a payment.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+
+<a id="cancelpayment-returns" />
+
+#### Returns
+
+**cancelPayment**
+
+- `Promise`: Promise\<[CancelPaymentOutput](/resources/references/types/interfaces/typesCancelPaymentOutput)>
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+
+### retrieveAccountHolder
+
+**Optional.**
+
+This method is used when retrieving an account holder in Medusa, allowing you to retrieve
+the equivalent account in the third-party payment provider. An account holder is useful to
+later save payment methods, such as credit cards, for a customer in the
+third-party payment provider using the [savePaymentMethod](/resources/references/types/interfaces/typesIPaymentProvider#savepaymentmethod) method.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0).
+
+#### Example
+
+```ts
+import { MedusaError } from "@medusajs/framework/utils"
+
+class MyPaymentProviderService extends AbstractPaymentProvider<
+ Options
+> {
+ async retrieveAccountHolder({ id }: RetrieveAccountHolderInput) {
+
+  // assuming you have a client that retrieves the account holder
+  const providerAccountHolder = await this.client.retrieveAccountHolder({
+    id
+  })
+
+  return {
+    id: providerAccountHolder.id,
+    data: providerAccountHolder as unknown as Record<string, unknown>
+  }
+}
+```
+
+<a id="retrieveaccountholder-parameters" />
+
+#### Parameters
+
+**retrieveAccountHolder**
+
+- `data`: [RetrieveAccountHolderInput](/resources/references/types/interfaces/typesRetrieveAccountHolderInput) — Input data including the details of the account holder to retrieve.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+  - `id`: `string` — The ID of the account holder to retrieve.
+
+<a id="retrieveaccountholder-returns" />
+
+#### Returns
+
+**retrieveAccountHolder**
+
+- `Promise`: Promise\<[RetrieveAccountHolderOutput](/resources/references/types/interfaces/typesRetrieveAccountHolderOutput)> — The retrieved account holder. If an error occurs, throw it.
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+  - `id`: `string` — The ID of the account holder in the payment provider.
+
+### createAccountHolder
+
+**Optional.**
+
+This method is used when creating an account holder in Medusa, allowing you to create
+the equivalent account in the third-party payment provider. An account holder is useful to
+later save payment methods, such as credit cards, for a customer in the
+third-party payment provider using the [savePaymentMethod](/resources/references/types/interfaces/typesIPaymentProvider#savepaymentmethod) method.
+
+The returned data will be stored in the account holder created in Medusa. For example,
+the returned `id` property will be stored in the account holder's `external_id` property.
+
+Medusa creates an account holder when a payment session initialized for a registered customer.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.5.0](https://github.com/medusajs/medusa/releases/tag/v2.5.0).
+
+#### Example
+
+```ts
+import { MedusaError } from "@medusajs/framework/utils"
+
+class MyPaymentProviderService extends AbstractPaymentProvider<
+ Options
+> {
+ async createAccountHolder({ context, data }: CreateAccountHolderInput) {
+  const { account_holder, customer } = context
+
+  if (account_holder?.data?.id) {
+    return { id: account_holder.data.id as string }
+  }
+
+  if (!customer) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Missing customer data."
+    )
+  }
+
+  // assuming you have a client that creates the account holder
+  const providerAccountHolder = await this.client.createAccountHolder({
+    email: customer.email,
+   ...data
+  })
+
+  return {
+    id: providerAccountHolder.id,
+    data: providerAccountHolder as unknown as Record<string, unknown>
+  }
+}
+```
+
+<a id="createaccountholder-parameters" />
+
+#### Parameters
+
+**createAccountHolder**
+
+- `data`: [CreateAccountHolderInput](/resources/references/types/interfaces/typesCreateAccountHolderInput) — Input data including the details of the account holder to create.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: Omit\<[PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext), "customer"> & `object` — The context of creating the account holder.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) — The account holder's associated customer details.
+
+<a id="createaccountholder-returns" />
+
+#### Returns
+
+**createAccountHolder**
+
+- `Promise`: Promise\<[CreateAccountHolderOutput](/resources/references/types/interfaces/typesCreateAccountHolderOutput)> — The result of creating the account holder. If an error occurs, throw it.
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+  - `id`: `string` — The ID of the account holder in the payment provider. This is stored in Medusa's account holder in the `external_id` property.
+
+### updateAccountHolder
+
+**Optional.**
+
+This method is used when updating an account holder in Medusa, allowing you to update
+the equivalent account in the third-party payment provider.
+
+The returned data will be stored in the account holder created in Medusa. For example,
+the returned `id` property will be stored in the account holder's `external_id` property.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.5.1](https://github.com/medusajs/medusa/releases/tag/v2.5.1).
+
+#### Example
+
+```ts
+import { MedusaError } from "@medusajs/framework/utils"
+
+class MyPaymentProviderService extends AbstractPaymentProvider<
+ Options
+> {
+ async updateAccountHolder({ context, data }: UpdateAccountHolderInput) {
+  const { account_holder, customer } = context
+
+  if (!account_holder?.data?.id) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Missing account holder ID."
+    )
+  }
+
+  // assuming you have a client that updates the account holder
+  const providerAccountHolder = await this.client.updateAccountHolder({
+    id: account_holder.data.id,
+   ...data
+  })
+
+  return {
+    id: providerAccountHolder.id,
+    data: providerAccountHolder as unknown as Record<string, unknown>
+  }
+}
+```
+
+<a id="updateaccountholder-parameters" />
+
+#### Parameters
+
+**updateAccountHolder**
+
+- `data`: [UpdateAccountHolderInput](/resources/references/types/interfaces/typesUpdateAccountHolderInput) — Input data including the details of the account holder to update.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) & `object` — The context of updating the account holder.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) — The account holder's details.
+
+<a id="updateaccountholder-returns" />
+
+#### Returns
+
+**updateAccountHolder**
+
+- `Promise`: Promise\<[UpdateAccountHolderOutput](/resources/references/types/interfaces/typesUpdateAccountHolderOutput)> — The result of updating the account holder. If an error occurs, throw it.
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+
+### deleteAccountHolder
+
+**Optional.**
+
+This method is used when an account holder is deleted in Medusa, allowing you
+to also delete the equivalent account holder in the third-party payment provider.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.5.0](https://github.com/medusajs/medusa/releases/tag/v2.5.0).
+
+#### Example
+
+```ts
+import { MedusaError } from "@medusajs/framework/utils"
+
+class MyPaymentProviderService extends AbstractPaymentProvider<
+ Options
+> {
+  async deleteAccountHolder({ context }: DeleteAccountHolderInput) {
+    const { account_holder } = context
+    const accountHolderId = account_holder?.data?.id as string | undefined
+    if (!accountHolderId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Missing account holder ID."
+      )
+    }
+
+    // assuming you have a client that deletes the account holder
+    await this.client.deleteAccountHolder({
+      id: accountHolderId
+    })
+
+    return {}
+  }
+}
+```
+
+<a id="deleteaccountholder-parameters" />
+
+#### Parameters
+
+**deleteAccountHolder**
+
+- `data`: [DeleteAccountHolderInput](/resources/references/types/interfaces/typesDeleteAccountHolderInput) — Input data including the details of the account holder to delete.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: Omit\<[PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext), "account\_holder"> & `object` — The context of deleting the account holder.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+    - `account_holder`: Partial\<[AccountHolderDTO](/resources/references/payment/interfaces/paymentAccountHolderDTO)> — The account holder's details.
+
+<a id="deleteaccountholder-returns" />
+
+#### Returns
+
+**deleteAccountHolder**
+
+- `Promise`: Promise\<[DeleteAccountHolderOutput](/resources/references/types/interfaces/typesDeleteAccountHolderOutput)> — The result of deleting the account holder. If an error occurs, throw it.
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+
+### listPaymentMethods
+
+**Optional.**
+
+This method is used to retrieve the list of saved payment methods for an account holder
+in the third-party payment provider. A payment provider that supports saving payment methods
+must implement this method.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.5.0](https://github.com/medusajs/medusa/releases/tag/v2.5.0).
+
+#### Example
+
+```ts
+import { MedusaError } from "@medusajs/framework/utils"
+
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  async listPaymentMethods({ context }: ListPaymentMethodsInput) {
+    const { account_holder } = context
+    const accountHolderId = account_holder?.data?.id as string | undefined
+
+    if (!accountHolderId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Missing account holder ID."
+      )
+    }
+
+   // assuming you have a client that lists the payment methods
+   const paymentMethods = await this.client.listPaymentMethods({
+     customer_id: accountHolderId
+   })
+
+   return paymentMethods.map((pm) => ({
+     id: pm.id,
+     data: pm as unknown as Record<string, unknown>
+   }))
+ }
+}
+```
+
+<a id="listpaymentmethods-parameters" />
+
+#### Parameters
+
+**listPaymentMethods**
+
+- `data`: [ListPaymentMethodsInput](/resources/references/types/interfaces/typesListPaymentMethodsInput) — Input data including the details of the account holder to list payment methods for.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+
+<a id="listpaymentmethods-returns" />
+
+#### Returns
+
+**listPaymentMethods**
+
+- `Promise`: Promise\<[ListPaymentMethodsOutput](/resources/references/types/interfaces/typesListPaymentMethodsOutput)> — The list of payment methods saved for the account holder. If an error occurs, throw it.
+  - `ListPaymentMethodsOutput`: `object` — The result of listing payment methods for an account holder in the third-party payment provider.
+
+### savePaymentMethod
+
+**Optional.**
+
+This method is used to save a customer's payment method, such as a credit card, in the
+third-party payment provider. A payment provider that supports saving payment methods
+must implement this method.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.5.0](https://github.com/medusajs/medusa/releases/tag/v2.5.0).
+
+#### Example
+
+```ts
+import { MedusaError } from "@medusajs/framework/utils"
+
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  async savePaymentMethod({ context, data }: SavePaymentMethodInput) {   *
+    const accountHolderId = context?.account_holder?.data?.id as
+      | string
+      | undefined
+
+    if (!accountHolderId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Missing account holder ID."
+      )
+    }
+
+   // assuming you have a client that saves the payment method
+   const paymentMethod = await this.client.savePaymentMethod({
+     customer_id: accountHolderId,
+     ...data
+   })
+
+  return {
+    id: paymentMethod.id,
+    data: paymentMethod as unknown as Record<string, unknown>
+  }
+ }
+}
+```
+
+<a id="savepaymentmethod-parameters" />
+
+#### Parameters
+
+**savePaymentMethod**
+
+- `data`: [SavePaymentMethodInput](/resources/references/types/interfaces/typesSavePaymentMethodInput) — The details of the payment method to save.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+
+<a id="savepaymentmethod-returns" />
+
+#### Returns
+
+**savePaymentMethod**
+
+- `Promise`: Promise\<[SavePaymentMethodOutput](/resources/references/types/interfaces/typesSavePaymentMethodOutput)> — The result of saving the payment method. If an error occurs, throw it.
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+  - `id`: `string` — The ID of the payment method in the payment provider.
+
+### deletePaymentMethod
+
+**Optional.**
+
+This method is used to delete a customer's saved payment method from the
+third-party payment provider. A payment provider that supports saving payment methods
+should implement this method.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+#### Example
+
+```ts
+import { MedusaError } from "@medusajs/framework/utils"
+
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  async deletePaymentMethod({ data }: DeletePaymentMethodInput) {
+    const paymentMethodId = data.id
+
+    if (!paymentMethodId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Missing payment method ID."
+      )
+    }
+
+   // assuming you have a client that deletes the payment method
+   await this.client.deletePaymentMethod(paymentMethodId)
+
+  return {}
+ }
+}
+```
+
+<a id="deletepaymentmethod-parameters" />
+
+#### Parameters
+
+**deletePaymentMethod**
+
+- `data`: [DeletePaymentMethodInput](/resources/references/types/interfaces/typesDeletePaymentMethodInput) — The details of the payment method to delete.
+  - `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+  - `data`: `object` & `Record<string, unknown>` — The payment method's data.
+    - `id`: `string` — The ID of the payment method in the payment provider.
+
+<a id="deletepaymentmethod-returns" />
+
+#### Returns
+
+**deletePaymentMethod**
+
+- `Promise`: Promise\<[DeletePaymentMethodOutput](/resources/references/types/interfaces/typesDeletePaymentMethodOutput)> — The result of deleting the payment method. If an error occurs, throw it.
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+
+### getPaymentStatus
+
+<a id="getpaymentstatus-parameters" />
+
+#### Parameters
+
+**getPaymentStatus**
+
+- `data`: [GetPaymentStatusInput](/resources/references/types/interfaces/typesGetPaymentStatusInput) — The data to get the payment status.
+  - `data`: `Record<string, unknown>` (optional) — Data is a combination of the input from the user and what is stored in the database for the associated model.
+  - `context`: [PaymentProviderContext](/resources/references/types/interfaces/typesPaymentProviderContext) (optional) — The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.
+    - `account_holder`: [PaymentAccountHolderDTO](/resources/references/types/types/typesPaymentAccountHolderDTO) (optional) — The account holder information, if available for the payment provider.
+    - `customer`: [PaymentCustomerDTO](/resources/references/types/types/typesPaymentCustomerDTO) (optional) — The customer information from Medusa.
+    - `idempotency_key`: `string` (optional) — Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.
+
+<a id="getpaymentstatus-returns" />
+
+#### Returns
+
+**getPaymentStatus**
+
+- `Promise`: Promise\<[GetPaymentStatusOutput](/resources/references/types/interfaces/typesGetPaymentStatusOutput)>
+  - `data`: `Record<string, unknown>` (optional) — The unstructured data returned from the payment provider. The content will vary between providers.
+  - `status`: [PaymentSessionStatus](/resources/references/payment/types/paymentPaymentSessionStatus) — The status of the payment, which will be stored in the payment session's `status` field.
+
+### getWebhookActionAndData
+
+<a id="getwebhookactionanddata-parameters" />
+
+#### Parameters
+
+**getWebhookActionAndData**
+
+- `data`: `object`
+
+<a id="getwebhookactionanddata-returns" />
+
+#### Returns
+
+**getWebhookActionAndData**
+
+- `Promise`: Promise\<[WebhookActionResult](/resources/references/types/interfaces/typesWebhookActionResult)>
+  - `action`: [PaymentActions](/resources/references/types/types/typesPaymentActions) — The action that was performed so that Medusa can handle it internally.
+  - `data`: [WebhookActionData](/resources/references/types/interfaces/typesWebhookActionData) (optional) — The webhook action's details.
+    - `session_id`: `string` — The ID of the payment session in Medusa. Make sure to store this ID in the third-party payment provider to be able to retrieve the payment session later.
+    - `amount`: [BigNumberValue](/resources/references/types/types/typesBigNumberValue) — The amount to be captured or authorized (based on the action's type.)

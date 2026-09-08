@@ -1,0 +1,79 @@
+---
+title: IIndexService
+---
+
+## Methods
+
+### query
+
+<a id="query-type-parameters" />
+
+#### Type Parameters
+
+**query**
+
+- `TEntry`: `string` (optional)
+
+<a id="query-parameters" />
+
+#### Parameters
+
+**query**
+
+- `config`: [IndexQueryConfig](/resources/references/types/IndexTypes/types/typesIndexTypesIndexQueryConfig)\<TEntry>
+  - `fields`: [ObjectToIndexFields](/resources/references/types/IndexTypes/types/typesIndexTypesObjectToIndexFields)\<[IndexServiceEntryPoints](/resources/references/types/IndexTypes/interfaces/typesIndexTypesIndexServiceEntryPoints)\[TEntry & keyof [IndexServiceEntryPoints](/resources/references/types/IndexTypes/interfaces/typesIndexTypesIndexServiceEntryPoints)]> extends `never` ? `string`\[] : [ObjectToIndexFields](/resources/references/types/IndexTypes/types/typesIndexTypesObjectToIndexFields)\<[IndexServiceEntryPoints](/resources/references/types/IndexTypes/interfaces/typesIndexTypesIndexServiceEntryPoints)\[TEntry & keyof [IndexServiceEntryPoints](/resources/references/types/IndexTypes/interfaces/typesIndexTypesIndexServiceEntryPoints)]>\[]
+  - `filters`: [IndexFilters](/resources/references/types/IndexTypes/types/typesIndexTypesIndexFilters)\<TEntry> (optional)
+  - `joinFilters`: [IndexFilters](/resources/references/types/IndexTypes/types/typesIndexTypesIndexFilters)\<TEntry> (optional)
+  - `pagination`: Partial\<[IndexQueryInput](/resources/references/types/IndexTypes/types/typesIndexTypesIndexQueryInput)\<TEntry>\["pagination"]> (optional)
+  - `idsOnly`: `boolean` (optional)
+
+<a id="query-returns" />
+
+#### Returns
+
+**query**
+
+- `Promise`: Promise\<[QueryResultSet](/resources/references/types/IndexTypes/types/typesIndexTypesQueryResultSet)\<TEntry>>
+
+### sync
+
+Sync the index
+The sync strategy can be "full" meaning it will re sync the entire index, "reset" meaning it
+will reset the index data and start from scratch, or if not specified, it will continue the
+sync from the last sync point.
+
+<a id="sync-parameters" />
+
+#### Parameters
+
+**sync**
+
+- `strategy`: `object` (optional) — The sync strategy
+  - `strategy`: `"full"` | `"reset"` (optional)
+
+<a id="sync-returns" />
+
+#### Returns
+
+**sync**
+
+- `Promise`: Promise\<void> — Sync the index The sync strategy can be "full" meaning it will re sync the entire index, "reset" meaning it will reset the index data and start from scratch, or if not specified, it will continue the sync from the last sync point.
+
+### getInfo
+
+Get the index information
+
+<a id="getinfo-returns" />
+
+#### Returns
+
+**getInfo**
+
+- `Promise`: Promise\<[IndexInfo](/resources/references/types/IndexTypes/interfaces/typesIndexTypesIndexInfo)\[]> — The index information
+  - `IndexInfo[]`: [IndexInfo](/resources/references/types/IndexTypes/interfaces/typesIndexTypesIndexInfo)\[]
+    - `id`: `string`
+    - `entity`: `string`
+    - `status`: `"pending"` | `"error"` | `"done"` | `"processing"`
+    - `fields`: `string`\[]
+    - `updated_at`: `Date`
+    - `last_synced_key`: `null` | `string`

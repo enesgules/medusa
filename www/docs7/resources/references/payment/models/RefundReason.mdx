@@ -1,0 +1,105 @@
+---
+title: RefundReason - Payment Module Data Models Reference
+sidebarTitle: RefundReason
+---
+
+This documentation provides a reference to the RefundReason data model. It belongs to the Payment Module.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/payment/src/models/refund-reason.ts#L4)
+
+**RefundReason**
+
+- `id`: PrimaryKeyModifier\<IdProperty> — The ID of the refund reason.
+- `label`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The label of the refund reason
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The code of the refund reason
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `description`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The description of the refund reason
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+- `refunds`: HasMany\<[Refund](/resources/references/payment/models/Refund)> — The associated refunds.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the refund.
+  - `amount`: `BigNumberProperty` — The refunded amount.
+  - `payment`: BelongsTo\<[Payment](/resources/references/payment/models/Payment)> — The associated payment.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the payment.
+    - `amount`: `BigNumberProperty` — The amount of the payment
+    - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The currency code of the payment.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `provider_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the Payment Module Provider used to process the payment.
+    - `data`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The data of the payment that's useful for processing with third-party services. Learn more in [this documentation](/resources/commerce-modules/payment/payment-session#data-property)
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+    - `captured_at`: `DateTimeProperty` (optional) — The date that the payment was captured.
+    - `canceled_at`: `DateTimeProperty` (optional) — The date that the payment was canceled.
+    - `payment_collection`: BelongsTo\<[PaymentCollection](/resources/references/payment/models/PaymentCollection)> — The associated payment collection.
+    - `payment_session`: BelongsTo\<[PaymentSession](/resources/references/payment/models/PaymentSession)> — The associated payment session.
+    - `refunds`: HasMany\<[Refund](/resources/references/payment/models/Refund)> — The associated refunds.
+    - `captures`: HasMany\<[Capture](/resources/references/payment/models/Capture)> — The associated captures.
+  - `refund_reason`: BelongsTo\<[RefundReason](/resources/references/payment/models/RefundReason)> (optional) — The associated refund reason.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the refund reason.
+    - `label`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The label of the refund reason
+    - `code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The code of the refund reason
+    - `description`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The description of the refund reason
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+    - `refunds`: HasMany\<[Refund](/resources/references/payment/models/Refund)> — The associated refunds.
+  - `note`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — A note with more explanation about the refund
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `created_by`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the user that created the refund.
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.

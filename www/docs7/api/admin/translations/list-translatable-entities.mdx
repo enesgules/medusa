@@ -1,0 +1,589 @@
+---
+title: List Translatable Entities
+---
+
+`GET /admin/translations/entities`
+
+Retrieve a list of translatable entities. The entities can be filtered by fields such as `id`. The entities can also be sorted or paginated.
+
+## Base URLs
+
+- `http://localhost:9000`
+
+- `https://api.medusajs.com`
+
+## Authentication
+
+```json
+{
+  "api_token": {
+    "type": "http",
+    "x-displayName": "API Token",
+    "scheme": "basic"
+  }
+}
+```
+
+```json
+{
+  "cookie_auth": {
+    "type": "apiKey",
+    "in": "cookie",
+    "name": "connect.sid",
+    "x-displayName": "Cookie Session ID"
+  }
+}
+```
+
+```json
+{
+  "jwt_token": {
+    "type": "http",
+    "x-displayName": "JWT Token",
+    "scheme": "bearer"
+  }
+}
+```
+
+[Authentication guide](/api/admin/authentication)
+
+## Parameters
+
+<Accordion title="type (query, required)">
+  Filter by a translatable entity type.
+
+  ```json
+  {
+    "name": "type",
+    "in": "query",
+    "description": "Filter by a translatable entity type.",
+    "required": true,
+    "schema": {
+      "type": "string",
+      "title": "type",
+      "description": "Filter by a translatable entity type.",
+      "example": "product"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="id (query, optional)">
+  ```json
+  {
+    "name": "id",
+    "in": "query",
+    "required": false,
+    "schema": {
+      "oneOf": [
+        {
+          "type": "string",
+          "title": "id",
+          "description": "Filter by an entity's ID."
+        },
+        {
+          "type": "array",
+          "description": "Filter by entity IDs.",
+          "items": {
+            "type": "string",
+            "title": "id",
+            "description": "An entity's ID."
+          }
+        }
+      ]
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="limit (query, optional)">
+  Limit the number of items returned in the list.
+
+  ```json
+  {
+    "name": "limit",
+    "in": "query",
+    "description": "Limit the number of items returned in the list.",
+    "required": false,
+    "schema": {
+      "type": "number",
+      "title": "limit",
+      "description": "Limit the number of items returned in the list.",
+      "externalDocs": {
+        "url": "#pagination"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="offset (query, optional)">
+  The number of items to skip when retrieving a list.
+
+  ```json
+  {
+    "name": "offset",
+    "in": "query",
+    "description": "The number of items to skip when retrieving a list.",
+    "required": false,
+    "schema": {
+      "type": "number",
+      "title": "offset",
+      "description": "The number of items to skip when retrieving a list.",
+      "externalDocs": {
+        "url": "#pagination"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="order (query, optional)">
+  The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+
+  ```json
+  {
+    "name": "order",
+    "in": "query",
+    "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "title": "order",
+      "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
+      "externalDocs": {
+        "url": "#pagination"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="with_deleted (query, optional)">
+  The translation's with deleted.
+
+  ```json
+  {
+    "name": "with_deleted",
+    "in": "query",
+    "description": "The translation's with deleted.",
+    "required": false,
+    "schema": {
+      "type": "boolean",
+      "title": "with_deleted",
+      "description": "The translation's with deleted."
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="fields (query, optional)">
+  Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+
+  ```json
+  {
+    "name": "fields",
+    "in": "query",
+    "description": "Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "title": "fields",
+      "description": "Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.",
+      "externalDocs": {
+        "url": "#select-fields-and-relations"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+## Responses
+
+<Accordion title="200 — OK">
+  OK
+
+  ```json
+  {
+    "description": "OK",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/AdminTranslationEntitiesResponse"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminTranslationEntitiesResponse](/api/schemas/admin-translation-entities-response)
+</Accordion>
+
+<Accordion title="400 — Client Error">
+  Client Error
+
+  ```json
+  {
+    "description": "Client Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "not_allowed": {
+            "$ref": "#/components/examples/not_allowed_error"
+          },
+          "invalid_data": {
+            "$ref": "#/components/examples/invalid_data_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="401 — User is not authorized. Must log in first">
+  User is not authorized. Must log in first
+
+  ```json
+  {
+    "description": "User is not authorized. Must log in first",
+    "content": {
+      "text/plain": {
+        "schema": {
+          "type": "string",
+          "default": "Unauthorized",
+          "example": "Unauthorized"
+        }
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Not Found Error">
+  Not Found Error
+
+  ```json
+  {
+    "description": "Not Found Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "message": "Entity with id 1 was not found",
+          "type": "not_found"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="409 — Invalid State Error">
+  Invalid State Error
+
+  ```json
+  {
+    "description": "Invalid State Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "unknown_error",
+          "message": "The request conflicted with another request. You may retry the request with the provided Idempotency-Key.",
+          "type": "QueryRunnerAlreadyReleasedError"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="422 — Invalid Request Error">
+  Invalid Request Error
+
+  ```json
+  {
+    "description": "Invalid Request Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "invalid_request_error",
+          "message": "Discount with code TEST already exists.",
+          "type": "duplicate_error"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="500 — Server Error">
+  Server Error
+
+  ```json
+  {
+    "description": "Server Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "database": {
+            "$ref": "#/components/examples/database_error"
+          },
+          "unexpected_state": {
+            "$ref": "#/components/examples/unexpected_state_error"
+          },
+          "invalid_argument": {
+            "$ref": "#/components/examples/invalid_argument_error"
+          },
+          "default_error": {
+            "$ref": "#/components/examples/default_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+## Examples
+
+### JS SDK
+
+```js
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+  debug: import.meta.env.DEV,
+  auth: {
+    type: "session",
+  },
+})
+
+sdk.admin.translation.entities({
+  type: "product"
+})
+.then(({ data, count, offset, limit }) => {
+  console.log(data)
+})
+```
+
+### cURL
+
+```bash
+curl '{backend_url}/admin/translations/entities' \
+-H 'Authorization: Bearer {access_token}'
+```
+
+<Accordion title="OpenAPI operation">
+  ```json
+  {
+    "operationId": "GetTranslationsEntities",
+    "summary": "List Translatable Entities",
+    "description": "Retrieve a list of translatable entities. The entities can be filtered by fields such as `id`. The entities can also be sorted or paginated.",
+    "x-authenticated": true,
+    "parameters": [
+      {
+        "name": "type",
+        "in": "query",
+        "description": "Filter by a translatable entity type.",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "title": "type",
+          "description": "Filter by a translatable entity type.",
+          "example": "product"
+        }
+      },
+      {
+        "name": "id",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "oneOf": [
+            {
+              "type": "string",
+              "title": "id",
+              "description": "Filter by an entity's ID."
+            },
+            {
+              "type": "array",
+              "description": "Filter by entity IDs.",
+              "items": {
+                "type": "string",
+                "title": "id",
+                "description": "An entity's ID."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "limit",
+        "in": "query",
+        "description": "Limit the number of items returned in the list.",
+        "required": false,
+        "schema": {
+          "type": "number",
+          "title": "limit",
+          "description": "Limit the number of items returned in the list.",
+          "externalDocs": {
+            "url": "#pagination"
+          }
+        }
+      },
+      {
+        "name": "offset",
+        "in": "query",
+        "description": "The number of items to skip when retrieving a list.",
+        "required": false,
+        "schema": {
+          "type": "number",
+          "title": "offset",
+          "description": "The number of items to skip when retrieving a list.",
+          "externalDocs": {
+            "url": "#pagination"
+          }
+        }
+      },
+      {
+        "name": "order",
+        "in": "query",
+        "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "order",
+          "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
+          "externalDocs": {
+            "url": "#pagination"
+          }
+        }
+      },
+      {
+        "name": "with_deleted",
+        "in": "query",
+        "description": "The translation's with deleted.",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "title": "with_deleted",
+          "description": "The translation's with deleted."
+        }
+      },
+      {
+        "name": "fields",
+        "in": "query",
+        "description": "Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "fields",
+          "description": "Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.",
+          "externalDocs": {
+            "url": "#select-fields-and-relations"
+          }
+        }
+      }
+    ],
+    "security": [
+      {
+        "api_token": []
+      },
+      {
+        "cookie_auth": []
+      },
+      {
+        "jwt_token": []
+      }
+    ],
+    "x-codeSamples": [
+      {
+        "lang": "JavaScript",
+        "label": "JS SDK",
+        "source": "import Medusa from \"@medusajs/js-sdk\"\n\nexport const sdk = new Medusa({\n  baseUrl: import.meta.env.VITE_BACKEND_URL || \"/\",\n  debug: import.meta.env.DEV,\n  auth: {\n    type: \"session\",\n  },\n})\n\nsdk.admin.translation.entities({\n  type: \"product\"\n})\n.then(({ data, count, offset, limit }) => {\n  console.log(data)\n})"
+      },
+      {
+        "lang": "Shell",
+        "label": "cURL",
+        "source": "curl '{backend_url}/admin/translations/entities' \\\n-H 'Authorization: Bearer {access_token}'"
+      }
+    ],
+    "tags": [
+      "Translations"
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AdminTranslationEntitiesResponse"
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/400_error"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "404": {
+        "$ref": "#/components/responses/not_found_error"
+      },
+      "409": {
+        "$ref": "#/components/responses/invalid_state_error"
+      },
+      "422": {
+        "$ref": "#/components/responses/invalid_request_error"
+      },
+      "500": {
+        "$ref": "#/components/responses/500_error"
+      }
+    },
+    "x-since": "2.12.4",
+    "x-featureFlag": "translation"
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminTranslationEntitiesResponse](/api/schemas/admin-translation-entities-response)
+</Accordion>

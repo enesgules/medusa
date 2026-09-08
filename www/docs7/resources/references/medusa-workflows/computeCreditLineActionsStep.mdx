@@ -1,0 +1,73 @@
+---
+title: computeCreditLineActionsStep - Medusa Core Workflows Reference
+sidebarTitle: computeCreditLineActionsStep
+---
+
+This documentation provides a reference to the `computeCreditLineActionsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step computes the credit lines to create and delete when applying store
+credits to a cart. It collects the existing store-credit lines to delete and
+builds a new credit line for the specified amount, or for the full store credit
+balance if no amount is specified. It throws an error if the requested amount is
+greater than the store credit account balance.
+
+## Example
+
+```ts
+const data = computeCreditLineActionsStep({
+  storeCreditAccount: {
+    id: "sca_123",
+    balance: 100,
+    // other store credit account properties...
+  },
+  cart: { ...cart, id: "cart_123", total: 50 },
+  input: { amount: 50 },
+})
+```
+
+<a id="computecreditlineactionsstep-input" />
+
+## Input
+
+**computeCreditLineActionsStep**
+
+- `ComputeCreditLineActionsStepInput`: [ComputeCreditLineActionsStepInput](/resources/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flowsplugins_loyalty_src_workflowsComputeCreditLineActionsStepInput)
+  - `storeCreditAccount`: [ModuleStoreCreditAccount](/resources/references/store_credit/types/store_creditModuleStoreCreditAccount) — The customer's store credit account.
+    - `id`: `string` — The store credit account's ID.
+    - `customer_id`: `string` (optional) — The ID of the customer who owns this account, if any.
+    - `code`: `string` (optional) — The unique code that identifies this account, used for anonymous or gift card accounts.
+    - `currency_code`: `string` — The three-letter ISO currency code of the account's balance.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `credits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount credited to this account.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `debits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount debited from this account.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `balance`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The current balance of this account (credits minus debits).
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `metadata`: `Record<string, unknown>` — Custom key-value pairs attached to this account.
+    - `created_at`: `string` — The date the account was created.
+    - `updated_at`: `string` — The date the account was last updated.
+  - `cart`: `PluginCartDTO` — The cart to apply store credits to.
+  - `input`: `object` — The workflow input containing the amount of store credits to apply.
+    - `amount`: `number` (optional)
+
+<a id="computecreditlineactionsstep-output" />
+
+## Output
+
+**computeCreditLineActionsStep**
+
+- `WorkflowDataProperties`: [WorkflowDataProperties](/resources/references/workflows/types/workflowsWorkflowDataProperties)\<object>
+  - `creditLinesToCreate`: `CreateCartCreditLineDTO`\[]
+  - `creditLinesToDelete`: `string`\[]

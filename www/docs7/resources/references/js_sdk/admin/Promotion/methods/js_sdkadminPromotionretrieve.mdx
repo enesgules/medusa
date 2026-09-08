@@ -1,0 +1,67 @@
+---
+title: retrieve
+---
+
+This method retrieves a promotion by its ID. It sends a request to the
+[Retrieve Promotion](/api/admin/promotions/get-a-promotion)
+API route.
+
+## Example
+
+To retrieve a promotion by its ID:
+
+```ts
+sdk.admin.promotion.retrieve("promo_123")
+.then(({ promotion }) => {
+  console.log(promotion)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.promotion.retrieve("promo_123", {
+  fields: "id,*application_method"
+})
+.then(({ promotion }) => {
+  console.log(promotion)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The promotion's ID.
+- `query`: [AdminGetPromotionParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPromotionParams) (optional) — Configure the fields to retrieve in the promotion.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminPromotionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPromotionResponse)> — The promotion's details.
+  - `promotion`: [AdminPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPromotion) — The promotion's details.
+    - `application_method`: [AdminApplicationMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminApplicationMethod) (optional) — The promotion's application method.
+    - `rules`: [AdminPromotionRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPromotionRule)\[] (optional) — The rules for the promotion.
+    - `id`: `string`
+    - `code`: `string` (optional)
+    - `type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues) (optional) — The promotion's possible types.
+    - `is_automatic`: `boolean` (optional)
+    - `is_tax_inclusive`: `boolean` (optional)
+    - `limit`: `null` | `number` (optional)
+    - `used`: `number` (optional)
+    - `status`: [PromotionStatusValues](/resources/references/promotion/types/promotionPromotionStatusValues) (optional) — The promotion's possible types.
+    - `campaign_id`: `string` (optional)
+    - `campaign`: [AdminCampaign](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaign) (optional)
+    - `created_at`: `string`
+    - `updated_at`: `string`
+    - `deleted_at`: `null` | `string`

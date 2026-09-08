@@ -1,0 +1,65 @@
+---
+title: retrieveInventoryLevelByItemAndLocation - Inventory Next Module Reference
+sidebarTitle: retrieveInventoryLevelByItemAndLocation
+---
+
+This documentation provides a reference to the `retrieveInventoryLevelByItemAndLocation` method. This belongs to the Inventory Next Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves an inventory level based on its associated inventory item and location.
+
+## Example
+
+```ts
+const inventoryLevel =
+  await inventoryModuleService.retrieveInventoryLevelByItemAndLocation(
+    "iitem_123",
+    "loc_123"
+  )
+```
+
+<a id="retrieveinventorylevelbyitemandlocation-parameters" />
+
+## Parameters
+
+**retrieveInventoryLevelByItemAndLocation**
+
+- `inventoryItemId`: `string` — The inventory item's ID.
+- `locationId`: `string` — The location's ID.
+- `context`: [Context](/resources/references/inventory_next/interfaces/inventory_nextContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/inventory_next/interfaces/inventory_nextIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="retrieveinventorylevelbyitemandlocation-returns" />
+
+## Returns
+
+**retrieveInventoryLevelByItemAndLocation**
+
+- `Promise`: Promise\<[InventoryLevelDTO](/resources/references/inventory_next/interfaces/inventory_nextInventoryLevelDTO)> — The retrieved inventory level.
+  - `id`: `string` — The ID of the inventory level.
+  - `inventory_item_id`: `string` — The associated inventory item's ID.
+  - `location_id`: `string` — The associated location's ID.
+  - `stocked_quantity`: `number` — The stocked quantity of the inventory level.
+  - `reserved_quantity`: `number` — The reserved quantity of the inventory level.
+  - `incoming_quantity`: `number` — The incoming quantity of the inventory level.
+  - `available_quantity`: `number` — The available quantity of the inventory level.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `created_at`: `string` | `Date` — The creation date of the inventory level.
+  - `updated_at`: `string` | `Date` — The update date of the inventory level.
+  - `deleted_at`: `null` | `string` | `Date` — The deletion date of the inventory level.

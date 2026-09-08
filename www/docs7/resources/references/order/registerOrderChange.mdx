@@ -1,0 +1,123 @@
+---
+title: registerOrderChange - Order Module Reference
+sidebarTitle: registerOrderChange
+---
+
+This documentation provides a reference to the `registerOrderChange` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="registerorderchange-data-sharedcontext-promiseorderchangedto" />
+
+## registerOrderChange(data, sharedContext?): Promise\<[OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)>
+
+This method registers an order change.
+
+### Example
+
+```ts
+await orderModuleService.registerOrderChange({
+  order_id: "123",
+  details: Record<string, unknown>
+})
+```
+
+<a id="registerorderchange-parameters" />
+
+### Parameters
+
+**registerOrderChange**
+
+- `data`: [RegisterOrderChangeDTO](/resources/references/order/interfaces/orderRegisterOrderChangeDTO) — The register order change details.
+  - `order_id`: `string` — The associated order's ID.
+  - `change_type`: [OrderChangeType](/resources/references/order/types/orderOrderChangeType) (optional) — The type of the order change.
+  - `description`: `string` (optional) — The description of the order change.
+  - `internal_note`: `null` | `string` (optional) — The internal note of the order change.
+  - `created_by`: `string` (optional) — The user that created the order change.
+  - `confirmed_by`: `string` (optional) — The user or customer that confirmed the order change.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `details`: `Record<string, unknown>` (optional) — The details of the order change action
+  - `reference`: `string` (optional) — The name of the data model that this change references. For example, `shipping_address`.
+  - `reference_id`: `string` (optional) — The ID of the data model's record referenced.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="registerorderchange-returns" />
+
+### Returns
+
+**registerOrderChange**
+
+- `Promise`: Promise\<[OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)> — The item and shipping method changes made on the order.
+
+<a id="registerorderchange-data-sharedcontext-promiseorderchangedto-1" />
+
+## registerOrderChange(data, sharedContext?): Promise\<[OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)\[]>
+
+This method registers order changes.
+
+### Example
+
+```ts
+await orderModuleService.registerOrderChange({
+  order_id: "123",
+  details: Record<string, unknown>
+})
+```
+
+<a id="registerorderchange-parameters-1" />
+
+### Parameters
+
+**registerOrderChange**
+
+- `data`: [RegisterOrderChangeDTO](/resources/references/order/interfaces/orderRegisterOrderChangeDTO)\[] — The register order changes details.
+  - `order_id`: `string` — The associated order's ID.
+  - `change_type`: [OrderChangeType](/resources/references/order/types/orderOrderChangeType) (optional) — The type of the order change.
+  - `description`: `string` (optional) — The description of the order change.
+  - `internal_note`: `null` | `string` (optional) — The internal note of the order change.
+  - `created_by`: `string` (optional) — The user that created the order change.
+  - `confirmed_by`: `string` (optional) — The user or customer that confirmed the order change.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `details`: `Record<string, unknown>` (optional) — The details of the order change action
+  - `reference`: `string` (optional) — The name of the data model that this change references. For example, `shipping_address`.
+  - `reference_id`: `string` (optional) — The ID of the data model's record referenced.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="registerorderchange-returns-1" />
+
+### Returns
+
+**registerOrderChange**
+
+- `Promise`: Promise\<[OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)\[]> — The item and shipping method changes made on the orders.
+  - `OrderChangeDTO[]`: [OrderChangeDTO](/resources/references/order/interfaces/orderOrderChangeDTO)\[]

@@ -1,0 +1,186 @@
+---
+title: Campaign - Promotion Module Data Models Reference
+sidebarTitle: Campaign
+---
+
+This documentation provides a reference to the Campaign data model. It belongs to the Promotion Module.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/promotion/src/models/campaign.ts#L5)
+
+**Campaign**
+
+- `id`: PrimaryKeyModifier\<IdProperty> — The ID of the campaign.
+- `name`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The name of the campaign
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `description`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The description of the campaign
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `campaign_identifier`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The campaign's identifier, such as a Google Tag ID.
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `starts_at`: `DateTimeProperty` (optional) — The date that the campaign starts.
+- `ends_at`: `DateTimeProperty` (optional) — The date that the campaign ends.
+- `budget`: HasOne\<[CampaignBudget](/resources/references/promotion/models/CampaignBudget)> (optional) — The associated budget.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the campaign budget.
+  - `type`: EnumProperty\<typeof [CampaignBudgetType](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsCampaignBudgetType)> — The type of the campaign budget
+  - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The currency code of the campaign budget.
+
+    Example:
+
+    ```
+    usd
+    ```
+
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `limit`: `BigNumberProperty` (optional) — The limit of the campaign budget
+  - `used`: `BigNumberProperty` — How much of the budget has been used. if the `limit` is `spend`, this property holds the total amount discounted so far. if the `limit` is `usage`, it holds the number of times the campaign's promotions have been used so far.
+  - `campaign`: BelongsTo\<[Campaign](/resources/references/promotion/models/Campaign)> — The associated campaign.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the campaign.
+    - `name`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The name of the campaign
+    - `description`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The description of the campaign
+    - `campaign_identifier`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The campaign's identifier, such as a Google Tag ID.
+    - `starts_at`: `DateTimeProperty` (optional) — The date that the campaign starts.
+    - `ends_at`: `DateTimeProperty` (optional) — The date that the campaign ends.
+    - `budget`: HasOne\<[CampaignBudget](/resources/references/promotion/models/CampaignBudget)> (optional) — The associated budget.
+    - `promotions`: HasMany\<[Promotion](/resources/references/promotion/models/Promotion)> — The associated promotions.
+  - `attribute`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The attribute of the campaign budget
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `usages`: HasMany\<[CampaignBudgetUsage](/resources/references/promotion/models/CampaignBudgetUsage)> — The associated usages.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the campaign budget usage.
+    - `attribute_value`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The attribute value of the campaign budget usage
+    - `used`: `BigNumberProperty` — The used of the campaign budget usage
+    - `budget`: BelongsTo\<[CampaignBudget](/resources/references/promotion/models/CampaignBudget)> — The associated budget.
+- `promotions`: HasMany\<[Promotion](/resources/references/promotion/models/Promotion)> — The associated promotions.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the promotion.
+  - `code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The code of the promotion
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `is_automatic`: [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) — Whether the promotion is applied automatic. If disabled, the customer must enter the code during checkout.
+    - `$dataType`: `boolean` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `is_tax_inclusive`: [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) — Whether the promotion is tax inclusive.
+    - `$dataType`: `boolean` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `limit`: `NumberProperty` (optional) — The limit of the promotion @since v2.12.0
+  - `used`: `NumberProperty` — How much of the limit has been used. @since v2.12.0
+  - `type`: EnumProperty\<typeof [PromotionType](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsPromotionType)> — The type of the promotion
+  - `status`: EnumProperty\<typeof [PromotionStatus](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsPromotionStatus)> — The status of the promotion
+  - `campaign`: BelongsTo\<[Campaign](/resources/references/promotion/models/Campaign)> (optional) — The associated campaign.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the campaign.
+    - `name`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The name of the campaign
+    - `description`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The description of the campaign
+    - `campaign_identifier`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The campaign's identifier, such as a Google Tag ID.
+    - `starts_at`: `DateTimeProperty` (optional) — The date that the campaign starts.
+    - `ends_at`: `DateTimeProperty` (optional) — The date that the campaign ends.
+    - `budget`: HasOne\<[CampaignBudget](/resources/references/promotion/models/CampaignBudget)> (optional) — The associated budget.
+    - `promotions`: HasMany\<[Promotion](/resources/references/promotion/models/Promotion)> — The associated promotions.
+  - `application_method`: HasOne\<[ApplicationMethod](/resources/references/promotion/models/ApplicationMethod)> (optional) — The associated application method.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the application method.
+    - `value`: `BigNumberProperty` (optional) — The value of the application method
+    - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The currency code of the application method.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `max_quantity`: `NumberProperty` (optional) — The max quantity allowed in the cart for the associated promotion to be applied.
+    - `apply_to_quantity`: `NumberProperty` (optional) — The quantity that results from matching the `buyget` promotion's condition. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `1`.
+    - `buy_rules_min_quantity`: `NumberProperty` (optional) — The minimum quantity required for a `buyget` promotion to be applied. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `2`.
+    - `type`: EnumProperty\<typeof [ApplicationMethodType](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsApplicationMethodType)> — The application method's type. If it's `fixed`, the promotion discounts a fixed amount. If it's `percentage`, the promotion discounts a percentage.
+    - `target_type`: EnumProperty\<typeof [ApplicationMethodTargetType](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsApplicationMethodTargetType)> — Which item does the promotion apply to. `items` mean the promotion applies to the cart's items; `shipping_methods` means the promotion applies to the cart's shipping methods; `order` means the promotion applies on the entire order.
+    - `allocation`: EnumProperty\<typeof [ApplicationMethodAllocation](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsApplicationMethodAllocation)> (optional) — How is the promotion amount discounted. `each` means the discounted amount is applied on each applicable item; `across` means the discounted amount is split accross the applicable items.
+    - `promotion`: BelongsTo\<[Promotion](/resources/references/promotion/models/Promotion)> — The associated promotion.
+    - `target_rules`: ManyToMany\<[PromotionRule](/resources/references/promotion/models/PromotionRule)> — The associated target rules.
+    - `buy_rules`: ManyToMany\<[PromotionRule](/resources/references/promotion/models/PromotionRule)> — The associated buy rules.
+  - `rules`: ManyToMany\<[PromotionRule](/resources/references/promotion/models/PromotionRule)> — The associated rules.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the promotion rule.
+    - `description`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The description of the promotion rule
+    - `attribute`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The attribute of the promotion rule.
+
+      Example:
+
+      ```
+      customer_group_id
+      ```
+    - `operator`: EnumProperty\<typeof [PromotionRuleOperator](/resources/references/utils/PromotionUtils/enums/utilsPromotionUtilsPromotionRuleOperator)> — The operator of the promotion rule.
+
+      Example:
+
+      ```
+      in
+      ```
+    - `values`: HasMany\<[PromotionRuleValue](/resources/references/promotion/models/PromotionRuleValue)> — The associated values.
+    - `promotions`: ManyToMany\<[Promotion](/resources/references/promotion/models/Promotion)> — The associated promotions.
+    - `method_target_rules`: ManyToMany\<[ApplicationMethod](/resources/references/promotion/models/ApplicationMethod)> — The associated method target rules.
+    - `method_buy_rules`: ManyToMany\<[ApplicationMethod](/resources/references/promotion/models/ApplicationMethod)> — The associated method buy rules.
+  - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs. @since v2.12.0

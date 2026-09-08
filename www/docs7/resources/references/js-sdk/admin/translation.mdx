@@ -1,0 +1,624 @@
+---
+title: translation - JS SDK Admin Reference
+sidebarTitle: translation
+---
+
+This documentation provides a reference to the `sdk.admin.translation` set of methods used to send requests to Medusa's Admin API routes.
+
+## list
+
+This method retrieves a paginated list of translations. It sends a request to the
+[List Translations](/api/admin/translations/list-translations)
+API route.
+
+### Example
+
+To retrieve the list of translations:
+
+```ts
+sdk.admin.translation.list()
+.then(({ translations, count, limit, offset }) => {
+  console.log(translations)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.translation.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ translations, count, limit, offset }) => {
+  console.log(translations)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each translation:
+
+```ts
+sdk.admin.translation.list({
+  fields: "id,name"
+})
+.then(({ translations, count, limit, offset }) => {
+  console.log(translations)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [AdminTranslationsListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationsListParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminTranslationsListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationsListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTranslationsListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationsListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminTranslationsListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationsListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTranslationsListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationsListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminTranslationsListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationsListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTranslationsListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationsListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keywords to search the translations searchable fields.
+    - `reference_id`: `string` | `string`\[] (optional) — Filter by entity ID.
+
+      Example:
+
+      ```
+      "prod_123"
+      ```
+    - `reference`: `string` (optional) — Filter by the table of the resource being translated.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `locale_code`: `string` | `string`\[] (optional) — Filter by locale code in BCP 47 format.
+
+      Example:
+
+      ```
+      "en-US"
+      ```
+  - `$or`: ([AdminTranslationsListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationsListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTranslationsListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationsListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminTranslationsListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationsListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTranslationsListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationsListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminTranslationsListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationsListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminTranslationsListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationsListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keywords to search the translations searchable fields.
+    - `reference_id`: `string` | `string`\[] (optional) — Filter by entity ID.
+
+      Example:
+
+      ```
+      "prod_123"
+      ```
+    - `reference`: `string` (optional) — Filter by the table of the resource being translated.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `locale_code`: `string` | `string`\[] (optional) — Filter by locale code in BCP 47 format.
+
+      Example:
+
+      ```
+      "en-US"
+      ```
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keywords to search the translations searchable fields.
+  - `reference_id`: `string` | `string`\[] (optional) — Filter by entity ID.
+
+    Example:
+
+    ```
+    "prod_123"
+    ```
+  - `reference`: `string` (optional) — Filter by the table of the resource being translated.
+
+    Example:
+
+    ```
+    "product"
+    ```
+  - `locale_code`: `string` | `string`\[] (optional) — Filter by locale code in BCP 47 format.
+
+    Example:
+
+    ```
+    "en-US"
+    ```
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminTranslationsListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminTranslationsListResponse)> — The paginated list of translations.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## batch
+
+This method allows bulk operations on translations. It sends a request to the
+[Manage Translations](/api/admin/translations/manage-translations)
+API route.
+
+### Example
+
+```ts
+sdk.admin.translation.batch({
+  create: [
+    {
+      reference_id: "prod_123",
+      reference: "product",
+      locale_code: "en-US",
+      translations: { title: "Shirt" }
+    }
+  ],
+  update: [
+    {
+      id: "trans_123",
+      translations: { title: "Pants" }
+    }
+  ],
+  delete: ["trans_321"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+<a id="batch-parameters" />
+
+### Parameters
+
+**batch**
+
+- `body`: [AdminBatchTranslations](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchTranslations)
+  - `create`: [AdminCreateTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateTranslation)\[] (optional) — The translations to create.
+    - `reference_id`: `string` — The ID of the entity being translated.
+    - `reference`: `string` — The type of entity being translated (e.g., "product", "product\_variant").
+    - `locale_code`: `string` — The BCP 47 language tag code for this translation (e.g., "en-US", "fr-FR").
+    - `translations`: `Record<string, string>` — The translated fields as key-value pairs.
+  - `update`: [AdminUpdateTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateTranslation)\[] (optional) — The translations to update.
+    - `id`: `string` — The ID of the translation.
+    - `reference_id`: `string` (optional) — The ID of the entity being translated.
+    - `reference`: `string` (optional) — The type of entity being translated.
+    - `locale_code`: `string` (optional) — The BCP 47 language tag code for this translation.
+    - `translations`: `Record<string, string>` (optional) — The translated fields as key-value pairs.
+  - `delete`: `string`\[] (optional) — The translations to delete.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batch-returns" />
+
+### Returns
+
+**batch**
+
+- `Promise`: Promise\<[AdminTranslationsBatchResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationsBatchResponse)> — The translations' details.
+  - `created`: [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] — The created translations.
+    - `id`: `string` — The ID of the translation.
+    - `reference_id`: `string` — The ID of the entity being translated.
+
+      Example:
+
+      ```
+      "prod_123"
+      ```
+    - `reference`: `string` — The name of the table that the translation belongs to.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `locale_code`: `string` — The BCP 47 language tag code for this translation.
+
+      Example:
+
+      ```
+      "en-US"
+      ```
+    - `translations`: `Record<string, unknown>` — The translations of the resource. The object's keys are the field names of the data model, and its value is the translated value.
+
+      Example:
+
+      ```
+      { * "title": "Product Title", * "description": "Product Description", * }
+      ```
+    - `created_at`: `string` | `Date` — The date and time the translation was created.
+    - `updated_at`: `string` | `Date` — The date and time the translation was last updated.
+    - `deleted_at`: `null` | `string` | `Date` — The date and time the translation was deleted.
+  - `updated`: [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] — The updated translations.
+    - `id`: `string` — The ID of the translation.
+    - `reference_id`: `string` — The ID of the entity being translated.
+
+      Example:
+
+      ```
+      "prod_123"
+      ```
+    - `reference`: `string` — The name of the table that the translation belongs to.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `locale_code`: `string` — The BCP 47 language tag code for this translation.
+
+      Example:
+
+      ```
+      "en-US"
+      ```
+    - `translations`: `Record<string, unknown>` — The translations of the resource. The object's keys are the field names of the data model, and its value is the translated value.
+
+      Example:
+
+      ```
+      { * "title": "Product Title", * "description": "Product Description", * }
+      ```
+    - `created_at`: `string` | `Date` — The date and time the translation was created.
+    - `updated_at`: `string` | `Date` — The date and time the translation was last updated.
+    - `deleted_at`: `null` | `string` | `Date` — The date and time the translation was deleted.
+  - `deleted`: `object` — The deleted translations.
+    - `ids`: `string`\[] — The IDs of the deleted translations.
+    - `object`: `"translation"` — The name of the deleted object.
+    - `deleted`: `boolean` — Whether the translations were deleted successfully.
+
+## settings
+
+This method retrieves the settings for the translations for a given entity type or all entity types if no entity type is provided.
+It sends a request to the
+[Get Translation Settings](/api/admin/translations/list-settings) API route.
+
+### Example
+
+To retrieve the settings for the translations for a given entity type:
+
+```ts
+sdk.admin.translation.settings({
+  entity_type: "product"
+})
+.then(({ translation_settings }) => {
+  console.log(translation_settings)
+})
+```
+
+To retrieve the settings for all entity types:
+
+```ts
+sdk.admin.translation.settings()
+.then(({ translation_settings }) => {
+  console.log(translation_settings)
+})
+```
+
+To retrieve the settings for active entities only:
+
+```ts
+sdk.admin.translation.settings({
+  is_active: true
+})
+.then(({ translation_settings }) => {
+  console.log(translation_settings)
+})
+```
+
+To retrieve the settings for inactive entities only:
+
+```ts
+sdk.admin.translation.settings({
+  is_active: false
+})
+.then(({ translation_settings }) => {
+  console.log(translation_settings)
+})
+```
+
+<a id="settings-parameters" />
+
+### Parameters
+
+**settings**
+
+- `query`: [AdminTranslationSettingsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationSettingsParams) (optional) — The query parameters which can optionally include the entity type to get the settings for and whether to get the settings for active/inactive entities only.
+  - `entity_type`: `string` (optional) — The entity type to get the settings for (e.g., "product").
+  - `is_active`: `boolean` (optional) — Whether to get the settings for active/inactive entities only.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="settings-returns" />
+
+### Returns
+
+**settings**
+
+- `Promise`: Promise\<[AdminTranslationSettingsResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationSettingsResponse)> — The translation settings.
+  - `translation_settings`: `Record<string, Pick<[AdminTranslationSettings](/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationSettings), "id" \| "fields" \| "is_active"> & object>` — A mapping of entity types to their tranlsation settings.
+
+    Example:
+
+    ```
+    { * "product": { * "id": "trset_123", * "fields": ["title", "description", "subtitle", "status"], * "is_active": true, * "inactive_fields": [] * }, * "product_variant": { * "id": "trset_456", * "fields": ["title", "material"], * "is_active": false, * "inactive_fields": [] * } * }
+    ```
+
+    - `inactive_fields`: `string`\[]
+
+## batchSettings
+
+This method allows bulk operations on translation settings. It sends a request to the
+[Batch Translation Settings](/api/admin/translations/manage-translation-settings)
+API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.12.6](https://github.com/medusajs/medusa/releases/tag/v2.12.6).
+
+### Example
+
+```ts
+sdk.admin.translation.batchSettings({
+  create: [
+    {
+      entity_type: "product",
+      fields: ["title", "description"],
+      is_active: true
+    }
+  ],
+  update: [
+    {
+      id: "trset_123",
+      fields: ["title", "description", "subtitle"],
+      is_active: true
+    }
+  ],
+  delete: ["trset_456"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+<a id="batchsettings-parameters" />
+
+### Parameters
+
+**batchSettings**
+
+- `body`: [AdminBatchTranslationSettings](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchTranslationSettings) — The translation settings to create, update, or delete.
+  - `create`: [AdminCreateTranslationSettings](/resources/references/types/interfaces/typesAdminCreateTranslationSettings)\[] (optional) — The translation settings to create.
+    - `entity_type`: `string` — The entity type (e.g., "product", "product\_variant").
+    - `fields`: `string`\[] — The translatable fields for this entity type.
+    - `is_active`: `boolean` (optional) — Whether the entity translatable status is enabled.
+  - `update`: [AdminUpdateTranslationSettings](/resources/references/types/interfaces/typesAdminUpdateTranslationSettings)\[] (optional) — The translation settings to update.
+    - `id`: `string` — The ID of the settings.
+    - `entity_type`: `string` (optional) — The entity type (e.g., "product", "product\_variant").
+    - `fields`: `string`\[] (optional) — The translatable fields for this entity type.
+    - `is_active`: `boolean` (optional) — Whether the entity translatable status is enabled.
+  - `delete`: `string`\[] (optional) — The translation settings to delete (IDs).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchsettings-returns" />
+
+### Returns
+
+**batchSettings**
+
+- `Promise`: Promise\<[AdminBatchTranslationSettingsResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchTranslationSettingsResponse)> — The translation settings' details.
+  - `created`: [AdminTranslationSettings](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationSettings)\[] — The created settings.
+    - `id`: `string` — The ID of the settings.
+    - `created_at`: `string` | `Date` — The date and time the settings were created.
+    - `updated_at`: `string` | `Date` — The date and time the settings were last updated.
+    - `deleted_at`: `null` | `string` | `Date` — The date and time the settings were deleted.
+    - `entity_type`: `string` — The entity type.
+    - `fields`: `string`\[] — The translatable fields.
+    - `is_active`: `boolean` — Whether the entity translatable status is enabled.
+  - `updated`: [AdminTranslationSettings](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationSettings)\[] — The updated settings.
+    - `id`: `string` — The ID of the settings.
+    - `created_at`: `string` | `Date` — The date and time the settings were created.
+    - `updated_at`: `string` | `Date` — The date and time the settings were last updated.
+    - `deleted_at`: `null` | `string` | `Date` — The date and time the settings were deleted.
+    - `entity_type`: `string` — The entity type.
+    - `fields`: `string`\[] — The translatable fields.
+    - `is_active`: `boolean` — Whether the entity translatable status is enabled.
+  - `deleted`: `object` — The deleted settings.
+    - `ids`: `string`\[]
+    - `object`: `"translation_settings"`
+    - `deleted`: `boolean`
+
+## entities
+
+This method retrieves a paginated list of entities for a given entity type with only their
+translatable fields.
+It sends a request to the
+[Get Translation Entities](/api/admin/translations/list-translatable-entities) API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4).
+
+### Example
+
+To retrieve the entities for a given entity type:
+
+```ts
+sdk.admin.translation.entities({
+  type: "product"
+})
+.then(({ data, count, offset, limit }) => {
+  console.log(data)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.translation.entities({
+  type: "product",
+  limit: 10,
+  offset: 10
+})
+.then(({ data, count, offset, limit }) => {
+  console.log(data)
+})
+```
+
+<a id="entities-parameters" />
+
+### Parameters
+
+**entities**
+
+- `query`: [AdminTranslationEntitiesParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationEntitiesParams) — The query parameters including the entity type and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `type`: `string` — The entity type to retrieve (e.g., "product", "product\_variant"). This determines which table to query and which translatable fields to return.
+
+    Example:
+
+    ```
+    "product"
+    ```
+  - `id`: `string` | `string`\[] (optional) — Filter by entity ID(s). Can be a single ID or an array of IDs.
+
+    Example:
+
+    ```
+    "prod_123"
+    ```
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="entities-returns" />
+
+### Returns
+
+**entities**
+
+- `Promise`: Promise\<[AdminTranslationEntitiesResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationEntitiesResponse)> — The paginated list of entities with their translatable fields.
+  - `data`: `Record<string, unknown>` & `object`\[] — The list of entities with their translatable fields. Each entity contains only the fields configured as translatable for that entity type in the translation settings, plus all translations for all locales.
+    - `id`: `string`
+    - `translations`: [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[]
+  - `count`: `number` — The total count of entities.
+  - `offset`: `number` — The offset of the current page.
+  - `limit`: `number` — The limit of items per page.
+
+## statistics
+
+This method retrieves the statistics for the translations for a given entity type or all entity types if no entity type is provided.
+It sends a request to the
+[Get Translation Statistics](/api/admin/translations/get-statistics) API route.
+
+### Example
+
+To retrieve the statistics for the translations for a given entity type:
+
+```ts
+sdk.admin.translation.statistics({
+  entity_type: "product"
+})
+.then(({ statistics }) => {
+  console.log(statistics)
+})
+```
+
+To retrieve the statistics for all entity types:
+
+```ts
+sdk.admin.translation.statistics()
+.then(({ statistics }) => {
+  console.log(statistics)
+})
+```
+
+<a id="statistics-parameters" />
+
+### Parameters
+
+**statistics**
+
+- `query`: [AdminTranslationStatisticsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationStatisticsParams) (optional) — The query parameters which can optionally include the entity type to get the statistics for.
+  - `locales`: `string` | `string`\[] — The locales to check translations for. Can be a single locale or an array of locales.
+
+    Example:
+
+    ```
+    ["en-US", "fr-FR"]
+    ```
+  - `entity_types`: `string` | `string`\[] — The entity types to get statistics for. Can be a single entity type or an array.
+
+    Example:
+
+    ```
+    ["product", "product_variant"]
+    ```
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="statistics-returns" />
+
+### Returns
+
+**statistics**
+
+- `Promise`: Promise\<[AdminTranslationStatisticsResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationStatisticsResponse)> — The translation statistics.
+  - `statistics`: `Record<string, [AdminTranslationEntityStatistics](/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationEntityStatistics)>` — Statistics by entity type.
+    - `expected`: `number` — Expected number of translated fields.
+    - `translated`: `number` — Actual number of translated fields. This doesn't count translations that are null or empty.
+    - `missing`: `number` — Number of missing translations for expected translatable fields.
+    - `by_locale`: `Record<string, [AdminTranslationLocaleStatistics](/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationLocaleStatistics)>` — Breakdown of statistics by locale.

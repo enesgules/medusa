@@ -1,0 +1,135 @@
+---
+title: upsertSalesChannels - Sales Channel Module Reference
+sidebarTitle: upsertSalesChannels
+---
+
+This documentation provides a reference to the `upsertSalesChannels` method. This belongs to the Sales Channel Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="upsertsaleschannels-data-sharedcontext-promisesaleschanneldto" />
+
+## upsertSalesChannels(data, sharedContext?): Promise\<[SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO)>
+
+This method updates or creates a sales channel if it doesn't exist.
+
+### Example
+
+```ts
+const salesChannel = await salesChannelModuleService.upsertSalesChannels({
+  name: "B2B",
+})
+```
+
+<a id="upsertsaleschannels-parameters" />
+
+### Parameters
+
+**upsertSalesChannels**
+
+- `data`: [UpsertSalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelUpsertSalesChannelDTO) — The attributes in the sales channel to be created or updated.
+  - `id`: `string` (optional) — The ID of the sales channel.
+  - `name`: `string` (optional) — The name of the sales channel. Required when creating a sales channel.
+  - `description`: `null` | `string` (optional) — The description of the sales channel.
+  - `is_disabled`: `boolean` (optional) — Whether the sales channel is disabled.
+  - `metadata`: [MetadataType](/resources/references/sales_channel/types/sales_channelMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/sales_channel/interfaces/sales_channelContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/sales_channel/interfaces/sales_channelIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="upsertsaleschannels-returns" />
+
+### Returns
+
+**upsertSalesChannels**
+
+- `Promise`: Promise\<[SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO)> — The created or updated sales channel.
+  - `id`: `string` — The ID of the sales channel.
+  - `name`: `string` — The name of the sales channel.
+  - `description`: `null` | `string` — The description of the sales channel.
+  - `is_disabled`: `boolean` — Whether the sales channel is disabled.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `locations`: [SalesChannelLocationDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelLocationDTO)\[] (optional) — The locations of the sales channel.
+    - `sales_channel_id`: `string` — The associated sales channel's ID.
+    - `location_id`: `string` — The associated location's ID.
+    - `sales_channel`: [SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO) — The associated sales channel.
+
+<a id="upsertsaleschannels-data-sharedcontext-promisesaleschanneldto-1" />
+
+## upsertSalesChannels(data, sharedContext?): Promise\<[SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO)\[]>
+
+This method updates or creates sales channels if they don't exist.
+
+### Example
+
+```ts
+const salesChannels = await salesChannelModuleService.upsertSalesChannels([
+  {
+    name: "B2B",
+  },
+  {
+    id: "sc_123",
+    description: "Sales channel for B2B customers",
+  },
+])
+```
+
+<a id="upsertsaleschannels-parameters-1" />
+
+### Parameters
+
+**upsertSalesChannels**
+
+- `data`: [UpsertSalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelUpsertSalesChannelDTO)\[] — The attributes in the sales channels to be created or updated.
+  - `id`: `string` (optional) — The ID of the sales channel.
+  - `name`: `string` (optional) — The name of the sales channel. Required when creating a sales channel.
+  - `description`: `null` | `string` (optional) — The description of the sales channel.
+  - `is_disabled`: `boolean` (optional) — Whether the sales channel is disabled.
+  - `metadata`: [MetadataType](/resources/references/sales_channel/types/sales_channelMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/sales_channel/interfaces/sales_channelContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/sales_channel/interfaces/sales_channelIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="upsertsaleschannels-returns-1" />
+
+### Returns
+
+**upsertSalesChannels**
+
+- `Promise`: Promise\<[SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO)\[]> — The created or updated sales channels.
+  - `SalesChannelDTO[]`: [SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO)\[]
+    - `id`: `string` — The ID of the sales channel.
+    - `name`: `string` — The name of the sales channel.
+    - `description`: `null` | `string` — The description of the sales channel.
+    - `is_disabled`: `boolean` — Whether the sales channel is disabled.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `locations`: [SalesChannelLocationDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelLocationDTO)\[] (optional) — The locations of the sales channel.
+      - `sales_channel_id`: `string` — The associated sales channel's ID.
+      - `location_id`: `string` — The associated location's ID.
+      - `sales_channel`: [SalesChannelDTO](/resources/references/sales_channel/interfaces/sales_channelSalesChannelDTO) — The associated sales channel.

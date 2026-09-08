@@ -1,0 +1,36 @@
+---
+title: fetchStream
+---
+
+`fetchStream` is a helper method to deal with server-sent events. It returns an object with a stream and an abort function.
+It follows a very similar interface to `fetch`, with the return value being an async generator.
+The stream is an async generator that yields `ServerSentEventMessage` objects, which contains the event name, stringified data, and few other properties.
+The caller is responsible for handling `disconnect` events and aborting the stream. The caller is also responsible for parsing the data field.
+
+<a id="fetchstream-parameters" />
+
+## Parameters
+
+**fetchStream**
+
+- `input`: `string` | `URL` | `Request`
+- `init`: [FetchArgs](/resources/references/js_sdk/admin/types/js_sdkadminFetchArgs) (optional)
+  - `query`: `Record<string, any>` (optional) — Query parameters to append to the URL.
+  - `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Request headers.
+    - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+  - `body`: `RequestInit`\[`"body"`] | `Record<string, any>` (optional) — Request body data.
+
+<a id="fetchstream-returns" />
+
+## Returns
+
+**fetchStream**
+
+- `Promise`: Promise\<[FetchStreamResponse](/resources/references/js_sdk/admin/interfaces/js_sdkadminFetchStreamResponse)> — FetchStreamResponse
+  - `stream`: AsyncGenerator\<[ServerSentEventMessage](/resources/references/js_sdk/admin/interfaces/js_sdkadminServerSentEventMessage), void, unknown>
+    - `comment`: `string` (optional) — Ignored by the client.
+    - `event`: `string` (optional) — A string identifying the type of event described.
+    - `data`: `string` (optional) — The data field for the message. Split by new lines.
+    - `id`: `string` | `number` (optional) — The event ID to set the EventSource object's last event ID value.
+    - `retry`: `number` (optional) — The reconnection time.
+  - `abort`: () => `void`

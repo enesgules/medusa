@@ -1,0 +1,215 @@
+---
+title: updateTranslations - Translation Module Reference
+sidebarTitle: updateTranslations
+---
+
+This documentation provides a reference to the `updateTranslations` method. This belongs to the Translation Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updatetranslations-data-sharedcontext-promisetranslationdto" />
+
+## updateTranslations(data, sharedContext?): Promise\<[TranslationDTO](/resources/references/translation/interfaces/translationTranslationDTO)>
+
+This method updates an existing translation. The ID should be included in the data object.
+
+### Example
+
+```ts
+const translation = await translationModuleService.updateTranslations({
+  id: "tra_123",
+  translations: {
+    title: "Titre du produit",
+    description: "Description du produit en français",
+  },
+})
+```
+
+<a id="updatetranslations-parameters" />
+
+### Parameters
+
+**updateTranslations**
+
+- `data`: [UpdateTranslationDTO](/resources/references/translation/interfaces/translationUpdateTranslationDTO) — The attributes to update in the translation (including id).
+  - `reference_id`: `string` (optional) — The ID of the data model being translated.
+
+    Example:
+
+    ```
+    "prod_123"
+    ```
+  - `reference`: `string` (optional) — The name of the table that the translation belongs to.
+
+    Example:
+
+    ```
+    "product"
+    ```
+  - `locale_code`: `string` (optional) — The BCP 47 language tag code for this translation.
+
+    Example:
+
+    ```
+    "en-US"
+    ```
+  - `translations`: `Record<string, unknown>` (optional) — The translated fields as key-value pairs.
+
+    Example:
+
+    ```
+    { * "title": "Product Title", * "description": "Product Description", * }
+    ```
+  - `id`: `string` — The ID of the translation to update.
+- `sharedContext`: [Context](/resources/references/translation/interfaces/translationContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/translation/interfaces/translationIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatetranslations-returns" />
+
+### Returns
+
+**updateTranslations**
+
+- `Promise`: Promise\<[TranslationDTO](/resources/references/translation/interfaces/translationTranslationDTO)> — The updated translation.
+  - `id`: `string` — The ID of the translation.
+  - `reference_id`: `string` — The ID of the entity being translated.
+  - `reference`: `string` — The type of entity being translated (e.g., "product", "product\_variant").
+  - `locale_code`: `string` — The BCP 47 language tag code for this translation (e.g., "en-US", "fr-FR").
+  - `translations`: `Record<string, unknown>` — The translated fields as key-value pairs.
+  - `created_at`: `string` | `Date` — The date and time the translation was created.
+  - `updated_at`: `string` | `Date` — The date and time the translation was last updated.
+  - `deleted_at`: `null` | `string` | `Date` — The date and time the translation was deleted.
+
+<a id="updatetranslations-dataoroptions-sharedcontext-promisetranslationdto" />
+
+## updateTranslations(dataOrOptions, sharedContext?): Promise\<[TranslationDTO](/resources/references/translation/interfaces/translationTranslationDTO)\[]>
+
+This method updates existing translations using an array or selector-based approach.
+
+### Example
+
+```ts
+const translations = await translationModuleService.updateTranslations([
+  {
+    id: "tra_123",
+    translations: {
+      title: "Titre du produit",
+      description: "Description du produit en français",
+    },
+  },
+])
+```
+
+<a id="updatetranslations-parameters-1" />
+
+### Parameters
+
+**updateTranslations**
+
+- `dataOrOptions`: [UpdateTranslationDTO](/resources/references/translation/interfaces/translationUpdateTranslationDTO)\[] | `object` — The data or options for bulk update.
+  - `reference_id`: `string` (optional) — The ID of the data model being translated.
+
+    Example:
+
+    ```
+    "prod_123"
+    ```
+  - `reference`: `string` (optional) — The name of the table that the translation belongs to.
+
+    Example:
+
+    ```
+    "product"
+    ```
+  - `locale_code`: `string` (optional) — The BCP 47 language tag code for this translation.
+
+    Example:
+
+    ```
+    "en-US"
+    ```
+  - `translations`: `Record<string, unknown>` (optional) — The translated fields as key-value pairs.
+
+    Example:
+
+    ```
+    { * "title": "Product Title", * "description": "Product Description", * }
+    ```
+  - `id`: `string` — The ID of the translation to update.
+  - `selector`: `Record<string, any>` — The selector to update the translations by.
+  - `data`: [UpdateTranslationDataDTO](/resources/references/translation/interfaces/translationUpdateTranslationDataDTO) | [UpdateTranslationDataDTO](/resources/references/translation/interfaces/translationUpdateTranslationDataDTO)\[] — The data to update the translations with.
+    - `reference_id`: `string` (optional) — The ID of the data model being translated.
+
+      Example:
+
+      ```
+      "prod_123"
+      ```
+    - `reference`: `string` (optional) — The name of the table that the translation belongs to.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `locale_code`: `string` (optional) — The BCP 47 language tag code for this translation.
+
+      Example:
+
+      ```
+      "en-US"
+      ```
+    - `translations`: `Record<string, unknown>` (optional) — The translated fields as key-value pairs.
+
+      Example:
+
+      ```
+      { * "title": "Product Title", * "description": "Product Description", * }
+      ```
+- `sharedContext`: [Context](/resources/references/translation/interfaces/translationContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/translation/interfaces/translationIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatetranslations-returns-1" />
+
+### Returns
+
+**updateTranslations**
+
+- `Promise`: Promise\<[TranslationDTO](/resources/references/translation/interfaces/translationTranslationDTO)\[]> — The updated translations.
+  - `TranslationDTO[]`: [TranslationDTO](/resources/references/translation/interfaces/translationTranslationDTO)\[]
+    - `id`: `string` — The ID of the translation.
+    - `reference_id`: `string` — The ID of the entity being translated.
+    - `reference`: `string` — The type of entity being translated (e.g., "product", "product\_variant").
+    - `locale_code`: `string` — The BCP 47 language tag code for this translation (e.g., "en-US", "fr-FR").
+    - `translations`: `Record<string, unknown>` — The translated fields as key-value pairs.
+    - `created_at`: `string` | `Date` — The date and time the translation was created.
+    - `updated_at`: `string` | `Date` — The date and time the translation was last updated.
+    - `deleted_at`: `null` | `string` | `Date` — The date and time the translation was deleted.

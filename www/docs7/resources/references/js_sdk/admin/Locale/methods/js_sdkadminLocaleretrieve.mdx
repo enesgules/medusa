@@ -1,0 +1,68 @@
+---
+title: retrieve
+---
+
+This method retrieves a locale by its code. It sends a request to the
+[Get Locale](/api/admin/locales/get-locale) API route.
+
+## Example
+
+To retrieve a locale by its code:
+
+```ts
+sdk.admin.locale.retrieve("en-US")
+.then(({ locale }) => {
+  console.log(locale)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.locale.retrieve("en-US", {
+  fields: "code,name"
+})
+.then(({ locale }) => {
+  console.log(locale)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `code`: `string` — The locale's code in BCP 47 format.
+- `query`: [AdminLocaleParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleParams) (optional) — Configure the fields to retrieve in the locale.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminLocaleResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocaleResponse)> — The locale's details.
+  - `locale`: [AdminLocale](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLocale) — The locale's details.
+    - `code`: `string` — The locale's code.
+
+      Example:
+
+      ```
+      en-US
+      ```
+    - `name`: `string` — The locale's display name.
+
+      Example:
+
+      ```
+      English (United States)
+      ```
+    - `created_at`: `string` — The date the locale was created.
+    - `updated_at`: `string` — The date the locale was updated.
+    - `deleted_at`: `null` | `string` — The date the locale was deleted.

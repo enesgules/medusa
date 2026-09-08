@@ -1,0 +1,116 @@
+---
+title: createOrderExchangeItemsFromActionsStep - Medusa Core Workflows Reference
+sidebarTitle: createOrderExchangeItemsFromActionsStep
+---
+
+This documentation provides a reference to the `createOrderExchangeItemsFromActionsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates exchange items from change actions.
+
+> **Note**
+>
+> You can retrieve an order change action details using [Query](/learn/fundamentals/module-links/query),
+> or [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep).
+
+## Example
+
+```ts
+const data = createOrderExchangeItemsFromActionsStep({
+  exchangeId: "exchange_123",
+  changes: [
+    {
+      id: "orchact_123",
+      // other order change action details...
+    }
+  ]
+})
+```
+
+<a id="createorderexchangeitemsfromactionsstep-input" />
+
+## Input
+
+**createOrderExchangeItemsFromActionsStep**
+
+- `CreateOrderExchangeItemsFromActionsInput`: [CreateOrderExchangeItemsFromActionsInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcCreateOrderExchangeItemsFromActionsInput)
+  - `changes`: [OrderChangeActionDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderChangeActionDTO)\[] — The change actions to create exchange items from.
+    - `id`: `string` — The ID of the order change action
+    - `order_change_id`: `null` | `string` — The ID of the associated order change
+    - `order_change`: `null` | [OrderChangeDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderChangeDTO) — The associated order change
+    - `order_id`: `null` | `string` — The ID of the associated order
+    - `return_id`: `null` | `string` — The ID of the associated return.
+    - `claim_id`: `null` | `string` — The ID of the associated claim.
+    - `exchange_id`: `null` | `string` — The ID of the associated exchange.
+    - `order`: `null` | [OrderDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderDTO) — The associated order
+    - `reference`: `string` — The reference of the order change action
+    - `reference_id`: `string` — The ID of the reference
+    - `action`: [ChangeActionType](/resources/references/fulfillment/types/fulfillmentChangeActionType) — The action of the order change action
+    - `details`: `null` | `Record<string, unknown>` — The details of the order change action
+    - `internal_note`: `null` | `string` — The internal note of the order change action
+    - `ordering`: `number` — The ordering of the order change action
+    - `created_at`: `string` | `Date` — When the order change action was created
+    - `updated_at`: `string` | `Date` — When the order change action was updated
+  - `exchangeId`: `string` — The ID of the exchange to create the items for.
+
+<a id="createorderexchangeitemsfromactionsstep-output" />
+
+## Output
+
+**createOrderExchangeItemsFromActionsStep**
+
+- `OrderExchangeItemDTO[]`: [OrderExchangeItemDTO](/resources/references/order/interfaces/orderOrderExchangeItemDTO)\[]
+  - `id`: `string` — The ID of the order exchange item.
+  - `exchange_id`: `string` — The associated exchange's ID.
+  - `order_id`: `string` — The associated order's ID.
+  - `item_id`: `string` — The associated item's ID.
+  - `item`: [OrderLineItemDTO](/resources/references/order/interfaces/orderOrderLineItemDTO) — The associated item.
+    - `original_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The original total of the order line item.
+    - `original_subtotal`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The original subtotal of the order line item.
+    - `original_tax_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The original tax total of the order line item.
+    - `item_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The item total of the order line item.
+    - `item_subtotal`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The item subtotal of the order line item.
+    - `item_tax_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The item tax total of the order line item.
+    - `total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The total of the order line item.
+    - `subtotal`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The subtotal of the order line item.
+    - `tax_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The tax total of the order line item.
+    - `discount_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The discount total of the order line item.
+    - `discount_tax_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The discount tax total of the order line item.
+    - `refundable_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The refundable total of the order line item.
+    - `refundable_total_per_unit`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The refundable total per unit of the order line item.
+    - `id`: `string` — The ID of the line item.
+    - `title`: `string` — The title of the line item.
+    - `subtitle`: `null` | `string` (optional) — The subtitle of the line item.
+    - `thumbnail`: `null` | `string` (optional) — The thumbnail of the line item.
+    - `variant_id`: `null` | `string` (optional) — The ID of the variant associated with the line item.
+    - `product_id`: `null` | `string` (optional) — The ID of the product associated with the line item.
+    - `product_title`: `null` | `string` (optional) — The title of the product associated with the line item.
+    - `product_description`: `null` | `string` (optional) — The description of the product associated with the line item.
+    - `product_subtitle`: `null` | `string` (optional) — The subtitle of the product associated with the line item.
+    - `product_type_id`: `null` | `string` (optional) — The ID of the type of the product associated with the line item.
+    - `product_type`: `null` | `string` (optional) — The type of the product associated with the line item.
+    - `product_collection`: `null` | `string` (optional) — The collection of the product associated with the line item.
+    - `product_handle`: `null` | `string` (optional) — The handle of the product associated with the line item.
+    - `variant_sku`: `null` | `string` (optional) — The SKU (stock keeping unit) of the variant associated with the line item.
+    - `variant_barcode`: `null` | `string` (optional) — The barcode of the variant associated with the line item.
+    - `variant_title`: `null` | `string` (optional) — The title of the variant associated with the line item.
+    - `variant_option_values`: `null` | `Record<string, unknown>` (optional) — The option values of the variant associated with the line item.
+    - `requires_shipping`: `boolean` — Indicates whether the line item requires shipping.
+    - `is_discountable`: `boolean` — Indicates whether the line item is discountable.
+    - `is_giftcard`: `boolean` — Indicates whether the line item is a gift card.
+    - `is_tax_inclusive`: `boolean` — Indicates whether the line item price is tax inclusive.
+    - `compare_at_unit_price`: `number` (optional) — The compare at unit price of the line item.
+    - `unit_price`: `number` — The unit price of the line item.
+    - `quantity`: `number` — The quantity of the line item.
+    - `tax_lines`: [OrderLineItemTaxLineDTO](/resources/references/order/interfaces/orderOrderLineItemTaxLineDTO)\[] (optional) — The associated tax lines.
+    - `adjustments`: [OrderLineItemAdjustmentDTO](/resources/references/order/interfaces/orderOrderLineItemAdjustmentDTO)\[] (optional) — The associated adjustments.
+    - `detail`: [OrderItemDTO](/resources/references/order/interfaces/orderOrderItemDTO) — The details of the item
+    - `created_at`: `Date` — The date when the line item was created.
+    - `updated_at`: `Date` — The date when the line item was last updated.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — The versioned order item metadata. Holds custom data in key-value pairs.
+    - `line_item_metadata`: `null` | `Record<string, unknown>` (optional) — The metadata of the line item. Holds custom data in key-value pairs.
+  - `quantity`: `number` — The quantity of the order exchange item
+  - `raw_quantity`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) — The raw quantity of the order exchange item
+    - `value`: `string` | `number`
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `created_at`: `string` | `Date` (optional) — The creation date of the order exchange item
+  - `updated_at`: `string` | `Date` (optional) — The update date of the order exchange item

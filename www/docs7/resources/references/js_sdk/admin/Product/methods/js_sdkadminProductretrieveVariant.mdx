@@ -1,0 +1,91 @@
+---
+title: retrieveVariant
+---
+
+This method retrieves a product's variant. It sends a request to the
+[Retrieve Variant](/api/admin/products/get-variant)
+API route.
+
+## Example
+
+To retrieve a product variant by its ID:
+
+```ts
+sdk.admin.product.retrieveVariant(
+  "prod_123",
+  "variant_123"
+)
+.then(({ variant }) => {
+  console.log(variant)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.product.retrieveVariant(
+  "prod_123",
+  "variant_123",
+  {
+    fields: "id, *product"
+  }
+)
+.then(({ variant }) => {
+  console.log(variant)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrievevariant-parameters" />
+
+## Parameters
+
+**retrieveVariant**
+
+- `productId`: `string` — The product's ID.
+- `id`: `string` — The variant's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the product variant.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrievevariant-returns" />
+
+## Returns
+
+**retrieveVariant**
+
+- `Promise`: Promise\<[AdminProductVariantResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantResponse)> — The product variant's details.
+  - `variant`: [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)
+    - `prices`: `null` | [AdminPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPrice)\[] — The product variant's prices.
+    - `options`: `null` | [AdminProductOptionValue](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOptionValue)\[] — The variant's values for the associated product's options.
+    - `product`: `null` | [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) (optional) — The product that this variant belongs to.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product variant's translations.
+    - `inventory_items`: `null` | [AdminProductVariantInventoryItemLink](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantInventoryItemLink)\[] (optional) — The variant's inventory items.
+    - `id`: `string` — The variant's ID.
+    - `title`: `null` | `string` — The variant's title.
+    - `sku`: `null` | `string` — The variant's SKU.
+    - `barcode`: `null` | `string` — The variant's barcode.
+    - `ean`: `null` | `string` — The variant's EAN.
+    - `upc`: `null` | `string` — The variant's UPC.
+    - `thumbnail`: `null` | `string` — The variant's thumbnail.
+    - `images`: `null` | [BaseProductImage](/resources/references/types/interfaces/typesBaseProductImage)\[] (optional) — The variant's images.
+    - `allow_backorder`: `null` | `boolean` — Whether the variant can be ordered even if it's out of stock.
+    - `manage_inventory`: `null` | `boolean` — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+    - `inventory_quantity`: `null` | `number` (optional) — The variant's inventory quantity if `manage_inventory` is enabled. This field is only retrieved in the [Get Product](/api/store/products/get-a-product) and [List Products](/api/store/products/list-products) API routes if you pass `+variants.inventory_quantity` in the `fields` query parameter. Learn more in the [Retrieve Product Variant's Inventory](/resources/storefront-development/products/inventory) storefront guide.
+    - `hs_code`: `null` | `string` — The variant's HS code.
+    - `origin_country`: `null` | `string` — The variant's origin country.
+    - `mid_code`: `null` | `string` — The variant's MID code.
+    - `material`: `null` | `string` — The variant's material.
+    - `weight`: `null` | `number` — The variant's weight.
+    - `length`: `null` | `number` — The variant's length.
+    - `height`: `null` | `number` — The variant's height.
+    - `width`: `null` | `number` — The variant's width.
+    - `variant_rank`: `null` | `number` (optional) — The variant's ranking among its siblings.
+    - `product_id`: `string` (optional) — The ID of the product that the variant belongs to.
+    - `calculated_price`: [BaseCalculatedPriceSet](/resources/references/types/interfaces/typesBaseCalculatedPriceSet) (optional) — The variant's calculated price for the provided context.
+    - `created_at`: `string` — The date the variant was created.
+    - `updated_at`: `string` — The date the variant was updated.
+    - `deleted_at`: `null` | `string` — The date the variant was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.

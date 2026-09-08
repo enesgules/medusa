@@ -1,0 +1,73 @@
+---
+title: validateShippingOptionsForPriceCalculation - Fulfillment Module Reference
+sidebarTitle: validateShippingOptionsForPriceCalculation
+---
+
+This documentation provides a reference to the `validateShippingOptionsForPriceCalculation` method. This belongs to the Fulfillment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method checks whether a shipping option can have calculated price.
+
+## Example
+
+```ts
+const isValid =
+  await fulfillmentModuleService.validateShippingOptionsForPriceCalculation(
+    [
+      {
+        provider_id: "webshipper",
+        price_type: "calculated",
+      },
+    ]
+  )
+```
+
+<a id="validateshippingoptionsforpricecalculation-parameters" />
+
+## Parameters
+
+**validateShippingOptionsForPriceCalculation**
+
+- `shippingOptionsData`: [CreateShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateShippingOptionDTO)\[] — The shipping options data to check.
+  - `name`: `string` — The name of the shipping option.
+  - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The type of the shipping option's price.
+  - `service_zone_id`: `string` — The associated service zone's ID.
+  - `shipping_profile_id`: `string` — The associated shipping profile's ID.
+  - `provider_id`: `string` — The associated provider's ID.
+  - `type`: `string` | [CreateShippingOptionTypeDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateShippingOptionTypeDTO) — The shipping option type associated with the shipping option.
+    - `label`: `string` — The label of the shipping option type.
+    - `description`: `string` (optional) — The description of the shipping option type.
+    - `code`: `string` — The code of the shipping option type.
+  - `data`: `null` | `Record<string, unknown>` (optional) — The data necessary for the associated fulfillment provider to process the shipping option and its associated fulfillments.
+  - `rules`: Omit\<[CreateShippingOptionRuleDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateShippingOptionRuleDTO), "shipping\_option\_id">\[] (optional) — The shipping option rules associated with the shipping option.
+    - `attribute`: `string` — The attribute of the shipping option rule.
+    - `operator`: [RuleOperatorType](/resources/references/fulfillment/types/fulfillmentRuleOperatorType) — The operator of the shipping option rule.
+    - `value`: `string` | `string`\[] — The value(s) of the shipping option rule.
+- `sharedContext`: [Context](/resources/references/fulfillment/interfaces/fulfillmentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/fulfillment/interfaces/fulfillmentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="validateshippingoptionsforpricecalculation-returns" />
+
+## Returns
+
+**validateShippingOptionsForPriceCalculation**
+
+- `Promise`: Promise\<boolean\[]> — Whether the shipping options can have calculated price.
+  - `boolean[]`: `boolean`\[]
+    - `boolean`: `boolean`

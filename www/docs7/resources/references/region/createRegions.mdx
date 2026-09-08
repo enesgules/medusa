@@ -1,0 +1,158 @@
+---
+title: createRegions - Region Module Reference
+sidebarTitle: createRegions
+---
+
+This documentation provides a reference to the `createRegions` method. This belongs to the Region Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createregions-data-sharedcontext-promiseregiondto" />
+
+## createRegions(data, sharedContext?): Promise\<[RegionDTO](/resources/references/region/interfaces/regionRegionDTO)\[]>
+
+This method creates regions.
+
+### Example
+
+```ts
+const region = await regionModuleService.createRegions([
+  {
+    name: "Europe",
+    currency_code: "eur",
+    countries: ["dk", "de", "fr"],
+  },
+  {
+    name: "United States of America",
+    currency_code: "usd",
+    countries: ["us"],
+  },
+])
+```
+
+<a id="createregions-parameters" />
+
+### Parameters
+
+**createRegions**
+
+- `data`: [CreateRegionDTO](/resources/references/region/interfaces/regionCreateRegionDTO)\[] — The regions to be created.
+  - `name`: `string` — The name of the region.
+  - `currency_code`: `string` — The currency code of the region.
+  - `automatic_taxes`: `boolean` (optional) — Setting to indicate whether taxes need to be applied automatically
+  - `countries`: `string`\[] (optional) — The region's countries.
+  - `payment_providers`: `string`\[] (optional) — The region's payment providers.
+  - `metadata`: [MetadataType](/resources/references/region/types/regionMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/region/interfaces/regionContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/region/interfaces/regionIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createregions-returns" />
+
+### Returns
+
+**createRegions**
+
+- `Promise`: Promise\<[RegionDTO](/resources/references/region/interfaces/regionRegionDTO)\[]> — The created regions.
+  - `RegionDTO[]`: [RegionDTO](/resources/references/region/interfaces/regionRegionDTO)\[]
+    - `id`: `string` — The ID of the region.
+    - `name`: `string` — The name of the region.
+    - `currency_code`: `string` — The currency code of the region.
+    - `automatic_taxes`: `boolean` — Setting to indicate whether taxes need to be applied automatically
+    - `countries`: [RegionCountryDTO](/resources/references/region/interfaces/regionRegionCountryDTO)\[] — The countries of the region.
+      - `id`: `string` — The ID of the country.
+      - `iso_2`: `string` — The ISO 2 code of the country.
+      - `iso_3`: `string` — The ISO 3 code of the country.
+      - `num_code`: `string` — The country's code number.
+      - `name`: `string` — The name of the country.
+      - `display_name`: `string` — The display name of the country.
+    - `payment_providers`: [PaymentProviderDTO](/resources/references/region/interfaces/regionPaymentProviderDTO)\[] — Payment providers available in the region
+      - `id`: `string` — The ID of the payment provider.
+      - `is_enabled`: `boolean` — Whether the payment provider is enabled.
+    - `metadata`: `Record<string, any>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` — The date the region was created.
+    - `updated_at`: `string` — The date the region was updated.
+
+<a id="createregions-data-sharedcontext-promiseregiondto-1" />
+
+## createRegions(data, sharedContext?): Promise\<[RegionDTO](/resources/references/region/interfaces/regionRegionDTO)>
+
+This method creates a region.
+
+### Example
+
+```ts
+const region = await regionModuleService.createRegions({
+  name: "Europe",
+  currency_code: "eur",
+  countries: ["dk", "de", "fr"],
+})
+```
+
+<a id="createregions-parameters-1" />
+
+### Parameters
+
+**createRegions**
+
+- `data`: [CreateRegionDTO](/resources/references/region/interfaces/regionCreateRegionDTO) — The region to be created.
+  - `name`: `string` — The name of the region.
+  - `currency_code`: `string` — The currency code of the region.
+  - `automatic_taxes`: `boolean` (optional) — Setting to indicate whether taxes need to be applied automatically
+  - `countries`: `string`\[] (optional) — The region's countries.
+  - `payment_providers`: `string`\[] (optional) — The region's payment providers.
+  - `metadata`: [MetadataType](/resources/references/region/types/regionMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/region/interfaces/regionContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/region/interfaces/regionIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createregions-returns-1" />
+
+### Returns
+
+**createRegions**
+
+- `Promise`: Promise\<[RegionDTO](/resources/references/region/interfaces/regionRegionDTO)> — The created region.
+  - `id`: `string` — The ID of the region.
+  - `name`: `string` — The name of the region.
+  - `currency_code`: `string` — The currency code of the region.
+  - `automatic_taxes`: `boolean` — Setting to indicate whether taxes need to be applied automatically
+  - `countries`: [RegionCountryDTO](/resources/references/region/interfaces/regionRegionCountryDTO)\[] — The countries of the region.
+    - `id`: `string` — The ID of the country.
+    - `iso_2`: `string` — The ISO 2 code of the country.
+    - `iso_3`: `string` — The ISO 3 code of the country.
+    - `num_code`: `string` — The country's code number.
+    - `name`: `string` — The name of the country.
+    - `display_name`: `string` — The display name of the country.
+  - `payment_providers`: [PaymentProviderDTO](/resources/references/region/interfaces/regionPaymentProviderDTO)\[] — Payment providers available in the region
+    - `id`: `string` — The ID of the payment provider.
+    - `is_enabled`: `boolean` — Whether the payment provider is enabled.
+  - `metadata`: `Record<string, any>` (optional) — Holds custom data in key-value pairs.
+  - `created_at`: `string` — The date the region was created.
+  - `updated_at`: `string` — The date the region was updated.

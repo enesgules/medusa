@@ -1,0 +1,54 @@
+---
+title: createApiKeysStep - Medusa Core Workflows Reference
+sidebarTitle: createApiKeysStep
+---
+
+This documentation provides a reference to the `createApiKeysStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates one or more API keys.
+
+## Example
+
+```ts
+const data = createApiKeysStep({
+  api_keys: [
+    {
+      type: "publishable",
+      title: "Storefront",
+      created_by: "user_123"
+    }
+  ]
+})
+```
+
+<a id="createapikeysstep-input" />
+
+## Input
+
+**createApiKeysStep**
+
+- `CreateApiKeysStepInput`: [CreateApiKeysStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcCreateApiKeysStepInput)
+  - `api_keys`: [CreateApiKeyDTO](/resources/references/api_key/interfaces/api_keyCreateApiKeyDTO)\[] — The API keys to create.
+    - `title`: `string` — The title of the API key.
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The type of the API key.
+    - `created_by`: `string` — Who created the API key. If the API key type is `secret`, the user can use the created API key's token to authenticate as explained in the [API Reference](/api/admin#2-api-token).
+
+<a id="createapikeysstep-output" />
+
+## Output
+
+**createApiKeysStep**
+
+- `ApiKeyDTO[]`: [ApiKeyDTO](/resources/references/api_key/interfaces/api_keyApiKeyDTO)\[]
+  - `id`: `string` — The ID of the API key.
+  - `token`: `string` — The token of the API key.
+  - `redacted`: `string` — The redacted form of the API key's token. This is useful when showing portion of the token. For example `sk_...123`.
+  - `title`: `string` — The title of the API key.
+  - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The type of the API key.
+  - `last_used_at`: `null` | `Date` — The date the API key was last used.
+  - `created_by`: `string` — Who created the API key.
+  - `created_at`: `Date` — The date the API key was created.
+  - `updated_at`: `Date` — The date the API key was updated.
+  - `deleted_at`: `null` | `Date` — The date the API key was deleted.
+  - `revoked_by`: `null` | `string` — Who revoked the API key. For example, the ID of the user that revoked it.
+  - `revoked_at`: `null` | `Date` — The date the API key was revoked.

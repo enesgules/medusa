@@ -1,0 +1,273 @@
+---
+title: StoreShippingOption
+---
+
+The shipping option's details.
+
+## Properties
+
+<Accordion title="id (required)">
+  The shipping option's ID.
+
+  ```json
+  {
+    "type": "string",
+    "title": "id",
+    "description": "The shipping option's ID."
+  }
+  ```
+</Accordion>
+
+<Accordion title="name (required)">
+  The shipping option's name.
+
+  ```json
+  {
+    "type": "string",
+    "title": "name",
+    "description": "The shipping option's name."
+  }
+  ```
+</Accordion>
+
+<Accordion title="price_type (required)">
+  The shipping option's price type. If it's `flat`, the price is fixed and is set in the `prices` property. If it's `calculated`, the price is calculated on checkout by the associated fulfillment provider.
+
+  ```json
+  {
+    "type": "string",
+    "description": "The shipping option's price type. If it's `flat`, the price is fixed and is set in the `prices` property. If it's `calculated`, the price is calculated on checkout by the associated fulfillment provider.",
+    "enum": [
+      "flat",
+      "calculated"
+    ]
+  }
+  ```
+</Accordion>
+
+<Accordion title="service_zone_id (required)">
+  The ID of the service zone the shipping option belongs to.
+
+  ```json
+  {
+    "type": "string",
+    "title": "service_zone_id",
+    "description": "The ID of the service zone the shipping option belongs to."
+  }
+  ```
+</Accordion>
+
+<Accordion title="provider_id (required)">
+  The ID of the fulfillment provider handling this option.
+
+  ```json
+  {
+    "type": "string",
+    "title": "provider_id",
+    "description": "The ID of the fulfillment provider handling this option."
+  }
+  ```
+</Accordion>
+
+<Accordion title="provider (required)">
+  ```json
+  {
+    "$ref": "#/components/schemas/BaseFulfillmentProvider"
+  }
+  ```
+
+  Related schemas:
+
+  - [BaseFulfillmentProvider](/api/schemas/base-fulfillment-provider)
+</Accordion>
+
+<Accordion title="shipping_option_type_id (required)">
+  The ID of the shipping option's type.
+
+  ```json
+  {
+    "type": "string",
+    "title": "shipping_option_type_id",
+    "description": "The ID of the shipping option's type."
+  }
+  ```
+</Accordion>
+
+<Accordion title="type (required)">
+  ```json
+  {
+    "$ref": "#/components/schemas/StoreShippingOptionType"
+  }
+  ```
+
+  Related schemas:
+
+  - [StoreShippingOptionType](/api/schemas/store-shipping-option-type)
+</Accordion>
+
+<Accordion title="shipping_profile_id (required)">
+  The ID of the associated shipping profile.
+
+  ```json
+  {
+    "type": "string",
+    "title": "shipping_profile_id",
+    "description": "The ID of the associated shipping profile."
+  }
+  ```
+</Accordion>
+
+<Accordion title="amount (required)">
+  The shipping option's amount. For a shipping option whose `price_type` is `calculated`, this amount isn't reliable until it's computed by the fulfillment provider using the [Calculate Shipping Option Price API route](/api/store).
+
+  ```json
+  {
+    "type": "number",
+    "title": "amount",
+    "description": "The shipping option's amount. For a shipping option whose `price_type` is `calculated`, this amount isn't reliable until it's computed by the fulfillment provider using the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate)."
+  }
+  ```
+</Accordion>
+
+<Accordion title="is_tax_inclusive (required)">
+  Whether the amount includes taxes.
+
+  ```json
+  {
+    "type": "boolean",
+    "title": "is_tax_inclusive",
+    "description": "Whether the amount includes taxes."
+  }
+  ```
+</Accordion>
+
+<Accordion title="data (required)">
+  The shipping option's data, useful for the provider handling fulfillment.
+
+  ```json
+  {
+    "type": "object",
+    "description": "The shipping option's data, useful for the provider handling fulfillment.",
+    "externalDocs": {
+      "url": "https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="metadata (required)">
+  The shipping option's metadata, can hold custom key-value pairs.
+
+  ```json
+  {
+    "type": "object",
+    "description": "The shipping option's metadata, can hold custom key-value pairs.",
+    "externalDocs": {
+      "url": "https://docs.medusajs.com/api/store#manage-metadata",
+      "description": "Learn how to manage metadata"
+    }
+  }
+  ```
+</Accordion>
+
+## Schema definition
+
+```json
+{
+  "type": "object",
+  "description": "The shipping option's details.",
+  "x-schemaName": "StoreShippingOption",
+  "required": [
+    "id",
+    "name",
+    "price_type",
+    "service_zone_id",
+    "provider_id",
+    "provider",
+    "shipping_option_type_id",
+    "type",
+    "shipping_profile_id",
+    "amount",
+    "is_tax_inclusive",
+    "data",
+    "metadata"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "title": "id",
+      "description": "The shipping option's ID."
+    },
+    "name": {
+      "type": "string",
+      "title": "name",
+      "description": "The shipping option's name."
+    },
+    "price_type": {
+      "type": "string",
+      "description": "The shipping option's price type. If it's `flat`, the price is fixed and is set in the `prices` property. If it's `calculated`, the price is calculated on checkout by the associated fulfillment provider.",
+      "enum": [
+        "flat",
+        "calculated"
+      ]
+    },
+    "service_zone_id": {
+      "type": "string",
+      "title": "service_zone_id",
+      "description": "The ID of the service zone the shipping option belongs to."
+    },
+    "provider_id": {
+      "type": "string",
+      "title": "provider_id",
+      "description": "The ID of the fulfillment provider handling this option."
+    },
+    "provider": {
+      "$ref": "#/components/schemas/BaseFulfillmentProvider"
+    },
+    "shipping_option_type_id": {
+      "type": "string",
+      "title": "shipping_option_type_id",
+      "description": "The ID of the shipping option's type."
+    },
+    "type": {
+      "$ref": "#/components/schemas/StoreShippingOptionType"
+    },
+    "shipping_profile_id": {
+      "type": "string",
+      "title": "shipping_profile_id",
+      "description": "The ID of the associated shipping profile."
+    },
+    "amount": {
+      "type": "number",
+      "title": "amount",
+      "description": "The shipping option's amount. For a shipping option whose `price_type` is `calculated`, this amount isn't reliable until it's computed by the fulfillment provider using the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate)."
+    },
+    "is_tax_inclusive": {
+      "type": "boolean",
+      "title": "is_tax_inclusive",
+      "description": "Whether the amount includes taxes."
+    },
+    "data": {
+      "type": "object",
+      "description": "The shipping option's data, useful for the provider handling fulfillment.",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "The shipping option's metadata, can hold custom key-value pairs.",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/api/store#manage-metadata",
+        "description": "Learn how to manage metadata"
+      }
+    }
+  }
+}
+```
+
+Related schemas:
+
+- [BaseFulfillmentProvider](/api/schemas/base-fulfillment-provider)
+
+- [StoreShippingOptionType](/api/schemas/store-shipping-option-type)

@@ -1,0 +1,29 @@
+---
+title: __joinerConfig
+---
+
+<a id="joinerconfig-returns" />
+
+## Returns
+
+**\_\_joinerConfig**
+
+- `schema`: `string` (optional) — GraphQL schema for the all module's available entities and fields
+- `idPrefixToEntityName`: `Record<string, string>` (optional)
+- `relationships`: [ModuleJoinerRelationship](/resources/references/order/types/orderModuleJoinerRelationship)\[] (optional)
+- `extends`: `object`\[] (optional)
+  - `serviceName`: `string`
+  - `entity`: `string` (optional)
+  - `fieldAlias`: `Record<string, string \| object>` (optional)
+  - `relationship`: Omit\<[ModuleJoinerRelationship](/resources/references/order/types/orderModuleJoinerRelationship), "hasMany">
+- `serviceName`: `string` (optional)
+- `primaryKeys`: `string`\[] (optional)
+- `isLink`: `boolean` (optional) — If the module is a link module
+- `linkableKeys`: `Record<string, string>` (optional) — Keys that can be used to link to other modules. e.g \{ product\_id: "Product" } "Product" being the entity it refers to
+- `isReadOnlyLink`: `boolean` (optional) — If true it expands a RemoteQuery property but doesn't create a pivot table
+- `extraDataFields`: `string`\[] (optional) — Fields that will be part of the link record aside from the primary keys that can be updated If not explicitly defined, this array will be populated by databaseConfig.extraFields
+- `databaseClientUrl`: `string` (optional) — Resolved database client URL for this module. This is used to determine if we can do in-DB cross module filtering
+- `databaseConfig`: `object` (optional)
+  - `tableName`: `string` (optional) — Name of the pivot table. If not provided it is auto generated
+  - `idPrefix`: `string` (optional) — Prefix for the id column. If not provided it is "link"
+  - `extraFields`: [LinkModulesExtraFields](/resources/references/order/types/orderLinkModulesExtraFields) (optional)

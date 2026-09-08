@@ -1,0 +1,165 @@
+---
+title: updateAddresses - Cart Module Reference
+sidebarTitle: updateAddresses
+---
+
+This documentation provides a reference to the `updateAddresses` method. This belongs to the Cart Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updateaddresses-data-sharedcontext-promisecartaddressdto" />
+
+## updateAddresses(data, sharedContext?): Promise\<[CartAddressDTO](/resources/references/cart/interfaces/cartCartAddressDTO)\[]>
+
+This method updates existing addresses.
+
+### Example
+
+```ts
+const addresses = await cartModuleService.updateAddresses([
+  {
+    id: "caaddr_123",
+    first_name: "Leroy",
+  },
+  {
+    id: "caaddr_321",
+    last_name: "Hunt",
+  },
+])
+```
+
+<a id="updateaddresses-parameters" />
+
+### Parameters
+
+**updateAddresses**
+
+- `data`: [UpdateAddressDTO](/resources/references/cart/interfaces/cartUpdateAddressDTO)\[] — The attributes to update in the addresss.
+  - `customer_id`: `string` (optional) — The associated customer's ID.
+  - `company`: `string` (optional) — The company of the address.
+  - `first_name`: `string` (optional) — The first name of the address.
+  - `last_name`: `string` (optional) — The last name of the address.
+  - `address_1`: `string` (optional) — The first line of the address.
+  - `address_2`: `string` (optional) — The second line of the address.
+  - `city`: `string` (optional) — The city of the address.
+  - `country_code`: `string` (optional) — The ISO two country code of the address.
+  - `province`: `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
+  - `postal_code`: `string` (optional) — The postal code of the address.
+  - `phone`: `string` (optional) — The phone of the address.
+  - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `id`: `string` — The ID of the address.
+- `sharedContext`: [Context](/resources/references/cart/interfaces/cartContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/cart/interfaces/cartIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateaddresses-returns" />
+
+### Returns
+
+**updateAddresses**
+
+- `Promise`: Promise\<[CartAddressDTO](/resources/references/cart/interfaces/cartCartAddressDTO)\[]> — The updated addresses.
+  - `CartAddressDTO[]`: [CartAddressDTO](/resources/references/cart/interfaces/cartCartAddressDTO)\[]
+    - `id`: `string` — The ID of the address.
+    - `customer_id`: `string` (optional) — The customer ID of the address.
+    - `first_name`: `string` (optional) — The first name of the address.
+    - `last_name`: `string` (optional) — The last name of the address.
+    - `phone`: `string` (optional) — The phone number of the address.
+    - `company`: `string` (optional) — The company of the address.
+    - `address_1`: `string` (optional) — The first address line of the address.
+    - `address_2`: `string` (optional) — The second address line of the address.
+    - `city`: `string` (optional) — The city of the address.
+    - `country_code`: `string` (optional) — The country code of the address.
+    - `province`: `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
+    - `postal_code`: `string` (optional) — The postal code of the address.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the address was created.
+    - `updated_at`: `string` | `Date` — When the address was updated.
+
+<a id="updateaddresses-data-sharedcontext-promisecartaddressdto-1" />
+
+## updateAddresses(data, sharedContext?): Promise\<[CartAddressDTO](/resources/references/cart/interfaces/cartCartAddressDTO)>
+
+This method updates an existing address.
+
+### Example
+
+```ts
+const address = await cartModuleService.updateAddresses({
+  id: "caaddr_123",
+  first_name: "Leroy",
+})
+```
+
+<a id="updateaddresses-parameters-1" />
+
+### Parameters
+
+**updateAddresses**
+
+- `data`: [UpdateAddressDTO](/resources/references/cart/interfaces/cartUpdateAddressDTO) — The attributes to update in the address.
+  - `customer_id`: `string` (optional) — The associated customer's ID.
+  - `company`: `string` (optional) — The company of the address.
+  - `first_name`: `string` (optional) — The first name of the address.
+  - `last_name`: `string` (optional) — The last name of the address.
+  - `address_1`: `string` (optional) — The first line of the address.
+  - `address_2`: `string` (optional) — The second line of the address.
+  - `city`: `string` (optional) — The city of the address.
+  - `country_code`: `string` (optional) — The ISO two country code of the address.
+  - `province`: `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
+  - `postal_code`: `string` (optional) — The postal code of the address.
+  - `phone`: `string` (optional) — The phone of the address.
+  - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `id`: `string` — The ID of the address.
+- `sharedContext`: [Context](/resources/references/cart/interfaces/cartContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/cart/interfaces/cartIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateaddresses-returns-1" />
+
+### Returns
+
+**updateAddresses**
+
+- `Promise`: Promise\<[CartAddressDTO](/resources/references/cart/interfaces/cartCartAddressDTO)> — The updated address.
+  - `id`: `string` — The ID of the address.
+  - `customer_id`: `string` (optional) — The customer ID of the address.
+  - `first_name`: `string` (optional) — The first name of the address.
+  - `last_name`: `string` (optional) — The last name of the address.
+  - `phone`: `string` (optional) — The phone number of the address.
+  - `company`: `string` (optional) — The company of the address.
+  - `address_1`: `string` (optional) — The first address line of the address.
+  - `address_2`: `string` (optional) — The second address line of the address.
+  - `city`: `string` (optional) — The city of the address.
+  - `country_code`: `string` (optional) — The country code of the address.
+  - `province`: `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
+  - `postal_code`: `string` (optional) — The postal code of the address.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `created_at`: `string` | `Date` — When the address was created.
+  - `updated_at`: `string` | `Date` — When the address was updated.

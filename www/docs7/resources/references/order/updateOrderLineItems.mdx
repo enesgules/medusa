@@ -1,0 +1,359 @@
+---
+title: updateOrderLineItems - Order Module Reference
+sidebarTitle: updateOrderLineItems
+---
+
+This documentation provides a reference to the `updateOrderLineItems` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updateorderlineitems-data-sharedcontext-promiseorderlineitemdto" />
+
+## updateOrderLineItems(data, sharedContext?): Promise\<[OrderLineItemDTO](/resources/references/order/interfaces/orderOrderLineItemDTO)\[]>
+
+This method updates existing line items. The line item to update is specified by the `selector` property of the first parameter.
+
+### Example
+
+```typescript
+const lineItems = await orderModuleService.updateOrderLineItems([
+  {
+    selector: {
+      id: "123"
+    },
+    data: {
+      quantity: 2
+    }
+  }
+])
+```
+
+<a id="updateorderlineitems-parameters" />
+
+### Parameters
+
+**updateOrderLineItems**
+
+- `data`: [UpdateOrderLineItemWithSelectorDTO](/resources/references/order/interfaces/orderUpdateOrderLineItemWithSelectorDTO)\[] — The attributes to update in the order line item with selector.
+  - `selector`: Partial\<[OrderLineItemDTO](/resources/references/order/interfaces/orderOrderLineItemDTO)> — The selector of the line item with selector.
+    - `original_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The original total of the order line item.
+    - `original_subtotal`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The original subtotal of the order line item.
+    - `original_tax_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The original tax total of the order line item.
+    - `item_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The item total of the order line item.
+    - `item_subtotal`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The item subtotal of the order line item.
+    - `item_tax_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The item tax total of the order line item.
+    - `total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The total of the order line item.
+    - `subtotal`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The subtotal of the order line item.
+    - `tax_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The tax total of the order line item.
+    - `discount_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The discount total of the order line item.
+    - `discount_tax_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The discount tax total of the order line item.
+    - `refundable_total`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The refundable total of the order line item.
+    - `refundable_total_per_unit`: [BigNumberValue](/resources/references/order/types/orderBigNumberValue) — The refundable total per unit of the order line item.
+    - `id`: `string` — The ID of the line item.
+    - `title`: `string` — The title of the line item.
+    - `subtitle`: `null` | `string` (optional) — The subtitle of the line item.
+    - `thumbnail`: `null` | `string` (optional) — The thumbnail of the line item.
+    - `variant_id`: `null` | `string` (optional) — The ID of the variant associated with the line item.
+    - `product_id`: `null` | `string` (optional) — The ID of the product associated with the line item.
+    - `product_title`: `null` | `string` (optional) — The title of the product associated with the line item.
+    - `product_description`: `null` | `string` (optional) — The description of the product associated with the line item.
+    - `product_subtitle`: `null` | `string` (optional) — The subtitle of the product associated with the line item.
+    - `product_type_id`: `null` | `string` (optional) — The ID of the type of the product associated with the line item.
+    - `product_type`: `null` | `string` (optional) — The type of the product associated with the line item.
+    - `product_collection`: `null` | `string` (optional) — The collection of the product associated with the line item.
+    - `product_handle`: `null` | `string` (optional) — The handle of the product associated with the line item.
+    - `variant_sku`: `null` | `string` (optional) — The SKU (stock keeping unit) of the variant associated with the line item.
+    - `variant_barcode`: `null` | `string` (optional) — The barcode of the variant associated with the line item.
+    - `variant_title`: `null` | `string` (optional) — The title of the variant associated with the line item.
+    - `variant_option_values`: `null` | `Record<string, unknown>` (optional) — The option values of the variant associated with the line item.
+    - `requires_shipping`: `boolean` — Indicates whether the line item requires shipping.
+    - `is_discountable`: `boolean` — Indicates whether the line item is discountable.
+    - `is_giftcard`: `boolean` — Indicates whether the line item is a gift card.
+    - `is_tax_inclusive`: `boolean` — Indicates whether the line item price is tax inclusive.
+    - `compare_at_unit_price`: `number` (optional) — The compare at unit price of the line item.
+    - `unit_price`: `number` — The unit price of the line item.
+    - `quantity`: `number` — The quantity of the line item.
+    - `tax_lines`: [OrderLineItemTaxLineDTO](/resources/references/order/interfaces/orderOrderLineItemTaxLineDTO)\[] (optional) — The associated tax lines.
+    - `adjustments`: [OrderLineItemAdjustmentDTO](/resources/references/order/interfaces/orderOrderLineItemAdjustmentDTO)\[] (optional) — The associated adjustments.
+    - `detail`: [OrderItemDTO](/resources/references/order/interfaces/orderOrderItemDTO) — The details of the item
+    - `created_at`: `Date` — The date when the line item was created.
+    - `updated_at`: `Date` — The date when the line item was last updated.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — The versioned order item metadata. Holds custom data in key-value pairs.
+    - `line_item_metadata`: `null` | `Record<string, unknown>` (optional) — The metadata of the line item. Holds custom data in key-value pairs.
+  - `data`: Partial\<[UpdateOrderLineItemDTO](/resources/references/order/interfaces/orderUpdateOrderLineItemDTO)> — The data of the line item with selector.
+    - `subtitle`: `string` (optional) — The subtitle of the line item.
+    - `thumbnail`: `string` (optional) — The thumbnail of the line item.
+    - `order_id`: `string` (optional) — The associated order's ID.
+    - `product_id`: `string` (optional) — The associated product's ID.
+    - `product_title`: `string` (optional) — The product title of the line item.
+    - `product_description`: `string` (optional) — The product description of the line item.
+    - `product_subtitle`: `string` (optional) — The product subtitle of the line item.
+    - `product_type`: `string` (optional) — The product type of the line item.
+    - `product_collection`: `string` (optional) — The product collection of the line item.
+    - `product_handle`: `string` (optional) — The product handle of the line item.
+    - `variant_id`: `string` (optional) — The associated variant's ID.
+    - `variant_sku`: `string` (optional) — The variant sku of the line item.
+    - `variant_barcode`: `string` (optional) — The variant barcode of the line item.
+    - `variant_title`: `string` (optional) — The variant title of the line item.
+    - `variant_option_values`: `Record<string, unknown>` (optional) — The variant option values of the line item.
+    - `requires_shipping`: `boolean` (optional) — Whether the line item requires shipping.
+    - `is_discountable`: `boolean` (optional) — Whether the line item is discountable.
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the line item is tax inclusive.
+    - `compare_at_unit_price`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The compare-at unit price of the line item.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` — The ID of the line item.
+    - `title`: `string` (optional) — The title of the line item.
+    - `quantity`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The quantity of the line item.
+    - `unit_price`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The unit price of the line item.
+    - `tax_lines`: [CreateOrderTaxLineDTO](/resources/references/order/interfaces/orderCreateOrderTaxLineDTO)\[] | [UpdateOrderTaxLineDTO](/resources/references/order/interfaces/orderUpdateOrderTaxLineDTO)\[] (optional) — The tax lines of the line item.
+    - `adjustments`: [CreateOrderAdjustmentDTO](/resources/references/order/interfaces/orderCreateOrderAdjustmentDTO)\[] | [UpdateOrderAdjustmentDTO](/resources/references/order/interfaces/orderUpdateOrderAdjustmentDTO)\[] (optional) — The adjustments of the line item.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorderlineitems-returns" />
+
+### Returns
+
+**updateOrderLineItems**
+
+- `Promise`: Promise\<[OrderLineItemDTO](/resources/references/order/interfaces/orderOrderLineItemDTO)\[]> — The updated line items.
+  - `OrderLineItemDTO[]`: [OrderLineItemDTO](/resources/references/order/interfaces/orderOrderLineItemDTO)\[]
+
+<a id="updateorderlineitems-selector-data-sharedcontext-promiseorderlineitemdto" />
+
+## updateOrderLineItems(selector, data, sharedContext?): Promise\<[OrderLineItemDTO](/resources/references/order/interfaces/orderOrderLineItemDTO)\[]>
+
+This method updates existing line items matching the specified filters.
+
+### Example
+
+```ts
+const lineItems = await orderModuleService.updateOrderLineItems({
+  id: "123"
+}, {
+  quantity: 2
+})
+```
+
+<a id="updateorderlineitems-parameters-1" />
+
+### Parameters
+
+**updateOrderLineItems**
+
+- `selector`: Partial\<[FilterableOrderLineItemProps](/resources/references/order/interfaces/orderFilterableOrderLineItemProps)> — The filters specifying which line items to update.
+  - `$and`: ([FilterableOrderLineItemProps](/resources/references/order/interfaces/orderFilterableOrderLineItemProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderLineItemProps](/resources/references/order/interfaces/orderFilterableOrderLineItemProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableOrderLineItemProps](/resources/references/order/interfaces/orderFilterableOrderLineItemProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderLineItemProps](/resources/references/order/interfaces/orderFilterableOrderLineItemProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableOrderLineItemProps](/resources/references/order/interfaces/orderFilterableOrderLineItemProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderLineItemProps](/resources/references/order/interfaces/orderFilterableOrderLineItemProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the order line items by.
+    - `title`: `string` (optional) — Filter by line items' title.
+    - `variant_id`: `string` | `string`\[] (optional) — Filter line items by their associated variant's ID.
+    - `product_id`: `string` | `string`\[] (optional) — Filter line items by their associated product's ID.
+  - `$or`: ([FilterableOrderLineItemProps](/resources/references/order/interfaces/orderFilterableOrderLineItemProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderLineItemProps](/resources/references/order/interfaces/orderFilterableOrderLineItemProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableOrderLineItemProps](/resources/references/order/interfaces/orderFilterableOrderLineItemProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderLineItemProps](/resources/references/order/interfaces/orderFilterableOrderLineItemProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableOrderLineItemProps](/resources/references/order/interfaces/orderFilterableOrderLineItemProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderLineItemProps](/resources/references/order/interfaces/orderFilterableOrderLineItemProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the order line items by.
+    - `title`: `string` (optional) — Filter by line items' title.
+    - `variant_id`: `string` | `string`\[] (optional) — Filter line items by their associated variant's ID.
+    - `product_id`: `string` | `string`\[] (optional) — Filter line items by their associated product's ID.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the order line items by.
+  - `title`: `string` (optional) — Filter by line items' title.
+  - `variant_id`: `string` | `string`\[] (optional) — Filter line items by their associated variant's ID.
+  - `product_id`: `string` | `string`\[] (optional) — Filter line items by their associated product's ID.
+- `data`: Partial\<[UpdateOrderLineItemDTO](/resources/references/order/interfaces/orderUpdateOrderLineItemDTO)> — The data to update in the line items.
+  - `subtitle`: `string` (optional) — The subtitle of the line item.
+  - `thumbnail`: `string` (optional) — The thumbnail of the line item.
+  - `order_id`: `string` (optional) — The associated order's ID.
+  - `product_id`: `string` (optional) — The associated product's ID.
+  - `product_title`: `string` (optional) — The product title of the line item.
+  - `product_description`: `string` (optional) — The product description of the line item.
+  - `product_subtitle`: `string` (optional) — The product subtitle of the line item.
+  - `product_type`: `string` (optional) — The product type of the line item.
+  - `product_collection`: `string` (optional) — The product collection of the line item.
+  - `product_handle`: `string` (optional) — The product handle of the line item.
+  - `variant_id`: `string` (optional) — The associated variant's ID.
+  - `variant_sku`: `string` (optional) — The variant sku of the line item.
+  - `variant_barcode`: `string` (optional) — The variant barcode of the line item.
+  - `variant_title`: `string` (optional) — The variant title of the line item.
+  - `variant_option_values`: `Record<string, unknown>` (optional) — The variant option values of the line item.
+  - `requires_shipping`: `boolean` (optional) — Whether the line item requires shipping.
+  - `is_discountable`: `boolean` (optional) — Whether the line item is discountable.
+  - `is_tax_inclusive`: `boolean` (optional) — Whether the line item is tax inclusive.
+  - `compare_at_unit_price`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The compare-at unit price of the line item.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `id`: `string` — The ID of the line item.
+  - `title`: `string` (optional) — The title of the line item.
+  - `quantity`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The quantity of the line item.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `unit_price`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The unit price of the line item.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `tax_lines`: [CreateOrderTaxLineDTO](/resources/references/order/interfaces/orderCreateOrderTaxLineDTO)\[] | [UpdateOrderTaxLineDTO](/resources/references/order/interfaces/orderUpdateOrderTaxLineDTO)\[] (optional) — The tax lines of the line item.
+    - `description`: `string` (optional) — The description of the tax line.
+    - `tax_rate_id`: `string` (optional) — The associated tax rate's ID.
+    - `code`: `string` — The code of the tax line.
+    - `rate`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The rate of the tax line.
+    - `provider_id`: `string` (optional) — The associated provider's ID.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `data`: `null` | `Record<string, unknown>` (optional) — Holds data returned by the tax provider in key-value pairs.
+    - `id`: `string` — The ID of the tax line.
+  - `adjustments`: [CreateOrderAdjustmentDTO](/resources/references/order/interfaces/orderCreateOrderAdjustmentDTO)\[] | [UpdateOrderAdjustmentDTO](/resources/references/order/interfaces/orderUpdateOrderAdjustmentDTO)\[] (optional) — The adjustments of the line item.
+    - `code`: `string` (optional) — The code of the adjustment.
+    - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The amount of the adjustment.
+    - `description`: `string` (optional) — The description of the adjustment.
+    - `promotion_id`: `string` (optional) — The associated promotion's ID.
+    - `provider_id`: `string` (optional) — The associated provider's ID.
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the adjustment is tax inclusive.
+    - `version`: `number` (optional) — The version of the adjustment.
+    - `id`: `string` — The ID of the adjustment.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorderlineitems-returns-1" />
+
+### Returns
+
+**updateOrderLineItems**
+
+- `Promise`: Promise\<[OrderLineItemDTO](/resources/references/order/interfaces/orderOrderLineItemDTO)\[]> — The updated line items.
+  - `OrderLineItemDTO[]`: [OrderLineItemDTO](/resources/references/order/interfaces/orderOrderLineItemDTO)\[]
+
+<a id="updateorderlineitems-lineid-data-sharedcontext-promiseorderlineitemdto" />
+
+## updateOrderLineItems(lineId, data, sharedContext?): Promise\<[OrderLineItemDTO](/resources/references/order/interfaces/orderOrderLineItemDTO)>
+
+This method updates an existing line item.
+
+### Example
+
+```ts
+const lineItem = await orderModuleService.updateOrderLineItems(
+  "123",
+  {
+    quantity: 2
+  }
+)
+```
+
+<a id="updateorderlineitems-parameters-2" />
+
+### Parameters
+
+**updateOrderLineItems**
+
+- `lineId`: `string` — The line items's ID.
+- `data`: Partial\<[UpdateOrderLineItemDTO](/resources/references/order/interfaces/orderUpdateOrderLineItemDTO)> — The data to update in the line item.
+  - `subtitle`: `string` (optional) — The subtitle of the line item.
+  - `thumbnail`: `string` (optional) — The thumbnail of the line item.
+  - `order_id`: `string` (optional) — The associated order's ID.
+  - `product_id`: `string` (optional) — The associated product's ID.
+  - `product_title`: `string` (optional) — The product title of the line item.
+  - `product_description`: `string` (optional) — The product description of the line item.
+  - `product_subtitle`: `string` (optional) — The product subtitle of the line item.
+  - `product_type`: `string` (optional) — The product type of the line item.
+  - `product_collection`: `string` (optional) — The product collection of the line item.
+  - `product_handle`: `string` (optional) — The product handle of the line item.
+  - `variant_id`: `string` (optional) — The associated variant's ID.
+  - `variant_sku`: `string` (optional) — The variant sku of the line item.
+  - `variant_barcode`: `string` (optional) — The variant barcode of the line item.
+  - `variant_title`: `string` (optional) — The variant title of the line item.
+  - `variant_option_values`: `Record<string, unknown>` (optional) — The variant option values of the line item.
+  - `requires_shipping`: `boolean` (optional) — Whether the line item requires shipping.
+  - `is_discountable`: `boolean` (optional) — Whether the line item is discountable.
+  - `is_tax_inclusive`: `boolean` (optional) — Whether the line item is tax inclusive.
+  - `compare_at_unit_price`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The compare-at unit price of the line item.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `id`: `string` — The ID of the line item.
+  - `title`: `string` (optional) — The title of the line item.
+  - `quantity`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The quantity of the line item.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `unit_price`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The unit price of the line item.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `tax_lines`: [CreateOrderTaxLineDTO](/resources/references/order/interfaces/orderCreateOrderTaxLineDTO)\[] | [UpdateOrderTaxLineDTO](/resources/references/order/interfaces/orderUpdateOrderTaxLineDTO)\[] (optional) — The tax lines of the line item.
+    - `description`: `string` (optional) — The description of the tax line.
+    - `tax_rate_id`: `string` (optional) — The associated tax rate's ID.
+    - `code`: `string` — The code of the tax line.
+    - `rate`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The rate of the tax line.
+    - `provider_id`: `string` (optional) — The associated provider's ID.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `data`: `null` | `Record<string, unknown>` (optional) — Holds data returned by the tax provider in key-value pairs.
+    - `id`: `string` — The ID of the tax line.
+  - `adjustments`: [CreateOrderAdjustmentDTO](/resources/references/order/interfaces/orderCreateOrderAdjustmentDTO)\[] | [UpdateOrderAdjustmentDTO](/resources/references/order/interfaces/orderUpdateOrderAdjustmentDTO)\[] (optional) — The adjustments of the line item.
+    - `code`: `string` (optional) — The code of the adjustment.
+    - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The amount of the adjustment.
+    - `description`: `string` (optional) — The description of the adjustment.
+    - `promotion_id`: `string` (optional) — The associated promotion's ID.
+    - `provider_id`: `string` (optional) — The associated provider's ID.
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the adjustment is tax inclusive.
+    - `version`: `number` (optional) — The version of the adjustment.
+    - `id`: `string` — The ID of the adjustment.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorderlineitems-returns-2" />
+
+### Returns
+
+**updateOrderLineItems**
+
+- `Promise`: Promise\<[OrderLineItemDTO](/resources/references/order/interfaces/orderOrderLineItemDTO)> — The updated line item.

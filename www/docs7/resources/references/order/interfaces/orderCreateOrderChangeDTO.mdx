@@ -1,0 +1,39 @@
+---
+title: CreateOrderChangeDTO
+---
+
+The data of the order change to be created.
+
+**CreateOrderChangeDTO**
+
+- `order_id`: `string` — The associated order's ID.
+- `return_id`: `string` (optional) — The associated return's ID.
+- `claim_id`: `string` (optional) — The associated claim's ID.
+- `exchange_id`: `string` (optional) — The associated exchange's ID.
+- `change_type`: [OrderChangeType](/resources/references/order/types/orderOrderChangeType) (optional) — The type of the order change.
+- `description`: `string` (optional) — The description of the order change.
+- `internal_note`: `null` | `string` (optional) — The internal note of the order change.
+- `carry_over_promotions`: `null` | `boolean` (optional) — Whether to carry over promotions (apply promotions to outbound exchange items).
+- `no_notification`: `null` | `boolean` (optional) — Whether the customer shouldn't be notified of the order change.
+- `requested_by`: `string` (optional) — The user or customer that requested the order change.
+- `requested_at`: `Date` (optional) — The date that the order change was requested.
+- `created_by`: `null` | `string` (optional) — The user that created the order change.
+- `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `actions`: [CreateOrderChangeActionDTO](/resources/references/order/interfaces/orderCreateOrderChangeActionDTO)\[] (optional) — The actions of the order change.
+  - `order_change_id`: `string` (optional) — The associated order change's ID.
+  - `order_id`: `string` (optional) — The associated order's ID.
+  - `return_id`: `string` (optional) — The associated return's ID.
+  - `claim_id`: `string` (optional) — The associated claim's ID.
+  - `exchange_id`: `string` (optional) — The associated exchange's ID.
+  - `version`: `number` (optional) — The version of the order change action. Once the order change action is confirmed, this becomes the order's version.
+  - `reference`: `string` (optional) — The name of the data model that this action references. For example, `return`.
+  - `reference_id`: `string` (optional) — The ID of the record references of the data model specified in [reference](/resources/references/order/interfaces/orderCreateOrderChangeActionDTO#reference). For example, if `reference` is `return`, the `reference_id` is the ID of the return.
+  - `action`: [ChangeActionType](/resources/references/order/types/orderChangeActionType) — The type of action.
+  - `internal_note`: `null` | `string` (optional) — The internal note of the order change action.
+  - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The amount of the order change action.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `details`: `Record<string, unknown>` (optional) — The details of the order change action. This could include the returned items or their changed quantity, based on the type of this action.
+  - `applied`: `boolean` (optional) — Whether the action has been applied.

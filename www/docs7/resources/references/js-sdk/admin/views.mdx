@@ -1,0 +1,578 @@
+---
+title: views - JS SDK Admin Reference
+sidebarTitle: views
+---
+
+This documentation provides a reference to the `sdk.admin.views` set of methods used to send requests to Medusa's Admin API routes.
+
+## constructor
+
+<a id="constructor-parameters" />
+
+### Parameters
+
+**constructor**
+
+- `client`: [Client](/resources/references/js_sdk/admin/classes/js_sdkadminClient)
+  - `fetch_`: [ClientFetch](/resources/references/js_sdk/admin/types/js_sdkadminClientFetch)
+  - `config`: [Config](/resources/references/js_sdk/admin/types/js_sdkadminConfig)
+    - `baseUrl`: `string` — The base URL of the Medusa server.
+    - `globalHeaders`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Default headers to include with every request.
+    - `publishableKey`: `string` (optional) — The publishable API key for storefront authentication.
+    - `apiKey`: `string` (optional) — The secret API key for admin authentication.
+    - `auth`: `object` (optional) — Authentication configuration.
+    - `logger`: [Logger](/resources/references/js_sdk/admin/types/js_sdkadminLogger) (optional) — Custom logger instance.
+    - `debug`: `boolean` (optional) — Whether to enable debug logging.
+  - `logger`: [Logger](/resources/references/js_sdk/admin/types/js_sdkadminLogger)
+    - `error`: (...`messages`: `string`\[]) => `void` — Log error messages.
+    - `warn`: (...`messages`: `string`\[]) => `void` — Log warning messages.
+    - `info`: (...`messages`: `string`\[]) => `void` — Log info messages.
+    - `debug`: (...`messages`: `string`\[]) => `void` — Log debug messages.
+  - `DEFAULT_JWT_STORAGE_KEY`: `string` (default: "medusa\_auth\_token")
+  - `token`: `string` (default: "")
+  - `locale_`: `string` (default: "")
+
+## listEntities
+
+This method retrieves the list of entities that support view configurations.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.18.0](https://github.com/medusajs/medusa/releases/tag/v2.18.0).
+
+### Example
+
+```ts
+sdk.admin.views.listEntities()
+.then(({ entities }) => {
+  console.log(entities)
+})
+```
+
+<a id="listentities-parameters" />
+
+### Parameters
+
+**listEntities**
+
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listentities-returns" />
+
+### Returns
+
+**listEntities**
+
+- `Promise`: Promise\<[AdminEntityListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminEntityListResponse)> — The list of supported entities.
+  - `entities`: [AdminEntityInfo](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminEntityInfo)\[] — List of available entities.
+    - `name`: `string` — Entity name in PascalCase.
+    - `pluralName`: `string` — Plural/route key.
+    - `module`: `string` — Module this entity belongs to.
+    - `propertyCount`: `number` — Number of properties on this entity.
+    - `hasOverrides`: `boolean` — Whether this entity has custom overrides.
+
+## columns
+
+This method retrieves the columns available for an entity's data table.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.10.3](https://github.com/medusajs/medusa/releases/tag/v2.10.3).
+
+### Example
+
+```ts
+const { columns } = await sdk.admin.views.columns("orders")
+```
+
+<a id="columns-parameters" />
+
+### Parameters
+
+**columns**
+
+- `entity`: `string` — The entity to retrieve the columns for.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the columns.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="columns-returns" />
+
+### Returns
+
+**columns**
+
+- `Promise`: Promise\<[AdminViewsEntityColumnsResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminViewsEntityColumnsResponse)> — The entity's available columns.
+  - `columns`: [AdminColumn](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminColumn)\[] — The list of available columns for the entity.
+    - `id`: `string` — The column's unique identifier (e.g., "display\_id", "customer.email").
+    - `name`: `string` — The display name for the column.
+    - `description`: `string` (optional) — Description of the column.
+    - `field`: `string` — The field path to access the data.
+    - `sortable`: `boolean` — Whether the column can be sorted.
+    - `hideable`: `boolean` — Whether the column can be hidden.
+    - `default_visible`: `boolean` — Whether the column is visible by default.
+    - `data_type`: `"string"` | `"number"` | `"boolean"` | `"object"` | `string` & `object` | `"enum"` | `"date"` | `"currency"` — The data type of the column.
+    - `semantic_type`: `string` (optional) — The semantic type provides additional context about the data.
+    - `context`: `string` (optional) — Additional context about the column.
+    - `computed`: `object` (optional) — Information about computed columns.
+    - `metadata`: `Record<string, any>` (optional) — Arbitrary per-column configuration consumed by cell renderers (e.g. the field path a renderer reads, or a value->variant map). Populated from the settings entity override's `fieldMetadata` (any column) or a computed column definition's `metadata`.
+    - `relationship`: `object` (optional) — Information about relationship columns.
+    - `default_order`: `number` (optional) — Default order for sorting columns.
+    - `category`: `"metadata"` | `"status"` | `"identifier"` | `"timestamp"` | `"metric"` | `"relationship"` | `"field"` | `"computed"` (optional) — Category for grouping columns.
+    - `render_mode`: `string` (optional) — Render mode hint for the UI to determine how to display this column.
+    - `filter`: `object` (optional) — Filter configuration for this column.
+    - `source`: `object` (optional) — Source information about where this column comes from.
+    - `custom_label`: `boolean` (optional) — Whether this column uses a custom user-defined label.
+    - `label_id`: `string` (optional) — ID of the PropertyLabel record if custom label is used.
+
+## listConfigurations
+
+This method retrieves a paginated list of view configurations for an entity.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.10.3](https://github.com/medusajs/medusa/releases/tag/v2.10.3).
+
+### Example
+
+To retrieve the list of view configurations:
+
+```ts
+sdk.admin.views.listConfigurations("orders")
+.then(({ view_configurations, count, limit, offset }) => {
+  console.log(view_configurations)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.views.listConfigurations("orders", {
+  limit: 10,
+  offset: 10
+})
+.then(({ view_configurations, count, limit, offset }) => {
+  console.log(view_configurations)
+})
+```
+
+<a id="listconfigurations-parameters" />
+
+### Parameters
+
+**listConfigurations**
+
+- `entity`: `string` — The entity to retrieve the view configurations for.
+- `query`: [AdminGetViewConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetViewConfigurationsParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminGetViewConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetViewConfigurationsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetViewConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetViewConfigurationsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminGetViewConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetViewConfigurationsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetViewConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetViewConfigurationsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminGetViewConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetViewConfigurationsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetViewConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetViewConfigurationsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — IDs to filter view configurations by.
+    - `entity`: `string` | `string`\[] (optional) — Entity to filter by.
+    - `name`: `string` | `string`\[] (optional) — Name to filter by.
+    - `user_id`: `null` | `string` | `string`\[] (optional) — User ID to filter by.
+    - `is_system_default`: `boolean` (optional) — Filter by system default status.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Date filters for when the view configuration was created.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Date filters for when the view configuration was updated.
+  - `$or`: ([AdminGetViewConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetViewConfigurationsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetViewConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetViewConfigurationsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminGetViewConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetViewConfigurationsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetViewConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetViewConfigurationsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminGetViewConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetViewConfigurationsParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetViewConfigurationsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetViewConfigurationsParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — IDs to filter view configurations by.
+    - `entity`: `string` | `string`\[] (optional) — Entity to filter by.
+    - `name`: `string` | `string`\[] (optional) — Name to filter by.
+    - `user_id`: `null` | `string` | `string`\[] (optional) — User ID to filter by.
+    - `is_system_default`: `boolean` (optional) — Filter by system default status.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Date filters for when the view configuration was created.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Date filters for when the view configuration was updated.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `id`: `string` | `string`\[] (optional) — IDs to filter view configurations by.
+  - `entity`: `string` | `string`\[] (optional) — Entity to filter by.
+  - `name`: `string` | `string`\[] (optional) — Name to filter by.
+  - `user_id`: `null` | `string` | `string`\[] (optional) — User ID to filter by.
+  - `is_system_default`: `boolean` (optional) — Filter by system default status.
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Date filters for when the view configuration was created.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Date filters for when the view configuration was updated.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listconfigurations-returns" />
+
+### Returns
+
+**listConfigurations**
+
+- `Promise`: Promise\<[AdminViewConfigurationListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminViewConfigurationListResponse)> — The paginated list of view configurations.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## createConfiguration
+
+This method creates a view configuration for an entity.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.10.3](https://github.com/medusajs/medusa/releases/tag/v2.10.3).
+
+### Example
+
+```ts
+const { view_configuration } = await sdk.admin.views.createConfiguration(
+  "orders",
+  {
+    name: "My Orders View",
+    configuration: {
+      visible_columns: ["display_id", "status"],
+      column_order: ["display_id", "status"],
+    },
+  }
+)
+```
+
+<a id="createconfiguration-parameters" />
+
+### Parameters
+
+**createConfiguration**
+
+- `entity`: `string` — The entity to create the view configuration for.
+- `body`: [AdminCreateViewConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateViewConfiguration) — The view configuration's details.
+  - `name`: `null` | `string` (optional) — The name of the view configuration.
+  - `is_system_default`: `boolean` (optional) — Whether this is a system default configuration.
+  - `set_active`: `boolean` (optional) — Whether to set this view as the active view after creation.
+  - `configuration`: `object` — The view configuration settings.
+    - `visible_columns`: `string`\[] — The list of visible column IDs.
+    - `column_order`: `string`\[] — The order of columns.
+    - `column_widths`: `Record<string, number>` (optional) — Custom column widths.
+    - `filters`: `Record<string, any>` (optional) — Active filters for the view.
+    - `sorting`: `null` | `object` (optional) — Sorting configuration.
+    - `search`: `string` (optional) — Search query for the view.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="createconfiguration-returns" />
+
+### Returns
+
+**createConfiguration**
+
+- `Promise`: Promise\<[AdminViewConfigurationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminViewConfigurationResponse)> — The created view configuration.
+  - `view_configuration`: `null` | [AdminViewConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminViewConfiguration) — The view configuration's details.
+    - `id`: `string` — The view configuration's ID.
+    - `entity`: `string` — The entity this configuration is for (e.g., "order", "product").
+    - `name`: `null` | `string` — The name of the view configuration.
+    - `user_id`: `null` | `string` — The ID of the user who owns this configuration, or null for system defaults.
+    - `is_system_default`: `boolean` — Whether this is a system default configuration.
+    - `configuration`: `object` — The view configuration settings.
+    - `created_at`: `Date` — The date the view configuration was created.
+    - `updated_at`: `Date` — The date the view configuration was updated.
+
+## retrieveConfiguration
+
+This method retrieves a view configuration by its ID.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.10.3](https://github.com/medusajs/medusa/releases/tag/v2.10.3).
+
+### Example
+
+To retrieve a view configuration by its ID:
+
+```ts
+sdk.admin.views.retrieveConfiguration("orders", "viewconfig_123")
+.then(({ view_configuration }) => {
+  console.log(view_configuration)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.views.retrieveConfiguration("orders", "viewconfig_123", {
+  fields: "id,name,configuration"
+})
+.then(({ view_configuration }) => {
+  console.log(view_configuration)
+})
+```
+
+<a id="retrieveconfiguration-parameters" />
+
+### Parameters
+
+**retrieveConfiguration**
+
+- `entity`: `string` — The entity the view configuration belongs to.
+- `id`: `string` — The ID of the view configuration to retrieve.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the view configuration.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieveconfiguration-returns" />
+
+### Returns
+
+**retrieveConfiguration**
+
+- `Promise`: Promise\<[AdminViewConfigurationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminViewConfigurationResponse)> — The view configuration's details.
+  - `view_configuration`: `null` | [AdminViewConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminViewConfiguration) — The view configuration's details.
+    - `id`: `string` — The view configuration's ID.
+    - `entity`: `string` — The entity this configuration is for (e.g., "order", "product").
+    - `name`: `null` | `string` — The name of the view configuration.
+    - `user_id`: `null` | `string` — The ID of the user who owns this configuration, or null for system defaults.
+    - `is_system_default`: `boolean` — Whether this is a system default configuration.
+    - `configuration`: `object` — The view configuration settings.
+    - `created_at`: `Date` — The date the view configuration was created.
+    - `updated_at`: `Date` — The date the view configuration was updated.
+
+## updateConfiguration
+
+This method updates a view configuration's details.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.10.3](https://github.com/medusajs/medusa/releases/tag/v2.10.3).
+
+### Example
+
+```ts
+const { view_configuration } = await sdk.admin.views.updateConfiguration(
+  "orders",
+  "viewconfig_123",
+  {
+    name: "Updated View",
+  }
+)
+```
+
+<a id="updateconfiguration-parameters" />
+
+### Parameters
+
+**updateConfiguration**
+
+- `entity`: `string` — The entity the view configuration belongs to.
+- `id`: `string` — The ID of the view configuration to update.
+- `body`: [AdminUpdateViewConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateViewConfiguration) — The details to update in the view configuration.
+  - `name`: `null` | `string` (optional) — The name of the view configuration.
+  - `is_system_default`: `boolean` (optional) — Whether this is a system default configuration.
+  - `set_active`: `boolean` (optional) — Whether to set this view as the active view after update.
+  - `configuration`: `object` (optional) — The view configuration settings.
+    - `visible_columns`: `string`\[] (optional) — The list of visible column IDs.
+    - `column_order`: `string`\[] (optional) — The order of columns.
+    - `column_widths`: `Record<string, number>` (optional) — Custom column widths.
+    - `filters`: `Record<string, any>` (optional) — Active filters for the view.
+    - `sorting`: `null` | `object` (optional) — Sorting configuration.
+    - `search`: `string` (optional) — Search query for the view.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updateconfiguration-returns" />
+
+### Returns
+
+**updateConfiguration**
+
+- `Promise`: Promise\<[AdminViewConfigurationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminViewConfigurationResponse)> — The updated view configuration.
+  - `view_configuration`: `null` | [AdminViewConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminViewConfiguration) — The view configuration's details.
+    - `id`: `string` — The view configuration's ID.
+    - `entity`: `string` — The entity this configuration is for (e.g., "order", "product").
+    - `name`: `null` | `string` — The name of the view configuration.
+    - `user_id`: `null` | `string` — The ID of the user who owns this configuration, or null for system defaults.
+    - `is_system_default`: `boolean` — Whether this is a system default configuration.
+    - `configuration`: `object` — The view configuration settings.
+    - `created_at`: `Date` — The date the view configuration was created.
+    - `updated_at`: `Date` — The date the view configuration was updated.
+
+## deleteConfiguration
+
+This method deletes a view configuration.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.10.3](https://github.com/medusajs/medusa/releases/tag/v2.10.3).
+
+### Example
+
+```ts
+const { id, object, deleted } = await sdk.admin.views.deleteConfiguration(
+  "orders",
+  "viewconfig_123"
+)
+```
+
+<a id="deleteconfiguration-parameters" />
+
+### Parameters
+
+**deleteConfiguration**
+
+- `entity`: `string` — The entity the view configuration belongs to.
+- `id`: `string` — The ID of the view configuration to delete.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="deleteconfiguration-returns" />
+
+### Returns
+
+**deleteConfiguration**
+
+- `Promise`: Promise\<[AdminViewConfigurationDeleteResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminViewConfigurationDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: TObject — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## retrieveActiveConfiguration
+
+This method retrieves the active view configuration for an entity and the
+authenticated user.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.10.3](https://github.com/medusajs/medusa/releases/tag/v2.10.3).
+
+### Example
+
+```ts
+sdk.admin.views.retrieveActiveConfiguration("orders")
+.then(({ view_configuration, active_view_configuration_id }) => {
+  console.log(view_configuration)
+})
+```
+
+<a id="retrieveactiveconfiguration-parameters" />
+
+### Parameters
+
+**retrieveActiveConfiguration**
+
+- `entity`: `string` — The entity to retrieve the active view configuration for.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieveactiveconfiguration-returns" />
+
+### Returns
+
+**retrieveActiveConfiguration**
+
+- `Promise`: Promise\<[AdminViewConfigurationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminViewConfigurationResponse) & object> — The active view configuration, along with its ID.
+  - `AdminViewConfigurationResponse`: `object`
+  - `active_view_configuration_id`: `null` | `string` (optional)
+
+## setActiveConfiguration
+
+This method sets the active view configuration for an entity and the
+authenticated user. Pass `null` as the `view_configuration_id` to clear the
+active view.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.10.3](https://github.com/medusajs/medusa/releases/tag/v2.10.3).
+
+### Example
+
+```ts
+await sdk.admin.views.setActiveConfiguration("orders", {
+  view_configuration_id: "viewconfig_123",
+})
+```
+
+<a id="setactiveconfiguration-parameters" />
+
+### Parameters
+
+**setActiveConfiguration**
+
+- `entity`: `string` — The entity to set the active view configuration for.
+- `body`: `object` — The active view configuration's details.
+  - `view_configuration_id`: `null` | `string` — The ID of the view configuration to set as active, or `null` to clear it.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="setactiveconfiguration-returns" />
+
+### Returns
+
+**setActiveConfiguration**
+
+- `Promise`: Promise\<object> — Whether the active view configuration was set successfully.
+  - `success`: `boolean`

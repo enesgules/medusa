@@ -1,0 +1,197 @@
+---
+title: cancelOrderWorkflow - Medusa Core Workflows Reference
+sidebarTitle: cancelOrderWorkflow
+---
+
+This documentation provides a reference to the `cancelOrderWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow cancels an order. An order can only be canceled if it doesn't have
+any fulfillments, or if all fulfillments are canceled. The workflow will also cancel
+any uncaptured payments, and refund any captured payments.
+
+This workflow is used by the [Cancel Order Admin API Route](/api/admin/orders/cancel-order).
+
+This workflow has a hook that allows you to perform custom actions on the canceled order. For example, you can
+make changes to custom models linked to the order.
+
+You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around canceling an order.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/order/workflows/cancel-order.ts#L134)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { cancelOrderWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await cancelOrderWorkflow(req.scope)
+    .run({
+      input: {
+        order_id: "order_123",
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { cancelOrderWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await cancelOrderWorkflow(container)
+    .run({
+      input: {
+        order_id: "order_123",
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { cancelOrderWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await cancelOrderWorkflow(container)
+    .run({
+      input: {
+        order_id: "order_123",
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { cancelOrderWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = cancelOrderWorkflow
+      .runAsStep({
+        input: {
+          order_id: "order_123",
+        }
+      })
+  }
+)
+```
+
+<a id="cancelorderworkflow-steps" />
+
+## Steps
+
+- [cancelValidateOrder](/resources/references/medusa-workflows/cancelValidateOrder): This step validates that an order can be canceled. If the order has fulfillments that aren't canceled, or the order was canceled previously, the step throws an error. :::note You can retrieve an order's details using [Query](/learn/fundamentals/module-links/query), or [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep). :::
+  - [deleteReservationsByLineItemsStep](/resources/references/medusa-workflows/steps/deleteReservationsByLineItemsStep): This step deletes reservations by their associated line items.
+  - [cancelPaymentStep](/resources/references/medusa-workflows/steps/cancelPaymentStep): This step cancels one or more payments.
+  - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+    - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+      - **when** (when: \{
+        return !!paymentCollectionids?.length
+        })
+      - [updatePaymentCollectionStep](/resources/references/medusa-workflows/steps/updatePaymentCollectionStep): This step updates payment collections matching the specified filters.
+        - [cancelOrdersStep](/resources/references/medusa-workflows/steps/cancelOrdersStep): This step cancels one or more orders.
+          - [orderCanceled](/resources/references/medusa-workflows/cancelOrderWorkflow#ordercanceled): This hook is executed after the order is canceled. You can consume this hook to perform custom actions on the canceled order.
+
+<a id="cancelorderworkflow-input" />
+
+## Input
+
+**cancelOrderWorkflow**
+
+- `CancelOrderWorkflowInput`: [CancelOrderWorkflowInput](/resources/references/types/WorkflowTypes/OrderWorkflow/interfaces/typesWorkflowTypesOrderWorkflowCancelOrderWorkflowInput)
+  - `order_id`: `string` — The ID of the order to cancel.
+  - `no_notification`: `boolean` (optional) — Whether to notify the customer of the cancelation.
+  - `canceled_by`: `string` (optional) — The ID of the user that canceled the order.
+
+## Hooks
+
+Hooks allow you to inject custom functionalities into the workflow. You'll receive data from the workflow, as well as additional data sent through an HTTP request.
+
+Learn more about [Hooks](/learn/fundamentals/workflows/workflow-hooks) and [Additional Data](/learn/fundamentals/api-routes/additional-data).
+
+### orderCanceled
+
+This hook is executed after the order is canceled. You can consume this hook to perform custom actions on the canceled order.
+
+#### Example
+
+```ts
+import { cancelOrderWorkflow } from "@medusajs/medusa/core-flows"
+
+cancelOrderWorkflow.hooks.orderCanceled(
+  (async ({ order }, { container }) => {
+    //TODO
+  })
+)
+```
+
+<a id="input" />
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+**orderCanceled**
+
+- `input`: object — The input data for the hook.
+  - `order`: `any`
+
+<a id="cancelorderworkflow-emitted-events" />
+
+## Emitted Events
+
+- `order.canceled`: Emitted when an order is canceld.
+
+  ```ts
+  {
+    id, // The ID of the order
+  }
+  ```
+- `reservation-item.deleted` (since v2.18.0): Emitted when reservations are deleted.
+
+  ```ts
+  {
+    id, // The ID of the reservation
+    order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+  }
+  ```

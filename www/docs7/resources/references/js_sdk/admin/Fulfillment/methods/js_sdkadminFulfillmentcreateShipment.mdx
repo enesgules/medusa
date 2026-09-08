@@ -1,0 +1,67 @@
+---
+title: createShipment
+---
+
+This method creates a shipment for a fulfillment. It sends a request to the
+[Create Shipment](/api/admin/fulfillments/create-shipment)
+API route.
+
+## Example
+
+```ts
+sdk.admin.fulfillment.createShipment("ful_123", {
+  labels: [
+    {
+      tracking_number: "123",
+      tracking_url: "example.com",
+      label_url: "example.com"
+    }
+  ]
+})
+.then(({ fulfillment }) => {
+  console.log(fulfillment)
+})
+```
+
+<a id="createshipment-parameters" />
+
+## Parameters
+
+**createShipment**
+
+- `id`: `string` — The fulfillment's ID.
+- `body`: [AdminCreateFulfillmentShipment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateFulfillmentShipment) — The shipment's details.
+  - `labels`: [AdminCreateFulfillmentLabel](/resources/references/types/interfaces/typesAdminCreateFulfillmentLabel)\[] — The shipment's labels.
+    - `tracking_number`: `string` — The tracking number of the fulfillment's shipment.
+    - `tracking_url`: `string` — The tracking URL of the fulfillment's shipment.
+    - `label_url`: `string` — The label URL of the fulfillment's shipment.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the fulfillment.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="createshipment-returns" />
+
+## Returns
+
+**createShipment**
+
+- `Promise`: Promise\<[AdminFulfillmentResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentResponse)> — The fulfillment's details.
+  - `fulfillment`: [AdminFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillment) — The fulfillment's details.
+    - `id`: `string` — The fulfillment's ID.
+    - `location_id`: `string` — The ID of the stock location the items are delivered from.
+    - `provider_id`: `string` — The ID of the fulfillment provider handling the fulfillment.
+    - `shipping_option_id`: `null` | `string` — The ID of the associated shipping option.
+    - `provider`: [AdminFulfillmentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentProvider) — The associated fulfillment provider's details.
+    - `delivery_address`: [AdminFulfillmentAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentAddress) — The address to deliver the items to.
+    - `items`: [AdminFulfillmentItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentItem)\[] — The items to fulfill.
+    - `labels`: [AdminFulfillmentLabel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentLabel)\[] — The fulfillment's labels.
+    - `packed_at`: `null` | `string` — The date the fulfillment items were packed.
+    - `shipped_at`: `null` | `string` — The date the fulfillment items were shipped.
+    - `delivered_at`: `null` | `string` — The date the fulfillment items were delivered.
+    - `canceled_at`: `null` | `string` — The date the fulfillment was canceled.
+    - `data`: `null` | `Record<string, unknown>` — Data useful for the fulfillment provider handling the fulfillment. Learn more in [this documentation](/resources/commerce-modules/fulfillment).
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.
+    - `created_at`: `string` — The date the fulfillment was created.
+    - `updated_at`: `string` — The date the fulfillment was updated.
+    - `deleted_at`: `null` | `string` — The date the fulfillment was deleted.

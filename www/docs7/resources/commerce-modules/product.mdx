@@ -1,0 +1,258 @@
+---
+title: Product Module
+---
+
+In this section of the documentation, you will find resources to learn more about the Product Module and how to use it in your application.
+
+<Note>
+  **Looking for no-code docs?**
+
+  Refer to the [Medusa Admin User Guide](/user-guide/products) to learn how to manage products using the dashboard.
+</Note>
+
+Medusa has product related features available out-of-the-box through the Product Module. A [module](/learn/fundamentals/modules) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Product Module.
+
+<Note>
+  Learn more about why modules are isolated in [this documentation](/learn/fundamentals/modules/isolation).
+</Note>
+
+## Product Features
+
+- [Products Management](/resources/references/product/models/Product): Store and manage products. Products have custom options, such as color or size, and each variant in the product sets the value for these options.
+- [Product Organization](/resources/references/product/models): The Product Module provides different data models used to organize products, including categories, collections, tags, and more.
+- [Bundled and Multi-Part Products](/resources/commerce-modules/inventory/inventory-kit): Create and manage inventory kits for a single product, allowing you to implement use cases like bundled or multi-part products.
+- [Tiered Pricing and Price Rules](/resources/commerce-modules/pricing/price-rules): Set prices for product variants with tiers and rules, allowing you to create complex pricing strategies.
+
+***
+
+## How to Use the Product Module
+
+In your Medusa application, you build flows around Commerce Modules. A flow is built as a [Workflow](/learn/fundamentals/workflows), which is a special function composed of a series of steps that guarantees data consistency and reliable roll-back mechanism.
+
+You can build custom workflows and steps. You can also re-use Medusa's workflows and steps, which are provided by the `@medusajs/medusa/core-flows` package.
+
+For example:
+
+```ts title="src/workflows/create-product.ts"
+import { 
+  createWorkflow, 
+  WorkflowResponse,
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+
+const createProductStep = createStep(
+  "create-product",
+  async ({}, { container }) => {
+    const productService = container.resolve(Modules.PRODUCT)
+
+    const product = await productService.createProducts({
+      title: "Medusa Shirt",
+      options: [
+        {
+          title: "Color",
+          values: ["Black", "White"],
+        },
+      ],
+      variants: [
+        {
+          title: "Black Shirt",
+          options: {
+            Color: "Black",
+          },
+        },
+      ],
+    })
+
+    return new StepResponse({ product }, product.id)
+  },
+  async (productId, { container }) => {
+    if (!productId) {
+      return
+    }
+    const productService = container.resolve(Modules.PRODUCT)
+
+    await productService.deleteProducts([productId])
+  }
+)
+
+export const createProductWorkflow = createWorkflow(
+  "create-product",
+  () => {
+    const { product } = createProductStep()
+
+    return new WorkflowResponse({
+      product,
+    })
+  }
+)
+```
+
+You can then execute the workflow in your custom API routes, scheduled jobs, or subscribers:
+
+<Tabs>
+  <Tab title="API Route">
+    ```ts title="src/api/workflow/route.ts"
+    import type {
+      MedusaRequest,
+      MedusaResponse,
+    } from "@medusajs/framework/http"
+    import { createProductWorkflow } from "../../workflows/create-product"
+
+    export async function GET(
+      req: MedusaRequest,
+      res: MedusaResponse
+    ) {
+      const { result } = await createProductWorkflow(req.scope)
+        .run()
+
+      res.send(result)
+    }
+    ```
+  </Tab>
+
+  <Tab title="Subscriber">
+    ```ts title="src/subscribers/user-created.ts"
+    import {
+      type SubscriberConfig,
+      type SubscriberArgs,
+    } from "@medusajs/framework"
+    import { createProductWorkflow } from "../workflows/create-product"
+
+    export default async function handleUserCreated({
+      event: { data },
+      container,
+    }: SubscriberArgs<{ id: string }>) {
+      const { result } = await createProductWorkflow(container)
+        .run()
+
+      console.log(result)
+    }
+
+    export const config: SubscriberConfig = {
+      event: "user.created",
+    }
+    ```
+  </Tab>
+
+  <Tab title="Scheduled Job">
+    ```ts title="src/jobs/run-daily.ts"
+    import { MedusaContainer } from "@medusajs/framework/types"
+    import { createProductWorkflow } from "../workflows/create-product"
+
+    export default async function myCustomJob(
+      container: MedusaContainer
+    ) {
+      const { result } = await createProductWorkflow(container)
+        .run()
+
+      console.log(result)
+    }
+
+    export const config = {
+      name: "run-once-a-day",
+      schedule: `0 0 * * *`,
+    }
+    ```
+  </Tab>
+</Tabs>
+
+Learn more about workflows in [this documentation](/learn/fundamentals/workflows).
+
+***
+
+[Overview](/resources/commerce-modules/product)
+
+## Concepts
+
+- [Variant Inventory](/resources/commerce-modules/product/variant-inventory)
+- [Physical and Customs Attributes](/resources/commerce-modules/product/physical-customs-attributes)
+- [Selling Use Cases](/resources/commerce-modules/product/selling-products)
+- [Links to Other Modules](/resources/commerce-modules/product/links-to-other-modules)
+- [Inventory Kits](/resources/commerce-modules/inventory/inventory-kit)
+- [Variant Price Rules](/resources/commerce-modules/pricing/price-rules)
+
+***
+
+## Server Guides
+
+Learn how to use the Product Module in your customizations on the Medusa application server.
+
+- [Build Wishlist Plugin](/resources/plugins/guides/wishlist)
+- [Extend Module](/resources/commerce-modules/product/extend)
+- [Filter Products](/resources/commerce-modules/product/guides/filter-products)
+- [Get Variant Inventory](/resources/commerce-modules/product/guides/variant-inventory)
+- [Get Variant Price with Taxes](/resources/commerce-modules/product/guides/price-with-taxes)
+- [Get Variant Prices](/resources/commerce-modules/product/guides/price)
+- [Implement Bundled Products](/resources/recipes/bundled-products/examples/standard)
+- [Implement Custom Line Item Pricing in Medusa](/resources/examples/guides/custom-item-price)
+- [Implement Meta Product Feed](/resources/how-to-tutorials/tutorials/product-feed)
+- [Implement Personalized Products](/resources/recipes/personalized-products/example)
+- [Implement Pre-Order Products](/resources/how-to-tutorials/tutorials/preorder)
+- [Implement Product Builder](/resources/how-to-tutorials/tutorials/product-builder)
+- [Implement Product Rentals](/resources/how-to-tutorials/tutorials/product-rentals)
+- [Implement Product Reviews](/resources/how-to-tutorials/tutorials/product-reviews)
+- [Implement Ticket Booking](/resources/recipes/ticket-booking/example)
+- [Integrate Payload](/resources/integrations/guides/payload)
+- [Integrate Strapi](/resources/integrations/guides/strapi)
+- [Localization with Contentful](/resources/integrations/guides/contentful)
+- [Product Category Images](/resources/how-to-tutorials/tutorials/category-images)
+
+***
+
+## Storefront Guides
+
+Learn how to integrate the Product Module's features into your storefront.
+
+- [Example: Show Price with Taxes](/resources/storefront-development/products/price/examples/tax-price)
+- [Example: Show Sale Price](/resources/storefront-development/products/price/examples/sale-price)
+- [Example: Show Variant's Price](/resources/storefront-development/products/price/examples/show-price)
+- [Implement Express Checkout with Medusa](/resources/storefront-development/guides/express-checkout)
+- [Implement Mobile App with React Native, Expo, and Medusa](/resources/storefront-development/guides/react-native-expo)
+- [List Product Collections in Storefront](/resources/storefront-development/products/collections/list)
+- [Retrieve a Category in Storefront](/resources/storefront-development/products/categories/retrieve)
+- [Retrieve a Category's Products in Storefront](/resources/storefront-development/products/categories/products)
+- [Retrieve a Collection in Storefront](/resources/storefront-development/products/collections/retrieve)
+- [Retrieve a Collection's Products in Storefront](/resources/storefront-development/products/collections/products)
+- [Retrieve a Product in Storefront](/resources/storefront-development/products/retrieve)
+- [Retrieve Nested Categories in Storefront](/resources/storefront-development/products/categories/nested-categories)
+- [Retrieve Product Variant's Inventory in Storefront](/resources/storefront-development/products/inventory)
+- [Retrieve Product Variant's Prices in Storefront](/resources/storefront-development/products/price)
+- [Select Product Variants in Storefront](/resources/storefront-development/products/variants)
+- [Show Product Categories in Storefront](/resources/storefront-development/products/categories/list)
+- [Show Products in Storefront](/resources/storefront-development/products/list)
+- [Use Product Options in Storefront](/resources/storefront-development/products/options)
+
+***
+
+## Admin User Guides
+
+Learn how to utilize and manage Product features in the Medusa Admin dashboard.
+
+- [Create Bundle Product](/user-guide/products/create/bundle)
+- [Create Multi-Part Product](/user-guide/products/create/multi-part)
+- [Create Product](/user-guide/products/create)
+- [Edit Product](/user-guide/products/edit)
+- [Export Products](/user-guide/products/export)
+- [Import Products](/user-guide/products/import)
+- [Manage Product Categories](/user-guide/products/categories)
+- [Manage Product Collections](/user-guide/products/collections)
+- [Manage Product Options](/user-guide/products/options)
+- [Manage Product Tags](/user-guide/settings/product-tags)
+- [Manage Product Types](/user-guide/settings/product-types)
+- [Manage Product Variants](/user-guide/products/variants)
+- [Products Overview](/user-guide/products)
+
+***
+
+## References
+
+Find references for tools and resources related to the Product Module, such as data models, methods, and more. These are useful for your customizations.
+
+- [Workflows](/resources/commerce-modules/product/workflows)
+- [JS SDK](/resources/commerce-modules/product/js-sdk)
+- [Events Reference](/resources/references/product/events)
+- [Admin Widget Zones](/resources/commerce-modules/product/admin-widget-zones)
+- [Main Service Reference](/resources/references/product)
+- [Data Models Reference](/resources/references/product/models)

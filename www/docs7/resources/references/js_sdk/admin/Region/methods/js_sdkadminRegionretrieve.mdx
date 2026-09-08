@@ -1,0 +1,61 @@
+---
+title: retrieve
+---
+
+This method retrieves a region by ID. It sends a request to the
+[Get Region](/api/admin/regions/get-a-region)
+API route.
+
+## Example
+
+To retrieve a region by its ID:
+
+```ts
+sdk.admin.region.retrieve("region_123")
+.then(({ region }) => {
+  console.log(region)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.region.retrieve("region_123", {
+  fields: "id,*countries"
+})
+.then(({ region }) => {
+  console.log(region)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The ID of the region to retrieve.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the region.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminRegionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegionResponse)> — The region's details.
+  - `region`: [AdminRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegion) — The region's details.
+    - `countries`: [AdminRegionCountry](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRegionCountry)\[] (optional) — The countries in the region.
+    - `id`: `string` — The region's ID.
+    - `name`: `string` — The region's name.
+    - `currency_code`: `string` — The region's currency code.
+    - `automatic_taxes`: `boolean` (optional) — Whether taxes are calculated automatically in the region.
+    - `payment_providers`: [AdminPaymentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentProvider)\[] (optional) — The payment providers enabled in the region.
+    - `metadata`: `null` | `Record<string, any>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` (optional) — The date the region was created.
+    - `updated_at`: `string` (optional) — The date the region was updated.

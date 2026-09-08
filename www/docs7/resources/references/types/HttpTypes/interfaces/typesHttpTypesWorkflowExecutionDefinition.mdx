@@ -1,0 +1,21 @@
+---
+title: WorkflowExecutionDefinition
+---
+
+## Properties
+
+**WorkflowExecutionDefinition**
+
+- `async`: `boolean` (optional) — If true, the step is executed asynchronously. This means that the workflow will not wait for the response of this step. Async steps require to have their responses set using `setStepSuccess` or `setStepFailure`, unless it is combined with `backgroundExecution: true`. If combined with a timeout, and any response is not set within that interval, the step will be marked as `TransactionStepStatus.TIMEOUT` and the workflow will be reverted immediately.
+- `compensateAsync`: `boolean` (optional) — If true, the compensation function for this step is executed asynchronously. Which means, the response has to be set using `setStepSuccess` or `setStepFailure`.
+- `noCompensation`: `boolean` (optional) — If true, no compensation action will be triggered for this step in case of a failure.
+- `continueOnPermanentFailure`: `boolean` (optional) — Indicates whether the workflow should continue even if there is a permanent failure in this step. In case it is set to true, the current step will be marked as TransactionStepState.PERMANENT\_FAILURE and the next steps will be executed.
+- `skipOnPermanentFailure`: `string` | `boolean` (optional) — Indicates whether the workflow should skip all subsequent steps in case of a permanent failure in this step. In case it is set to true, the next steps of the workflow will not be executed and their status will be marked as TransactionStepState.SKIPPED\_FAILURE. In case it is a string, the next steps until the step name provided will be skipped and the workflow will be resumed from the step provided.
+- `maxRetries`: `number` (optional) — The maximum number of times this step should be retried in case of temporary failures. The default is 0 (no retries).
+- `autoRetry`: `boolean` (optional) — If true, the step will be retried automatically in case of a temporary failure. The default is true.
+- `noWait`: `boolean` (optional) — If true, the workflow will not wait for their sibling steps to complete before moving to the next step.
+- `retryInterval`: `number` (optional) — The interval (in seconds) between retry attempts after a temporary failure. The default is to retry immediately.
+- `retryIntervalAwaiting`: `number` (optional) — The interval (in seconds) to retry a step even if its status is `TransactionStepStatus.WAITING`.
+- `maxAwaitingRetries`: `number` (optional) — The maximum number of times to retry a step even if its status is `TransactionStepStatus.WAITING`.
+- `saveResponse`: `boolean` (optional) — If true, the response of this step will be stored. Default is true.
+- `timeout`: `number` (optional) — The maximum amount of time (in seconds) to wait for this step to complete. This is NOT an execution timeout, the step will always be executed and wait for its response. If the response is not received within the timeout set, it will be marked as `TransactionStepStatus.TIMEOUT` and the workflow will be reverted as soon as it receives the response.

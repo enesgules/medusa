@@ -1,0 +1,214 @@
+---
+title: listLineItemTaxLines - Cart Module Reference
+sidebarTitle: listLineItemTaxLines
+---
+
+This documentation provides a reference to the `listLineItemTaxLines` method. This belongs to the Cart Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of line item tax lines based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of line item tax lines using their IDs:
+
+```ts
+const lineItemTaxLines =
+  await cartModuleService.listLineItemTaxLines({
+    id: ["calitxl_123", "calitxl_321"],
+  })
+```
+
+To specify relations that should be retrieved within the line item tax lines:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const lineItemTaxLines =
+  await cartModuleService.listLineItemTaxLines(
+    {
+      id: ["calitxl_123", "calitxl_321"],
+    },
+    {
+      relations: ["item"],
+    }
+  )
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const lineItemTaxLines =
+  await cartModuleService.listLineItemTaxLines(
+    {
+      id: ["calitxl_123", "calitxl_321"],
+    },
+    {
+      relations: ["item"],
+      take: 20,
+      skip: 2,
+    }
+  )
+```
+
+<a id="listlineitemtaxlines-parameters" />
+
+## Parameters
+
+**listLineItemTaxLines**
+
+- `filters`: [FilterableLineItemTaxLineProps](/resources/references/cart/interfaces/cartFilterableLineItemTaxLineProps) — The filters to apply on the retrieved line item tax lines.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the line item tax lines by.
+  - `description`: `string` (optional) — Filter the line item tax lines by their description.
+  - `code`: `string` | `string`\[] (optional) — Filter the line item tax lines by their code.
+  - `tax_rate_id`: `string` | `string`\[] (optional) — Filter the line item tax lines by the ID of their associated tax rate.
+  - `provider_id`: `string` | `string`\[] (optional) — Filter the line item tax lines by the ID of their associated provider.
+  - `item_id`: `string` | `string`\[] (optional) — Filter the tax lines by the ID of their associated line item.
+  - `item`: [FilterableLineItemProps](/resources/references/cart/interfaces/cartFilterableLineItemProps) (optional) — Filter the tax lines by their associated line item.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the line items by.
+    - `cart_id`: `string` | `string`\[] (optional) — Filter the line items by the ID of their associated cart.
+    - `title`: `string` (optional) — Filter the line items by their title.
+    - `variant_id`: `string` | `string`\[] (optional) — Filter the line items by the ID of their associated variant.
+    - `product_id`: `string` | `string`\[] (optional) — Filter the line items by the ID of their associated product.
+    - `$and`: ([FilterableLineItemProps](/resources/references/cart/interfaces/cartFilterableLineItemProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableLineItemProps](/resources/references/cart/interfaces/cartFilterableLineItemProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableLineItemProps](/resources/references/cart/interfaces/cartFilterableLineItemProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableLineItemProps](/resources/references/cart/interfaces/cartFilterableLineItemProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `$and`: ([FilterableLineItemTaxLineProps](/resources/references/cart/interfaces/cartFilterableLineItemTaxLineProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableLineItemTaxLineProps](/resources/references/cart/interfaces/cartFilterableLineItemTaxLineProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the line item tax lines by.
+    - `description`: `string` (optional) — Filter the line item tax lines by their description.
+    - `code`: `string` | `string`\[] (optional) — Filter the line item tax lines by their code.
+    - `tax_rate_id`: `string` | `string`\[] (optional) — Filter the line item tax lines by the ID of their associated tax rate.
+    - `provider_id`: `string` | `string`\[] (optional) — Filter the line item tax lines by the ID of their associated provider.
+    - `item_id`: `string` | `string`\[] (optional) — Filter the tax lines by the ID of their associated line item.
+    - `item`: [FilterableLineItemProps](/resources/references/cart/interfaces/cartFilterableLineItemProps) (optional) — Filter the tax lines by their associated line item.
+    - `$and`: ([FilterableLineItemTaxLineProps](/resources/references/cart/interfaces/cartFilterableLineItemTaxLineProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableLineItemTaxLineProps](/resources/references/cart/interfaces/cartFilterableLineItemTaxLineProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableLineItemTaxLineProps](/resources/references/cart/interfaces/cartFilterableLineItemTaxLineProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableLineItemTaxLineProps](/resources/references/cart/interfaces/cartFilterableLineItemTaxLineProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `$or`: ([FilterableLineItemTaxLineProps](/resources/references/cart/interfaces/cartFilterableLineItemTaxLineProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableLineItemTaxLineProps](/resources/references/cart/interfaces/cartFilterableLineItemTaxLineProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the line item tax lines by.
+    - `description`: `string` (optional) — Filter the line item tax lines by their description.
+    - `code`: `string` | `string`\[] (optional) — Filter the line item tax lines by their code.
+    - `tax_rate_id`: `string` | `string`\[] (optional) — Filter the line item tax lines by the ID of their associated tax rate.
+    - `provider_id`: `string` | `string`\[] (optional) — Filter the line item tax lines by the ID of their associated provider.
+    - `item_id`: `string` | `string`\[] (optional) — Filter the tax lines by the ID of their associated line item.
+    - `item`: [FilterableLineItemProps](/resources/references/cart/interfaces/cartFilterableLineItemProps) (optional) — Filter the tax lines by their associated line item.
+    - `$and`: ([FilterableLineItemTaxLineProps](/resources/references/cart/interfaces/cartFilterableLineItemTaxLineProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableLineItemTaxLineProps](/resources/references/cart/interfaces/cartFilterableLineItemTaxLineProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableLineItemTaxLineProps](/resources/references/cart/interfaces/cartFilterableLineItemTaxLineProps) | [BaseFilterable](/resources/references/cart/interfaces/cartBaseFilterable)\<[FilterableLineItemTaxLineProps](/resources/references/cart/interfaces/cartFilterableLineItemTaxLineProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+- `config`: [FindConfig](/resources/references/cart/interfaces/cartFindConfig)\<[LineItemTaxLineDTO](/resources/references/cart/interfaces/cartLineItemTaxLineDTO)> (optional) — The configurations determining how the line item tax line is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a line item tax line.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/cart/types/cartFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/cart/types/cartInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/cart/types/cartCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/cart/interfaces/cartContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/cart/interfaces/cartIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listlineitemtaxlines-returns" />
+
+## Returns
+
+**listLineItemTaxLines**
+
+- `Promise`: Promise\<[LineItemTaxLineDTO](/resources/references/cart/interfaces/cartLineItemTaxLineDTO)\[]> — The list of line item tax lines.
+  - `LineItemTaxLineDTO[]`: [LineItemTaxLineDTO](/resources/references/cart/interfaces/cartLineItemTaxLineDTO)\[]
+    - `id`: `string` — The ID of the tax line
+    - `description`: `string` (optional) — The description of the tax line
+    - `tax_rate_id`: `string` (optional) — The ID of the associated tax rate.
+    - `code`: `string` — The code of the tax line.
+    - `rate`: `number` — The rate of the tax line.
+    - `provider_id`: `string` (optional) — The ID of the associated provider.
+    - `data`: `null` | `Record<string, unknown>` (optional) — Holds data returned by the tax provider in key-value pairs.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the tax line was created.
+    - `updated_at`: `string` | `Date` — When the tax line was updated.
+    - `item`: [CartLineItemDTO](/resources/references/cart/interfaces/cartCartLineItemDTO) — The associated line item.
+      - `original_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The original total of the cart line item.
+      - `original_subtotal`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The original subtotal of the cart line item.
+      - `original_tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The original tax total of the cart line item.
+      - `item_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The item total of the cart line item.
+      - `item_subtotal`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The item subtotal of the cart line item.
+      - `item_tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The item tax total of the cart line item.
+      - `total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The total of the cart line item.
+      - `subtotal`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The subtotal of the cart line item.
+      - `tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The tax total of the cart line item.
+      - `discount_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The discount total of the cart line item.
+      - `discount_tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The discount tax total of the cart line item.
+      - `raw_original_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw original total of the cart line item.
+      - `raw_original_subtotal`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw original subtotal of the cart line item.
+      - `raw_original_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw original tax total of the cart line item.
+      - `raw_item_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw item total of the cart line item.
+      - `raw_item_subtotal`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw item subtotal of the cart line item.
+      - `raw_item_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw item tax total of the cart line item.
+      - `raw_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw total of the cart line item.
+      - `raw_subtotal`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw subtotal of the cart line item.
+      - `raw_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw tax total of the cart line item.
+      - `raw_discount_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw discount total of the cart line item.
+      - `raw_discount_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw discount tax total of the cart line item.
+      - `id`: `string` — The ID of the line item.
+      - `title`: `string` — The title of the line item.
+      - `subtitle`: `string` (optional) — The subtitle of the line item.
+      - `thumbnail`: `string` (optional) — The line item's thumbnail.
+      - `quantity`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The line item's quantity in the cart.
+      - `product_id`: `string` (optional) — The ID of the associated product.
+      - `product_title`: `string` (optional) — The title of the associated product.
+      - `product_description`: `string` (optional) — The description of the associated product.
+      - `product_subtitle`: `string` (optional) — The subtitle of the associated product.
+      - `product_type`: `string` (optional) — The type of the associated product.
+      - `product_type_id`: `string` (optional) — The type of the associated product.
+      - `product_collection`: `string` (optional) — The collection of the associated product.
+      - `product_handle`: `string` (optional) — The handle of the associated product.
+      - `variant_id`: `string` (optional) — The associated variant's ID of the line item.
+      - `variant_sku`: `string` (optional) — The sku of the associated variant.
+      - `variant_barcode`: `string` (optional) — The barcode of the associated variant.
+      - `variant_title`: `string` (optional) — The title of the associated variant.
+      - `variant_option_values`: `Record<string, unknown>` (optional) — The option values of the associated variant.
+      - `requires_shipping`: `boolean` — Whether the line item requires shipping.
+      - `is_discountable`: `boolean` — Whether the line item is discountable.
+      - `is_giftcard`: `boolean` — Whether the line item is a gift card.
+      - `is_tax_inclusive`: `boolean` — Whether the line item price is tax inclusive.
+      - `is_custom_price`: `boolean` — Whether the line item price is a custom price.
+      - `compare_at_unit_price`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) (optional) — The calculated price of the line item.
+      - `unit_price`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The unit price of the item.
+      - `tax_lines`: [LineItemTaxLineDTO](/resources/references/cart/interfaces/cartLineItemTaxLineDTO)\[] (optional) — The associated tax lines.
+      - `adjustments`: [LineItemAdjustmentDTO](/resources/references/cart/interfaces/cartLineItemAdjustmentDTO)\[] (optional) — The associated adjustments.
+      - `cart`: [CartDTO](/resources/references/cart/interfaces/cartCartDTO) — The associated cart.
+      - `cart_id`: `string` — The ID of the associated cart.
+      - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `Date` (optional) — When the line item was created.
+      - `updated_at`: `Date` (optional) — When the line item was updated.
+      - `deleted_at`: `Date` (optional) — When the line item was deleted.
+    - `item_id`: `string` — The ID of the associated line item.
+    - `total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The total tax relative to the item.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `subtotal`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The subtotal tax relative to the item.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `raw_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw total tax relative to the item.
+      - `value`: `string` | `number`
+    - `raw_subtotal`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw subtotal tax relative to the item.
+      - `value`: `string` | `number`

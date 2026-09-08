@@ -1,0 +1,469 @@
+---
+title: updateOrders - Order Module Reference
+sidebarTitle: updateOrders
+---
+
+This documentation provides a reference to the `updateOrders` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updateorders-data-sharedcontext-promiseorderdto" />
+
+## updateOrders(data, sharedContext?): Promise\<[OrderDTO](/resources/references/order/interfaces/orderOrderDTO)\[]>
+
+This method updates existing orders. The order IDs are specified in each order object.
+
+### Example
+
+```typescript
+const orders = await orderModuleService.updateOrders([{
+  id: "123",
+  email: "example@gmail.com"
+}])
+```
+
+<a id="updateorders-parameters" />
+
+### Parameters
+
+**updateOrders**
+
+- `data`: [UpdateOrderDTO](/resources/references/order/interfaces/orderUpdateOrderDTO)\[] — The attributes to update in the order.
+  - `id`: `string` (optional) — The ID of the order.
+  - `version`: `number` (optional) — The version of the order.
+  - `region_id`: `string` (optional) — The associated region's ID.
+  - `customer_id`: `string` (optional) — The associated customer's ID.
+  - `sales_channel_id`: `string` (optional) — The associated sales channel's ID.
+  - `status`: [OrderStatus](/resources/references/order/types/orderOrderStatus) (optional) — The status of the order.
+  - `is_draft_order`: `boolean` (optional) — Whether the order is a draft order.
+  - `locale`: `null` | `string` (optional) — The locale of the order.
+  - `items`: [CreateOrderLineItemDTO](/resources/references/order/interfaces/orderCreateOrderLineItemDTO)\[] (optional) — The items of the order.
+    - `title`: `string` — The title of the line item.
+    - `subtitle`: `string` (optional) — The subtitle of the line item.
+    - `thumbnail`: `string` (optional) — The thumbnail of the line item.
+    - `order_id`: `string` (optional) — The associated order's ID.
+    - `quantity`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The quantity of the line item.
+    - `product_id`: `string` (optional) — The associated product's ID.
+    - `product_title`: `string` (optional) — The product title of the line item.
+    - `product_description`: `string` (optional) — The product description of the line item.
+    - `product_subtitle`: `string` (optional) — The product subtitle of the line item.
+    - `product_type`: `string` (optional) — The product type of the line item.
+    - `product_collection`: `string` (optional) — The product collection of the line item.
+    - `product_handle`: `string` (optional) — The product handle of the line item.
+    - `variant_id`: `string` (optional) — The associated variant's ID.
+    - `variant_sku`: `string` (optional) — The variant sku of the line item.
+    - `variant_barcode`: `string` (optional) — The variant barcode of the line item.
+    - `variant_title`: `string` (optional) — The variant title of the line item.
+    - `variant_option_values`: `Record<string, unknown>` (optional) — The variant option values of the line item.
+    - `requires_shipping`: `boolean` (optional) — Whether the line item requires shipping.
+    - `is_discountable`: `boolean` (optional) — Whether the line item is discountable.
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the line item is tax inclusive.
+    - `compare_at_unit_price`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The compare-at unit price of the line item.
+    - `unit_price`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The unit price of the line item.
+    - `tax_lines`: [CreateOrderTaxLineDTO](/resources/references/order/interfaces/orderCreateOrderTaxLineDTO)\[] (optional) — The tax lines of the line item.
+    - `adjustments`: [CreateOrderAdjustmentDTO](/resources/references/order/interfaces/orderCreateOrderAdjustmentDTO)\[] (optional) — The adjustments of the line item.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `shipping_address`: [CreateOrderAddressDTO](/resources/references/order/interfaces/orderCreateOrderAddressDTO) | [UpdateOrderAddressDTO](/resources/references/order/interfaces/orderUpdateOrderAddressDTO) (optional) — The shipping address of the order.
+    - `customer_id`: `string` (optional) — The associated customer's ID.
+    - `company`: `null` | `string` (optional) — The company name.
+    - `first_name`: `null` | `string` (optional) — The first name of the customer.
+    - `last_name`: `null` | `string` (optional) — The last name of the customer.
+    - `address_1`: `null` | `string` (optional) — The address 1 of the address.
+    - `address_2`: `null` | `string` (optional) — The address 2 of the address.
+    - `city`: `null` | `string` (optional) — The city of the address.
+    - `country_code`: `null` | `string` (optional) — The country code of the address.
+    - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the address.
+    - `postal_code`: `null` | `string` (optional) — The postal code of the address.
+    - `phone`: `null` | `string` (optional) — The phone of the address.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` — The ID of the address.
+  - `billing_address`: [CreateOrderAddressDTO](/resources/references/order/interfaces/orderCreateOrderAddressDTO) | [UpdateOrderAddressDTO](/resources/references/order/interfaces/orderUpdateOrderAddressDTO) (optional) — The billing address of the order.
+    - `customer_id`: `string` (optional) — The associated customer's ID.
+    - `company`: `null` | `string` (optional) — The company name.
+    - `first_name`: `null` | `string` (optional) — The first name of the customer.
+    - `last_name`: `null` | `string` (optional) — The last name of the customer.
+    - `address_1`: `null` | `string` (optional) — The address 1 of the address.
+    - `address_2`: `null` | `string` (optional) — The address 2 of the address.
+    - `city`: `null` | `string` (optional) — The city of the address.
+    - `country_code`: `null` | `string` (optional) — The country code of the address.
+    - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the address.
+    - `postal_code`: `null` | `string` (optional) — The postal code of the address.
+    - `phone`: `null` | `string` (optional) — The phone of the address.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` — The ID of the address.
+  - `email`: `string` (optional) — The email of the customer that placed the order.
+  - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications about order updates.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorders-returns" />
+
+### Returns
+
+**updateOrders**
+
+- `Promise`: Promise\<[OrderDTO](/resources/references/order/interfaces/orderOrderDTO)\[]> — The updated orders.
+  - `OrderDTO[]`: [OrderDTO](/resources/references/order/interfaces/orderOrderDTO)\[]
+
+<a id="updateorders-orderid-data-sharedcontext-promiseorderdto" />
+
+## updateOrders(orderId, data, sharedContext?): Promise\<[OrderDTO](/resources/references/order/interfaces/orderOrderDTO)>
+
+This method updates existing orders.
+
+### Example
+
+```typescript
+const order = await orderModuleService.updateOrders(
+  "123",
+  {
+    email: "example@gmail.com"
+  }
+)
+```
+
+<a id="updateorders-parameters-1" />
+
+### Parameters
+
+**updateOrders**
+
+- `orderId`: `string` — The ID of the order to update.
+- `data`: [UpdateOrderDTO](/resources/references/order/interfaces/orderUpdateOrderDTO) — The attributes to update in the order.
+  - `id`: `string` (optional) — The ID of the order.
+  - `version`: `number` (optional) — The version of the order.
+  - `region_id`: `string` (optional) — The associated region's ID.
+  - `customer_id`: `string` (optional) — The associated customer's ID.
+  - `sales_channel_id`: `string` (optional) — The associated sales channel's ID.
+  - `status`: [OrderStatus](/resources/references/order/types/orderOrderStatus) (optional) — The status of the order.
+  - `is_draft_order`: `boolean` (optional) — Whether the order is a draft order.
+  - `locale`: `null` | `string` (optional) — The locale of the order.
+  - `items`: [CreateOrderLineItemDTO](/resources/references/order/interfaces/orderCreateOrderLineItemDTO)\[] (optional) — The items of the order.
+    - `title`: `string` — The title of the line item.
+    - `subtitle`: `string` (optional) — The subtitle of the line item.
+    - `thumbnail`: `string` (optional) — The thumbnail of the line item.
+    - `order_id`: `string` (optional) — The associated order's ID.
+    - `quantity`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The quantity of the line item.
+    - `product_id`: `string` (optional) — The associated product's ID.
+    - `product_title`: `string` (optional) — The product title of the line item.
+    - `product_description`: `string` (optional) — The product description of the line item.
+    - `product_subtitle`: `string` (optional) — The product subtitle of the line item.
+    - `product_type`: `string` (optional) — The product type of the line item.
+    - `product_collection`: `string` (optional) — The product collection of the line item.
+    - `product_handle`: `string` (optional) — The product handle of the line item.
+    - `variant_id`: `string` (optional) — The associated variant's ID.
+    - `variant_sku`: `string` (optional) — The variant sku of the line item.
+    - `variant_barcode`: `string` (optional) — The variant barcode of the line item.
+    - `variant_title`: `string` (optional) — The variant title of the line item.
+    - `variant_option_values`: `Record<string, unknown>` (optional) — The variant option values of the line item.
+    - `requires_shipping`: `boolean` (optional) — Whether the line item requires shipping.
+    - `is_discountable`: `boolean` (optional) — Whether the line item is discountable.
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the line item is tax inclusive.
+    - `compare_at_unit_price`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The compare-at unit price of the line item.
+    - `unit_price`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The unit price of the line item.
+    - `tax_lines`: [CreateOrderTaxLineDTO](/resources/references/order/interfaces/orderCreateOrderTaxLineDTO)\[] (optional) — The tax lines of the line item.
+    - `adjustments`: [CreateOrderAdjustmentDTO](/resources/references/order/interfaces/orderCreateOrderAdjustmentDTO)\[] (optional) — The adjustments of the line item.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `shipping_address`: [CreateOrderAddressDTO](/resources/references/order/interfaces/orderCreateOrderAddressDTO) | [UpdateOrderAddressDTO](/resources/references/order/interfaces/orderUpdateOrderAddressDTO) (optional) — The shipping address of the order.
+    - `customer_id`: `string` (optional) — The associated customer's ID.
+    - `company`: `null` | `string` (optional) — The company name.
+    - `first_name`: `null` | `string` (optional) — The first name of the customer.
+    - `last_name`: `null` | `string` (optional) — The last name of the customer.
+    - `address_1`: `null` | `string` (optional) — The address 1 of the address.
+    - `address_2`: `null` | `string` (optional) — The address 2 of the address.
+    - `city`: `null` | `string` (optional) — The city of the address.
+    - `country_code`: `null` | `string` (optional) — The country code of the address.
+    - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the address.
+    - `postal_code`: `null` | `string` (optional) — The postal code of the address.
+    - `phone`: `null` | `string` (optional) — The phone of the address.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` — The ID of the address.
+  - `billing_address`: [CreateOrderAddressDTO](/resources/references/order/interfaces/orderCreateOrderAddressDTO) | [UpdateOrderAddressDTO](/resources/references/order/interfaces/orderUpdateOrderAddressDTO) (optional) — The billing address of the order.
+    - `customer_id`: `string` (optional) — The associated customer's ID.
+    - `company`: `null` | `string` (optional) — The company name.
+    - `first_name`: `null` | `string` (optional) — The first name of the customer.
+    - `last_name`: `null` | `string` (optional) — The last name of the customer.
+    - `address_1`: `null` | `string` (optional) — The address 1 of the address.
+    - `address_2`: `null` | `string` (optional) — The address 2 of the address.
+    - `city`: `null` | `string` (optional) — The city of the address.
+    - `country_code`: `null` | `string` (optional) — The country code of the address.
+    - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the address.
+    - `postal_code`: `null` | `string` (optional) — The postal code of the address.
+    - `phone`: `null` | `string` (optional) — The phone of the address.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` — The ID of the address.
+  - `email`: `string` (optional) — The email of the customer that placed the order.
+  - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications about order updates.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorders-returns-1" />
+
+### Returns
+
+**updateOrders**
+
+- `Promise`: Promise\<[OrderDTO](/resources/references/order/interfaces/orderOrderDTO)> — The updated orders.
+
+<a id="updateorders-selector-data-sharedcontext-promiseorderdto" />
+
+## updateOrders(selector, data, sharedContext?): Promise\<[OrderDTO](/resources/references/order/interfaces/orderOrderDTO)\[]>
+
+This method updates existing orders matching the specified filters.
+
+### Example
+
+```typescript
+const orders = await orderModuleService.updateOrders({
+  id: ["123", "321"]
+}, {
+  email: "example@gmail.com"
+})
+```
+
+<a id="updateorders-parameters-2" />
+
+### Parameters
+
+**updateOrders**
+
+- `selector`: Partial\<[FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps)> — The filters specifying which orders to update.
+  - `$and`: ([FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the orders by.
+    - `sales_channel_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their associated sales channel's ID.
+    - `customer_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their associated customer's ID.
+    - `region_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their associated region's ID.
+    - `created_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the orders by their creation date.
+    - `updated_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their update date.
+  - `$or`: ([FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the orders by.
+    - `sales_channel_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their associated sales channel's ID.
+    - `customer_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their associated customer's ID.
+    - `region_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their associated region's ID.
+    - `created_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the orders by their creation date.
+    - `updated_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their update date.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the orders by.
+  - `sales_channel_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their associated sales channel's ID.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `customer_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their associated customer's ID.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `region_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their associated region's ID.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the orders by their creation date.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their update date.
+    - `$and`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/order/types/orderQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> | [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/order/types/orderQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/order/types/orderExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `data`: [UpdateOrderDTO](/resources/references/order/interfaces/orderUpdateOrderDTO) — The attributes to update in the orders.
+  - `id`: `string` (optional) — The ID of the order.
+  - `version`: `number` (optional) — The version of the order.
+  - `region_id`: `string` (optional) — The associated region's ID.
+  - `customer_id`: `string` (optional) — The associated customer's ID.
+  - `sales_channel_id`: `string` (optional) — The associated sales channel's ID.
+  - `status`: [OrderStatus](/resources/references/order/types/orderOrderStatus) (optional) — The status of the order.
+  - `is_draft_order`: `boolean` (optional) — Whether the order is a draft order.
+  - `locale`: `null` | `string` (optional) — The locale of the order.
+  - `items`: [CreateOrderLineItemDTO](/resources/references/order/interfaces/orderCreateOrderLineItemDTO)\[] (optional) — The items of the order.
+    - `title`: `string` — The title of the line item.
+    - `subtitle`: `string` (optional) — The subtitle of the line item.
+    - `thumbnail`: `string` (optional) — The thumbnail of the line item.
+    - `order_id`: `string` (optional) — The associated order's ID.
+    - `quantity`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The quantity of the line item.
+    - `product_id`: `string` (optional) — The associated product's ID.
+    - `product_title`: `string` (optional) — The product title of the line item.
+    - `product_description`: `string` (optional) — The product description of the line item.
+    - `product_subtitle`: `string` (optional) — The product subtitle of the line item.
+    - `product_type`: `string` (optional) — The product type of the line item.
+    - `product_collection`: `string` (optional) — The product collection of the line item.
+    - `product_handle`: `string` (optional) — The product handle of the line item.
+    - `variant_id`: `string` (optional) — The associated variant's ID.
+    - `variant_sku`: `string` (optional) — The variant sku of the line item.
+    - `variant_barcode`: `string` (optional) — The variant barcode of the line item.
+    - `variant_title`: `string` (optional) — The variant title of the line item.
+    - `variant_option_values`: `Record<string, unknown>` (optional) — The variant option values of the line item.
+    - `requires_shipping`: `boolean` (optional) — Whether the line item requires shipping.
+    - `is_discountable`: `boolean` (optional) — Whether the line item is discountable.
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the line item is tax inclusive.
+    - `compare_at_unit_price`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The compare-at unit price of the line item.
+    - `unit_price`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The unit price of the line item.
+    - `tax_lines`: [CreateOrderTaxLineDTO](/resources/references/order/interfaces/orderCreateOrderTaxLineDTO)\[] (optional) — The tax lines of the line item.
+    - `adjustments`: [CreateOrderAdjustmentDTO](/resources/references/order/interfaces/orderCreateOrderAdjustmentDTO)\[] (optional) — The adjustments of the line item.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `shipping_address`: [CreateOrderAddressDTO](/resources/references/order/interfaces/orderCreateOrderAddressDTO) | [UpdateOrderAddressDTO](/resources/references/order/interfaces/orderUpdateOrderAddressDTO) (optional) — The shipping address of the order.
+    - `customer_id`: `string` (optional) — The associated customer's ID.
+    - `company`: `null` | `string` (optional) — The company name.
+    - `first_name`: `null` | `string` (optional) — The first name of the customer.
+    - `last_name`: `null` | `string` (optional) — The last name of the customer.
+    - `address_1`: `null` | `string` (optional) — The address 1 of the address.
+    - `address_2`: `null` | `string` (optional) — The address 2 of the address.
+    - `city`: `null` | `string` (optional) — The city of the address.
+    - `country_code`: `null` | `string` (optional) — The country code of the address.
+    - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the address.
+    - `postal_code`: `null` | `string` (optional) — The postal code of the address.
+    - `phone`: `null` | `string` (optional) — The phone of the address.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` — The ID of the address.
+  - `billing_address`: [CreateOrderAddressDTO](/resources/references/order/interfaces/orderCreateOrderAddressDTO) | [UpdateOrderAddressDTO](/resources/references/order/interfaces/orderUpdateOrderAddressDTO) (optional) — The billing address of the order.
+    - `customer_id`: `string` (optional) — The associated customer's ID.
+    - `company`: `null` | `string` (optional) — The company name.
+    - `first_name`: `null` | `string` (optional) — The first name of the customer.
+    - `last_name`: `null` | `string` (optional) — The last name of the customer.
+    - `address_1`: `null` | `string` (optional) — The address 1 of the address.
+    - `address_2`: `null` | `string` (optional) — The address 2 of the address.
+    - `city`: `null` | `string` (optional) — The city of the address.
+    - `country_code`: `null` | `string` (optional) — The country code of the address.
+    - `province`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the address.
+    - `postal_code`: `null` | `string` (optional) — The postal code of the address.
+    - `phone`: `null` | `string` (optional) — The phone of the address.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` — The ID of the address.
+  - `email`: `string` (optional) — The email of the customer that placed the order.
+  - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications about order updates.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateorders-returns-2" />
+
+### Returns
+
+**updateOrders**
+
+- `Promise`: Promise\<[OrderDTO](/resources/references/order/interfaces/orderOrderDTO)\[]> — The updated orders.
+  - `OrderDTO[]`: [OrderDTO](/resources/references/order/interfaces/orderOrderDTO)\[]

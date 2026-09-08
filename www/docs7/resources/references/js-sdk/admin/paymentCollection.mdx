@@ -1,0 +1,216 @@
+---
+title: paymentCollection - JS SDK Admin Reference
+sidebarTitle: paymentCollection
+---
+
+This documentation provides a reference to the `sdk.admin.paymentCollection` set of methods used to send requests to Medusa's Admin API routes.
+
+## create
+
+This method creates a payment collection. It sends a request to the
+[Create Payment Collection](/api/admin/payment-collections/create-payment-collection)
+API route.
+
+### Example
+
+```ts
+sdk.admin.paymentCollection.create({
+  order_id: "order_123"
+})
+.then(({ payment_collection }) => {
+  console.log(payment_collection)
+})
+```
+
+<a id="create-parameters" />
+
+### Parameters
+
+**create**
+
+- `body`: [AdminCreatePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreatePaymentCollection) — The details of the payment collection to create.
+  - `order_id`: `string` — The ID of the order this payment collection belongs to.
+  - `amount`: `number` — The payment collection's amount.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the payment collection.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+### Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminPaymentCollectionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollectionResponse)> — The payment collection's details.
+  - `payment_collection`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection) — The payment collection's details.
+    - `payments`: [AdminPayment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPayment)\[] (optional) — The associated payments.
+    - `payment_sessions`: [AdminPaymentSession](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentSession)\[] (optional) — The associated payment sessions.
+    - `payment_providers`: [AdminPaymentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentProvider)\[] — The associated payment providers.
+    - `id`: `string` — The ID of the payment collection.
+    - `currency_code`: `string` — The ISO 3 character currency code of the payment sessions and payments associated with payment collection.
+    - `amount`: `number` — The total amount to be authorized and captured.
+    - `authorized_amount`: `number` (optional) — The amount authorized within the associated payment sessions.
+    - `captured_amount`: `number` (optional) — The amount captured within the associated payment sessions.
+    - `refunded_amount`: `number` (optional) — The amount refunded within the associated payments.
+    - `completed_at`: `string` | `Date` (optional) — When the payment collection was completed.
+    - `created_at`: `string` | `Date` (optional) — When the payment collection was created.
+    - `updated_at`: `string` | `Date` (optional) — When the payment collection was updated.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `status`: [BasePaymentCollectionStatus](/resources/references/types/types/typesBasePaymentCollectionStatus) — The status of the payment collection.
+
+## delete
+
+This method deletes a payment collection. It sends a request to the
+[Delete Payment Collection](/api/admin/payment-collections/delete-a-payment-collection)
+API route.
+
+### Example
+
+```ts
+sdk.admin.paymentCollection.delete("paycol_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The payment collection's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminDeletePaymentCollectionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminDeletePaymentCollectionResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: `"payment-collection"` — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## markAsPaid
+
+This method marks a payment collection as paid. It sends a request to the
+[Mark as Paid](/api/admin/payment-collections/mark-as-paid)
+API route.
+
+The API route creates and authorizes a payment session, then capture its payment.
+It uses the manual payment provider by default, or the provider passed in
+`provider_id` to record the captured payment under a specific provider.
+
+### Example
+
+```ts
+sdk.admin.paymentCollection.markAsPaid("paycol_123", {
+  order_id: "order_123",
+  // optional: record the payment under a specific provider
+  provider_id: "pp_system_default"
+})
+.then(({ payment_collection }) => {
+  console.log(payment_collection)
+})
+```
+
+<a id="markaspaid-parameters" />
+
+### Parameters
+
+**markAsPaid**
+
+- `id`: `string` — The payment collection to mark as paid.
+- `body`: [AdminMarkPaymentCollectionAsPaid](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminMarkPaymentCollectionAsPaid) — The details to mark the payment collection as paid.
+  - `order_id`: `string` — The ID of the order this payment collection belongs to.
+  - `provider_id`: `string` (optional) — The ID of the payment provider to record the captured payment under. Defaults to the system (manual) payment provider when omitted.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the payment collection.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="markaspaid-returns" />
+
+### Returns
+
+**markAsPaid**
+
+- `Promise`: Promise\<[AdminPaymentCollectionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollectionResponse)> — The payment collection's details.
+  - `payment_collection`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection) — The payment collection's details.
+    - `payments`: [AdminPayment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPayment)\[] (optional) — The associated payments.
+    - `payment_sessions`: [AdminPaymentSession](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentSession)\[] (optional) — The associated payment sessions.
+    - `payment_providers`: [AdminPaymentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentProvider)\[] — The associated payment providers.
+    - `id`: `string` — The ID of the payment collection.
+    - `currency_code`: `string` — The ISO 3 character currency code of the payment sessions and payments associated with payment collection.
+    - `amount`: `number` — The total amount to be authorized and captured.
+    - `authorized_amount`: `number` (optional) — The amount authorized within the associated payment sessions.
+    - `captured_amount`: `number` (optional) — The amount captured within the associated payment sessions.
+    - `refunded_amount`: `number` (optional) — The amount refunded within the associated payments.
+    - `completed_at`: `string` | `Date` (optional) — When the payment collection was completed.
+    - `created_at`: `string` | `Date` (optional) — When the payment collection was created.
+    - `updated_at`: `string` | `Date` (optional) — When the payment collection was updated.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `status`: [BasePaymentCollectionStatus](/resources/references/types/types/typesBasePaymentCollectionStatus) — The status of the payment collection.
+
+## createPaymentSession
+
+This method creates a payment session for a payment collection. It sends a request to the
+[Create Payment Session](/api/admin/payment-collections/initialize-payment-session)
+API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.14.2](https://github.com/medusajs/medusa/releases/tag/v2.14.2).
+
+### Example
+
+```ts
+sdk.admin.paymentCollection.createPaymentSession("paycol_123", {
+  provider_id: "pp_stripe_stripe"
+})
+.then(({ payment_collection }) => {
+  console.log(payment_collection)
+})
+```
+
+<a id="createpaymentsession-parameters" />
+
+### Parameters
+
+**createPaymentSession**
+
+- `id`: `string` — The payment collection's ID.
+- `body`: [AdminInitializePaymentSession](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInitializePaymentSession) — The payment session's details.
+  - `provider_id`: `string` — The ID of the provider to initialize a payment session for.
+  - `data`: `Record<string, unknown>` (optional) — Any data necessary for the payment provider to process the payment. Learn more in [this documentation](/resources/commerce-modules/payment/payment-session#data-property).
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the payment collection.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="createpaymentsession-returns" />
+
+### Returns
+
+**createPaymentSession**
+
+- `Promise`: Promise\<[AdminPaymentCollectionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollectionResponse)> — The payment collection's details.
+  - `payment_collection`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection) — The payment collection's details.
+    - `payments`: [AdminPayment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPayment)\[] (optional) — The associated payments.
+    - `payment_sessions`: [AdminPaymentSession](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentSession)\[] (optional) — The associated payment sessions.
+    - `payment_providers`: [AdminPaymentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentProvider)\[] — The associated payment providers.
+    - `id`: `string` — The ID of the payment collection.
+    - `currency_code`: `string` — The ISO 3 character currency code of the payment sessions and payments associated with payment collection.
+    - `amount`: `number` — The total amount to be authorized and captured.
+    - `authorized_amount`: `number` (optional) — The amount authorized within the associated payment sessions.
+    - `captured_amount`: `number` (optional) — The amount captured within the associated payment sessions.
+    - `refunded_amount`: `number` (optional) — The amount refunded within the associated payments.
+    - `completed_at`: `string` | `Date` (optional) — When the payment collection was completed.
+    - `created_at`: `string` | `Date` (optional) — When the payment collection was created.
+    - `updated_at`: `string` | `Date` (optional) — When the payment collection was updated.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `status`: [BasePaymentCollectionStatus](/resources/references/types/types/typesBasePaymentCollectionStatus) — The status of the payment collection.

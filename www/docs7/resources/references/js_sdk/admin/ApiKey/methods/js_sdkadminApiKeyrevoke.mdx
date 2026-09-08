@@ -1,0 +1,46 @@
+---
+title: revoke
+---
+
+This method revokes an API key. It sends a request to the
+[Revoke API Key](/api/admin/api-keys/revoke-api-key) API route.
+
+## Example
+
+```ts
+sdk.admin.apiKey.revoke("apk_123")
+.then(({ api_key }) => {
+  console.log(api_key)
+})
+```
+
+<a id="revoke-parameters" />
+
+## Parameters
+
+**revoke**
+
+- `id`: `string` — The API key's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="revoke-returns" />
+
+## Returns
+
+**revoke**
+
+- `Promise`: Promise\<[AdminApiKeyResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminApiKeyResponse)> — The API key's details.
+  - `api_key`: [AdminApiKey](/resources/references/types/interfaces/typesAdminApiKey) — The API key's details.
+    - `id`: `string` — The API key's ID.
+    - `token`: `string` — The API key's token.
+    - `redacted`: `string` — The redacted form of the token, useful for displaying the API key.
+    - `title`: `string` — The API key's title.
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The API key's type.
+    - `last_used_at`: `null` | `Date` — The date the API key was last used.
+    - `created_by`: `string` — The ID of the user that created the API key.
+    - `created_at`: `Date` — The date the API key was created.
+    - `updated_at`: `Date` — The date the API key was updated.
+    - `revoked_by`: `null` | `string` — The ID of the user that revoked the API key.
+    - `revoked_at`: `null` | `Date` — The date the API key was revoked.
+    - `deleted_at`: `null` | `Date` — The date the API key was deleted.

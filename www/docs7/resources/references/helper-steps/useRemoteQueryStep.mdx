@@ -1,0 +1,66 @@
+---
+title: useRemoteQueryStep - Helper Steps API Reference
+sidebarTitle: useRemoteQueryStep
+---
+
+This documentation provides a reference to the `useRemoteQueryStep` step. It belongs to the `@medusajs/medusa/core-flows` package.
+
+## Example
+
+To retrieve a list of records of a data model:
+
+```ts
+const products = useRemoteQueryStep({
+  entry_point: "product",
+  fields: [
+    "*",
+    "variants.*"
+  ]
+})
+```
+
+To retrieve a single item instead of a an array:
+
+```ts
+const product = useRemoteQueryStep({
+  entry_point: "product",
+  fields: [
+    "*",
+    "variants.*"
+  ],
+  variables: {
+    filters: {
+      id: "123"
+    }
+  },
+  list: false
+})
+```
+
+To throw an error if a record isn't found matching the specified ID:
+
+```ts
+const product = useRemoteQueryStep({
+  entry_point: "product",
+  fields: [
+    "*",
+    "variants.*"
+  ],
+  variables: {
+    filters: {
+      id: "123"
+    }
+  },
+  list: false,
+  throw_if_key_not_found: true
+})
+```
+
+<a id="useremotequerystep-input" />
+
+## Input
+
+**useRemoteQueryStep**
+
+- `EntryStepInput \| ServiceStepInput`: [EntryStepInput](/resources/references/helper_steps/interfaces/helper_stepsEntryStepInput) | [ServiceStepInput](/resources/references/helper_steps/interfaces/helper_stepsServiceStepInput)
+  - `EntryStepInput \| ServiceStepInput`: [EntryStepInput](/resources/references/helper_steps/interfaces/helper_stepsEntryStepInput) | [ServiceStepInput](/resources/references/helper_steps/interfaces/helper_stepsServiceStepInput)

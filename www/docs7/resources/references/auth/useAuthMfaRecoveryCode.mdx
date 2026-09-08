@@ -1,0 +1,58 @@
+---
+title: useAuthMfaRecoveryCode - Auth Module Reference
+sidebarTitle: useAuthMfaRecoveryCode
+---
+
+This documentation provides a reference to the `useAuthMfaRecoveryCode` method. This belongs to the Auth Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method uses a recovery code for an auth identity.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.15.3](https://github.com/medusajs/medusa/releases/tag/v2.15.3).
+
+## Example
+
+```ts
+await authModuleService.useAuthMfaRecoveryCode({
+  auth_identity_id: "authusr_123",
+  code: "recovery123"
+})
+```
+
+<a id="useauthmfarecoverycode-parameters" />
+
+## Parameters
+
+**useAuthMfaRecoveryCode**
+
+- `data`: [UseAuthMfaRecoveryCodeDTO](/resources/references/auth/types/authUseAuthMfaRecoveryCodeDTO) — The data required to use a recovery code.
+  - `auth_identity_id`: `string` — The ID of the authentication identity using the recovery code.
+  - `code`: `string` — The recovery code to consume.
+- `sharedContext`: [Context](/resources/references/auth/interfaces/authContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/auth/interfaces/authIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="useauthmfarecoverycode-returns" />
+
+## Returns
+
+**useAuthMfaRecoveryCode**
+
+- `Promise`: Promise\<void> — Resolves when the recovery code is successfully used.

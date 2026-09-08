@@ -1,0 +1,444 @@
+---
+title: payment - JS SDK Admin Reference
+sidebarTitle: payment
+---
+
+This documentation provides a reference to the `sdk.admin.payment` set of methods used to send requests to Medusa's Admin API routes.
+
+## list
+
+This method retrieves a paginated list of payments. It sends a request to the
+[List Payments](/api/admin/payments/list-payments) API route.
+
+### Example
+
+To retrieve the list of payments:
+
+```ts
+sdk.admin.payment.list()
+.then(({ payments, count, limit, offset }) => {
+  console.log(payments)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.payment.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ payments, count, limit, offset }) => {
+  console.log(payments)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each payment:
+
+```ts
+sdk.admin.payment.list({
+  fields: "id,*payment_collection"
+})
+.then(({ payments, count, limit, offset }) => {
+  console.log(payments)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [AdminPaymentFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentFilters) (optional) — Filters and pagination configurations.
+  - `$and`: ([BasePaymentFilters](/resources/references/types/interfaces/typesBasePaymentFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BasePaymentFilters](/resources/references/types/interfaces/typesBasePaymentFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([BasePaymentFilters](/resources/references/types/interfaces/typesBasePaymentFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BasePaymentFilters](/resources/references/types/interfaces/typesBasePaymentFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BasePaymentFilters](/resources/references/types/interfaces/typesBasePaymentFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BasePaymentFilters](/resources/references/types/interfaces/typesBasePaymentFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — Filter by payment ID(s).
+  - `$or`: ([BasePaymentFilters](/resources/references/types/interfaces/typesBasePaymentFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BasePaymentFilters](/resources/references/types/interfaces/typesBasePaymentFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([BasePaymentFilters](/resources/references/types/interfaces/typesBasePaymentFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BasePaymentFilters](/resources/references/types/interfaces/typesBasePaymentFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BasePaymentFilters](/resources/references/types/interfaces/typesBasePaymentFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BasePaymentFilters](/resources/references/types/interfaces/typesBasePaymentFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — Filter by payment ID(s).
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keywords to search the payment's searchable fields.
+  - `payment_session_id`: `string` | `string`\[] (optional) — Filter by IDs of associated payment sessions to retrieve their payments.
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the payment's creation date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the payment's update date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the payment's deleted date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `id`: `string` | `string`\[] (optional) — Filter by payment ID(s).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminPaymentsResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminPaymentsResponse)> — The paginated list of payments.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## listPaymentProviders
+
+This method retrieves a paginated list of payment providers. It sends a request to the
+[List Payment Providers](/api/admin/payments/list-payment-providers) API route.
+
+### Example
+
+To retrieve the list of payment providers:
+
+```ts
+sdk.admin.payment.listPaymentProviders()
+.then(({ payment_providers, count, limit, offset }) => {
+  console.log(payment_providers)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.payment.listPaymentProviders({
+  limit: 10,
+  offset: 10
+})
+.then(({ payment_providers, count, limit, offset }) => {
+  console.log(payment_providers)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each payment provider:
+
+```ts
+sdk.admin.payment.listPaymentProviders({
+  fields: "id,is_enabled"
+})
+.then(({ payment_providers, count, limit, offset }) => {
+  console.log(payment_providers)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="listpaymentproviders-parameters" />
+
+### Parameters
+
+**listPaymentProviders**
+
+- `query`: [AdminGetPaymentProvidersParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPaymentProvidersParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminGetPaymentProvidersParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPaymentProvidersParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetPaymentProvidersParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPaymentProvidersParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminGetPaymentProvidersParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPaymentProvidersParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetPaymentProvidersParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPaymentProvidersParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminGetPaymentProvidersParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPaymentProvidersParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetPaymentProvidersParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPaymentProvidersParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by payment provider ID(s).
+    - `is_enabled`: `boolean` (optional) — Whether the payment provider is enabled.
+  - `$or`: ([AdminGetPaymentProvidersParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPaymentProvidersParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetPaymentProvidersParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPaymentProvidersParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminGetPaymentProvidersParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPaymentProvidersParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetPaymentProvidersParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPaymentProvidersParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminGetPaymentProvidersParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPaymentProvidersParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminGetPaymentProvidersParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPaymentProvidersParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by payment provider ID(s).
+    - `is_enabled`: `boolean` (optional) — Whether the payment provider is enabled.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `id`: `string` | `string`\[] (optional) — Filter by payment provider ID(s).
+  - `is_enabled`: `boolean` (optional) — Whether the payment provider is enabled.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listpaymentproviders-returns" />
+
+### Returns
+
+**listPaymentProviders**
+
+- `Promise`: Promise\<[AdminPaymentProviderListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminPaymentProviderListResponse)> — The paginated list of payment providers.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## retrieve
+
+This method retrieves a payment's details. It sends a request to the
+[Get Payment](/api/admin/payments/get-a-payment)
+API route.
+
+### Example
+
+To retrieve a payment by its ID:
+
+```ts
+sdk.admin.payment.retrieve("pay_123")
+.then(({ payment }) => {
+  console.log(payment)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.payment.retrieve("pay_123", {
+  fields: "id,*payment_collection"
+})
+.then(({ payment }) => {
+  console.log(payment)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The payment's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the payment.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminPaymentResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentResponse)> — The payment's details.
+  - `payment`: [AdminPayment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPayment) — The payment's details.
+    - `refunds`: [AdminRefund](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRefund)\[] (optional) — The associated refunds.
+    - `payment_collection`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection) (optional) — The payment collection this payment belongs to.
+    - `payment_session`: [AdminPaymentSession](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentSession) (optional) — The associated payment session.
+    - `id`: `string` — The ID of the payment.
+    - `amount`: `number` — The payment's total amount.
+    - `authorized_amount`: `number` (optional) — The authorized amount of the payment.
+    - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+    - `provider_id`: `string` — The ID of the associated payment provider.
+    - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+    - `created_at`: `string` | `Date` (optional) — When the payment was created.
+    - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+    - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+    - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+    - `captured_amount`: `number` (optional) — The sum of the associated captures' amounts.
+    - `refunded_amount`: `number` (optional) — The sum of the associated refunds' amounts.
+    - `captures`: [BaseCapture](/resources/references/types/interfaces/typesBaseCapture)\[] (optional) — The associated captures.
+
+## capture
+
+This method captures a payment. It sends a request to the
+[Capture Payment](/api/admin/payments/capture-payment) API route.
+
+The API route uses the `capturePayment` method of the payment provider associated with the payment's collection.
+
+### Example
+
+```ts
+sdk.admin.payment.capture("paycol_123", {})
+.then(({ payment }) => {
+  console.log(payment)
+})
+```
+
+<a id="capture-parameters" />
+
+### Parameters
+
+**capture**
+
+- `id`: `string` — The payment's ID.
+- `body`: [AdminCapturePayment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCapturePayment) — The capture's details.
+  - `amount`: `number` (optional) — Custom amount to capture. If not specified, the payment's amount is captured.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the payment.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="capture-returns" />
+
+### Returns
+
+**capture**
+
+- `Promise`: Promise\<[AdminPaymentResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentResponse)> — The payment's details.
+  - `payment`: [AdminPayment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPayment) — The payment's details.
+    - `refunds`: [AdminRefund](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRefund)\[] (optional) — The associated refunds.
+    - `payment_collection`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection) (optional) — The payment collection this payment belongs to.
+    - `payment_session`: [AdminPaymentSession](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentSession) (optional) — The associated payment session.
+    - `id`: `string` — The ID of the payment.
+    - `amount`: `number` — The payment's total amount.
+    - `authorized_amount`: `number` (optional) — The authorized amount of the payment.
+    - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+    - `provider_id`: `string` — The ID of the associated payment provider.
+    - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+    - `created_at`: `string` | `Date` (optional) — When the payment was created.
+    - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+    - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+    - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+    - `captured_amount`: `number` (optional) — The sum of the associated captures' amounts.
+    - `refunded_amount`: `number` (optional) — The sum of the associated refunds' amounts.
+    - `captures`: [BaseCapture](/resources/references/types/interfaces/typesBaseCapture)\[] (optional) — The associated captures.
+
+## refund
+
+This method refunds a payment. It sends a request to the
+[Refund Payment](/api/admin/payments/refund-payment) API route.
+
+The API route uses the `refundPayment` method of the payment provider associated with the payment's collection.
+
+### Example
+
+```ts
+sdk.admin.payment.refund("paycol_123", {})
+.then(({ payment }) => {
+  console.log(payment)
+})
+```
+
+<a id="refund-parameters" />
+
+### Parameters
+
+**refund**
+
+- `id`: `string` — The payment's ID.
+- `body`: [AdminRefundPayment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRefundPayment) — The refund's details.
+  - `amount`: `number` (optional) — Custom amount to refund. If not specified, the payment's amount is refunded.
+  - `refund_reason_id`: `string` (optional) — The ID of the refund's reason.
+  - `note`: `string` (optional) — A note to attach to the refund.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the payment.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="refund-returns" />
+
+### Returns
+
+**refund**
+
+- `Promise`: Promise\<[AdminPaymentResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentResponse)> — The payment's details.
+  - `payment`: [AdminPayment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPayment) — The payment's details.
+    - `refunds`: [AdminRefund](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRefund)\[] (optional) — The associated refunds.
+    - `payment_collection`: [AdminPaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentCollection) (optional) — The payment collection this payment belongs to.
+    - `payment_session`: [AdminPaymentSession](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentSession) (optional) — The associated payment session.
+    - `id`: `string` — The ID of the payment.
+    - `amount`: `number` — The payment's total amount.
+    - `authorized_amount`: `number` (optional) — The authorized amount of the payment.
+    - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+    - `provider_id`: `string` — The ID of the associated payment provider.
+    - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+    - `created_at`: `string` | `Date` (optional) — When the payment was created.
+    - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+    - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+    - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+    - `captured_amount`: `number` (optional) — The sum of the associated captures' amounts.
+    - `refunded_amount`: `number` (optional) — The sum of the associated refunds' amounts.
+    - `captures`: [BaseCapture](/resources/references/types/interfaces/typesBaseCapture)\[] (optional) — The associated captures.

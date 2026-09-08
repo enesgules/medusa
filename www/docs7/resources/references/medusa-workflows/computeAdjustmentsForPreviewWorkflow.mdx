@@ -1,0 +1,283 @@
+---
+title: computeAdjustmentsForPreviewWorkflow - Medusa Core Workflows Reference
+sidebarTitle: computeAdjustmentsForPreviewWorkflow
+---
+
+This documentation provides a reference to the `computeAdjustmentsForPreviewWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow computes adjustments for an order change if the carry over promotions flag is true on the order change.
+If the flag is false, it deletes the existing adjustments replacement actions.
+
+It is currently used as a part of the order edit and exchange flows. It's used by workflows
+like [orderExchangeAddNewItemWorkflow](/resources/references/medusa-workflows/orderExchangeAddNewItemWorkflow) and [orderEditAddNewItemWorkflow](/resources/references/medusa-workflows/orderEditAddNewItemWorkflow).
+
+You can use this workflow within your customizations or your own custom workflows, allowing you to compute adjustments
+in your custom flows.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.12.0](https://github.com/medusajs/medusa/releases/tag/v2.12.0).
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/order/workflows/compute-adjustments-for-preview.ts#L85)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { computeAdjustmentsForPreviewWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await computeAdjustmentsForPreviewWorkflow(req.scope)
+    .run({
+      input: {
+        order: {
+          id: "order_123",
+          // other order details...
+        },
+        orderChange: {
+          id: "orch_123",
+          // other order change details...
+        },
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { computeAdjustmentsForPreviewWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await computeAdjustmentsForPreviewWorkflow(container)
+    .run({
+      input: {
+        order: {
+          id: "order_123",
+          // other order details...
+        },
+        orderChange: {
+          id: "orch_123",
+          // other order change details...
+        },
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { computeAdjustmentsForPreviewWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await computeAdjustmentsForPreviewWorkflow(container)
+    .run({
+      input: {
+        order: {
+          id: "order_123",
+          // other order details...
+        },
+        orderChange: {
+          id: "orch_123",
+          // other order change details...
+        },
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { computeAdjustmentsForPreviewWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = computeAdjustmentsForPreviewWorkflow
+      .runAsStep({
+        input: {
+          order: {
+            id: "order_123",
+            // other order details...
+          },
+          orderChange: {
+            id: "orch_123",
+            // other order change details...
+          },
+        }
+      })
+  }
+)
+```
+
+<a id="computeadjustmentsforpreviewworkflow-steps" />
+
+## Steps
+
+- [previewOrderChangeStep](/resources/references/medusa-workflows/steps/previewOrderChangeStep): This step retrieves a preview of an order change.
+  - [setPromotionContext](/resources/references/medusa-workflows/computeAdjustmentsForPreviewWorkflow#setpromotioncontext): This hook is executed before promotion rules are evaluated for the draft order. You can consume this hook to return any custom context that should be merged on top of the order context when evaluating promotion rules (e.g. `company.id`, `custom_tier`).
+    - **when** (when: !!order.promotions.length && !!orderChange.carry\_over\_promotions)
+    - [getActionsToComputeFromPromotionsStep](/resources/references/medusa-workflows/steps/getActionsToComputeFromPromotionsStep): This step retrieves the actions to compute based on the promotions applied on items and shipping methods. :::tip You can use the [retrieveCartStep](/resources/references/medusa-workflows/steps/retrieveCartStep) to retrieve items and shipping methods' details. :::
+    - [prepareAdjustmentsFromPromotionActionsStep](/resources/references/medusa-workflows/steps/prepareAdjustmentsFromPromotionActionsStep): This step prepares the line item or shipping method adjustments using actions computed by the Promotion Module.
+      - **when** (when: !order.order\_change.carry\_over\_promotions)
+      - [deleteOrderChangeActionsStep](/resources/references/medusa-workflows/steps/deleteOrderChangeActionsStep): This step deletes order change actions.
+
+<a id="computeadjustmentsforpreviewworkflow-input" />
+
+## Input
+
+**computeAdjustmentsForPreviewWorkflow**
+
+- `ComputeAdjustmentsForPreviewWorkflowInput`: [ComputeAdjustmentsForPreviewWorkflowInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcComputeAdjustmentsForPreviewWorkflowInput)
+  - `order`: [OrderDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderDTO) & `object` — The order's details.
+    - `id`: `string` — The ID of the order.
+    - `version`: `number` — The version of the order.
+    - `display_id`: `number` — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `order_change`: [OrderChangeDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderChangeDTO) (optional) — The active order change, if any.
+    - `status`: [OrderStatus](/resources/references/fulfillment/types/fulfillmentOrderStatus) — The status of the order.
+    - `region_id`: `string` (optional) — The ID of the region the order belongs to.
+    - `customer_id`: `string` (optional) — The ID of the customer on the order.
+    - `sales_channel_id`: `string` (optional) — The ID of the sales channel the order belongs to.
+    - `email`: `string` (optional) — The email of the order.
+    - `currency_code`: `string` — The currency of the order
+    - `shipping_address`: [OrderAddressDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderAddressDTO) (optional) — The associated shipping address.
+    - `billing_address`: [OrderAddressDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderAddressDTO) (optional) — The associated billing address.
+    - `items`: [OrderLineItemDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderLineItemDTO)\[] (optional) — The associated order details / line items.
+    - `shipping_methods`: [OrderShippingMethodDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderShippingMethodDTO)\[] (optional) — The associated shipping methods
+    - `transactions`: [OrderTransactionDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderTransactionDTO)\[] (optional) — The tramsactions associated with the order
+    - `credit_lines`: [OrderCreditLineDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderCreditLineDTO)\[] (optional) — The credit lines for an order
+    - `summary`: [OrderSummaryDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderSummaryDTO) (optional) — The summary of the order totals.
+    - `is_draft_order`: `boolean` (optional) — Whether the order is a draft order.
+    - `locale`: `string` (optional) — The locale of the order.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `canceled_at`: `string` | `Date` (optional) — When the order was canceled.
+    - `created_at`: `string` | `Date` — When the order was created.
+    - `updated_at`: `string` | `Date` — When the order was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the order was deleted.
+    - `original_item_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original item total of the order.
+    - `original_item_subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original item subtotal of the order.
+    - `original_item_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original item tax total of the order.
+    - `item_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The item total of the order.
+    - `item_subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The item subtotal of the order.
+    - `item_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The item tax total of the order.
+    - `item_discount_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The item discount total of the order.
+    - `original_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original total of the order.
+    - `original_subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original subtotal of the order.
+    - `original_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original tax total of the order.
+    - `total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The total of the order.
+    - `subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The subtotal of the order. (Excluding taxes)
+    - `tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The tax total of the order.
+    - `discount_subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The discount subtotal of the order.
+    - `discount_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The discount total of the order.
+    - `discount_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The discount tax total of the order.
+    - `credit_line_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The credit line total of the order.
+    - `gift_card_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The gift card total of the order.
+    - `gift_card_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The gift card tax total of the order.
+    - `shipping_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The shipping total of the order.
+    - `shipping_subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The shipping subtotal of the order.
+    - `shipping_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The shipping tax total of the order.
+    - `shipping_discount_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The shipping discount total of the order.
+    - `original_shipping_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original shipping total of the order.
+    - `original_shipping_subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original shipping subtotal of the order.
+    - `original_shipping_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original shipping tax total of the order.
+    - `promotions`: [PromotionDTO](/resources/references/promotion/interfaces/promotionPromotionDTO)\[] — The promotions applied to the order.
+  - `orderChange`: [OrderChangeDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderChangeDTO) — The order change's details.
+    - `id`: `string` — The ID of the order change
+    - `version`: `number` — The version of the order change
+    - `change_type`: `"return"` | `"exchange"` | `"claim"` | `"edit"` | `"transfer"` (optional) — The type of the order change
+    - `carry_over_promotions`: `null` | `boolean` (optional) — Whether to carry over promotions (apply promotions to outbound exchange items).
+    - `no_notification`: `null` | `boolean` (optional) — Whether the customer shouldn't be notified of the order change.
+    - `order_id`: `string` — The ID of the associated order
+    - `return_id`: `string` — The ID of the associated return order
+    - `exchange_id`: `string` — The ID of the associated exchange order
+    - `claim_id`: `string` — The ID of the associated claim order
+    - `order`: [OrderDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderDTO) — The associated order
+    - `return_order`: [ReturnDTO](/resources/references/fulfillment/interfaces/fulfillmentReturnDTO) — The associated return order
+    - `exchange`: [OrderExchangeDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderExchangeDTO) — The associated exchange order
+    - `claim`: [OrderClaimDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderClaimDTO) — The associated claim order
+    - `actions`: [OrderChangeActionDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderChangeActionDTO)\[] — The actions of the order change
+    - `status`: [OrderChangeStatus](/resources/references/fulfillment/types/fulfillmentOrderChangeStatus) — The status of the order change
+    - `requested_by`: `null` | `string` — The requested by of the order change
+    - `requested_at`: `null` | `string` | `Date` — When the order change was requested
+    - `confirmed_by`: `null` | `string` — The confirmed by of the order change
+    - `confirmed_at`: `null` | `string` | `Date` — When the order change was confirmed
+    - `declined_by`: `null` | `string` — The declined by of the order change
+    - `declined_reason`: `null` | `string` — The declined reason of the order change
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata of the order change
+    - `declined_at`: `null` | `string` | `Date` — When the order change was declined
+    - `canceled_by`: `null` | `string` — The canceled by of the order change
+    - `canceled_at`: `null` | `string` | `Date` — When the order change was canceled
+    - `created_at`: `string` | `Date` — When the order change was created
+    - `updated_at`: `string` | `Date` — When the order change was updated
+
+## Hooks
+
+Hooks allow you to inject custom functionalities into the workflow. You'll receive data from the workflow, as well as additional data sent through an HTTP request.
+
+Learn more about [Hooks](/learn/fundamentals/workflows/workflow-hooks) and [Additional Data](/learn/fundamentals/api-routes/additional-data).
+
+### setPromotionContext
+
+This hook is executed before promotion rules are evaluated for the previewed order. You can consume this hook to return any custom context that should be merged on top of the order context when evaluating promotion rules (e.g. `company.id`, `custom_tier`).
+
+#### Example
+
+```ts
+import { computeAdjustmentsForPreviewWorkflow } from "@medusajs/medusa/core-flows"
+
+computeAdjustmentsForPreviewWorkflow.hooks.setPromotionContext(
+  (async ({ order, orderChange, previewedOrder }, { container }) => {
+    //TODO
+  })
+)
+```
+
+<a id="input" />
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+**setPromotionContext**
+
+- `input`: object — The input data for the hook.
+  - `order`: `object`
+  - `orderChange`: [OrderChangeDTO](/resources/references/fulfillment/interfaces/fulfillmentOrderChangeDTO) — The order change details.
+  - `previewedOrder`: [WorkflowDataProperties](/resources/references/workflows/types/workflowsWorkflowDataProperties)\<[OrderPreviewDTO](/resources/references/order/interfaces/orderOrderPreviewDTO)>

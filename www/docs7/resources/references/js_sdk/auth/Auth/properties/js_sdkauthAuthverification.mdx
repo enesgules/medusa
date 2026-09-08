@@ -1,0 +1,73 @@
+---
+title: verification
+---
+
+Methods for requesting and confirming verification.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.15.5](https://github.com/medusajs/medusa/releases/tag/v2.15.5).
+
+## request
+
+This method requests a verification token for an auth identity.
+
+<a id="request-parameters" />
+
+### Parameters
+
+**request**
+
+- `body`: [AuthVerificationRequestPayload](/resources/references/js_sdk/auth/types/js_sdkauthAuthVerificationRequestPayload) — The verification request details.
+  - `entity_id`: `string` — The provider identity to verify.
+  - `entity_type`: `string` — The kind of entity being verified, such as `email` or `phone_number`.
+  - `code_provider`: `string` (optional) — The verification provider to use. Defaults to `token`.
+  - `metadata`: `Record<string, unknown>` (optional) — Optional metadata to include in the verification request event.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request. Must include a bearer token for the auth identity.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="request-returns" />
+
+### Returns
+
+**request**
+
+- `Promise`: Promise\<[AuthVerificationRequestResponse](/resources/references/js_sdk/auth/types/js_sdkauthAuthVerificationRequestResponse)>
+  - `verification`: [AuthVerificationDTO](/resources/references/auth/types/authAuthVerificationDTO) — The verification state.
+    - `id`: `string` (optional)
+    - `entity_id`: `string`
+    - `auth_identity_id`: `string`
+    - `entity_type`: `string`
+    - `code_provider`: `string`
+    - `provider_metadata`: `Record<string, unknown>` | `null` (optional)
+    - `metadata`: `Record<string, unknown>` | `null` (optional)
+    - `verified_at`: `Date` | `null` (optional)
+    - `requested_at`: `Date`
+
+## confirm
+
+This method confirms a verification code.
+
+<a id="confirm-parameters" />
+
+### Parameters
+
+**confirm**
+
+- `body`: [AuthVerificationConfirmPayload](/resources/references/js_sdk/auth/types/js_sdkauthAuthVerificationConfirmPayload) — The verification code details.
+  - `code`: `string` — The verification code delivered to the user, such as an OTP or pseudorandom token.
+  - `code_provider`: `string` (optional) — The verification provider to use. Defaults to `token`.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="confirm-returns" />
+
+### Returns
+
+**confirm**
+
+- `Promise`: Promise\<[AuthVerificationConfirmResponse](/resources/references/js_sdk/auth/types/js_sdkauthAuthVerificationConfirmResponse)>
+  - `entity_id`: `string` — The verified entity identifier.
+  - `entity_type`: `string` — The kind of entity that was verified.
+  - `code_provider`: `string` — The verification provider that confirmed the verification.
+  - `verified_at`: `Date` | `string` — When the verification was confirmed.

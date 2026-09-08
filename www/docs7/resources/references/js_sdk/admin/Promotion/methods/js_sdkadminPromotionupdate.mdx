@@ -1,0 +1,76 @@
+---
+title: update
+---
+
+This method updates a promotion. It sends a request to the
+[Update Promotion](/api/admin/promotions/update-a-promotion)
+API route.
+
+## Example
+
+```ts
+sdk.admin.promotion.update("promo_123", {
+  code: "PROMO123",
+})
+.then(({ promotion }) => {
+  console.log(promotion)
+})
+```
+
+<a id="update-parameters" />
+
+## Parameters
+
+**update**
+
+- `id`: `string` — The promotion's ID.
+- `payload`: [AdminUpdatePromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdatePromotion) — The details to update in the promotion.
+  - `code`: `string` (optional) — The promotion's code.
+  - `is_automatic`: `boolean` (optional) — Whether the promotion is applied automatically or requires the customer to manually apply it by entering the code at checkout.
+  - `is_tax_inclusive`: `boolean` (optional) — Whether the promotion is tax inclusive.
+  - `type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues) (optional) — The type of promotion.
+  - `status`: [PromotionStatusValues](/resources/references/promotion/types/promotionPromotionStatusValues) (optional) — The status of the promotion.
+  - `campaign_id`: `null` | `string` (optional) — The ID of the campaign that the promotion belongs to.
+  - `application_method`: [AdminUpdateApplicationMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateApplicationMethod) (optional) — The application method of the promotion.
+    - `description`: `null` | `string` (optional) — The description of the application method.
+    - `value`: `number` (optional) — The value of the application method.
+    - `max_quantity`: `null` | `number` (optional) — The max quantity allowed in the cart for the associated promotion to be applied.
+    - `currency_code`: `null` | `string` (optional) — The currency code of the application method.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `type`: [ApplicationMethodTypeValues](/resources/references/promotion/types/promotionApplicationMethodTypeValues) (optional) — The type of the application method.
+    - `target_type`: [ApplicationMethodTargetTypeValues](/resources/references/promotion/types/promotionApplicationMethodTargetTypeValues) (optional) — The target type of the application method indicating whether the associated promotion is applied to the cart's items, shipping methods, or the whole order.
+    - `allocation`: [ApplicationMethodAllocationValues](/resources/references/promotion/types/promotionApplicationMethodAllocationValues) (optional) — The allocation value that indicates whether the associated promotion is applied on each item in a cart or split between the items in the cart.
+    - `apply_to_quantity`: `null` | `number` (optional) — The quantity of the application method.
+    - `buy_rules_min_quantity`: `null` | `number` (optional) — The minimum quantity required for a `buyget` promotion to be applied. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is 2.
+  - `limit`: `null` | `number` (optional) — The maximum number of times this promotion can be used.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+## Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminPromotionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPromotionResponse)> — The promotion's details.
+  - `promotion`: [AdminPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPromotion) — The promotion's details.
+    - `application_method`: [AdminApplicationMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminApplicationMethod) (optional) — The promotion's application method.
+    - `rules`: [AdminPromotionRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPromotionRule)\[] (optional) — The rules for the promotion.
+    - `id`: `string`
+    - `code`: `string` (optional)
+    - `type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues) (optional) — The promotion's possible types.
+    - `is_automatic`: `boolean` (optional)
+    - `is_tax_inclusive`: `boolean` (optional)
+    - `limit`: `null` | `number` (optional)
+    - `used`: `number` (optional)
+    - `status`: [PromotionStatusValues](/resources/references/promotion/types/promotionPromotionStatusValues) (optional) — The promotion's possible types.
+    - `campaign_id`: `string` (optional)
+    - `campaign`: [AdminCampaign](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaign) (optional)
+    - `created_at`: `string`
+    - `updated_at`: `string`
+    - `deleted_at`: `null` | `string`

@@ -1,0 +1,65 @@
+---
+title: retrieve
+---
+
+This method retrieves a price list. It sends a request to the
+[Get Price List](/api/admin/price-lists/get-a-price-list)
+API route.
+
+## Example
+
+To retrieve a price list by its ID:
+
+```ts
+sdk.admin.priceList.retrieve("plist_123")
+.then(({ price_list }) => {
+  console.log(price_list)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.priceList.retrieve("plist_123", {
+  fields: "id,*prices"
+})
+.then(({ price_list }) => {
+  console.log(price_list)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The price list's ID.
+- `query`: [AdminPriceListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListParams) (optional) — Configure the fields to retrieve in the price list.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminPriceListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListResponse)> — The price list's details.
+  - `price_list`: [AdminPriceList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceList) — The price list's details.
+    - `id`: `string` — The price list's ID.
+    - `title`: `string` — The price list's title.
+    - `description`: `string` — The price list's description.
+    - `rules`: `Record<string, any>` — The price list's rules.
+    - `starts_at`: `null` | `string` — The price list's start date.
+    - `ends_at`: `null` | `string` — The price list's end date.
+    - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus) — The price list's status.
+    - `type`: [PriceListType](/resources/references/pricing/types/pricingPriceListType) — The price list's type.
+    - `prices`: [AdminPriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPrice)\[] — The price list's prices.
+    - `created_at`: `string` — The date the price list was created.
+    - `updated_at`: `string` — The date the price list was updated.
+    - `deleted_at`: `null` | `string` — The date the price list was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.

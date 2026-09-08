@@ -1,0 +1,273 @@
+---
+title: BaseClaimItem
+---
+
+The claim item's details.
+
+## Properties
+
+<Accordion title="id (required)">
+  The claim item's ID.
+
+  ```json
+  {
+    "type": "string",
+    "title": "id",
+    "description": "The claim item's ID."
+  }
+  ```
+</Accordion>
+
+<Accordion title="claim_id (required)">
+  The ID of the claim this item belongs to.
+
+  ```json
+  {
+    "type": "string",
+    "title": "claim_id",
+    "description": "The ID of the claim this item belongs to."
+  }
+  ```
+</Accordion>
+
+<Accordion title="order_id (required)">
+  The ID of the order this item belongs to.
+
+  ```json
+  {
+    "type": "string",
+    "title": "order_id",
+    "description": "The ID of the order this item belongs to."
+  }
+  ```
+</Accordion>
+
+<Accordion title="item_id (required)">
+  The ID of the item in the order.
+
+  ```json
+  {
+    "type": "string",
+    "title": "item_id",
+    "description": "The ID of the item in the order."
+  }
+  ```
+</Accordion>
+
+<Accordion title="quantity (required)">
+  The quantity claimed.
+
+  ```json
+  {
+    "type": "number",
+    "title": "quantity",
+    "description": "The quantity claimed."
+  }
+  ```
+</Accordion>
+
+<Accordion title="reason (required)">
+  The claim's reason.
+
+  ```json
+  {
+    "type": "string",
+    "description": "The claim's reason.",
+    "enum": [
+      "missing_item",
+      "wrong_item",
+      "production_failure",
+      "other"
+    ]
+  }
+  ```
+</Accordion>
+
+<Accordion title="raw_quantity (required)">
+  The quantity claimed.
+
+  ```json
+  {
+    "type": "object",
+    "description": "The quantity claimed.",
+    "properties": {
+      "value": {
+        "oneOf": [
+          {
+            "type": "string",
+            "title": "value",
+            "description": "The raw quantity's value."
+          },
+          {
+            "type": "number",
+            "title": "value",
+            "description": "The raw quantity's value."
+          }
+        ]
+      }
+    },
+    "required": [
+      "value"
+    ]
+  }
+  ```
+</Accordion>
+
+<Accordion title="metadata (optional)">
+  The item's metadata, can hold custom key-value pairs.
+
+  ```json
+  {
+    "type": "object",
+    "description": "The item's metadata, can hold custom key-value pairs.",
+    "externalDocs": {
+      "url": "https://docs.medusajs.com/api/store#manage-metadata",
+      "description": "Learn how to manage metadata"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="created_at (optional)">
+  The date the claim was created.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "created_at",
+    "description": "The date the claim was created."
+  }
+  ```
+</Accordion>
+
+<Accordion title="updated_at (optional)">
+  The date the claim was updated.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "updated_at",
+    "description": "The date the claim was updated."
+  }
+  ```
+</Accordion>
+
+<Accordion title="item (optional)">
+  ```json
+  {
+    "$ref": "#/components/schemas/AdminOrderLineItem"
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminOrderLineItem](/api/schemas/admin-order-line-item)
+</Accordion>
+
+## Schema definition
+
+```json
+{
+  "type": "object",
+  "description": "The claim item's details.",
+  "x-schemaName": "BaseClaimItem",
+  "required": [
+    "id",
+    "claim_id",
+    "order_id",
+    "item_id",
+    "quantity",
+    "reason",
+    "raw_quantity"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "title": "id",
+      "description": "The claim item's ID."
+    },
+    "claim_id": {
+      "type": "string",
+      "title": "claim_id",
+      "description": "The ID of the claim this item belongs to."
+    },
+    "order_id": {
+      "type": "string",
+      "title": "order_id",
+      "description": "The ID of the order this item belongs to."
+    },
+    "item_id": {
+      "type": "string",
+      "title": "item_id",
+      "description": "The ID of the item in the order."
+    },
+    "quantity": {
+      "type": "number",
+      "title": "quantity",
+      "description": "The quantity claimed."
+    },
+    "reason": {
+      "type": "string",
+      "description": "The claim's reason.",
+      "enum": [
+        "missing_item",
+        "wrong_item",
+        "production_failure",
+        "other"
+      ]
+    },
+    "raw_quantity": {
+      "type": "object",
+      "description": "The quantity claimed.",
+      "properties": {
+        "value": {
+          "oneOf": [
+            {
+              "type": "string",
+              "title": "value",
+              "description": "The raw quantity's value."
+            },
+            {
+              "type": "number",
+              "title": "value",
+              "description": "The raw quantity's value."
+            }
+          ]
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "metadata": {
+      "type": "object",
+      "description": "The item's metadata, can hold custom key-value pairs.",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/api/store#manage-metadata",
+        "description": "Learn how to manage metadata"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "created_at",
+      "description": "The date the claim was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "updated_at",
+      "description": "The date the claim was updated."
+    },
+    "item": {
+      "$ref": "#/components/schemas/AdminOrderLineItem"
+    }
+  }
+}
+```
+
+Related schemas:
+
+- [AdminOrderLineItem](/api/schemas/admin-order-line-item)

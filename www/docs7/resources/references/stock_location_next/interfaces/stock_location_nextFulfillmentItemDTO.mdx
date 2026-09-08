@@ -1,0 +1,103 @@
+---
+title: FulfillmentItemDTO
+---
+
+The fulfillment item details.
+
+**FulfillmentItemDTO**
+
+- `id`: `string` — The ID of the fulfillment item.
+- `title`: `string` — The title of the fulfillment item.
+- `quantity`: `number` — The quantity of the fulfillment item.
+- `sku`: `string` — The sku of the fulfillment item.
+- `barcode`: `string` — The barcode of the fulfillment item.
+- `line_item_id`: `null` | `string` — The associated line item's ID.
+- `inventory_item_id`: `null` | `string` — The associated inventory item's ID.
+- `fulfillment_id`: `string` — The associated fulfillment's ID.
+- `fulfillment`: [FulfillmentDTO](/resources/references/stock_location_next/interfaces/stock_location_nextFulfillmentDTO) — The associated fulfillment.
+  - `id`: `string` — The ID of the fulfillment.
+  - `location_id`: `string` — The associated location's ID.
+  - `packed_at`: `null` | `Date` — The date the fulfillment was packed.
+  - `shipped_at`: `null` | `Date` — The date the fulfillment was shipped.
+  - `delivered_at`: `null` | `Date` — The date the fulfillment was delivered.
+  - `canceled_at`: `null` | `Date` — The date the fulfillment was canceled.
+  - `marked_shipped_by`: `null` | `string` (optional) — The id of the user that marked fulfillment as shipped
+  - `created_by`: `null` | `string` (optional) — The id of the user that created the fulfillment
+  - `data`: `null` | `Record<string, unknown>` — The data necessary for the fulfillment provider to process the fulfillment.
+  - `provider_id`: `string` — The associated fulfillment provider's ID.
+  - `shipping_option_id`: `null` | `string` — The associated shipping option's ID.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `shipping_option`: `null` | [ShippingOptionDTO](/resources/references/stock_location_next/interfaces/stock_location_nextShippingOptionDTO) — The associated shipping option.
+    - `id`: `string` — The ID of the shipping option.
+    - `name`: `string` — The name of the shipping option.
+    - `price_type`: [ShippingOptionPriceType](/resources/references/stock_location_next/types/stock_location_nextShippingOptionPriceType) — The type of the shipping option's price.
+    - `service_zone_id`: `string` — The associated service zone's ID.
+    - `shipping_profile_id`: `string` — The associated shipping profile's ID.
+    - `provider_id`: `string` — The associated fulfillment provider's ID.
+    - `shipping_option_type_id`: `null` | `string` — The associated shipping option type's ID.
+    - `data`: `null` | `Record<string, unknown>` — The data necessary for the associated fulfillment provider to process the shipping option and, later, its associated fulfillments.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `service_zone`: [ServiceZoneDTO](/resources/references/stock_location_next/interfaces/stock_location_nextServiceZoneDTO) — The associated service zone.
+    - `shipping_profile`: [ShippingProfileDTO](/resources/references/stock_location_next/interfaces/stock_location_nextShippingProfileDTO) — The associated shipping profile.
+    - `fulfillment_provider`: [FulfillmentProviderDTO](/resources/references/stock_location_next/interfaces/stock_location_nextFulfillmentProviderDTO) — The associated fulfillment provider.
+    - `type`: [ShippingOptionTypeDTO](/resources/references/stock_location_next/interfaces/stock_location_nextShippingOptionTypeDTO) — The associated shipping option type.
+    - `rules`: [ShippingOptionRuleDTO](/resources/references/stock_location_next/interfaces/stock_location_nextShippingOptionRuleDTO)\[] — The rules associated with the shipping option.
+    - `fulfillments`: [FulfillmentDTO](/resources/references/stock_location_next/interfaces/stock_location_nextFulfillmentDTO)\[] — The fulfillments associated with the shipping option.
+    - `created_at`: `Date` — The creation date of the shipping option.
+    - `updated_at`: `Date` — The update date of the shipping option.
+    - `deleted_at`: `null` | `Date` — The deletion date of the shipping option.
+  - `requires_shipping`: `boolean` — Flag to indidcate whether shipping is required
+  - `provider`: [FulfillmentProviderDTO](/resources/references/stock_location_next/interfaces/stock_location_nextFulfillmentProviderDTO) — The associated fulfillment provider.
+    - `id`: `string` — The ID of the fulfillment provider.
+    - `name`: `string` — The name of the fulfillment provider.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `shipping_options`: [ShippingOptionDTO](/resources/references/stock_location_next/interfaces/stock_location_nextShippingOptionDTO)\[] — The shipping options associated with the fulfillment provider.
+    - `created_at`: `Date` — The creation date of the fulfillment provider.
+    - `updated_at`: `Date` — The update date of the fulfillment provider.
+    - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment provider.
+  - `delivery_address`: [FulfillmentAddressDTO](/resources/references/stock_location_next/interfaces/stock_location_nextFulfillmentAddressDTO) — The associated fulfillment address used for delivery.
+    - `id`: `string` — The ID of the address.
+    - `fulfillment_id`: `null` | `string` — The associated fulfillment's ID.
+    - `company`: `null` | `string` — The company of the address.
+    - `first_name`: `null` | `string` — The first name of the address.
+    - `last_name`: `null` | `string` — The last name of the address.
+    - `address_1`: `null` | `string` — The first line of the address.
+    - `address_2`: `null` | `string` — The second line of the address.
+    - `city`: `null` | `string` — The city of the address.
+    - `country_code`: `null` | `string` — The ISO 2 character country code of the address.
+    - `province`: `null` | `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the address.
+    - `postal_code`: `null` | `string` — The postal code of the address.
+    - `phone`: `null` | `string` — The phone of the address.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_at`: `Date` — The creation date of the address.
+    - `updated_at`: `Date` — The update date of the address.
+    - `deleted_at`: `null` | `Date` — The deletion date of the address.
+  - `items`: [FulfillmentItemDTO](/resources/references/stock_location_next/interfaces/stock_location_nextFulfillmentItemDTO)\[] — The items of the fulfillment.
+    - `id`: `string` — The ID of the fulfillment item.
+    - `title`: `string` — The title of the fulfillment item.
+    - `quantity`: `number` — The quantity of the fulfillment item.
+    - `sku`: `string` — The sku of the fulfillment item.
+    - `barcode`: `string` — The barcode of the fulfillment item.
+    - `line_item_id`: `null` | `string` — The associated line item's ID.
+    - `inventory_item_id`: `null` | `string` — The associated inventory item's ID.
+    - `fulfillment_id`: `string` — The associated fulfillment's ID.
+    - `fulfillment`: [FulfillmentDTO](/resources/references/stock_location_next/interfaces/stock_location_nextFulfillmentDTO) — The associated fulfillment.
+    - `created_at`: `Date` — The creation date of the fulfillment item.
+    - `updated_at`: `Date` — The update date of the fulfillment item.
+    - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment item.
+  - `labels`: [FulfillmentLabelDTO](/resources/references/stock_location_next/interfaces/stock_location_nextFulfillmentLabelDTO)\[] — The labels of the fulfillment.
+    - `id`: `string` — The ID of the fulfillment label.
+    - `tracking_number`: `string` — The tracking number of the fulfillment label.
+    - `tracking_url`: `string` — The tracking URL of the fulfillment label.
+    - `label_url`: `string` — The label's URL.
+    - `fulfillment_id`: `string` — The associated fulfillment's ID.
+    - `fulfillment`: [FulfillmentDTO](/resources/references/stock_location_next/interfaces/stock_location_nextFulfillmentDTO) — The associated fulfillment.
+    - `created_at`: `Date` — The creation date of the fulfillment label.
+    - `updated_at`: `Date` — The update date of the fulfillment label.
+    - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment label.
+  - `created_at`: `Date` — The creation date of the fulfillment.
+  - `updated_at`: `Date` — The update date of the fulfillment.
+  - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment.
+- `created_at`: `Date` — The creation date of the fulfillment item.
+- `updated_at`: `Date` — The update date of the fulfillment item.
+- `deleted_at`: `null` | `Date` — The deletion date of the fulfillment item.

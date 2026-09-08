@@ -1,0 +1,120 @@
+---
+title: ProviderIdentity - Auth Module Data Models Reference
+sidebarTitle: ProviderIdentity
+---
+
+This documentation provides a reference to the ProviderIdentity data model. It belongs to the Auth Module.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/auth/src/models/provider-identity.ts#L5)
+
+**ProviderIdentity**
+
+- `id`: PrimaryKeyModifier\<IdProperty> — The ID of the provider identity.
+- `entity_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The entity ID of the provider identity
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `provider`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the provider that created this identity.
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `auth_identity`: BelongsTo\<[AuthIdentity](/resources/references/auth/models/AuthIdentity)> — The associated `AuthIdentity`.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the auth identity.
+  - `provider_identities`: HasMany\<[ProviderIdentity](/resources/references/auth/models/ProviderIdentity)> — The associated `ProviderIdentity` records.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the provider identity.
+    - `entity_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The entity ID of the provider identity
+    - `provider`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the provider that created this identity.
+    - `auth_identity`: BelongsTo\<[AuthIdentity](/resources/references/auth/models/AuthIdentity)> — The associated `AuthIdentity`.
+    - `password_reset_tokens`: HasMany\<[AuthPasswordResetToken](/resources/references/auth/models/AuthPasswordResetToken)> — The associated password reset tokens.
+    - `user_metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The user metadata of the provider identity.
+    - `provider_metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The provider metadata of the provider identity.
+  - `mfa_factors`: HasMany\<[AuthMfaFactor](/resources/references/auth/models/AuthMfaFactor)> — The associated `AuthMfaFactor` records.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the auth multifactor authentication factor.
+    - `auth_identity`: BelongsTo\<[AuthIdentity](/resources/references/auth/models/AuthIdentity)> — The associated `AuthIdentity`.
+    - `provider`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The provider of the auth multifactor authentication
+    - `status`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The status of the auth multifactor authentication
+    - `provider_metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The provider metadata of the auth multifactor authentication
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+  - `mfa_recovery_codes`: HasMany\<[AuthMfaRecoveryCode](/resources/references/auth/models/AuthMfaRecoveryCode)> — The associated `AuthMfaRecoveryCode` records.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the auth multifactor authentication recovery code.
+    - `auth_identity`: BelongsTo\<[AuthIdentity](/resources/references/auth/models/AuthIdentity)> — The associated `AuthIdentity`.
+    - `code_hash`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The code hash of the auth multifactor authentication recovery code
+  - `verifications`: HasMany\<[AuthVerification](/resources/references/auth/models/AuthVerification)> — The associated verifications.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the auth verification.
+    - `auth_identity`: BelongsTo\<[AuthIdentity](/resources/references/auth/models/AuthIdentity)> — The associated auth identity.
+    - `entity_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The entity ID of the auth verification
+    - `entity_type`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The entity type of the auth verification
+    - `code_provider`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The code provider of the auth verification
+    - `verified_at`: `DateTimeProperty` (optional) — The date when the auth verification was verified
+    - `requested_at`: `DateTimeProperty` — The date when the auth verification was requested
+    - `provider_metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The provider metadata of the auth verification
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+  - `password_reset_tokens`: HasMany\<[AuthPasswordResetToken](/resources/references/auth/models/AuthPasswordResetToken)> — The associated password reset tokens.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the auth password reset token.
+    - `auth_identity`: BelongsTo\<[AuthIdentity](/resources/references/auth/models/AuthIdentity)> — The associated auth identity.
+    - `provider_identity`: BelongsTo\<[ProviderIdentity](/resources/references/auth/models/ProviderIdentity)> — The associated provider identity.
+    - `entity_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The entity ID of the auth password reset token
+    - `token_hash`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The token hash of the auth password reset token
+    - `expires_at`: `DateTimeProperty` — The expiry date of the auth password reset token
+  - `app_metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The app metadata of the auth identity
+- `password_reset_tokens`: HasMany\<[AuthPasswordResetToken](/resources/references/auth/models/AuthPasswordResetToken)> — The associated password reset tokens.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the auth password reset token.
+  - `auth_identity`: BelongsTo\<[AuthIdentity](/resources/references/auth/models/AuthIdentity)> — The associated auth identity.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the auth identity.
+    - `provider_identities`: HasMany\<[ProviderIdentity](/resources/references/auth/models/ProviderIdentity)> — The associated `ProviderIdentity` records.
+    - `mfa_factors`: HasMany\<[AuthMfaFactor](/resources/references/auth/models/AuthMfaFactor)> — The associated `AuthMfaFactor` records.
+    - `mfa_recovery_codes`: HasMany\<[AuthMfaRecoveryCode](/resources/references/auth/models/AuthMfaRecoveryCode)> — The associated `AuthMfaRecoveryCode` records.
+    - `verifications`: HasMany\<[AuthVerification](/resources/references/auth/models/AuthVerification)> — The associated verifications.
+    - `password_reset_tokens`: HasMany\<[AuthPasswordResetToken](/resources/references/auth/models/AuthPasswordResetToken)> — The associated password reset tokens.
+    - `app_metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The app metadata of the auth identity
+  - `provider_identity`: BelongsTo\<[ProviderIdentity](/resources/references/auth/models/ProviderIdentity)> — The associated provider identity.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the provider identity.
+    - `entity_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The entity ID of the provider identity
+    - `provider`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ID of the provider that created this identity.
+    - `auth_identity`: BelongsTo\<[AuthIdentity](/resources/references/auth/models/AuthIdentity)> — The associated `AuthIdentity`.
+    - `password_reset_tokens`: HasMany\<[AuthPasswordResetToken](/resources/references/auth/models/AuthPasswordResetToken)> — The associated password reset tokens.
+    - `user_metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The user metadata of the provider identity.
+    - `provider_metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The provider metadata of the provider identity.
+  - `entity_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The entity ID of the auth password reset token
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `token_hash`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The token hash of the auth password reset token
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `expires_at`: `DateTimeProperty` — The expiry date of the auth password reset token
+- `user_metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The user metadata of the provider identity.
+- `provider_metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — The provider metadata of the provider identity.

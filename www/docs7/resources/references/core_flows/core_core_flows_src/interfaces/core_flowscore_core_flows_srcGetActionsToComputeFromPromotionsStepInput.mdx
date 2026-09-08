@@ -1,0 +1,36 @@
+---
+title: GetActionsToComputeFromPromotionsStepInput
+---
+
+The details of the items and shipping methods and its applied promotions.
+
+**GetActionsToComputeFromPromotionsStepInput**
+
+- `computeActionContext`: [ComputeActionContext](/resources/references/promotion/interfaces/promotionComputeActionContext) — The items and shipping methods to compute the actions for.
+  - `currency_code`: `string` — The cart's currency
+  - `customer`: `object` (optional) — The customer associated with the cart.
+    - `id`: `string`
+    - `groups`: `object`\[] (optional) — The customer groups the customer belongs to.
+  - `region`: `object` (optional) — The region associated with the cart.
+    - `id`: `string`
+  - `shipping_address`: `object` (optional) — The shipping address associated with the cart.
+    - `country_code`: `string`
+  - `sales_channel_id`: `string` (optional)
+  - `email`: `string` (optional) — The cart's email
+  - `items`: [ComputeActionItemLine](/resources/references/promotion/interfaces/promotionComputeActionItemLine)\[] (optional) — The cart's line items.
+    - `id`: `string` — The ID of the item line.
+    - `quantity`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The quantity of the line item.
+    - `subtotal`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The subtotal of the line item.
+    - `original_total`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The total of the line item.
+    - `is_discountable`: `boolean` — Whether the line item is discountable.
+    - `adjustments`: [ComputeActionAdjustmentLine](/resources/references/promotion/interfaces/promotionComputeActionAdjustmentLine)\[] (optional) — The adjustments applied before on the line item.
+    - `product`: `object` (optional) — The product ID of the line item. Our default promotion rules rely on the product ID to apply the promotion.
+  - `shipping_methods`: [ComputeActionShippingLine](/resources/references/promotion/interfaces/promotionComputeActionShippingLine)\[] (optional) — The cart's shipping methods.
+    - `id`: `string` — The ID of the shipping method.
+    - `subtotal`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The subtotal of the shipping method.
+    - `original_total`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The total of the shipping method.
+    - `adjustments`: [ComputeActionAdjustmentLine](/resources/references/promotion/interfaces/promotionComputeActionAdjustmentLine)\[] (optional) — The adjustments applied before on the shipping method.
+    - `shipping_option`: `object` (optional) — The shipping option type associated with the shipping method.
+- `promotionCodesToApply`: `string`\[] — The promotion codes applied on the items and shipping methods.
+- `options`: `ComputeActionOptions` (optional) — The options to configure how the actions are computed.
+- `additional_promotion_context`: `Record<string, unknown>` (optional) — The result of the `additional_promotion_context` hook, forwarded by the calling workflow. Its keys are merged on top of `computeActionContext` before promotion rules are evaluated, so consumers can extend the rule evaluation context with arbitrary attributes (e.g. `company.id`, "custom\_tier"). Values from `additional_promotion_context` take precedence over values on `computeActionContext` when keys conflict.

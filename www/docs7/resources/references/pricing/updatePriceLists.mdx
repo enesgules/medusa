@@ -1,0 +1,107 @@
+---
+title: updatePriceLists - Pricing Module Reference
+sidebarTitle: updatePriceLists
+---
+
+This documentation provides a reference to the `updatePriceLists` method. This belongs to the Pricing Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method is used to update price lists.
+
+## Example
+
+```ts
+const priceLists =
+  await pricingModuleService.updatePriceLists([
+    {
+      id: "plist_123",
+      title: "Sale 1",
+    },
+    {
+      id: "plist_321",
+      description: "Winter sale",
+    },
+  ])
+```
+
+<a id="updatepricelists-parameters" />
+
+## Parameters
+
+**updatePriceLists**
+
+- `data`: [UpdatePriceListDTO](/resources/references/pricing/interfaces/pricingUpdatePriceListDTO)\[] — The attributes to update in each price list. The price list is identifed by the `id` field.
+  - `id`: `string` — The ID of the price list to update.
+  - `title`: `string` (optional) — The price list's title.
+  - `description`: `null` | `string` (optional) — The price list's description.
+  - `starts_at`: `null` | `string` (optional) — The price list is enabled starting from this date.
+  - `ends_at`: `null` | `string` (optional) — The price list expires after this date.
+  - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus) (optional) — The price list's status.
+  - `rules`: [CreatePriceListRules](/resources/references/pricing/interfaces/pricingCreatePriceListRules) (optional) — The rules to be created and associated with the price list.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/pricing/interfaces/pricingContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/pricing/interfaces/pricingIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatepricelists-returns" />
+
+## Returns
+
+**updatePriceLists**
+
+- `Promise`: Promise\<[PriceListDTO](/resources/references/pricing/interfaces/pricingPriceListDTO)\[]> — The updated price lists.
+  - `PriceListDTO[]`: [PriceListDTO](/resources/references/pricing/interfaces/pricingPriceListDTO)\[]
+    - `id`: `string` — The price list's ID.
+    - `title`: `string` (optional) — The price list's title.
+    - `description`: `string` (optional) — The price list's description.
+    - `starts_at`: `null` | `string` (optional) — The price list is enabled starting from this date.
+    - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus) (optional) — The price list's status.
+    - `type`: [PriceListType](/resources/references/pricing/types/pricingPriceListType) (optional) — The price list's type.
+    - `ends_at`: `null` | `string` (optional) — The price list expires after this date.
+    - `rules_count`: `number` (optional) — The number of rules associated with this price list.
+    - `prices`: [PriceDTO](/resources/references/pricing/interfaces/pricingPriceDTO)\[] (optional) — The associated price list money amounts.
+      - `id`: `string` — The ID of a price.
+      - `title`: `string` (optional) — The title of the price.
+      - `currency_code`: `string` (optional) — The currency code of this price.
+      - `amount`: [BigNumberValue](/resources/references/pricing/types/pricingBigNumberValue) (optional) — The price of this price.
+      - `min_quantity`: [BigNumberValue](/resources/references/pricing/types/pricingBigNumberValue) (optional) — The minimum quantity required to be purchased for this price to be applied.
+      - `max_quantity`: [BigNumberValue](/resources/references/pricing/types/pricingBigNumberValue) (optional) — The maximum quantity required to be purchased for this price to be applied.
+      - `price_set`: [PriceSetDTO](/resources/references/pricing/interfaces/pricingPriceSetDTO) (optional) — The price set associated with the price.
+      - `price_list`: [PriceListDTO](/resources/references/pricing/interfaces/pricingPriceListDTO) (optional) — The price list associated with the price.
+      - `price_set_id`: `string` (optional) — The ID of the associated price set.
+      - `price_rules`: [PriceRuleDTO](/resources/references/pricing/interfaces/pricingPriceRuleDTO)\[] (optional) — The price rules associated with the price.
+      - `created_at`: `Date` — When the price was created.
+      - `updated_at`: `Date` — When the price was updated.
+      - `deleted_at`: `null` | `Date` — When the price was deleted.
+    - `money_amounts`: [MoneyAmountDTO](/resources/references/pricing/interfaces/pricingMoneyAmountDTO)\[] (optional) — The associated money amounts.
+      - `id`: `string` — The ID of the money amount.
+      - `currency_code`: `string` (optional) — The currency code of this money amount.
+      - `amount`: [BigNumberValue](/resources/references/pricing/types/pricingBigNumberValue) (optional) — The price of this money amount.
+      - `min_quantity`: [BigNumberValue](/resources/references/pricing/types/pricingBigNumberValue) (optional) — The minimum quantity required to be purchased for this price to be applied.
+      - `max_quantity`: [BigNumberValue](/resources/references/pricing/types/pricingBigNumberValue) (optional) — The maximum quantity required to be purchased for this price to be applied.
+      - `rules_count`: `number` (optional) — The number of rules that apply to this price
+      - `price_rules`: [PriceRuleDTO](/resources/references/pricing/interfaces/pricingPriceRuleDTO)\[] (optional) — The price rules that apply to this price
+      - `created_at`: `Date` — When the money\_amount was created.
+      - `updated_at`: `Date` — When the money\_amount was updated.
+      - `deleted_at`: `null` | `Date` — When the money\_amount was deleted.
+    - `price_list_rules`: [PriceListRuleDTO](/resources/references/pricing/interfaces/pricingPriceListRuleDTO)\[] (optional) — The price list's rules.
+      - `id`: `string` — The price list rule's ID.
+      - `attribute`: `string` — The attribute of the rule.
+      - `value`: `string` | `string`\[] — The value of the rule.
+      - `price_list`: [PriceListDTO](/resources/references/pricing/interfaces/pricingPriceListDTO) — The associated price list.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.

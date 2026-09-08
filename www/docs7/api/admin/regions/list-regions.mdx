@@ -1,0 +1,1832 @@
+---
+title: List Regions
+---
+
+`GET /admin/regions`
+
+Retrieve a list of regions. The regions can be filtered by fields such as `id`. The regions can also be sorted or paginated.
+
+## Base URLs
+
+- `http://localhost:9000`
+
+- `https://api.medusajs.com`
+
+## Authentication
+
+```json
+{
+  "api_token": {
+    "type": "http",
+    "x-displayName": "API Token",
+    "scheme": "basic"
+  }
+}
+```
+
+```json
+{
+  "cookie_auth": {
+    "type": "apiKey",
+    "in": "cookie",
+    "name": "connect.sid",
+    "x-displayName": "Cookie Session ID"
+  }
+}
+```
+
+```json
+{
+  "jwt_token": {
+    "type": "http",
+    "x-displayName": "JWT Token",
+    "scheme": "bearer"
+  }
+}
+```
+
+[Authentication guide](/api/admin/authentication)
+
+## Parameters
+
+<Accordion title="fields (query, optional)">
+  Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+
+  ```json
+  {
+    "name": "fields",
+    "in": "query",
+    "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "title": "fields",
+      "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+      "externalDocs": {
+        "url": "#select-fields-and-relations"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="offset (query, optional)">
+  The number of items to skip when retrieving a list.
+
+  ```json
+  {
+    "name": "offset",
+    "in": "query",
+    "description": "The number of items to skip when retrieving a list.",
+    "required": false,
+    "schema": {
+      "type": "number",
+      "title": "offset",
+      "description": "The number of items to skip when retrieving a list.",
+      "externalDocs": {
+        "url": "#pagination"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="limit (query, optional)">
+  Limit the number of items returned in the list.
+
+  ```json
+  {
+    "name": "limit",
+    "in": "query",
+    "description": "Limit the number of items returned in the list.",
+    "required": false,
+    "schema": {
+      "type": "number",
+      "title": "limit",
+      "description": "Limit the number of items returned in the list.",
+      "externalDocs": {
+        "url": "#pagination"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="order (query, optional)">
+  The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+
+  ```json
+  {
+    "name": "order",
+    "in": "query",
+    "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "title": "order",
+      "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`."
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="q (query, optional)">
+  Search term to filter the region's searchable properties.
+
+  ```json
+  {
+    "name": "q",
+    "in": "query",
+    "description": "Search term to filter the region's searchable properties.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "title": "q",
+      "description": "Search term to filter the region's searchable properties."
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="id (query, optional)">
+  ```json
+  {
+    "name": "id",
+    "in": "query",
+    "required": false,
+    "schema": {
+      "oneOf": [
+        {
+          "type": "string",
+          "title": "id",
+          "description": "Filter by a region's ID."
+        },
+        {
+          "type": "array",
+          "description": "Filter by region IDs.",
+          "items": {
+            "type": "string",
+            "title": "id",
+            "description": "A region's ID."
+          }
+        }
+      ]
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="name (query, optional)">
+  ```json
+  {
+    "name": "name",
+    "in": "query",
+    "required": false,
+    "schema": {
+      "oneOf": [
+        {
+          "type": "string",
+          "title": "name",
+          "description": "Filter by a region's name."
+        },
+        {
+          "type": "array",
+          "description": "Filter by region names.",
+          "items": {
+            "type": "string",
+            "title": "name",
+            "description": "A region's name."
+          }
+        }
+      ]
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="created_at (query, optional)">
+  Filter by a region's creation date.
+
+  ```json
+  {
+    "name": "created_at",
+    "in": "query",
+    "description": "Filter by a region's creation date.",
+    "required": false,
+    "schema": {
+      "type": "object",
+      "description": "Filter by a region's creation date.",
+      "properties": {
+        "$and": {
+          "type": "array",
+          "description": "Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.",
+          "items": {
+            "type": "object"
+          },
+          "title": "$and"
+        },
+        "$or": {
+          "type": "array",
+          "description": "Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.",
+          "items": {
+            "type": "object"
+          },
+          "title": "$or"
+        },
+        "$eq": {
+          "oneOf": [
+            {
+              "type": "string",
+              "title": "$eq",
+              "description": "Filter by an exact match."
+            },
+            {
+              "type": "array",
+              "description": "Filter by an exact match.",
+              "items": {
+                "type": "string",
+                "title": "$eq",
+                "description": "Filter by an exact match."
+              }
+            }
+          ]
+        },
+        "$ne": {
+          "type": "string",
+          "title": "$ne",
+          "description": "Filter by values not equal to this parameter."
+        },
+        "$in": {
+          "type": "array",
+          "description": "Filter by values in this array.",
+          "items": {
+            "type": "string",
+            "title": "$in",
+            "description": "Filter by values in this array."
+          }
+        },
+        "$nin": {
+          "type": "array",
+          "description": "Filter by values not in this array.",
+          "items": {
+            "type": "string",
+            "title": "$nin",
+            "description": "Filter by values not in this array."
+          }
+        },
+        "$not": {
+          "oneOf": [
+            {
+              "type": "string",
+              "title": "$not",
+              "description": "Filter by values not matching the conditions in this parameter."
+            },
+            {
+              "type": "object",
+              "description": "Filter by values not matching the conditions in this parameter."
+            },
+            {
+              "type": "array",
+              "description": "Filter by values not matching the conditions in this parameter.",
+              "items": {
+                "type": "string",
+                "title": "$not",
+                "description": "Filter by values not matching the conditions in this parameter."
+              }
+            }
+          ]
+        },
+        "$gt": {
+          "type": "string",
+          "title": "$gt",
+          "description": "Filter by values greater than this parameter. Useful for numbers and dates only."
+        },
+        "$gte": {
+          "type": "string",
+          "title": "$gte",
+          "description": "Filter by values greater than or equal to this parameter. Useful for numbers and dates only."
+        },
+        "$lt": {
+          "type": "string",
+          "title": "$lt",
+          "description": "Filter by values less than this parameter. Useful for numbers and dates only."
+        },
+        "$lte": {
+          "type": "string",
+          "title": "$lte",
+          "description": "Filter by values less than or equal to this parameter. Useful for numbers and dates only."
+        },
+        "$like": {
+          "type": "string",
+          "title": "$like",
+          "description": "Apply a `like` filter. Useful for strings only."
+        },
+        "$re": {
+          "type": "string",
+          "title": "$re",
+          "description": "Apply a regex filter. Useful for strings only."
+        },
+        "$ilike": {
+          "type": "string",
+          "title": "$ilike",
+          "description": "Apply a case-insensitive `like` filter. Useful for strings only."
+        },
+        "$fulltext": {
+          "type": "string",
+          "title": "$fulltext",
+          "description": "Filter to apply on full-text properties."
+        },
+        "$overlap": {
+          "type": "array",
+          "description": "Filter arrays that have overlapping values with this parameter.",
+          "items": {
+            "type": "string",
+            "title": "$overlap",
+            "description": "Filter arrays that have overlapping values with this parameter."
+          }
+        },
+        "$contains": {
+          "type": "array",
+          "description": "Filter arrays that contain some of the values of this parameter.",
+          "items": {
+            "type": "string",
+            "title": "$contains",
+            "description": "Filter arrays that contain some of the values of this parameter."
+          }
+        },
+        "$contained": {
+          "type": "array",
+          "description": "Filter arrays that contain all values of this parameter.",
+          "items": {
+            "type": "string",
+            "title": "$contained",
+            "description": "Filter arrays that contain all values of this parameter."
+          }
+        },
+        "$exists": {
+          "type": "boolean",
+          "title": "$exists",
+          "description": "Filter by whether a value for this parameter exists (not `null`)."
+        }
+      },
+      "title": "created_at"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="updated_at (query, optional)">
+  Filter by a region's update date.
+
+  ```json
+  {
+    "name": "updated_at",
+    "in": "query",
+    "description": "Filter by a region's update date.",
+    "required": false,
+    "schema": {
+      "type": "object",
+      "description": "Filter by a region's update date.",
+      "properties": {
+        "$and": {
+          "type": "array",
+          "description": "Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.",
+          "items": {
+            "type": "object"
+          },
+          "title": "$and"
+        },
+        "$or": {
+          "type": "array",
+          "description": "Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.",
+          "items": {
+            "type": "object"
+          },
+          "title": "$or"
+        },
+        "$eq": {
+          "oneOf": [
+            {
+              "type": "string",
+              "title": "$eq",
+              "description": "Filter by an exact match."
+            },
+            {
+              "type": "array",
+              "description": "Filter by an exact match.",
+              "items": {
+                "type": "string",
+                "title": "$eq",
+                "description": "Filter by an exact match."
+              }
+            }
+          ]
+        },
+        "$ne": {
+          "type": "string",
+          "title": "$ne",
+          "description": "Filter by values not equal to this parameter."
+        },
+        "$in": {
+          "type": "array",
+          "description": "Filter by values in this array.",
+          "items": {
+            "type": "string",
+            "title": "$in",
+            "description": "Filter by values in this array."
+          }
+        },
+        "$nin": {
+          "type": "array",
+          "description": "Filter by values not in this array.",
+          "items": {
+            "type": "string",
+            "title": "$nin",
+            "description": "Filter by values not in this array."
+          }
+        },
+        "$not": {
+          "oneOf": [
+            {
+              "type": "string",
+              "title": "$not",
+              "description": "Filter by values not matching the conditions in this parameter."
+            },
+            {
+              "type": "object",
+              "description": "Filter by values not matching the conditions in this parameter."
+            },
+            {
+              "type": "array",
+              "description": "Filter by values not matching the conditions in this parameter.",
+              "items": {
+                "type": "string",
+                "title": "$not",
+                "description": "Filter by values not matching the conditions in this parameter."
+              }
+            }
+          ]
+        },
+        "$gt": {
+          "type": "string",
+          "title": "$gt",
+          "description": "Filter by values greater than this parameter. Useful for numbers and dates only."
+        },
+        "$gte": {
+          "type": "string",
+          "title": "$gte",
+          "description": "Filter by values greater than or equal to this parameter. Useful for numbers and dates only."
+        },
+        "$lt": {
+          "type": "string",
+          "title": "$lt",
+          "description": "Filter by values less than this parameter. Useful for numbers and dates only."
+        },
+        "$lte": {
+          "type": "string",
+          "title": "$lte",
+          "description": "Filter by values less than or equal to this parameter. Useful for numbers and dates only."
+        },
+        "$like": {
+          "type": "string",
+          "title": "$like",
+          "description": "Apply a `like` filter. Useful for strings only."
+        },
+        "$re": {
+          "type": "string",
+          "title": "$re",
+          "description": "Apply a regex filter. Useful for strings only."
+        },
+        "$ilike": {
+          "type": "string",
+          "title": "$ilike",
+          "description": "Apply a case-insensitive `like` filter. Useful for strings only."
+        },
+        "$fulltext": {
+          "type": "string",
+          "title": "$fulltext",
+          "description": "Filter to apply on full-text properties."
+        },
+        "$overlap": {
+          "type": "array",
+          "description": "Filter arrays that have overlapping values with this parameter.",
+          "items": {
+            "type": "string",
+            "title": "$overlap",
+            "description": "Filter arrays that have overlapping values with this parameter."
+          }
+        },
+        "$contains": {
+          "type": "array",
+          "description": "Filter arrays that contain some of the values of this parameter.",
+          "items": {
+            "type": "string",
+            "title": "$contains",
+            "description": "Filter arrays that contain some of the values of this parameter."
+          }
+        },
+        "$contained": {
+          "type": "array",
+          "description": "Filter arrays that contain all values of this parameter.",
+          "items": {
+            "type": "string",
+            "title": "$contained",
+            "description": "Filter arrays that contain all values of this parameter."
+          }
+        },
+        "$exists": {
+          "type": "boolean",
+          "title": "$exists",
+          "description": "Filter by whether a value for this parameter exists (not `null`)."
+        }
+      },
+      "title": "updated_at"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="deleted_at (query, optional)">
+  Filter by a region's deletion date.
+
+  ```json
+  {
+    "name": "deleted_at",
+    "in": "query",
+    "description": "Filter by a region's deletion date.",
+    "required": false,
+    "schema": {
+      "type": "object",
+      "description": "Filter by a region's deletion date.",
+      "properties": {
+        "$and": {
+          "type": "array",
+          "description": "Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.",
+          "items": {
+            "type": "object"
+          },
+          "title": "$and"
+        },
+        "$or": {
+          "type": "array",
+          "description": "Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.",
+          "items": {
+            "type": "object"
+          },
+          "title": "$or"
+        },
+        "$eq": {
+          "oneOf": [
+            {
+              "type": "string",
+              "title": "$eq",
+              "description": "Filter by an exact match."
+            },
+            {
+              "type": "array",
+              "description": "Filter by an exact match.",
+              "items": {
+                "type": "string",
+                "title": "$eq",
+                "description": "Filter by an exact match."
+              }
+            }
+          ]
+        },
+        "$ne": {
+          "type": "string",
+          "title": "$ne",
+          "description": "Filter by values not equal to this parameter."
+        },
+        "$in": {
+          "type": "array",
+          "description": "Filter by values in this array.",
+          "items": {
+            "type": "string",
+            "title": "$in",
+            "description": "Filter by values in this array."
+          }
+        },
+        "$nin": {
+          "type": "array",
+          "description": "Filter by values not in this array.",
+          "items": {
+            "type": "string",
+            "title": "$nin",
+            "description": "Filter by values not in this array."
+          }
+        },
+        "$not": {
+          "oneOf": [
+            {
+              "type": "string",
+              "title": "$not",
+              "description": "Filter by values not matching the conditions in this parameter."
+            },
+            {
+              "type": "object",
+              "description": "Filter by values not matching the conditions in this parameter."
+            },
+            {
+              "type": "array",
+              "description": "Filter by values not matching the conditions in this parameter.",
+              "items": {
+                "type": "string",
+                "title": "$not",
+                "description": "Filter by values not matching the conditions in this parameter."
+              }
+            }
+          ]
+        },
+        "$gt": {
+          "type": "string",
+          "title": "$gt",
+          "description": "Filter by values greater than this parameter. Useful for numbers and dates only."
+        },
+        "$gte": {
+          "type": "string",
+          "title": "$gte",
+          "description": "Filter by values greater than or equal to this parameter. Useful for numbers and dates only."
+        },
+        "$lt": {
+          "type": "string",
+          "title": "$lt",
+          "description": "Filter by values less than this parameter. Useful for numbers and dates only."
+        },
+        "$lte": {
+          "type": "string",
+          "title": "$lte",
+          "description": "Filter by values less than or equal to this parameter. Useful for numbers and dates only."
+        },
+        "$like": {
+          "type": "string",
+          "title": "$like",
+          "description": "Apply a `like` filter. Useful for strings only."
+        },
+        "$re": {
+          "type": "string",
+          "title": "$re",
+          "description": "Apply a regex filter. Useful for strings only."
+        },
+        "$ilike": {
+          "type": "string",
+          "title": "$ilike",
+          "description": "Apply a case-insensitive `like` filter. Useful for strings only."
+        },
+        "$fulltext": {
+          "type": "string",
+          "title": "$fulltext",
+          "description": "Filter to apply on full-text properties."
+        },
+        "$overlap": {
+          "type": "array",
+          "description": "Filter arrays that have overlapping values with this parameter.",
+          "items": {
+            "type": "string",
+            "title": "$overlap",
+            "description": "Filter arrays that have overlapping values with this parameter."
+          }
+        },
+        "$contains": {
+          "type": "array",
+          "description": "Filter arrays that contain some of the values of this parameter.",
+          "items": {
+            "type": "string",
+            "title": "$contains",
+            "description": "Filter arrays that contain some of the values of this parameter."
+          }
+        },
+        "$contained": {
+          "type": "array",
+          "description": "Filter arrays that contain all values of this parameter.",
+          "items": {
+            "type": "string",
+            "title": "$contained",
+            "description": "Filter arrays that contain all values of this parameter."
+          }
+        },
+        "$exists": {
+          "type": "boolean",
+          "title": "$exists",
+          "description": "Filter by whether a value for this parameter exists (not `null`)."
+        }
+      },
+      "title": "deleted_at"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="$and (query, optional)">
+  ```json
+  {
+    "name": "$and",
+    "in": "query",
+    "required": false,
+    "schema": {
+      "type": "array",
+      "description": "Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.",
+      "items": {
+        "type": "object"
+      },
+      "title": "$and"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="$or (query, optional)">
+  ```json
+  {
+    "name": "$or",
+    "in": "query",
+    "required": false,
+    "schema": {
+      "type": "array",
+      "description": "Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.",
+      "items": {
+        "type": "object"
+      },
+      "title": "$or"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="currency_code (query, optional)">
+  ```json
+  {
+    "name": "currency_code",
+    "in": "query",
+    "required": false,
+    "schema": {
+      "oneOf": [
+        {
+          "type": "string",
+          "title": "currency_code",
+          "description": "The region's currency code."
+        },
+        {
+          "type": "array",
+          "description": "The region's currency code.",
+          "items": {
+            "type": "string",
+            "title": "currency_code",
+            "description": "The currency code's details."
+          }
+        }
+      ]
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="with_deleted (query, optional)">
+  Whether to include deleted records in the result.
+
+  ```json
+  {
+    "name": "with_deleted",
+    "in": "query",
+    "description": "Whether to include deleted records in the result.",
+    "required": false,
+    "schema": {
+      "type": "boolean",
+      "title": "with_deleted",
+      "description": "Whether to include deleted records in the result."
+    }
+  }
+  ```
+</Accordion>
+
+## Responses
+
+<Accordion title="200 — OK">
+  OK
+
+  ```json
+  {
+    "description": "OK",
+    "content": {
+      "application/json": {
+        "schema": {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The paginated list of regions.",
+              "required": [
+                "limit",
+                "offset",
+                "count"
+              ],
+              "properties": {
+                "limit": {
+                  "type": "number",
+                  "title": "limit",
+                  "description": "The maximum number of items returned."
+                },
+                "offset": {
+                  "type": "number",
+                  "title": "offset",
+                  "description": "The number of items skipped before retrieving the returned items."
+                },
+                "count": {
+                  "type": "number",
+                  "title": "count",
+                  "description": "The total number of items."
+                }
+              }
+            },
+            {
+              "type": "object",
+              "description": "The paginated list of regions.",
+              "required": [
+                "regions"
+              ],
+              "properties": {
+                "regions": {
+                  "type": "array",
+                  "description": "The list of regions.",
+                  "items": {
+                    "$ref": "#/components/schemas/AdminRegion"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminRegion](/api/schemas/admin-region)
+</Accordion>
+
+<Accordion title="400 — Client Error">
+  Client Error
+
+  ```json
+  {
+    "description": "Client Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "not_allowed": {
+            "$ref": "#/components/examples/not_allowed_error"
+          },
+          "invalid_data": {
+            "$ref": "#/components/examples/invalid_data_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="401 — User is not authorized. Must log in first">
+  User is not authorized. Must log in first
+
+  ```json
+  {
+    "description": "User is not authorized. Must log in first",
+    "content": {
+      "text/plain": {
+        "schema": {
+          "type": "string",
+          "default": "Unauthorized",
+          "example": "Unauthorized"
+        }
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Not Found Error">
+  Not Found Error
+
+  ```json
+  {
+    "description": "Not Found Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "message": "Entity with id 1 was not found",
+          "type": "not_found"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="409 — Invalid State Error">
+  Invalid State Error
+
+  ```json
+  {
+    "description": "Invalid State Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "unknown_error",
+          "message": "The request conflicted with another request. You may retry the request with the provided Idempotency-Key.",
+          "type": "QueryRunnerAlreadyReleasedError"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="422 — Invalid Request Error">
+  Invalid Request Error
+
+  ```json
+  {
+    "description": "Invalid Request Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "invalid_request_error",
+          "message": "Discount with code TEST already exists.",
+          "type": "duplicate_error"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="500 — Server Error">
+  Server Error
+
+  ```json
+  {
+    "description": "Server Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "database": {
+            "$ref": "#/components/examples/database_error"
+          },
+          "unexpected_state": {
+            "$ref": "#/components/examples/unexpected_state_error"
+          },
+          "invalid_argument": {
+            "$ref": "#/components/examples/invalid_argument_error"
+          },
+          "default_error": {
+            "$ref": "#/components/examples/default_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+## Examples
+
+### JS SDK
+
+```js
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+  debug: import.meta.env.DEV,
+  auth: {
+    type: "session",
+  },
+})
+
+sdk.admin.region.list()
+.then(({ regions, count, limit, offset }) => {
+  console.log(regions)
+})
+```
+
+### cURL
+
+```bash
+curl '{backend_url}/admin/regions' \
+-H 'Authorization: Bearer {jwt_token}'
+```
+
+<Accordion title="OpenAPI operation">
+  ```json
+  {
+    "operationId": "GetRegions",
+    "summary": "List Regions",
+    "description": "Retrieve a list of regions. The regions can be filtered by fields such as `id`. The regions can also be sorted or paginated.",
+    "x-authenticated": true,
+    "parameters": [
+      {
+        "name": "fields",
+        "in": "query",
+        "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "fields",
+          "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+          "externalDocs": {
+            "url": "#select-fields-and-relations"
+          }
+        }
+      },
+      {
+        "name": "offset",
+        "in": "query",
+        "description": "The number of items to skip when retrieving a list.",
+        "required": false,
+        "schema": {
+          "type": "number",
+          "title": "offset",
+          "description": "The number of items to skip when retrieving a list.",
+          "externalDocs": {
+            "url": "#pagination"
+          }
+        }
+      },
+      {
+        "name": "limit",
+        "in": "query",
+        "description": "Limit the number of items returned in the list.",
+        "required": false,
+        "schema": {
+          "type": "number",
+          "title": "limit",
+          "description": "Limit the number of items returned in the list.",
+          "externalDocs": {
+            "url": "#pagination"
+          }
+        }
+      },
+      {
+        "name": "order",
+        "in": "query",
+        "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "order",
+          "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`."
+        }
+      },
+      {
+        "name": "q",
+        "in": "query",
+        "description": "Search term to filter the region's searchable properties.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "q",
+          "description": "Search term to filter the region's searchable properties."
+        }
+      },
+      {
+        "name": "id",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "oneOf": [
+            {
+              "type": "string",
+              "title": "id",
+              "description": "Filter by a region's ID."
+            },
+            {
+              "type": "array",
+              "description": "Filter by region IDs.",
+              "items": {
+                "type": "string",
+                "title": "id",
+                "description": "A region's ID."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "name",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "oneOf": [
+            {
+              "type": "string",
+              "title": "name",
+              "description": "Filter by a region's name."
+            },
+            {
+              "type": "array",
+              "description": "Filter by region names.",
+              "items": {
+                "type": "string",
+                "title": "name",
+                "description": "A region's name."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "created_at",
+        "in": "query",
+        "description": "Filter by a region's creation date.",
+        "required": false,
+        "schema": {
+          "type": "object",
+          "description": "Filter by a region's creation date.",
+          "properties": {
+            "$and": {
+              "type": "array",
+              "description": "Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.",
+              "items": {
+                "type": "object"
+              },
+              "title": "$and"
+            },
+            "$or": {
+              "type": "array",
+              "description": "Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.",
+              "items": {
+                "type": "object"
+              },
+              "title": "$or"
+            },
+            "$eq": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "title": "$eq",
+                  "description": "Filter by an exact match."
+                },
+                {
+                  "type": "array",
+                  "description": "Filter by an exact match.",
+                  "items": {
+                    "type": "string",
+                    "title": "$eq",
+                    "description": "Filter by an exact match."
+                  }
+                }
+              ]
+            },
+            "$ne": {
+              "type": "string",
+              "title": "$ne",
+              "description": "Filter by values not equal to this parameter."
+            },
+            "$in": {
+              "type": "array",
+              "description": "Filter by values in this array.",
+              "items": {
+                "type": "string",
+                "title": "$in",
+                "description": "Filter by values in this array."
+              }
+            },
+            "$nin": {
+              "type": "array",
+              "description": "Filter by values not in this array.",
+              "items": {
+                "type": "string",
+                "title": "$nin",
+                "description": "Filter by values not in this array."
+              }
+            },
+            "$not": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "title": "$not",
+                  "description": "Filter by values not matching the conditions in this parameter."
+                },
+                {
+                  "type": "object",
+                  "description": "Filter by values not matching the conditions in this parameter."
+                },
+                {
+                  "type": "array",
+                  "description": "Filter by values not matching the conditions in this parameter.",
+                  "items": {
+                    "type": "string",
+                    "title": "$not",
+                    "description": "Filter by values not matching the conditions in this parameter."
+                  }
+                }
+              ]
+            },
+            "$gt": {
+              "type": "string",
+              "title": "$gt",
+              "description": "Filter by values greater than this parameter. Useful for numbers and dates only."
+            },
+            "$gte": {
+              "type": "string",
+              "title": "$gte",
+              "description": "Filter by values greater than or equal to this parameter. Useful for numbers and dates only."
+            },
+            "$lt": {
+              "type": "string",
+              "title": "$lt",
+              "description": "Filter by values less than this parameter. Useful for numbers and dates only."
+            },
+            "$lte": {
+              "type": "string",
+              "title": "$lte",
+              "description": "Filter by values less than or equal to this parameter. Useful for numbers and dates only."
+            },
+            "$like": {
+              "type": "string",
+              "title": "$like",
+              "description": "Apply a `like` filter. Useful for strings only."
+            },
+            "$re": {
+              "type": "string",
+              "title": "$re",
+              "description": "Apply a regex filter. Useful for strings only."
+            },
+            "$ilike": {
+              "type": "string",
+              "title": "$ilike",
+              "description": "Apply a case-insensitive `like` filter. Useful for strings only."
+            },
+            "$fulltext": {
+              "type": "string",
+              "title": "$fulltext",
+              "description": "Filter to apply on full-text properties."
+            },
+            "$overlap": {
+              "type": "array",
+              "description": "Filter arrays that have overlapping values with this parameter.",
+              "items": {
+                "type": "string",
+                "title": "$overlap",
+                "description": "Filter arrays that have overlapping values with this parameter."
+              }
+            },
+            "$contains": {
+              "type": "array",
+              "description": "Filter arrays that contain some of the values of this parameter.",
+              "items": {
+                "type": "string",
+                "title": "$contains",
+                "description": "Filter arrays that contain some of the values of this parameter."
+              }
+            },
+            "$contained": {
+              "type": "array",
+              "description": "Filter arrays that contain all values of this parameter.",
+              "items": {
+                "type": "string",
+                "title": "$contained",
+                "description": "Filter arrays that contain all values of this parameter."
+              }
+            },
+            "$exists": {
+              "type": "boolean",
+              "title": "$exists",
+              "description": "Filter by whether a value for this parameter exists (not `null`)."
+            }
+          },
+          "title": "created_at"
+        }
+      },
+      {
+        "name": "updated_at",
+        "in": "query",
+        "description": "Filter by a region's update date.",
+        "required": false,
+        "schema": {
+          "type": "object",
+          "description": "Filter by a region's update date.",
+          "properties": {
+            "$and": {
+              "type": "array",
+              "description": "Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.",
+              "items": {
+                "type": "object"
+              },
+              "title": "$and"
+            },
+            "$or": {
+              "type": "array",
+              "description": "Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.",
+              "items": {
+                "type": "object"
+              },
+              "title": "$or"
+            },
+            "$eq": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "title": "$eq",
+                  "description": "Filter by an exact match."
+                },
+                {
+                  "type": "array",
+                  "description": "Filter by an exact match.",
+                  "items": {
+                    "type": "string",
+                    "title": "$eq",
+                    "description": "Filter by an exact match."
+                  }
+                }
+              ]
+            },
+            "$ne": {
+              "type": "string",
+              "title": "$ne",
+              "description": "Filter by values not equal to this parameter."
+            },
+            "$in": {
+              "type": "array",
+              "description": "Filter by values in this array.",
+              "items": {
+                "type": "string",
+                "title": "$in",
+                "description": "Filter by values in this array."
+              }
+            },
+            "$nin": {
+              "type": "array",
+              "description": "Filter by values not in this array.",
+              "items": {
+                "type": "string",
+                "title": "$nin",
+                "description": "Filter by values not in this array."
+              }
+            },
+            "$not": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "title": "$not",
+                  "description": "Filter by values not matching the conditions in this parameter."
+                },
+                {
+                  "type": "object",
+                  "description": "Filter by values not matching the conditions in this parameter."
+                },
+                {
+                  "type": "array",
+                  "description": "Filter by values not matching the conditions in this parameter.",
+                  "items": {
+                    "type": "string",
+                    "title": "$not",
+                    "description": "Filter by values not matching the conditions in this parameter."
+                  }
+                }
+              ]
+            },
+            "$gt": {
+              "type": "string",
+              "title": "$gt",
+              "description": "Filter by values greater than this parameter. Useful for numbers and dates only."
+            },
+            "$gte": {
+              "type": "string",
+              "title": "$gte",
+              "description": "Filter by values greater than or equal to this parameter. Useful for numbers and dates only."
+            },
+            "$lt": {
+              "type": "string",
+              "title": "$lt",
+              "description": "Filter by values less than this parameter. Useful for numbers and dates only."
+            },
+            "$lte": {
+              "type": "string",
+              "title": "$lte",
+              "description": "Filter by values less than or equal to this parameter. Useful for numbers and dates only."
+            },
+            "$like": {
+              "type": "string",
+              "title": "$like",
+              "description": "Apply a `like` filter. Useful for strings only."
+            },
+            "$re": {
+              "type": "string",
+              "title": "$re",
+              "description": "Apply a regex filter. Useful for strings only."
+            },
+            "$ilike": {
+              "type": "string",
+              "title": "$ilike",
+              "description": "Apply a case-insensitive `like` filter. Useful for strings only."
+            },
+            "$fulltext": {
+              "type": "string",
+              "title": "$fulltext",
+              "description": "Filter to apply on full-text properties."
+            },
+            "$overlap": {
+              "type": "array",
+              "description": "Filter arrays that have overlapping values with this parameter.",
+              "items": {
+                "type": "string",
+                "title": "$overlap",
+                "description": "Filter arrays that have overlapping values with this parameter."
+              }
+            },
+            "$contains": {
+              "type": "array",
+              "description": "Filter arrays that contain some of the values of this parameter.",
+              "items": {
+                "type": "string",
+                "title": "$contains",
+                "description": "Filter arrays that contain some of the values of this parameter."
+              }
+            },
+            "$contained": {
+              "type": "array",
+              "description": "Filter arrays that contain all values of this parameter.",
+              "items": {
+                "type": "string",
+                "title": "$contained",
+                "description": "Filter arrays that contain all values of this parameter."
+              }
+            },
+            "$exists": {
+              "type": "boolean",
+              "title": "$exists",
+              "description": "Filter by whether a value for this parameter exists (not `null`)."
+            }
+          },
+          "title": "updated_at"
+        }
+      },
+      {
+        "name": "deleted_at",
+        "in": "query",
+        "description": "Filter by a region's deletion date.",
+        "required": false,
+        "schema": {
+          "type": "object",
+          "description": "Filter by a region's deletion date.",
+          "properties": {
+            "$and": {
+              "type": "array",
+              "description": "Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.",
+              "items": {
+                "type": "object"
+              },
+              "title": "$and"
+            },
+            "$or": {
+              "type": "array",
+              "description": "Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.",
+              "items": {
+                "type": "object"
+              },
+              "title": "$or"
+            },
+            "$eq": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "title": "$eq",
+                  "description": "Filter by an exact match."
+                },
+                {
+                  "type": "array",
+                  "description": "Filter by an exact match.",
+                  "items": {
+                    "type": "string",
+                    "title": "$eq",
+                    "description": "Filter by an exact match."
+                  }
+                }
+              ]
+            },
+            "$ne": {
+              "type": "string",
+              "title": "$ne",
+              "description": "Filter by values not equal to this parameter."
+            },
+            "$in": {
+              "type": "array",
+              "description": "Filter by values in this array.",
+              "items": {
+                "type": "string",
+                "title": "$in",
+                "description": "Filter by values in this array."
+              }
+            },
+            "$nin": {
+              "type": "array",
+              "description": "Filter by values not in this array.",
+              "items": {
+                "type": "string",
+                "title": "$nin",
+                "description": "Filter by values not in this array."
+              }
+            },
+            "$not": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "title": "$not",
+                  "description": "Filter by values not matching the conditions in this parameter."
+                },
+                {
+                  "type": "object",
+                  "description": "Filter by values not matching the conditions in this parameter."
+                },
+                {
+                  "type": "array",
+                  "description": "Filter by values not matching the conditions in this parameter.",
+                  "items": {
+                    "type": "string",
+                    "title": "$not",
+                    "description": "Filter by values not matching the conditions in this parameter."
+                  }
+                }
+              ]
+            },
+            "$gt": {
+              "type": "string",
+              "title": "$gt",
+              "description": "Filter by values greater than this parameter. Useful for numbers and dates only."
+            },
+            "$gte": {
+              "type": "string",
+              "title": "$gte",
+              "description": "Filter by values greater than or equal to this parameter. Useful for numbers and dates only."
+            },
+            "$lt": {
+              "type": "string",
+              "title": "$lt",
+              "description": "Filter by values less than this parameter. Useful for numbers and dates only."
+            },
+            "$lte": {
+              "type": "string",
+              "title": "$lte",
+              "description": "Filter by values less than or equal to this parameter. Useful for numbers and dates only."
+            },
+            "$like": {
+              "type": "string",
+              "title": "$like",
+              "description": "Apply a `like` filter. Useful for strings only."
+            },
+            "$re": {
+              "type": "string",
+              "title": "$re",
+              "description": "Apply a regex filter. Useful for strings only."
+            },
+            "$ilike": {
+              "type": "string",
+              "title": "$ilike",
+              "description": "Apply a case-insensitive `like` filter. Useful for strings only."
+            },
+            "$fulltext": {
+              "type": "string",
+              "title": "$fulltext",
+              "description": "Filter to apply on full-text properties."
+            },
+            "$overlap": {
+              "type": "array",
+              "description": "Filter arrays that have overlapping values with this parameter.",
+              "items": {
+                "type": "string",
+                "title": "$overlap",
+                "description": "Filter arrays that have overlapping values with this parameter."
+              }
+            },
+            "$contains": {
+              "type": "array",
+              "description": "Filter arrays that contain some of the values of this parameter.",
+              "items": {
+                "type": "string",
+                "title": "$contains",
+                "description": "Filter arrays that contain some of the values of this parameter."
+              }
+            },
+            "$contained": {
+              "type": "array",
+              "description": "Filter arrays that contain all values of this parameter.",
+              "items": {
+                "type": "string",
+                "title": "$contained",
+                "description": "Filter arrays that contain all values of this parameter."
+              }
+            },
+            "$exists": {
+              "type": "boolean",
+              "title": "$exists",
+              "description": "Filter by whether a value for this parameter exists (not `null`)."
+            }
+          },
+          "title": "deleted_at"
+        }
+      },
+      {
+        "name": "$and",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "array",
+          "description": "Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.",
+          "items": {
+            "type": "object"
+          },
+          "title": "$and"
+        }
+      },
+      {
+        "name": "$or",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "array",
+          "description": "Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.",
+          "items": {
+            "type": "object"
+          },
+          "title": "$or"
+        }
+      },
+      {
+        "name": "currency_code",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "oneOf": [
+            {
+              "type": "string",
+              "title": "currency_code",
+              "description": "The region's currency code."
+            },
+            {
+              "type": "array",
+              "description": "The region's currency code.",
+              "items": {
+                "type": "string",
+                "title": "currency_code",
+                "description": "The currency code's details."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "with_deleted",
+        "in": "query",
+        "description": "Whether to include deleted records in the result.",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "title": "with_deleted",
+          "description": "Whether to include deleted records in the result."
+        }
+      }
+    ],
+    "security": [
+      {
+        "api_token": []
+      },
+      {
+        "cookie_auth": []
+      },
+      {
+        "jwt_token": []
+      }
+    ],
+    "x-codeSamples": [
+      {
+        "lang": "JavaScript",
+        "label": "JS SDK",
+        "source": "import Medusa from \"@medusajs/js-sdk\"\n\nexport const sdk = new Medusa({\n  baseUrl: import.meta.env.VITE_BACKEND_URL || \"/\",\n  debug: import.meta.env.DEV,\n  auth: {\n    type: \"session\",\n  },\n})\n\nsdk.admin.region.list()\n.then(({ regions, count, limit, offset }) => {\n  console.log(regions)\n})"
+      },
+      {
+        "lang": "Shell",
+        "label": "cURL",
+        "source": "curl '{backend_url}/admin/regions' \\\n-H 'Authorization: Bearer {jwt_token}'"
+      }
+    ],
+    "tags": [
+      "Regions"
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "description": "The paginated list of regions.",
+                  "required": [
+                    "limit",
+                    "offset",
+                    "count"
+                  ],
+                  "properties": {
+                    "limit": {
+                      "type": "number",
+                      "title": "limit",
+                      "description": "The maximum number of items returned."
+                    },
+                    "offset": {
+                      "type": "number",
+                      "title": "offset",
+                      "description": "The number of items skipped before retrieving the returned items."
+                    },
+                    "count": {
+                      "type": "number",
+                      "title": "count",
+                      "description": "The total number of items."
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "description": "The paginated list of regions.",
+                  "required": [
+                    "regions"
+                  ],
+                  "properties": {
+                    "regions": {
+                      "type": "array",
+                      "description": "The list of regions.",
+                      "items": {
+                        "$ref": "#/components/schemas/AdminRegion"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/400_error"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "404": {
+        "$ref": "#/components/responses/not_found_error"
+      },
+      "409": {
+        "$ref": "#/components/responses/invalid_state_error"
+      },
+      "422": {
+        "$ref": "#/components/responses/invalid_request_error"
+      },
+      "500": {
+        "$ref": "#/components/responses/500_error"
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminRegion](/api/schemas/admin-region)
+</Accordion>

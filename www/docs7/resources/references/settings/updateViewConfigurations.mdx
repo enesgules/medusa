@@ -1,0 +1,171 @@
+---
+title: updateViewConfigurations - Settings Module Reference
+sidebarTitle: updateViewConfigurations
+---
+
+This documentation provides a reference to the `updateViewConfigurations` method. This belongs to the Settings Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updateviewconfigurations-idorselector-data-sharedcontext-promiseviewconfigurationdto" />
+
+## updateViewConfigurations(idOrSelector, data, sharedContext?): Promise\<[ViewConfigurationDTO](/resources/references/settings/interfaces/settingsViewConfigurationDTO)>
+
+This method updates an existing view configuration by its ID.
+
+### Example
+
+```ts
+const viewConfiguration =
+  await settingsModuleService.updateViewConfigurations("viewcfg_123", {
+    name: "Updated View",
+  })
+```
+
+<a id="updateviewconfigurations-parameters" />
+
+### Parameters
+
+**updateViewConfigurations**
+
+- `idOrSelector`: `string` — The ID of the view configuration to update.
+- `data`: [UpdateViewConfigurationDTO](/resources/references/settings/interfaces/settingsUpdateViewConfigurationDTO) — The attributes to update in the view configuration.
+  - `name`: `string` (optional) — The name of the configuration.
+  - `configuration`: `object` (optional) — The configuration data.
+    - `visible_columns`: `string`\[] (optional) — The visible columns.
+    - `column_order`: `string`\[] (optional) — The column order.
+    - `column_widths`: `Record<string, number>` (optional) — The column widths.
+    - `filters`: `Record<string, any>` (optional) — The filters to apply.
+    - `sorting`: `null` | `object` (optional) — The sorting configuration.
+    - `search`: `string` (optional) — The search string.
+- `sharedContext`: [Context](/resources/references/settings/interfaces/settingsContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/settings/interfaces/settingsIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateviewconfigurations-returns" />
+
+### Returns
+
+**updateViewConfigurations**
+
+- `Promise`: Promise\<[ViewConfigurationDTO](/resources/references/settings/interfaces/settingsViewConfigurationDTO)> — The updated view configuration.
+  - `id`: `string` — The ID of the configuration.
+  - `entity`: `string` — The entity this configuration is for.
+  - `name`: `string` — The name of the configuration.
+  - `user_id`: `null` | `string` — The user ID this configuration belongs to.
+  - `is_system_default`: `boolean` — Whether this is a system default configuration.
+  - `configuration`: `object` — The configuration data.
+    - `visible_columns`: `string`\[] — The visible columns.
+    - `column_order`: `string`\[] — The column order.
+    - `column_widths`: `Record<string, number>` (optional) — The column widths.
+    - `filters`: `Record<string, any>` (optional) — The filters to apply.
+    - `sorting`: `null` | `object` (optional) — The sorting configuration.
+    - `search`: `string` (optional) — The search string.
+  - `created_at`: `Date` — The date the configuration was created.
+  - `updated_at`: `Date` — The date the configuration was last updated.
+
+<a id="updateviewconfigurations-idorselector-data-sharedcontext-promiseviewconfigurationdto-1" />
+
+## updateViewConfigurations(idOrSelector, data, sharedContext?): Promise\<[ViewConfigurationDTO](/resources/references/settings/interfaces/settingsViewConfigurationDTO)\[]>
+
+This method updates the view configurations matching the specified filters.
+
+### Example
+
+```ts
+const viewConfigurations =
+  await settingsModuleService.updateViewConfigurations(
+    { entity: "product" },
+    { name: "Updated View" }
+  )
+```
+
+<a id="updateviewconfigurations-parameters-1" />
+
+### Parameters
+
+**updateViewConfigurations**
+
+- `idOrSelector`: [FilterableViewConfigurationProps](/resources/references/settings/interfaces/settingsFilterableViewConfigurationProps) — The filters specifying which view configurations to update.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter by.
+  - `entity`: `string` | `string`\[] (optional) — Filter by entity name.
+  - `user_id`: `null` | `string` | `string`\[] (optional) — Filter by user ID.
+  - `is_system_default`: `boolean` (optional) — Filter by system default flag.
+  - `name`: `string` | `string`\[] (optional) — Filter by name.
+  - `$and`: ([FilterableViewConfigurationProps](/resources/references/settings/interfaces/settingsFilterableViewConfigurationProps) | [ViewConfigurationFilterableFields](/resources/references/settings/interfaces/settingsViewConfigurationFilterableFields))\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter by.
+    - `entity`: `string` | `string`\[] (optional) — Filter by entity name.
+    - `user_id`: `null` | `string` | `string`\[] (optional) — Filter by user ID.
+    - `is_system_default`: `boolean` (optional) — Filter by system default flag.
+    - `name`: `string` | `string`\[] (optional) — Filter by name.
+    - `$and`: ([FilterableViewConfigurationProps](/resources/references/settings/interfaces/settingsFilterableViewConfigurationProps) | [ViewConfigurationFilterableFields](/resources/references/settings/interfaces/settingsViewConfigurationFilterableFields))\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableViewConfigurationProps](/resources/references/settings/interfaces/settingsFilterableViewConfigurationProps) | [ViewConfigurationFilterableFields](/resources/references/settings/interfaces/settingsViewConfigurationFilterableFields))\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `$or`: ([FilterableViewConfigurationProps](/resources/references/settings/interfaces/settingsFilterableViewConfigurationProps) | [ViewConfigurationFilterableFields](/resources/references/settings/interfaces/settingsViewConfigurationFilterableFields))\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter by.
+    - `entity`: `string` | `string`\[] (optional) — Filter by entity name.
+    - `user_id`: `null` | `string` | `string`\[] (optional) — Filter by user ID.
+    - `is_system_default`: `boolean` (optional) — Filter by system default flag.
+    - `name`: `string` | `string`\[] (optional) — Filter by name.
+    - `$and`: ([FilterableViewConfigurationProps](/resources/references/settings/interfaces/settingsFilterableViewConfigurationProps) | [ViewConfigurationFilterableFields](/resources/references/settings/interfaces/settingsViewConfigurationFilterableFields))\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableViewConfigurationProps](/resources/references/settings/interfaces/settingsFilterableViewConfigurationProps) | [ViewConfigurationFilterableFields](/resources/references/settings/interfaces/settingsViewConfigurationFilterableFields))\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+- `data`: [UpdateViewConfigurationDTO](/resources/references/settings/interfaces/settingsUpdateViewConfigurationDTO) — The attributes to update in the view configurations.
+  - `name`: `string` (optional) — The name of the configuration.
+  - `configuration`: `object` (optional) — The configuration data.
+    - `visible_columns`: `string`\[] (optional) — The visible columns.
+    - `column_order`: `string`\[] (optional) — The column order.
+    - `column_widths`: `Record<string, number>` (optional) — The column widths.
+    - `filters`: `Record<string, any>` (optional) — The filters to apply.
+    - `sorting`: `null` | `object` (optional) — The sorting configuration.
+    - `search`: `string` (optional) — The search string.
+- `sharedContext`: [Context](/resources/references/settings/interfaces/settingsContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/settings/interfaces/settingsIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateviewconfigurations-returns-1" />
+
+### Returns
+
+**updateViewConfigurations**
+
+- `Promise`: Promise\<[ViewConfigurationDTO](/resources/references/settings/interfaces/settingsViewConfigurationDTO)\[]> — The updated view configurations.
+  - `ViewConfigurationDTO[]`: [ViewConfigurationDTO](/resources/references/settings/interfaces/settingsViewConfigurationDTO)\[]
+    - `id`: `string` — The ID of the configuration.
+    - `entity`: `string` — The entity this configuration is for.
+    - `name`: `string` — The name of the configuration.
+    - `user_id`: `null` | `string` — The user ID this configuration belongs to.
+    - `is_system_default`: `boolean` — Whether this is a system default configuration.
+    - `configuration`: `object` — The configuration data.
+      - `visible_columns`: `string`\[] — The visible columns.
+      - `column_order`: `string`\[] — The column order.
+      - `column_widths`: `Record<string, number>` (optional) — The column widths.
+      - `filters`: `Record<string, any>` (optional) — The filters to apply.
+      - `sorting`: `null` | `object` (optional) — The sorting configuration.
+      - `search`: `string` (optional) — The search string.
+    - `created_at`: `Date` — The date the configuration was created.
+    - `updated_at`: `Date` — The date the configuration was last updated.

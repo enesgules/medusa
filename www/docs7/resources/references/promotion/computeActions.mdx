@@ -1,0 +1,97 @@
+---
+title: computeActions - Promotion Module Reference
+sidebarTitle: computeActions
+---
+
+This documentation provides a reference to the `computeActions` method. This belongs to the Promotion Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method provides the actions to perform on a cart based on the specified promotions
+and context.
+
+## Example
+
+```ts
+const actions = await promotionModuleService.computeActions(
+  ["50OFF"],
+  {
+    items: [
+      {
+        id: "cali_123",
+        quantity: 2,
+        subtotal: 1000,
+      },
+    ],
+    shipping_methods: [
+      {
+        id: "casm_123",
+        subtotal: 0,
+        adjustments: [
+          {
+            id: "adj_123",
+            code: "FREESHIPPING",
+          },
+        ],
+      },
+    ],
+  }
+)
+```
+
+<a id="computeactions-parameters" />
+
+## Parameters
+
+**computeActions**
+
+- `promotionCodesToApply`: `string`\[] — The promotion codes to be applied on the cart.
+- `applicationContext`: [ComputeActionContext](/resources/references/promotion/interfaces/promotionComputeActionContext) — The items and shipping methods of the cart.
+  - `currency_code`: `string` — The cart's currency
+  - `customer`: `object` (optional) — The customer associated with the cart.
+    - `id`: `string`
+    - `groups`: `object`\[] (optional) — The customer groups the customer belongs to.
+  - `region`: `object` (optional) — The region associated with the cart.
+    - `id`: `string`
+  - `shipping_address`: `object` (optional) — The shipping address associated with the cart.
+    - `country_code`: `string`
+  - `sales_channel_id`: `string` (optional)
+  - `email`: `string` (optional) — The cart's email
+  - `items`: [ComputeActionItemLine](/resources/references/promotion/interfaces/promotionComputeActionItemLine)\[] (optional) — The cart's line items.
+    - `id`: `string` — The ID of the item line.
+    - `quantity`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The quantity of the line item.
+    - `subtotal`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The subtotal of the line item.
+    - `original_total`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The total of the line item.
+    - `is_discountable`: `boolean` — Whether the line item is discountable.
+    - `adjustments`: [ComputeActionAdjustmentLine](/resources/references/promotion/interfaces/promotionComputeActionAdjustmentLine)\[] (optional) — The adjustments applied before on the line item.
+    - `product`: `object` (optional) — The product ID of the line item. Our default promotion rules rely on the product ID to apply the promotion.
+  - `shipping_methods`: [ComputeActionShippingLine](/resources/references/promotion/interfaces/promotionComputeActionShippingLine)\[] (optional) — The cart's shipping methods.
+    - `id`: `string` — The ID of the shipping method.
+    - `subtotal`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The subtotal of the shipping method.
+    - `original_total`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The total of the shipping method.
+    - `adjustments`: [ComputeActionAdjustmentLine](/resources/references/promotion/interfaces/promotionComputeActionAdjustmentLine)\[] (optional) — The adjustments applied before on the shipping method.
+    - `shipping_option`: `object` (optional) — The shipping option type associated with the shipping method.
+- `options`: `Record<string, any>` (optional) — Any relevant options that may change how the actions are computed.
+
+<a id="computeactions-returns" />
+
+## Returns
+
+**computeActions**
+
+- `Promise`: Promise\<[ComputeActions](/resources/references/promotion/types/promotionComputeActions)\[]> — The list of computed actions to be applied on the cart.
+  - `ComputeActions[]`: [ComputeActions](/resources/references/promotion/types/promotionComputeActions)\[]
+    - `action`: `"addItemAdjustment"` — The type of action.
+    - `item_id`: `string` — The associated item's ID.
+    - `amount`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The amount to remove off the item's total.
+      - `value`: `string` | `number`
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/promotion/types/promotionBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the promotion amount includes tax.
+    - `code`: `string` — The promotion's code.
+    - `description`: `string` (optional) — The promotion's description.
+    - `adjustment_id`: `string` — The associated adjustment's ID.
+    - `shipping_method_id`: `string` — The associated shipping method's ID.

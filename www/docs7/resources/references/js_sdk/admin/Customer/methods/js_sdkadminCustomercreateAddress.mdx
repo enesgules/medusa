@@ -1,0 +1,77 @@
+---
+title: createAddress
+---
+
+This method creates a customer address. It sends a request to the
+[Create Customer Address](/api/admin/customers/add-address)
+API route.
+
+## Example
+
+```ts
+sdk.admin.customer.createAddress("cus_123", {
+  address_1: "123 Main St",
+  city: "Anytown",
+  country_code: "US",
+  postal_code: "12345"
+})
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="createaddress-parameters" />
+
+## Parameters
+
+**createAddress**
+
+- `id`: `string` — The customer's ID.
+- `body`: [AdminCreateCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateCustomerAddress) — The customer address's details.
+  - `first_name`: `null` | `string` (optional) — The address's first name.
+  - `last_name`: `null` | `string` (optional) — The address's last name.
+  - `phone`: `null` | `string` (optional) — The address's phone.
+  - `company`: `null` | `string` (optional) — The address's company.
+  - `address_1`: `null` | `string` (optional) — The address's first line.
+  - `address_2`: `null` | `string` (optional) — The address's second line.
+  - `city`: `null` | `string` (optional) — The address's city.
+  - `country_code`: `null` | `string` (optional) — The address's country code.
+
+    Example:
+
+    ```
+    us
+    ```
+  - `province`: `null` | `string` (optional) — The address's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province.
+  - `postal_code`: `null` | `string` (optional) — The address's postal code.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `address_name`: `null` | `string` (optional) — The address's name.
+  - `is_default_shipping`: `boolean` (optional) — Whether the address is used by default for shipping.
+  - `is_default_billing`: `boolean` (optional) — Whether the address is used by default for billing.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="createaddress-returns" />
+
+## Returns
+
+**createAddress**
+
+- `Promise`: Promise\<[AdminCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerResponse)> — The customer address's details.
+  - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) — The customer's details.
+    - `has_account`: `boolean` — Whether the customer is a guest.
+    - `groups`: [AdminCustomerGroup](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerGroup)\[] (optional) — The groups the customer is in.
+    - `addresses`: [AdminCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerAddress)\[] — The customer's addresses.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_by`: `null` | `string` (optional) — The ID of the user that created the customer.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.

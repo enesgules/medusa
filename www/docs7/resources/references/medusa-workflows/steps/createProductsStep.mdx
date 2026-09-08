@@ -1,0 +1,427 @@
+---
+title: createProductsStep - Medusa Core Workflows Reference
+sidebarTitle: createProductsStep
+---
+
+This documentation provides a reference to the `createProductsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates one or more products.
+
+## Example
+
+```ts
+const data = createProductsStep([{
+  title: "Shirt",
+  options: [
+    {
+      title: "Size",
+      values: ["S", "M", "L"]
+    }
+  ],
+  variants: [
+    {
+      title: "Small Shirt",
+      options: {
+        Size: "S"
+      }
+    }
+  ]
+}])
+```
+
+<a id="createproductsstep-input" />
+
+## Input
+
+**createProductsStep**
+
+- `CreateProductDTO[]`: [CreateProductDTO](/resources/references/product/interfaces/productCreateProductDTO)\[]
+  - `id`: `string` (optional) — Optionally pass an ID when creating a product.
+  - `title`: `string` — The title of the product.
+  - `subtitle`: `null` | `string` (optional) — The subttle of the product.
+  - `description`: `null` | `string` (optional) — The description of the product.
+  - `is_giftcard`: `boolean` (optional) — Whether the product is a gift card.
+  - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+  - `thumbnail`: `null` | `string` (optional) — The URL of the product's thumbnail.
+  - `handle`: `null` | `string` (optional) — The handle of the product. The handle can be used to create slug URL paths. If not supplied, the value of the `handle` attribute of the product is set to the slug version of the `title` attribute.
+  - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) (optional) — The status of the product.
+  - `images`: [UpsertProductImageDTO](/resources/references/product/interfaces/productUpsertProductImageDTO)\[] (optional) — The associated images to created or updated.
+    - `id`: `string` (optional) — The product image's ID. If not provided, the image is created. In that case, the `url` property is required.
+    - `url`: `string` (optional) — The new URL of the product image.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `external_id`: `null` | `string` (optional) — The id of the product in an external system
+  - `type_id`: `null` | `string` (optional) — The product type id to associate with the product.
+  - `collection_id`: `null` | `string` (optional) — The product collection to associate with the product.
+  - `tag_ids`: `string`\[] (optional) — The tags to be associated with the product.
+  - `category_ids`: `string`\[] (optional) — The product categories to associate with the product.
+  - `options`: ([CreateProductOptionDTO](/resources/references/product/interfaces/productCreateProductOptionDTO) | `object`)\[] (optional) — The product options to be created and/or associated with the product.
+    - `title`: `string` — The product option's title.
+    - `values`: `string`\[] — The product option values.
+    - `ranks`: `Record<string, number>` (optional) — The rank for each option value. The key is the option value, and the value is the rank.
+    - `is_exclusive`: `boolean` (optional) — Whether the product option is exclusive to a product or shared across products.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — The metadata of the product option.
+    - `id`: `string` — The ID of the product option to link.
+    - `value_ids`: `string`\[] (optional) — The IDs of specific option values to link. If undefined, every value will be added to the product by default.
+  - `variants`: [CreateProductVariantDTO](/resources/references/product/interfaces/productCreateProductVariantDTO)\[] (optional) — The product variants to be created and associated with the product.
+    - `product_id`: `string` (optional) — The id of the product
+    - `title`: `string` — The tile of the product variant.
+    - `sku`: `null` | `string` (optional) — The SKU of the product variant.
+    - `barcode`: `null` | `string` (optional) — The barcode of the product variant.
+    - `ean`: `null` | `string` (optional) — The EAN of the product variant.
+    - `upc`: `null` | `string` (optional) — The UPC of the product variant.
+    - `allow_backorder`: `boolean` (optional) — Whether the product variant can be ordered when it's out of stock.
+    - `manage_inventory`: `boolean` (optional) — Whether the product variant's inventory should be managed by the core system.
+    - `inventory_items`: [CreateProductVariantInventoryKit](/resources/references/product/interfaces/productCreateProductVariantInventoryKit)\[] (optional) — The variant's inventory items. It's only available if `manage_inventory` is enabled.
+      - `inventory_item_id`: `string`
+      - `required_quantity`: `number` (optional)
+    - `hs_code`: `null` | `string` (optional) — The HS Code of the product variant.
+    - `origin_country`: `null` | `string` (optional) — The origin country of the product variant.
+    - `mid_code`: `null` | `string` (optional) — The MID Code of the product variant.
+    - `material`: `null` | `string` (optional) — The material of the product variant.
+    - `weight`: `null` | `number` (optional) — The weight of the product variant.
+    - `length`: `null` | `number` (optional) — The length of the product variant.
+    - `height`: `null` | `number` (optional) — The height of the product variant.
+    - `width`: `null` | `number` (optional) — The width of the product variant.
+    - `options`: `Record<string, string>` (optional) — The options of the variant. Each key is an option's title, and value is an option's value. If an option with the specified title doesn't exist, a new one is created.
+
+      Example:
+
+      ```
+      `{ Color: "Blue" }`
+      ```
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `width`: `null` | `number` (optional) — The width of the product.
+  - `height`: `null` | `number` (optional) — The height of the product.
+  - `length`: `null` | `number` (optional) — The length of the product.
+  - `weight`: `null` | `number` (optional) — The weight of the product.
+  - `origin_country`: `null` | `string` (optional) — The origin country of the product.
+  - `hs_code`: `null` | `string` (optional) — The HS Code of the product.
+  - `material`: `null` | `string` (optional) — The material of the product.
+  - `mid_code`: `null` | `string` (optional) — The MID Code of the product.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+
+<a id="createproductsstep-output" />
+
+## Output
+
+**createProductsStep**
+
+- `ProductDTO[]`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[]
+  - `id`: `string` — The ID of the product.
+  - `title`: `string` — The title of the product.
+  - `handle`: `string` — The handle of the product. The handle can be used to create slug URL paths.
+  - `subtitle`: `null` | `string` — The subttle of the product.
+  - `description`: `null` | `string` — The description of the product.
+  - `is_giftcard`: `boolean` — Whether the product is a gift card.
+  - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) — The status of the product.
+  - `thumbnail`: `null` | `string` — The URL of the product's thumbnail.
+  - `width`: `null` | `number` — The width of the product.
+  - `weight`: `null` | `number` — The weight of the product.
+  - `length`: `null` | `number` — The length of the product.
+  - `height`: `null` | `number` — The height of the product.
+  - `origin_country`: `null` | `string` — The origin country of the product.
+  - `hs_code`: `null` | `string` — The HS Code of the product.
+  - `mid_code`: `null` | `string` — The MID Code of the product.
+  - `material`: `null` | `string` — The material of the product.
+  - `collection`: `null` | [ProductCollectionDTO](/resources/references/product/interfaces/productProductCollectionDTO) — The associated product collection.
+    - `id`: `string` — The ID of the product collection.
+    - `title`: `string` — The title of the product collection.
+    - `handle`: `string` — The handle of the product collection. The handle can be used to create slug URL paths.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product collection was created.
+    - `updated_at`: `string` | `Date` — When the product collection was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product collection was deleted.
+    - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+      - `id`: `string` — The ID of the product.
+      - `title`: `string` — The title of the product.
+      - `handle`: `string` — The handle of the product. The handle can be used to create slug URL paths.
+      - `subtitle`: `null` | `string` — The subttle of the product.
+      - `description`: `null` | `string` — The description of the product.
+      - `is_giftcard`: `boolean` — Whether the product is a gift card.
+      - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) — The status of the product.
+      - `thumbnail`: `null` | `string` — The URL of the product's thumbnail.
+      - `width`: `null` | `number` — The width of the product.
+      - `weight`: `null` | `number` — The weight of the product.
+      - `length`: `null` | `number` — The length of the product.
+      - `height`: `null` | `number` — The height of the product.
+      - `origin_country`: `null` | `string` — The origin country of the product.
+      - `hs_code`: `null` | `string` — The HS Code of the product.
+      - `mid_code`: `null` | `string` — The MID Code of the product.
+      - `material`: `null` | `string` — The material of the product.
+      - `collection`: `null` | [ProductCollectionDTO](/resources/references/product/interfaces/productProductCollectionDTO) — The associated product collection.
+      - `collection_id`: `null` | `string` — The associated product collection id.
+      - `categories`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] (optional) — The associated product categories.
+      - `type`: `null` | [ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO) — The associated product type.
+      - `type_id`: `null` | `string` — The associated product type id.
+      - `tags`: [ProductTagDTO](/resources/references/product/interfaces/productProductTagDTO)\[] — The associated product tags.
+      - `variants`: [ProductVariantDTO](/resources/references/product/interfaces/productProductVariantDTO)\[] — The associated product variants.
+      - `options`: [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO)\[] — The associated product options.
+      - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+      - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+      - `external_id`: `null` | `string` — The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.
+      - `created_at`: `string` | `Date` — When the product was created.
+      - `updated_at`: `string` | `Date` — When the product was updated.
+      - `deleted_at`: `string` | `Date` — When the product was deleted.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `collection_id`: `null` | `string` — The associated product collection id.
+  - `categories`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] (optional) — The associated product categories.
+    - `id`: `string` — The ID of the product category.
+    - `name`: `string` — The name of the product category.
+    - `description`: `string` — The description of the product category.
+    - `handle`: `string` — The handle of the product category. The handle can be used to create slug URL paths.
+    - `is_active`: `boolean` — Whether the product category is active.
+    - `is_internal`: `boolean` — Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.
+    - `rank`: `number` — The ranking of the product category among sibling categories.
+    - `external_id`: `null` | `string` — An external identifier for the product category, such as an ID from a third-party system.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — The ranking of the product category among sibling categories.
+    - `parent_category`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO) — The associated parent category.
+      - `id`: `string` — The ID of the product category.
+      - `name`: `string` — The name of the product category.
+      - `description`: `string` — The description of the product category.
+      - `handle`: `string` — The handle of the product category. The handle can be used to create slug URL paths.
+      - `is_active`: `boolean` — Whether the product category is active.
+      - `is_internal`: `boolean` — Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.
+      - `rank`: `number` — The ranking of the product category among sibling categories.
+      - `external_id`: `null` | `string` — An external identifier for the product category, such as an ID from a third-party system.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — The ranking of the product category among sibling categories.
+      - `parent_category`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO) — The associated parent category.
+      - `parent_category_id`: `null` | `string` — The associated parent category id.
+      - `category_children`: [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] — The associated child categories.
+      - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] — The associated products.
+      - `created_at`: `string` | `Date` — When the product category was created.
+      - `updated_at`: `string` | `Date` — When the product category was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product category was deleted.
+    - `parent_category_id`: `null` | `string` — The associated parent category id.
+    - `category_children`: [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] — The associated child categories.
+      - `id`: `string` — The ID of the product category.
+      - `name`: `string` — The name of the product category.
+      - `description`: `string` — The description of the product category.
+      - `handle`: `string` — The handle of the product category. The handle can be used to create slug URL paths.
+      - `is_active`: `boolean` — Whether the product category is active.
+      - `is_internal`: `boolean` — Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.
+      - `rank`: `number` — The ranking of the product category among sibling categories.
+      - `external_id`: `null` | `string` — An external identifier for the product category, such as an ID from a third-party system.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — The ranking of the product category among sibling categories.
+      - `parent_category`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO) — The associated parent category.
+      - `parent_category_id`: `null` | `string` — The associated parent category id.
+      - `category_children`: [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] — The associated child categories.
+      - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] — The associated products.
+      - `created_at`: `string` | `Date` — When the product category was created.
+      - `updated_at`: `string` | `Date` — When the product category was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product category was deleted.
+    - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] — The associated products.
+      - `id`: `string` — The ID of the product.
+      - `title`: `string` — The title of the product.
+      - `handle`: `string` — The handle of the product. The handle can be used to create slug URL paths.
+      - `subtitle`: `null` | `string` — The subttle of the product.
+      - `description`: `null` | `string` — The description of the product.
+      - `is_giftcard`: `boolean` — Whether the product is a gift card.
+      - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) — The status of the product.
+      - `thumbnail`: `null` | `string` — The URL of the product's thumbnail.
+      - `width`: `null` | `number` — The width of the product.
+      - `weight`: `null` | `number` — The weight of the product.
+      - `length`: `null` | `number` — The length of the product.
+      - `height`: `null` | `number` — The height of the product.
+      - `origin_country`: `null` | `string` — The origin country of the product.
+      - `hs_code`: `null` | `string` — The HS Code of the product.
+      - `mid_code`: `null` | `string` — The MID Code of the product.
+      - `material`: `null` | `string` — The material of the product.
+      - `collection`: `null` | [ProductCollectionDTO](/resources/references/product/interfaces/productProductCollectionDTO) — The associated product collection.
+      - `collection_id`: `null` | `string` — The associated product collection id.
+      - `categories`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] (optional) — The associated product categories.
+      - `type`: `null` | [ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO) — The associated product type.
+      - `type_id`: `null` | `string` — The associated product type id.
+      - `tags`: [ProductTagDTO](/resources/references/product/interfaces/productProductTagDTO)\[] — The associated product tags.
+      - `variants`: [ProductVariantDTO](/resources/references/product/interfaces/productProductVariantDTO)\[] — The associated product variants.
+      - `options`: [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO)\[] — The associated product options.
+      - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+      - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+      - `external_id`: `null` | `string` — The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.
+      - `created_at`: `string` | `Date` — When the product was created.
+      - `updated_at`: `string` | `Date` — When the product was updated.
+      - `deleted_at`: `string` | `Date` — When the product was deleted.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product category was created.
+    - `updated_at`: `string` | `Date` — When the product category was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product category was deleted.
+  - `type`: `null` | [ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO) — The associated product type.
+    - `id`: `string` — The ID of the product type.
+    - `value`: `string` — The value of the product type.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product type was created.
+    - `updated_at`: `string` | `Date` — When the product type was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product type was deleted.
+  - `type_id`: `null` | `string` — The associated product type id.
+  - `tags`: [ProductTagDTO](/resources/references/product/interfaces/productProductTagDTO)\[] — The associated product tags.
+    - `id`: `string` — The ID of the product tag.
+    - `value`: `string` — The value of the product tag.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+      - `id`: `string` — The ID of the product.
+      - `title`: `string` — The title of the product.
+      - `handle`: `string` — The handle of the product. The handle can be used to create slug URL paths.
+      - `subtitle`: `null` | `string` — The subttle of the product.
+      - `description`: `null` | `string` — The description of the product.
+      - `is_giftcard`: `boolean` — Whether the product is a gift card.
+      - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) — The status of the product.
+      - `thumbnail`: `null` | `string` — The URL of the product's thumbnail.
+      - `width`: `null` | `number` — The width of the product.
+      - `weight`: `null` | `number` — The weight of the product.
+      - `length`: `null` | `number` — The length of the product.
+      - `height`: `null` | `number` — The height of the product.
+      - `origin_country`: `null` | `string` — The origin country of the product.
+      - `hs_code`: `null` | `string` — The HS Code of the product.
+      - `mid_code`: `null` | `string` — The MID Code of the product.
+      - `material`: `null` | `string` — The material of the product.
+      - `collection`: `null` | [ProductCollectionDTO](/resources/references/product/interfaces/productProductCollectionDTO) — The associated product collection.
+      - `collection_id`: `null` | `string` — The associated product collection id.
+      - `categories`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] (optional) — The associated product categories.
+      - `type`: `null` | [ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO) — The associated product type.
+      - `type_id`: `null` | `string` — The associated product type id.
+      - `tags`: [ProductTagDTO](/resources/references/product/interfaces/productProductTagDTO)\[] — The associated product tags.
+      - `variants`: [ProductVariantDTO](/resources/references/product/interfaces/productProductVariantDTO)\[] — The associated product variants.
+      - `options`: [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO)\[] — The associated product options.
+      - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+      - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+      - `external_id`: `null` | `string` — The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.
+      - `created_at`: `string` | `Date` — When the product was created.
+      - `updated_at`: `string` | `Date` — When the product was updated.
+      - `deleted_at`: `string` | `Date` — When the product was deleted.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `variants`: [ProductVariantDTO](/resources/references/product/interfaces/productProductVariantDTO)\[] — The associated product variants.
+    - `id`: `string` — The ID of the product variant.
+    - `title`: `string` — The tile of the product variant.
+    - `sku`: `null` | `string` — The SKU of the product variant.
+    - `barcode`: `null` | `string` — The barcode of the product variant.
+    - `ean`: `null` | `string` — The EAN of the product variant.
+    - `upc`: `null` | `string` — The UPC of the product variant.
+    - `allow_backorder`: `boolean` — Whether the product variant can be ordered when it's out of stock.
+    - `manage_inventory`: `boolean` — Whether the product variant's inventory should be managed by the core system.
+    - `thumbnail`: `null` | `string` — The thumbnail of the product variant form the product images.
+    - `requires_shipping`: `boolean` — Whether the product variant's requires shipping.
+    - `hs_code`: `null` | `string` — The HS Code of the product variant.
+    - `origin_country`: `null` | `string` — The origin country of the product variant.
+    - `mid_code`: `null` | `string` — The MID Code of the product variant.
+    - `material`: `null` | `string` — The material of the product variant.
+    - `weight`: `null` | `number` — The weight of the product variant.
+    - `length`: `null` | `number` — The length of the product variant.
+    - `height`: `null` | `number` — The height of the product variant.
+    - `width`: `null` | `number` — The width of the product variant.
+    - `options`: [ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[] — The associated product options.
+      - `id`: `string` — The ID of the product option value.
+      - `value`: `string` — The value of the product option value.
+      - `option`: `null` | [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO) (optional) — The associated product option. It may only be available if the `option` relation is expanded.
+      - `option_id`: `null` | `string` (optional) — The associated product option id.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — When the product option value was created.
+      - `updated_at`: `string` | `Date` — When the product option value was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product option value was deleted.
+    - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+      - `id`: `string` — The ID of the product image.
+      - `url`: `string` — The URL of the product image.
+      - `rank`: `number` — The rank of the product image.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — When the product image was created.
+      - `updated_at`: `string` | `Date` — When the product image was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product image was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `product`: `null` | [ProductDTO](/resources/references/product/interfaces/productProductDTO) (optional) — The associated product.
+      - `id`: `string` — The ID of the product.
+      - `title`: `string` — The title of the product.
+      - `handle`: `string` — The handle of the product. The handle can be used to create slug URL paths.
+      - `subtitle`: `null` | `string` — The subttle of the product.
+      - `description`: `null` | `string` — The description of the product.
+      - `is_giftcard`: `boolean` — Whether the product is a gift card.
+      - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) — The status of the product.
+      - `thumbnail`: `null` | `string` — The URL of the product's thumbnail.
+      - `width`: `null` | `number` — The width of the product.
+      - `weight`: `null` | `number` — The weight of the product.
+      - `length`: `null` | `number` — The length of the product.
+      - `height`: `null` | `number` — The height of the product.
+      - `origin_country`: `null` | `string` — The origin country of the product.
+      - `hs_code`: `null` | `string` — The HS Code of the product.
+      - `mid_code`: `null` | `string` — The MID Code of the product.
+      - `material`: `null` | `string` — The material of the product.
+      - `collection`: `null` | [ProductCollectionDTO](/resources/references/product/interfaces/productProductCollectionDTO) — The associated product collection.
+      - `collection_id`: `null` | `string` — The associated product collection id.
+      - `categories`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] (optional) — The associated product categories.
+      - `type`: `null` | [ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO) — The associated product type.
+      - `type_id`: `null` | `string` — The associated product type id.
+      - `tags`: [ProductTagDTO](/resources/references/product/interfaces/productProductTagDTO)\[] — The associated product tags.
+      - `variants`: [ProductVariantDTO](/resources/references/product/interfaces/productProductVariantDTO)\[] — The associated product variants.
+      - `options`: [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO)\[] — The associated product options.
+      - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+      - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+      - `external_id`: `null` | `string` — The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.
+      - `created_at`: `string` | `Date` — When the product was created.
+      - `updated_at`: `string` | `Date` — When the product was updated.
+      - `deleted_at`: `string` | `Date` — When the product was deleted.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `product_id`: `null` | `string` — The associated product id.
+    - `variant_rank`: `null` | `number` (optional) — he ranking of the variant among other variants associated with the product.
+    - `created_at`: `string` | `Date` — When the product variant was created.
+    - `updated_at`: `string` | `Date` — When the product variant was updated.
+    - `deleted_at`: `string` | `Date` — When the product variant was deleted.
+  - `options`: [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO)\[] — The associated product options.
+    - `id`: `string` — The ID of the product option.
+    - `title`: `string` — The title of the product option.
+    - `is_exclusive`: `boolean` — Whether the product option is exclusive to a product or shared across products.
+    - `products`: `null` | [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+      - `id`: `string` — The ID of the product.
+      - `title`: `string` — The title of the product.
+      - `handle`: `string` — The handle of the product. The handle can be used to create slug URL paths.
+      - `subtitle`: `null` | `string` — The subttle of the product.
+      - `description`: `null` | `string` — The description of the product.
+      - `is_giftcard`: `boolean` — Whether the product is a gift card.
+      - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) — The status of the product.
+      - `thumbnail`: `null` | `string` — The URL of the product's thumbnail.
+      - `width`: `null` | `number` — The width of the product.
+      - `weight`: `null` | `number` — The weight of the product.
+      - `length`: `null` | `number` — The length of the product.
+      - `height`: `null` | `number` — The height of the product.
+      - `origin_country`: `null` | `string` — The origin country of the product.
+      - `hs_code`: `null` | `string` — The HS Code of the product.
+      - `mid_code`: `null` | `string` — The MID Code of the product.
+      - `material`: `null` | `string` — The material of the product.
+      - `collection`: `null` | [ProductCollectionDTO](/resources/references/product/interfaces/productProductCollectionDTO) — The associated product collection.
+      - `collection_id`: `null` | `string` — The associated product collection id.
+      - `categories`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] (optional) — The associated product categories.
+      - `type`: `null` | [ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO) — The associated product type.
+      - `type_id`: `null` | `string` — The associated product type id.
+      - `tags`: [ProductTagDTO](/resources/references/product/interfaces/productProductTagDTO)\[] — The associated product tags.
+      - `variants`: [ProductVariantDTO](/resources/references/product/interfaces/productProductVariantDTO)\[] — The associated product variants.
+      - `options`: [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO)\[] — The associated product options.
+      - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+      - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+      - `external_id`: `null` | `string` — The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.
+      - `created_at`: `string` | `Date` — When the product was created.
+      - `updated_at`: `string` | `Date` — When the product was updated.
+      - `deleted_at`: `string` | `Date` — When the product was deleted.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `values`: [ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[] — The associated product option values.
+      - `id`: `string` — The ID of the product option value.
+      - `value`: `string` — The value of the product option value.
+      - `option`: `null` | [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO) (optional) — The associated product option. It may only be available if the `option` relation is expanded.
+      - `option_id`: `null` | `string` (optional) — The associated product option id.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — When the product option value was created.
+      - `updated_at`: `string` | `Date` — When the product option value was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product option value was deleted.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product option was created.
+    - `updated_at`: `string` | `Date` — When the product option was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product option was deleted.
+  - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+    - `id`: `string` — The ID of the product image.
+    - `url`: `string` — The URL of the product image.
+    - `rank`: `number` — The rank of the product image.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product image was created.
+    - `updated_at`: `string` | `Date` — When the product image was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product image was deleted.
+  - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+  - `external_id`: `null` | `string` — The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.
+  - `created_at`: `string` | `Date` — When the product was created.
+  - `updated_at`: `string` | `Date` — When the product was updated.
+  - `deleted_at`: `string` | `Date` — When the product was deleted.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.

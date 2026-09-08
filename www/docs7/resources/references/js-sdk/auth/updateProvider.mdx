@@ -1,0 +1,50 @@
+---
+title: updateProvider - JS SDK Auth Reference
+sidebarTitle: updateProvider
+---
+
+This documentation provides a reference to the `sdk.auth.updateProvider` method used to send requests to Medusa's Authentication API routes. It can be used for admin users, customers, or custom actor types.
+
+This method is used to update user-related data authentication data.
+
+More specifically, use this method when updating the password of an admin user, customer, or
+custom actor type after requesting to reset their password with [resetPassword](/resources/references/js-sdk/auth/resetPassword).
+
+This method sends a request to [this API route](/api/admin/auth/reset-password).
+
+Related guide: [How to allow customers to reset their passwords in a storefront](/resources/storefront-development/customers/reset-password).
+
+## Example
+
+```ts
+sdk.auth.updateProvider(
+  "customer",
+  "emailpass",
+  {
+    password: "supersecret"
+  },
+  token
+)
+.then(() => {
+  // password updated
+})
+```
+
+<a id="updateprovider-parameters" />
+
+## Parameters
+
+**updateProvider**
+
+- `actor`: `string` — The actor type. For example, `user` for admin user, or `customer` for customer.
+- `provider`: `string` — The authentication provider to use. For example, `emailpass`.
+- `body`: [AdminUpdateProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateProvider) — The data necessary to update the user's authentication data. When resetting the user's password, send the `password` property.
+- `token`: `string`
+
+<a id="updateprovider-returns" />
+
+## Returns
+
+**updateProvider**
+
+- `Promise`: Promise\<void> — This method is used to update user-related data authentication data. More specifically, use this method when updating the password of an admin user, customer, or custom actor type after requesting to reset their password with [resetPassword](/resources/references/js-sdk/auth/resetPassword). This method sends a request to [this API route](/api/admin/auth/reset-password). Related guide: [How to allow customers to reset their passwords in a storefront](/resources/storefront-development/customers/reset-password).

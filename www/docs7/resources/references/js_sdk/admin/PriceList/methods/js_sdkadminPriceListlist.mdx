@@ -1,0 +1,176 @@
+---
+title: list
+---
+
+This method retrieves a paginated list of price lists. It sends a request to the
+[List Price Lists](/api/admin/price-lists/list-price-lists) API route.
+
+## Example
+
+To retrieve the list of price lists:
+
+```ts
+sdk.admin.priceList.list()
+.then(({ price_lists, count, limit, offset }) => {
+  console.log(price_lists)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.priceList.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ price_lists, count, limit, offset }) => {
+  console.log(price_lists)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each price list:
+
+```ts
+sdk.admin.priceList.list({
+  fields: "id,*prices"
+})
+.then(({ price_lists, count, limit, offset }) => {
+  console.log(price_lists)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+## Parameters
+
+**list**
+
+- `query`: [AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keyword to filter the price list's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by price list ID(s).
+    - `starts_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the price list's start date.
+    - `ends_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the price list's end date.
+    - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus)\[] (optional) — Filter by statuses.
+    - `rules_count`: `number`\[] (optional) — Filter by the number of rules.
+  - `$or`: ([AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[AdminPriceListListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keyword to filter the price list's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by price list ID(s).
+    - `starts_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the price list's start date.
+    - `ends_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the price list's end date.
+    - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus)\[] (optional) — Filter by statuses.
+    - `rules_count`: `number`\[] (optional) — Filter by the number of rules.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keyword to filter the price list's searchable fields.
+  - `id`: `string` | `string`\[] (optional) — Filter by price list ID(s).
+  - `starts_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the price list's start date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `ends_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the price list's end date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus)\[] (optional) — Filter by statuses.
+  - `rules_count`: `number`\[] (optional) — Filter by the number of rules.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+## Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminPriceListListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListListResponse)> — The paginated list of price lists.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `price_lists`: [AdminPriceList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceList)\[] — The list of price lists.
+    - `id`: `string` — The price list's ID.
+    - `title`: `string` — The price list's title.
+    - `description`: `string` — The price list's description.
+    - `rules`: `Record<string, any>` — The price list's rules.
+    - `starts_at`: `null` | `string` — The price list's start date.
+    - `ends_at`: `null` | `string` — The price list's end date.
+    - `status`: [PriceListStatus](/resources/references/pricing/types/pricingPriceListStatus) — The price list's status.
+    - `type`: [PriceListType](/resources/references/pricing/types/pricingPriceListType) — The price list's type.
+    - `prices`: [AdminPriceListPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPriceListPrice)\[] — The price list's prices.
+    - `created_at`: `string` — The date the price list was created.
+    - `updated_at`: `string` — The date the price list was updated.
+    - `deleted_at`: `null` | `string` — The date the price list was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.

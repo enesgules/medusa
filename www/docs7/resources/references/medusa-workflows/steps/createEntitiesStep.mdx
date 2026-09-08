@@ -1,0 +1,49 @@
+---
+title: createEntitiesStep - Medusa Core Workflows Reference
+sidebarTitle: createEntitiesStep
+---
+
+This documentation provides a reference to the `createEntitiesStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates one or more entities using methods in a module's service.
+
+## Example
+
+```ts
+createEntitiesStep({
+  moduleRegistrationName: Modules.CART,
+  invokeMethod: "createCreditLines",
+  compensateMethod: "deleteCreditLines",
+  data: {
+    cart_id: "cart_123",
+    amount: 10,
+    reference: "payment",
+    reference_id: "payment_123",
+    metadata: {
+      key: "value",
+    },
+  },
+})
+```
+
+<a id="createentitiesstep-input" />
+
+## Input
+
+**createEntitiesStep**
+
+- `CreateEntitiesStepType`: [CreateEntitiesStepType](/resources/references/core_flows/core_core_flows_src/interfaces/core_flowscore_core_flows_srcCreateEntitiesStepType)
+  - `moduleRegistrationName`: `string` — The regitration name of the module that contains the method to be invoked.
+  - `invokeMethod`: `string` — The method to be invoked.
+  - `compensateMethod`: `string` — The method to be invoked in case of compensation (when an error occurs).
+  - `entityIdentifier`: `string` (optional) — A string to pass to the compensate method.
+  - `data`: `any`\[] — The data to pass to the invoke method. For example, an array of objects to create.
+
+<a id="createentitiesstep-output" />
+
+## Output
+
+**createEntitiesStep**
+
+- `any[]`: `any`\[]
+  - `any`: `any`

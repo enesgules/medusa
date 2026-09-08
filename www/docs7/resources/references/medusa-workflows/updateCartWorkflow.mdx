@@ -1,0 +1,348 @@
+---
+title: updateCartWorkflow - Medusa Core Workflows Reference
+sidebarTitle: updateCartWorkflow
+---
+
+This documentation provides a reference to the `updateCartWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow updates a cart and returns it. You can update the cart's region, address, and more. This workflow is executed by the
+[Update Cart Store API Route](/api/store/carts/update-a-cart).
+
+> **Note**
+>
+> This workflow doesn't allow updating a cart's line items. Instead, use [addToCartWorkflow](/resources/references/medusa-workflows/addToCartWorkflow) and [updateLineItemInCartWorkflow](/resources/references/medusa-workflows/updateLineItemInCartWorkflow).
+
+This workflow has a hook that allows you to perform custom actions on the updated cart. For example, you can pass custom data under the `additional_data` property of the Update Cart API route,
+then update any associated details related to the cart in the workflow's hook.
+
+You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around updating a cart.
+
+> **Note**
+>
+> If you use this workflow in another, you must acquire a lock before running it and release the lock after. Learn more in the [Locking Operations in Workflows](/learn/fundamentals/workflows/locks#locks-in-nested-workflows) guide.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/cart/workflows/update-cart.ts#L166)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { updateCartWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await updateCartWorkflow(req.scope)
+    .run({
+      input: {
+        id: "cart_123",
+        region_id: "region_123",
+        shipping_address: {
+          first_name: "John",
+          last_name: "Doe",
+          address_1: "1234 Main St",
+          city: "San Francisco",
+          country_code: "US",
+          postal_code: "94111",
+          phone: "1234567890",
+        },
+        additional_data: {
+          external_id: "123"
+        }
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { updateCartWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await updateCartWorkflow(container)
+    .run({
+      input: {
+        id: "cart_123",
+        region_id: "region_123",
+        shipping_address: {
+          first_name: "John",
+          last_name: "Doe",
+          address_1: "1234 Main St",
+          city: "San Francisco",
+          country_code: "US",
+          postal_code: "94111",
+          phone: "1234567890",
+        },
+        additional_data: {
+          external_id: "123"
+        }
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { updateCartWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await updateCartWorkflow(container)
+    .run({
+      input: {
+        id: "cart_123",
+        region_id: "region_123",
+        shipping_address: {
+          first_name: "John",
+          last_name: "Doe",
+          address_1: "1234 Main St",
+          city: "San Francisco",
+          country_code: "US",
+          postal_code: "94111",
+          phone: "1234567890",
+        },
+        additional_data: {
+          external_id: "123"
+        }
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { updateCartWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    // Acquire lock from nested workflow here
+    // acquireLockStep({  key: input.id,  timeout: 2,  ttl: 10,  })
+    const result = updateCartWorkflow
+      .runAsStep({
+        input: {
+          id: "cart_123",
+          region_id: "region_123",
+          shipping_address: {
+            first_name: "John",
+            last_name: "Doe",
+            address_1: "1234 Main St",
+            city: "San Francisco",
+            country_code: "US",
+            postal_code: "94111",
+            phone: "1234567890",
+          },
+          additional_data: {
+            external_id: "123"
+          }
+        }
+      })
+    // Release lock here
+    // releaseLockStep({ key: input.id })
+  }
+)
+```
+
+<a id="updatecartworkflow-steps" />
+
+## Steps
+
+- [acquireLockStep](/resources/references/medusa-workflows/steps/acquireLockStep): This step acquires a lock for a given key. Learn more about locks in the [Locking Module](/resources/infrastructure-modules/locking) guide.
+  - [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep): This step fetches data across modules using the Query. Learn more in the [Query documentation](/learn/fundamentals/module-links/query).
+    - [validateCartStep](/resources/references/medusa-workflows/steps/validateCartStep): This step validates a cart to ensure it exists and is not completed. If not valid, the step throws an error. :::tip You can use the [retrieveCartStep](/resources/references/medusa-workflows/steps/retrieveCartStep) to retrieve a cart's details. :::
+      - [findSalesChannelStep](/resources/references/medusa-workflows/steps/findSalesChannelStep): This step either retrieves a sales channel either using the ID provided as an input, or, if no ID is provided, the default sales channel of the first store.
+      - [findOrCreateCustomerStep](/resources/references/medusa-workflows/steps/findOrCreateCustomerStep): This step finds or creates a customer based on the provided ID or email. It prioritizes finding the customer by ID, then by email. The step creates a new customer either if: - No customer is found with the provided ID and email; - Or if it found the customer by ID but their email does not match the email in the input. The step returns the details of the customer found or created, along with their email.
+        - **when** (when: \{
+          return !!data.input.region\_id
+          })
+        - [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep): This step fetches data across modules using the Query. Learn more in the [Query documentation](/learn/fundamentals/module-links/query).
+          - [prepareCartToUpdateStep](/resources/references/medusa-workflows/prepareCartToUpdateStep): This step builds the cart update payload: it resolves the currency and region from the (possibly new) region, reconciles the shipping address against the region's countries, and applies customer and sales channel changes. It throws an error if the shipping address country isn't within the region.
+            - [validate](/resources/references/medusa-workflows/updateCartWorkflow#validate): This hook is executed before all operations. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution.
+              - **when** (when: \{
+                return !!regionUpdated
+                })
+              - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+                - [updateCartsStep](/resources/references/medusa-workflows/steps/updateCartsStep): This step updates a cart.
+                - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+                  - **when** (when: \{
+                    return !!regionUpdated
+                    })
+                  - [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep): This step fetches data across modules using the Query. Learn more in the [Query documentation](/learn/fundamentals/module-links/query).
+                  - [deleteLineItemsStep](/resources/references/medusa-workflows/steps/deleteLineItemsStep): This step deletes line items.
+                    - [refreshCartItemsWorkflow](/resources/references/medusa-workflows/refreshCartItemsWorkflow): Refresh a cart's details after an update.
+                      - [cartUpdated](/resources/references/medusa-workflows/updateCartWorkflow#cartupdated)
+                        - [releaseLockStep](/resources/references/medusa-workflows/steps/releaseLockStep): This step releases a lock for a given key. Learn more about locks in the [Locking Module](/resources/infrastructure-modules/locking) guide.
+
+<a id="updatecartworkflow-input" />
+
+## Input
+
+**updateCartWorkflow**
+
+- `UpdateCartWorkflowInput`: [UpdateCartWorkflowInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcUpdateCartWorkflowInput)
+  - `id`: `string` — The ID of the cart to update.
+  - `promo_codes`: `string`\[] (optional) — An array of promotional codes applied on the cart.
+  - `region_id`: `string` (optional) — The ID of the cart's region.
+  - `customer_id`: `null` | `string` (optional) — The ID of the cart's customer.
+  - `sales_channel_id`: `null` | `string` (optional) — The ID of the cart's sales channel.
+  - `email`: `null` | `string` (optional) — The email address of the cart's customer.
+  - `currency_code`: `string` (optional) — The currency code for the cart.
+
+    Example:
+
+    ```
+    usd
+    ```
+  - `locale`: `null` | `string` (optional) — The locale code for the cart in BCP 47 format.
+
+    Example:
+
+    ```
+    "en-US"
+    ```
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs of data related to the cart.
+  - `shipping_address`: `null` | [CreateAddressDTO](/resources/references/cart/interfaces/cartCreateAddressDTO) | [UpdateAddressDTO](/resources/references/cart/interfaces/cartUpdateAddressDTO) (optional) — The cart's shipping address. You can either update the cart's existing shipping address, or create a new one.
+    - `customer_id`: `string` (optional) — The associated customer's ID.
+    - `company`: `string` (optional) — The company of the address.
+    - `first_name`: `string` (optional) — The first name of the address.
+    - `last_name`: `string` (optional) — The last name of the address.
+    - `address_1`: `string` (optional) — The first line of the address.
+    - `address_2`: `string` (optional) — The second line of the address.
+    - `city`: `string` (optional) — The city of the address.
+    - `country_code`: `string` (optional) — The ISO two country code of the address.
+    - `province`: `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
+    - `postal_code`: `string` (optional) — The postal code of the address.
+    - `phone`: `string` (optional) — The phone of the address.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` — The ID of the address.
+  - `billing_address`: `null` | [CreateAddressDTO](/resources/references/cart/interfaces/cartCreateAddressDTO) | [UpdateAddressDTO](/resources/references/cart/interfaces/cartUpdateAddressDTO) (optional) — The cart's billing address. You can either update the cart's existing billing address, or create a new one.
+    - `customer_id`: `string` (optional) — The associated customer's ID.
+    - `company`: `string` (optional) — The company of the address.
+    - `first_name`: `string` (optional) — The first name of the address.
+    - `last_name`: `string` (optional) — The last name of the address.
+    - `address_1`: `string` (optional) — The first line of the address.
+    - `address_2`: `string` (optional) — The second line of the address.
+    - `city`: `string` (optional) — The city of the address.
+    - `country_code`: `string` (optional) — The ISO two country code of the address.
+    - `province`: `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
+    - `postal_code`: `string` (optional) — The postal code of the address.
+    - `phone`: `string` (optional) — The phone of the address.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `id`: `string` — The ID of the address.
+  - `additional_data`: `Record<string, unknown>` (optional) — Additional data that can be passed through the `additional_data` property in HTTP requests. Learn more in [this documentation](/learn/fundamentals/api-routes/additional-data).
+
+## Hooks
+
+Hooks allow you to inject custom functionalities into the workflow. You'll receive data from the workflow, as well as additional data sent through an HTTP request.
+
+Learn more about [Hooks](/learn/fundamentals/workflows/workflow-hooks) and [Additional Data](/learn/fundamentals/api-routes/additional-data).
+
+### validate
+
+This hook is executed before all operations. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution.
+
+#### Example
+
+```ts
+import { updateCartWorkflow } from "@medusajs/medusa/core-flows"
+
+updateCartWorkflow.hooks.validate(
+  (async ({ input, cart }, { container }) => {
+    //TODO
+  })
+)
+```
+
+<a id="input" />
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+**validate**
+
+- `input`: object — The input data for the hook.
+  - `input`: [WorkflowDataProperties](/resources/references/workflows/types/workflowsWorkflowDataProperties)\<object>
+    - `__step__`: `string`
+  - `cart`: `any`
+
+### cartUpdated
+
+This hook is executed after a cart is update. You can consume this hook to perform custom actions on the updated cart.
+
+#### Example
+
+```ts
+import { updateCartWorkflow } from "@medusajs/medusa/core-flows"
+
+updateCartWorkflow.hooks.cartUpdated(
+  (async ({ cart, additional_data }, { container }) => {
+    //TODO
+  })
+)
+```
+
+<a id="input-1" />
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+**cartUpdated**
+
+- `input`: object — The input data for the hook.
+  - `cart`: `any`
+  - `additional_data`: `Record<string, unknown> | undefined` — Additional data that can be passed through the `additional_data` property in HTTP requests. Learn more in [this documentation](/learn/fundamentals/api-routes/additional-data).
+
+<a id="updatecartworkflow-emitted-events" />
+
+## Emitted Events
+
+- `cart.updated`: Emitted when a cart's details are updated.
+
+  ```ts
+  {
+    id, // The ID of the cart
+  }
+  ```
+- `cart.region_updated`: Emitted when the cart's region is updated. This event is emitted alongside the `cart.updated` event.
+
+  ```ts
+  {
+    id, // The ID of the cart
+  }
+  ```

@@ -1,0 +1,39 @@
+---
+title: hasMany Relationship Method - DML Reference
+sidebarTitle: hasMany
+---
+
+This method defines a relationship between two data models,
+where the owner of the relationship has many records of the related
+data model, but the related data model only has one owner.
+
+For example, a store "hasMany" products.
+
+## Example
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const Store = model.define("store", {
+  id: model.id(),
+  products: model.hasMany(() => Product),
+})
+```
+
+<a id="hasmany-type-parameters" />
+
+## Type Parameters
+
+**hasMany**
+
+- `T`: `object` (optional) — The type of the entity builder passed as a first parameter. By default, it's a function returning the related model.
+
+<a id="hasmany-parameters" />
+
+## Parameters
+
+**hasMany**
+
+- `entityBuilder`: T — A function that returns the data model this model is related to.
+- `options`: [RelationshipOptions](/resources/references/types/DmlTypes/types/typesDmlTypesRelationshipOptions) (optional) — The relationship's options.
+  - `mappedBy`: `string` (optional) — The name of the relationship as defined in the other data model. This is only required by the `belongsTo` and `manyToMany` relationship method.

@@ -1,0 +1,120 @@
+---
+title: listAndCountPrices - Pricing Module Reference
+sidebarTitle: listAndCountPrices
+---
+
+This documentation provides a reference to the `listAndCountPrices` method. This belongs to the Pricing Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method is used to retrieve a paginated list of prices along with the total count of
+available prices satisfying the provided filters.
+
+## Example
+
+To retrieve a list of prices using their IDs:
+
+```ts
+const [prices, count] = await pricingModuleService.listPrices(
+  {
+    id: ["price_123", "price_321"],
+  }
+)
+```
+
+To specify relations that should be retrieved within the prices:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const [prices, count] = await pricingModuleService.listPrices(
+  {
+    id: ["price_123", "price_321"],
+  },
+  {
+    relations: ["price_rules"],
+  }
+)
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const [prices, count] = await pricingModuleService.listPrices(
+  {
+    id: ["price_123", "price_321"],
+  },
+  {
+    relations: ["price_rules"],
+    take: 20,
+    skip: 2,
+  }
+)
+```
+
+<a id="listandcountprices-parameters" />
+
+## Parameters
+
+**listAndCountPrices**
+
+- `filters`: [FilterablePriceProps](/resources/references/pricing/interfaces/pricingFilterablePriceProps) (optional) — The filters to apply on the retrieved prices.
+  - `$and`: ([FilterablePriceProps](/resources/references/pricing/interfaces/pricingFilterablePriceProps) | [BaseFilterable](/resources/references/pricing/interfaces/pricingBaseFilterable)\<[FilterablePriceProps](/resources/references/pricing/interfaces/pricingFilterablePriceProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterablePriceProps](/resources/references/pricing/interfaces/pricingFilterablePriceProps) | [BaseFilterable](/resources/references/pricing/interfaces/pricingBaseFilterable)\<[FilterablePriceProps](/resources/references/pricing/interfaces/pricingFilterablePriceProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterablePriceProps](/resources/references/pricing/interfaces/pricingFilterablePriceProps) | [BaseFilterable](/resources/references/pricing/interfaces/pricingBaseFilterable)\<[FilterablePriceProps](/resources/references/pricing/interfaces/pricingFilterablePriceProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string`\[] (optional) — The IDs to filter the prices by.
+    - `currency_code`: `string` | `string`\[] (optional) — Currency codes to filter price by.
+    - `price_set_id`: `string`\[] (optional) — The IDs to filter the price's associated price set.
+    - `price_list_id`: `string`\[] (optional) — The IDs to filter the price's associated price list.
+  - `$or`: ([FilterablePriceProps](/resources/references/pricing/interfaces/pricingFilterablePriceProps) | [BaseFilterable](/resources/references/pricing/interfaces/pricingBaseFilterable)\<[FilterablePriceProps](/resources/references/pricing/interfaces/pricingFilterablePriceProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterablePriceProps](/resources/references/pricing/interfaces/pricingFilterablePriceProps) | [BaseFilterable](/resources/references/pricing/interfaces/pricingBaseFilterable)\<[FilterablePriceProps](/resources/references/pricing/interfaces/pricingFilterablePriceProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterablePriceProps](/resources/references/pricing/interfaces/pricingFilterablePriceProps) | [BaseFilterable](/resources/references/pricing/interfaces/pricingBaseFilterable)\<[FilterablePriceProps](/resources/references/pricing/interfaces/pricingFilterablePriceProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string`\[] (optional) — The IDs to filter the prices by.
+    - `currency_code`: `string` | `string`\[] (optional) — Currency codes to filter price by.
+    - `price_set_id`: `string`\[] (optional) — The IDs to filter the price's associated price set.
+    - `price_list_id`: `string`\[] (optional) — The IDs to filter the price's associated price list.
+  - `id`: `string`\[] (optional) — The IDs to filter the prices by.
+  - `currency_code`: `string` | `string`\[] (optional) — Currency codes to filter price by.
+  - `price_set_id`: `string`\[] (optional) — The IDs to filter the price's associated price set.
+  - `price_list_id`: `string`\[] (optional) — The IDs to filter the price's associated price list.
+- `config`: [FindConfig](/resources/references/pricing/interfaces/pricingFindConfig)\<[PriceDTO](/resources/references/pricing/interfaces/pricingPriceDTO)> (optional) — The configurations determining how the prices are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/pricing/types/pricingFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/pricing/types/pricingInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/pricing/types/pricingCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/pricing/interfaces/pricingContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/pricing/interfaces/pricingIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listandcountprices-returns" />
+
+## Returns
+
+**listAndCountPrices**
+
+- `Promise`: Promise\<\[[PriceDTO](/resources/references/pricing/interfaces/pricingPriceDTO)\[], number]> — The list of prices and their total count.
+  - `PriceDTO[]`: [PriceDTO](/resources/references/pricing/interfaces/pricingPriceDTO)\[]
+  - `number`: `number`

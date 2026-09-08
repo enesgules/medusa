@@ -1,0 +1,110 @@
+---
+title: update
+---
+
+This method updates a shipping option. It sends a request to the
+[Update Shipping Option](/api/admin/shipping-options/update-a-shipping-option)
+API route.
+
+## Example
+
+```ts
+sdk.admin.shippingOption.update("so_123", {
+  name: "Standard Shipping",
+})
+.then(({ shipping_option }) => {
+  console.log(shipping_option)
+})
+```
+
+<a id="update-parameters" />
+
+## Parameters
+
+**update**
+
+- `id`: `string` — The ID of the shipping option to update.
+- `body`: [AdminUpdateShippingOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateShippingOption) — The details of the shipping option to update.
+  - `name`: `string` (optional) — The name of the shipping option. Customers can view this name during checkout.
+
+    Example:
+
+    ```
+    "Standard Shipping"
+    ```
+  - `data`: `Record<string, unknown>` (optional) — Additional data that is useful for third-party fulfillment providers that process fulfillments for the shipping option.
+  - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) (optional) — The type of shipping option's price.
+  - `provider_id`: `string` (optional) — The ID of the fulfillment provider that the shipping option belongs to.
+  - `shipping_profile_id`: `string` (optional) — The ID of the shipping profile that the shipping option belongs to. Learn more in the [Shipping Options](/resources/commerce-modules/fulfillment/shipping-option#shipping-profiles-and-types) documentation.
+  - `type`: [AdminCreateShippingOptionType](/resources/references/types/interfaces/typesAdminCreateShippingOptionType) (optional) — The type of shipping option. Learn more in the [Shipping Options](/resources/commerce-modules/fulfillment/shipping-option#shipping-profiles-and-types) documentation.
+    - `label`: `string` — The label of the shipping option type.
+    - `description`: `string` (optional) — The description of the shipping option type.
+    - `code`: `string` — The code of the shipping option type.
+  - `type_id`: `string` (optional) — The ID of the type of shipping option. Learn more in the [Shipping Option](/resources/commerce-modules/fulfillment/shipping-option#shipping-profiles-and-types) documentation.
+  - `prices`: ([AdminUpdateShippingOptionPriceWithCurrency](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateShippingOptionPriceWithCurrency) | [AdminUpdateShippingOptionPriceWithRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateShippingOptionPriceWithRegion))\[] (optional) — The prices of the shipping option.
+    - `rules`: [PriceRule](/resources/references/pricing/models/PriceRule)\[] (optional) — The rules of the shipping option price that indicate when the price should be applied.
+    - `id`: `string` (optional) — The ID of the shipping option price that is being updated. If not provided, a new shipping option price will be created.
+    - `currency_code`: `string` (optional) — The currency code of the shipping option price.
+
+      Example:
+
+      ```
+      "usd"
+      ```
+    - `amount`: `number` (optional) — The amount of the shipping option price.
+    - `region_id`: `string` (optional) — The ID of the region that the shipping option price belongs to.
+  - `rules`: ([AdminCreateShippingOptionRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateShippingOptionRule) | [AdminUpdateShippingOptionRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateShippingOptionRule))\[] (optional) — The rules of the shipping option. Learn more in the [Shipping Option Rules](/resources/commerce-modules/fulfillment/shipping-option#shipping-option-rules) documentation.
+    - `operator`: [RuleOperatorType](/resources/references/types/CommonTypes/types/typesCommonTypesRuleOperatorType) — The operator of the shipping option rule.
+    - `attribute`: `string` — The attribute of the shipping option rule.
+
+      Example:
+
+      ```
+      `enabled_in_store`
+      ```
+    - `value`: `string` | `string`\[] — The value of the shipping option rule.
+
+      Example:
+
+      ```
+      `true`
+      ```
+    - `id`: `string` — The ID of the shipping option rule that is being updated.
+  - `metadata`: `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the shipping option.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the shipping option.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+## Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminShippingOptionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionResponse)> — The shipping option's details.
+  - `shipping_option`: [AdminShippingOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOption) — The shipping option's details.
+    - `id`: `string` — The shipping option's ID.
+    - `name`: `string` — The shipping option's name. Customers can see this name during checkout.
+
+      Example:
+
+      ```
+      "Standard Shipping"
+      ```
+    - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The type of the shipping option's price: - `flat`: the price is a fixed amount stored in the `prices` property. - `calculated`: the price is calculated during checkout by the shipping option's fulfillment provider, so the `prices` property is empty.
+    - `service_zone_id`: `string` — The ID of the service zone that the shipping option belongs to. Learn more in the [Shipping Options](/resources/commerce-modules/fulfillment/shipping-option#service-zone-restrictions) documentation.
+    - `service_zone`: [AdminServiceZone](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminServiceZone) — The service zone that the shipping option belongs to. Learn more in the [Shipping Options](/resources/commerce-modules/fulfillment/shipping-option#service-zone-restrictions) documentation.
+    - `provider_id`: `string` — The ID of the fulfillment provider that the shipping option belongs to.
+    - `provider`: [AdminFulfillmentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentProvider) — The fulfillment provider that the shipping option belongs to.
+    - `shipping_option_type_id`: `null` | `string` — The ID of the shipping option's type. Learn more in the [Shipping Options](/resources/commerce-modules/fulfillment/shipping-option#shipping-profiles-and-types) documentation.
+    - `type`: [AdminShippingOptionType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionType) — The shipping option's type. Learn more in the [Shipping Options](/resources/commerce-modules/fulfillment/shipping-option#shipping-profiles-and-types) documentation.
+    - `shipping_profile_id`: `string` — The ID of the shipping profile that the shipping option belongs to. Learn more in the [Shipping Options](/resources/commerce-modules/fulfillment/shipping-option#shipping-profiles-and-types) documentation.
+    - `shipping_profile`: [AdminShippingProfile](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingProfile) — The shipping profile that the shipping option belongs to. Learn more in the [Shipping Options](/resources/commerce-modules/fulfillment/shipping-option#shipping-profiles-and-types) documentation.
+    - `rules`: [AdminShippingOptionRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionRule)\[] — The rules of the shipping option. Learn more in the [Shipping Option Rules](/resources/commerce-modules/fulfillment/shipping-option#shipping-option-rules) documentation.
+    - `prices`: [AdminShippingOptionPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminShippingOptionPrice)\[] — The prices of the shipping option.
+    - `data`: `null` | `Record<string, unknown>` — Additional data that is useful for third-party fulfillment providers that process fulfillments for the shipping option. Learn more in the [Shipping Options](/resources/commerce-modules/fulfillment/shipping-option#data-property) documentation.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the shipping option.
+    - `created_at`: `Date` — The date when the shipping option was created.
+    - `updated_at`: `Date` — The date when the shipping option was updated.
+    - `deleted_at`: `null` | `Date` — The date when the shipping option was deleted.

@@ -1,0 +1,47 @@
+---
+title: AdminColumn
+---
+
+The details of a column available for an entity's data table view.
+
+## Properties
+
+**AdminColumn**
+
+- `id`: `string` — The column's unique identifier (e.g., "display\_id", "customer.email").
+- `name`: `string` — The display name for the column.
+- `description`: `string` (optional) — Description of the column.
+- `field`: `string` — The field path to access the data.
+- `sortable`: `boolean` — Whether the column can be sorted.
+- `hideable`: `boolean` — Whether the column can be hidden.
+- `default_visible`: `boolean` — Whether the column is visible by default.
+- `data_type`: `"string"` | `"number"` | `"boolean"` | `"object"` | `string` & `object` | `"enum"` | `"date"` | `"currency"` — The data type of the column.
+- `semantic_type`: `string` (optional) — The semantic type provides additional context about the data.
+- `context`: `string` (optional) — Additional context about the column.
+- `computed`: `object` (optional) — Information about computed columns.
+  - `type`: `string`
+  - `required_fields`: `string`\[]
+  - `optional_fields`: `string`\[]
+- `metadata`: `Record<string, any>` (optional) — Arbitrary per-column configuration consumed by cell renderers (e.g. the field path a renderer reads, or a value->variant map). Populated from the settings entity override's `fieldMetadata` (any column) or a computed column definition's `metadata`.
+- `relationship`: `object` (optional) — Information about relationship columns.
+  - `entity`: `string`
+  - `field`: `string`
+- `default_order`: `number` (optional) — Default order for sorting columns.
+- `category`: `"metadata"` | `"status"` | `"identifier"` | `"timestamp"` | `"metric"` | `"relationship"` | `"field"` | `"computed"` (optional) — Category for grouping columns.
+- `render_mode`: `string` (optional) — Render mode hint for the UI to determine how to display this column.
+- `filter`: `object` (optional) — Filter configuration for this column.
+  - `enabled`: `boolean` — Whether filtering is enabled for this column.
+  - `operators`: `string`\[] (optional) — Available filter operators.
+  - `enumValues`: `string`\[] (optional) — Enum values if applicable.
+  - `relationship`: [RelationshipFilterConfig](/resources/references/types/HttpTypes/interfaces/typesHttpTypesRelationshipFilterConfig) (optional) — Relationship filter config for dropdown selection.
+    - `entity`: `string` — Related entity name (e.g., "SalesChannel").
+    - `value_field`: `string` — Field to use as filter value (e.g., "id").
+    - `display_field`: `string` — Field to display in dropdown (e.g., "name").
+    - `multiple`: `boolean` — Whether multiple selection is allowed.
+    - `endpoint`: `string` — API endpoint to fetch options (e.g., "/admin/sales-channels").
+    - `filter_key`: `string` (optional) — Key to use for filtering the relationship. If not provided, the column field is used.
+- `source`: `object` (optional) — Source information about where this column comes from.
+  - `module`: `string` — Module name.
+  - `entity`: `string` — Entity name.
+- `custom_label`: `boolean` (optional) — Whether this column uses a custom user-defined label.
+- `label_id`: `string` (optional) — ID of the PropertyLabel record if custom label is used.

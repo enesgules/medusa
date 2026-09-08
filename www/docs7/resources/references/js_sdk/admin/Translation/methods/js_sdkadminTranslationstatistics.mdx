@@ -1,0 +1,66 @@
+---
+title: statistics
+---
+
+This method retrieves the statistics for the translations for a given entity type or all entity types if no entity type is provided.
+It sends a request to the
+[Get Translation Statistics](/api/admin/translations/get-statistics) API route.
+
+## Example
+
+To retrieve the statistics for the translations for a given entity type:
+
+```ts
+sdk.admin.translation.statistics({
+  entity_type: "product"
+})
+.then(({ statistics }) => {
+  console.log(statistics)
+})
+```
+
+To retrieve the statistics for all entity types:
+
+```ts
+sdk.admin.translation.statistics()
+.then(({ statistics }) => {
+  console.log(statistics)
+})
+```
+
+<a id="statistics-parameters" />
+
+## Parameters
+
+**statistics**
+
+- `query`: [AdminTranslationStatisticsParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationStatisticsParams) (optional) — The query parameters which can optionally include the entity type to get the statistics for.
+  - `locales`: `string` | `string`\[] — The locales to check translations for. Can be a single locale or an array of locales.
+
+    Example:
+
+    ```
+    ["en-US", "fr-FR"]
+    ```
+  - `entity_types`: `string` | `string`\[] — The entity types to get statistics for. Can be a single entity type or an array.
+
+    Example:
+
+    ```
+    ["product", "product_variant"]
+    ```
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="statistics-returns" />
+
+## Returns
+
+**statistics**
+
+- `Promise`: Promise\<[AdminTranslationStatisticsResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslationStatisticsResponse)> — The translation statistics.
+  - `statistics`: `Record<string, [AdminTranslationEntityStatistics](/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationEntityStatistics)>` — Statistics by entity type.
+    - `expected`: `number` — Expected number of translated fields.
+    - `translated`: `number` — Actual number of translated fields. This doesn't count translations that are null or empty.
+    - `missing`: `number` — Number of missing translations for expected translatable fields.
+    - `by_locale`: `Record<string, [AdminTranslationLocaleStatistics](/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationLocaleStatistics)>` — Breakdown of statistics by locale.

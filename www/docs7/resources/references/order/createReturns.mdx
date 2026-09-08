@@ -1,0 +1,185 @@
+---
+title: createReturns - Order Module Reference
+sidebarTitle: createReturns
+---
+
+This documentation provides a reference to the `createReturns` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createreturns-data-sharedcontext-promisereturndto" />
+
+## createReturns(data, sharedContext?): Promise\<[ReturnDTO](/resources/references/order/interfaces/orderReturnDTO)>
+
+This method creates a return.
+
+### Example
+
+```ts
+const orderReturn = await orderModuleService.createReturns({
+  order_id: "123",
+  items: [
+    {
+      id: "321",
+      quantity: 1
+    }
+  ]
+})
+```
+
+<a id="createreturns-parameters" />
+
+### Parameters
+
+**createReturns**
+
+- `data`: [CreateOrderReturnDTO](/resources/references/order/interfaces/orderCreateOrderReturnDTO) — The return to be created.
+  - `order_id`: `string` — The associated order's ID.
+  - `return_id`: `string` (optional) — The associated return's ID.
+  - `description`: `string` (optional) — The description of the action.
+  - `internal_note`: `string` (optional) — The internal note of the action.
+  - `reference`: `string` (optional) — The name of the data model the action references. For example, `return`.
+  - `reference_id`: `string` (optional) — The ID of the record of the data model specified in [reference](/resources/references/order/interfaces/orderBaseOrderBundledActionsDTO#reference). For example, if `reference` is `return`, the value is `return_123`.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `location_id`: `null` | `string` (optional) — The ID of the location to return the items to.
+  - `items`: `object`\[] (optional) — The items of the return.
+    - `id`: `string` — The ID of the item.
+    - `quantity`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The quantity of the item.
+    - `internal_note`: `null` | `string` (optional) — The internal note of the item.
+    - `note`: `null` | `string` (optional) — The note of the item.
+    - `reason_id`: `null` | `string` (optional) — The associated reason's ID.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `shipping_method`: `string` | Omit\<[CreateOrderShippingMethodDTO](/resources/references/order/interfaces/orderCreateOrderShippingMethodDTO), "order\_id"> (optional) — The shipping method of the return.
+    - `name`: `string` — The name of the shipping method.
+    - `return_id`: `string` (optional) — The associated return's ID.
+    - `claim_id`: `string` (optional) — The associated claim's ID.
+    - `exchange_id`: `string` (optional) — The associated exchange's ID.
+    - `version`: `number` (optional) — The version of the shipping method.
+    - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The amount of the shipping method.
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the shipping method is tax inclusive.
+    - `shipping_option_id`: `string` (optional) — The associated shipping option's ID.
+    - `data`: `Record<string, unknown>` (optional) — The data of the shipping method.
+    - `tax_lines`: [CreateOrderTaxLineDTO](/resources/references/order/interfaces/orderCreateOrderTaxLineDTO)\[] (optional) — The tax lines of the shipping method.
+    - `adjustments`: [CreateOrderAdjustmentDTO](/resources/references/order/interfaces/orderCreateOrderAdjustmentDTO)\[] (optional) — The adjustments of the shipping method.
+  - `refund_amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The refund amount of the return.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications related to updates on the return.
+  - `claim_id`: `string` (optional) — The associated claim's ID.
+  - `exchange_id`: `string` (optional) — The associated exchange's ID.
+  - `created_by`: `null` | `string` (optional) — The id of the user that creates the fulfillment
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createreturns-returns" />
+
+### Returns
+
+**createReturns**
+
+- `Promise`: Promise\<[ReturnDTO](/resources/references/order/interfaces/orderReturnDTO)> — The created return.
+
+<a id="createreturns-data-sharedcontext-promisereturndto-1" />
+
+## createReturns(data, sharedContext?): Promise\<[ReturnDTO](/resources/references/order/interfaces/orderReturnDTO)\[]>
+
+This method creates returns.
+
+### Example
+
+```ts
+const returns = await orderModuleService.createReturns([{
+  order_id: "123",
+  items: [
+    {
+      id: "321",
+      quantity: 1
+    }
+  ]
+}])
+```
+
+<a id="createreturns-parameters-1" />
+
+### Parameters
+
+**createReturns**
+
+- `data`: [CreateOrderReturnDTO](/resources/references/order/interfaces/orderCreateOrderReturnDTO)\[] — The returns to be created.
+  - `order_id`: `string` — The associated order's ID.
+  - `return_id`: `string` (optional) — The associated return's ID.
+  - `description`: `string` (optional) — The description of the action.
+  - `internal_note`: `string` (optional) — The internal note of the action.
+  - `reference`: `string` (optional) — The name of the data model the action references. For example, `return`.
+  - `reference_id`: `string` (optional) — The ID of the record of the data model specified in [reference](/resources/references/order/interfaces/orderBaseOrderBundledActionsDTO#reference). For example, if `reference` is `return`, the value is `return_123`.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `location_id`: `null` | `string` (optional) — The ID of the location to return the items to.
+  - `items`: `object`\[] (optional) — The items of the return.
+    - `id`: `string` — The ID of the item.
+    - `quantity`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The quantity of the item.
+    - `internal_note`: `null` | `string` (optional) — The internal note of the item.
+    - `note`: `null` | `string` (optional) — The note of the item.
+    - `reason_id`: `null` | `string` (optional) — The associated reason's ID.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `shipping_method`: `string` | Omit\<[CreateOrderShippingMethodDTO](/resources/references/order/interfaces/orderCreateOrderShippingMethodDTO), "order\_id"> (optional) — The shipping method of the return.
+    - `name`: `string` — The name of the shipping method.
+    - `return_id`: `string` (optional) — The associated return's ID.
+    - `claim_id`: `string` (optional) — The associated claim's ID.
+    - `exchange_id`: `string` (optional) — The associated exchange's ID.
+    - `version`: `number` (optional) — The version of the shipping method.
+    - `amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) — The amount of the shipping method.
+    - `is_tax_inclusive`: `boolean` (optional) — Whether the shipping method is tax inclusive.
+    - `shipping_option_id`: `string` (optional) — The associated shipping option's ID.
+    - `data`: `Record<string, unknown>` (optional) — The data of the shipping method.
+    - `tax_lines`: [CreateOrderTaxLineDTO](/resources/references/order/interfaces/orderCreateOrderTaxLineDTO)\[] (optional) — The tax lines of the shipping method.
+    - `adjustments`: [CreateOrderAdjustmentDTO](/resources/references/order/interfaces/orderCreateOrderAdjustmentDTO)\[] (optional) — The adjustments of the shipping method.
+  - `refund_amount`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The refund amount of the return.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `no_notification`: `boolean` (optional) — Whether the customer should receive notifications related to updates on the return.
+  - `claim_id`: `string` (optional) — The associated claim's ID.
+  - `exchange_id`: `string` (optional) — The associated exchange's ID.
+  - `created_by`: `null` | `string` (optional) — The id of the user that creates the fulfillment
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createreturns-returns-1" />
+
+### Returns
+
+**createReturns**
+
+- `Promise`: Promise\<[ReturnDTO](/resources/references/order/interfaces/orderReturnDTO)\[]> — The created returns.
+  - `ReturnDTO[]`: [ReturnDTO](/resources/references/order/interfaces/orderReturnDTO)\[]

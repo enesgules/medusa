@@ -1,0 +1,105 @@
+---
+title: AdminCreatePromotion
+---
+
+## Properties
+
+**AdminCreatePromotion**
+
+- `code`: `string` — The promotion's code.
+- `is_automatic`: `boolean` (optional) — Whether the promotion is applied automatically or requires the customer to manually apply it by entering the code at checkout.
+- `is_tax_inclusive`: `boolean` (optional) — Whether the promotion is tax inclusive.
+- `type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues) — The type of promotion.
+- `status`: [PromotionStatusValues](/resources/references/promotion/types/promotionPromotionStatusValues) (optional) — The status of the promotion.
+- `campaign_id`: `null` | `string` (optional) — The ID of the campaign that the promotion belongs to.
+- `campaign`: [AdminCreateCampaign](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateCampaign) (optional) — The campaign that the promotion belongs to.
+  - `name`: `string` — The campaign's name.
+  - `description`: `null` | `string` (optional) — The campaign's description.
+  - `campaign_identifier`: `string` — The campaign's identifier.
+  - `starts_at`: `null` | `Date` (optional) — The date the campaign and its promotions start at.
+  - `ends_at`: `null` | `Date` (optional) — The date the campaign and its promotions end at.
+  - `budget`: `null` | `object` (optional) — The campaign's budget.
+    - `type`: [CampaignBudgetTypeValues](/resources/references/promotion/types/promotionCampaignBudgetTypeValues) (optional) — The budget's type. `spend` means the limit is set on the total amount discounted by the campaign's promotions; `usage` means the limit is set on the total number of times the campaign's promotions can be used. `use_by_attribute` means the limit is set for a specific condition, such as per customer.
+    - `currency_code`: `null` | `string` (optional) — The budget's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `limit`: `null` | `number` (optional) — The budget's limit.
+    - `attribute`: `null` | `string` (optional) — The attribute that the budget limit is applied to. By default, the budget is applied globally. If the type is `use_by_attribute`, this field indicates the attribute the budget is tracked by. For example, `customer_id` means the budget is tracked per customer.
+
+      Example:
+
+      ```
+      customer_id
+      ```
+- `application_method`: [AdminCreateApplicationMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateApplicationMethod) — The application method of the promotion.
+  - `description`: `null` | `string` (optional) — The description of the application method.
+  - `value`: `number` — The value of the application method.
+  - `currency_code`: `null` | `string` (optional) — The currency code of the application method.
+
+    Example:
+
+    ```
+    usd
+    ```
+  - `max_quantity`: `null` | `number` (optional) — The max quantity allowed in the cart for the associated promotion to be applied.
+  - `type`: [ApplicationMethodTypeValues](/resources/references/promotion/types/promotionApplicationMethodTypeValues) — The type of the application method.
+  - `target_type`: [ApplicationMethodTargetTypeValues](/resources/references/promotion/types/promotionApplicationMethodTargetTypeValues) — The target type of the application method indicating whether the associated promotion is applied to the cart's items, shipping methods, or the whole order.
+  - `allocation`: [ApplicationMethodAllocationValues](/resources/references/promotion/types/promotionApplicationMethodAllocationValues) (optional) — The allocation value that indicates whether the associated promotion is applied on each item in a cart or split between the items in the cart.
+  - `target_rules`: [AdminCreatePromotionRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreatePromotionRule)\[] (optional) — The target rules of the application method.
+    - `operator`: [PromotionRuleOperatorValues](/resources/references/promotion/types/promotionPromotionRuleOperatorValues) — The operator used to check whether the buy rule applies on a cart. For example, `eq` means that the cart's value for the specified attribute must match the specified value.
+    - `description`: `null` | `string` (optional) — The description of the promotion rule.
+    - `attribute`: `string` — The attribute to compare against when checking whether a promotion can be applied on a cart.
+
+      Example:
+
+      ```
+      items.product_id
+      ```
+    - `values`: `string` | `string`\[] — The value to compare against when checking whether a promotion can be applied on a cart.
+
+      Example:
+
+      ```
+      prod_123
+      ```
+  - `buy_rules`: [AdminCreatePromotionRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreatePromotionRule)\[] (optional) — The buy rules of the application method.
+    - `operator`: [PromotionRuleOperatorValues](/resources/references/promotion/types/promotionPromotionRuleOperatorValues) — The operator used to check whether the buy rule applies on a cart. For example, `eq` means that the cart's value for the specified attribute must match the specified value.
+    - `description`: `null` | `string` (optional) — The description of the promotion rule.
+    - `attribute`: `string` — The attribute to compare against when checking whether a promotion can be applied on a cart.
+
+      Example:
+
+      ```
+      items.product_id
+      ```
+    - `values`: `string` | `string`\[] — The value to compare against when checking whether a promotion can be applied on a cart.
+
+      Example:
+
+      ```
+      prod_123
+      ```
+  - `apply_to_quantity`: `null` | `number` (optional) — The quantity of the application method.
+  - `buy_rules_min_quantity`: `null` | `number` (optional) — The minimum quantity required for a `buyget` promotion to be applied. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is 2.
+- `limit`: `null` | `number` (optional) — The maximum number of times this promotion can be used.
+- `rules`: [AdminCreatePromotionRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreatePromotionRule)\[] (optional) — The rules of the promotion.
+  - `operator`: [PromotionRuleOperatorValues](/resources/references/promotion/types/promotionPromotionRuleOperatorValues) — The operator used to check whether the buy rule applies on a cart. For example, `eq` means that the cart's value for the specified attribute must match the specified value.
+  - `description`: `null` | `string` (optional) — The description of the promotion rule.
+  - `attribute`: `string` — The attribute to compare against when checking whether a promotion can be applied on a cart.
+
+    Example:
+
+    ```
+    items.product_id
+    ```
+  - `values`: `string` | `string`\[] — The value to compare against when checking whether a promotion can be applied on a cart.
+
+    Example:
+
+    ```
+    prod_123
+    ```

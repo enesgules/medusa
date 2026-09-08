@@ -1,0 +1,309 @@
+---
+title: listAndCountFulfillments - Fulfillment Module Reference
+sidebarTitle: listAndCountFulfillments
+---
+
+This documentation provides a reference to the `listAndCountFulfillments` method. This belongs to the Fulfillment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of fulfillments along with the total count of available fulfillments satisfying the provided filters.
+
+## Example
+
+To retrieve a list of fulfillments using their IDs:
+
+```ts
+const [fulfillments, count] =
+  await fulfillmentModuleService.listAndCountFulfillments(
+    {
+      id: ["ful_123", "ful_321"],
+    },
+    {
+      relations: ["shipping_option"],
+      take: 20,
+      skip: 2,
+    }
+  )
+```
+
+To specify relations that should be retrieved within the fulfillment:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const [fulfillments, count] =
+  await fulfillmentModuleService.listAndCountFulfillments(
+    {
+      id: ["ful_123", "ful_321"],
+    },
+    {
+      relations: ["shipping_option"],
+    }
+  )
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const [fulfillments, count] =
+  await fulfillmentModuleService.listAndCountFulfillments({
+    id: ["ful_123", "ful_321"],
+  })
+```
+
+<a id="listandcountfulfillments-parameters" />
+
+## Parameters
+
+**listAndCountFulfillments**
+
+- `filters`: [FilterableFulfillmentProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentProps) (optional) — The filters to apply on the retrieved fulfillment sets.
+  - `$and`: ([FilterableFulfillmentProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableFulfillmentProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableFulfillmentProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableFulfillmentProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableFulfillmentProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableFulfillmentProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the fulfillments by.
+    - `location_id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by the ID of their associated location.
+    - `packed_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their packing date.
+    - `shipped_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their shipping date.
+    - `delivered_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their delivery date.
+    - `canceled_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their cancelation date.
+    - `provider_id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by the ID of their associated fulfillment provider.
+    - `shipping_option_id`: `null` | `string` (optional) — Filter the fulfillments by the ID of their associated shipping option.
+    - `created_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their creation date.
+    - `updated_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their update date.
+  - `$or`: ([FilterableFulfillmentProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableFulfillmentProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableFulfillmentProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableFulfillmentProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableFulfillmentProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableFulfillmentProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the fulfillments by.
+    - `location_id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by the ID of their associated location.
+    - `packed_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their packing date.
+    - `shipped_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their shipping date.
+    - `delivered_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their delivery date.
+    - `canceled_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their cancelation date.
+    - `provider_id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by the ID of their associated fulfillment provider.
+    - `shipping_option_id`: `null` | `string` (optional) — Filter the fulfillments by the ID of their associated shipping option.
+    - `created_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their creation date.
+    - `updated_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their update date.
+  - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the fulfillments by.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `location_id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by the ID of their associated location.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `packed_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their packing date.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `shipped_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their shipping date.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `delivered_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their delivery date.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `canceled_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their cancelation date.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `provider_id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by the ID of their associated fulfillment provider.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `shipping_option_id`: `null` | `string` (optional) — Filter the fulfillments by the ID of their associated shipping option.
+  - `created_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their creation date.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: `Date` | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the fulfillments by their update date.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `config`: [FindConfig](/resources/references/fulfillment/interfaces/fulfillmentFindConfig)\<[FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO)> (optional) — The configurations determining how the fulfillment is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a fulfillment.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/fulfillment/types/fulfillmentFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/fulfillment/types/fulfillmentInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/fulfillment/types/fulfillmentCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/fulfillment/interfaces/fulfillmentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/fulfillment/interfaces/fulfillmentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listandcountfulfillments-returns" />
+
+## Returns
+
+**listAndCountFulfillments**
+
+- `Promise`: Promise\<\[[FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO)\[], number]> — The list of fulfillments along with their total count.
+  - `FulfillmentDTO[]`: [FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO)\[]
+  - `number`: `number`

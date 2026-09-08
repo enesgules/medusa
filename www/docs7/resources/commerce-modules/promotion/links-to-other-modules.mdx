@@ -1,0 +1,269 @@
+---
+title: Links between Promotion Module and Other Modules
+---
+
+This document showcases the module links defined between the Promotion Module and other Commerce Modules.
+
+## Summary
+
+The Promotion Module has the following links to other modules:
+
+<Note>
+  **Tip**
+
+  Read-only links are used to query data across modules, but the relations aren't stored in a pivot table in the database.
+</Note>
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        First Data Model
+      </th>
+
+      <th>
+        Second Data Model
+      </th>
+
+      <th>
+        Type
+      </th>
+
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        [Cart](/resources/references/cart/models/Cart) in [Cart Module](/resources/commerce-modules/cart)
+      </td>
+
+      <td>
+        [Promotion](/resources/references/promotion/models/Promotion)
+      </td>
+
+      <td>
+        Stored - many-to-many
+      </td>
+
+      <td>
+        [Learn more](/resources/commerce-modules/promotion/links-to-other-modules#cart-module)
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        [LineItemAdjustment](/resources/references/cart/models/LineItemAdjustment) in [Cart Module](/resources/commerce-modules/cart)
+      </td>
+
+      <td>
+        [Promotion](/resources/references/promotion/models/Promotion)
+      </td>
+
+      <td>
+        Read-only - has one
+      </td>
+
+      <td>
+        [Learn more](/resources/commerce-modules/promotion/links-to-other-modules#cart-module)
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        [Order](/resources/references/order/models/Order) in [Order Module](/resources/commerce-modules/order)
+      </td>
+
+      <td>
+        [Promotion](/resources/references/promotion/models/Promotion)
+      </td>
+
+      <td>
+        Stored - many-to-many
+      </td>
+
+      <td>
+        [Learn more](/resources/commerce-modules/promotion/links-to-other-modules#order-module)
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## Cart Module
+
+A promotion can be applied on line items and shipping methods of a cart. Medusa defines a link between the `Cart` and `Promotion` data models.
+
+![A diagram showcasing an example of how data models from the Cart and Promotion modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711538015/Medusa%20Resources/cart-promotion_kuh9vm.jpg)
+
+Medusa also defines a read-only link between the [Cart Module](/resources/commerce-modules/cart)'s `LineItemAdjustment` data model and the `Promotion` data model. Because the link is read-only from the `LineItemAdjustment`'s side, you can only retrieve the promotion applied on a line item, and not the other way around.
+
+### Retrieve with Query
+
+To retrieve the carts that a promotion is applied on with [Query](/learn/fundamentals/module-links/query), pass `carts.*` in `fields`:
+
+<Note>
+  To retrieve the promotion of a line item adjustment, pass `promotion.*` in `fields`.
+</Note>
+
+<Tabs>
+  <Tab title="query.graph">
+    ```ts
+    const { data: promotions } = await query.graph({
+      entity: "promotion",
+      fields: [
+        "carts.*",
+      ],
+    })
+
+    // promotions[0].carts
+    ```
+  </Tab>
+
+  <Tab title="useQueryGraphStep">
+    ```ts
+    import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+    // ...
+
+    const { data: promotions } = useQueryGraphStep({
+      entity: "promotion",
+      fields: [
+        "carts.*",
+      ],
+    })
+
+    // promotions[0].carts
+    ```
+  </Tab>
+</Tabs>
+
+### Manage with Link
+
+To manage the promotions of a cart, use [Link](/learn/fundamentals/module-links/link):
+
+<Tabs>
+  <Tab title="link.create">
+    ```ts
+    import { Modules } from "@medusajs/framework/utils"
+
+    // ...
+
+    await link.create({
+      [Modules.CART]: {
+        cart_id: "cart_123",
+      },
+      [Modules.PROMOTION]: {
+        promotion_id: "promo_123",
+      },
+    })
+    ```
+  </Tab>
+
+  <Tab title="createRemoteLinkStep">
+    ```ts
+    import { Modules } from "@medusajs/framework/utils"
+    import { createRemoteLinkStep } from "@medusajs/medusa/core-flows"
+
+    // ...
+
+    createRemoteLinkStep({
+      [Modules.CART]: {
+        cart_id: "cart_123",
+      },
+      [Modules.PROMOTION]: {
+        promotion_id: "promo_123",
+      },
+    })
+    ```
+  </Tab>
+</Tabs>
+
+***
+
+## Order Module
+
+An order is associated with the promotion applied on it. Medusa defines a link between the `Order` and `Promotion` data models.
+
+![A diagram showcasing an example of how data models from the Order and Promotion modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716555015/Medusa%20Resources/order-promotion_dgjzzd.jpg)
+
+### Retrieve with Query
+
+To retrieve the orders a promotion is applied on with [Query](/learn/fundamentals/module-links/query), pass `orders.*` in `fields`:
+
+<Tabs>
+  <Tab title="query.graph">
+    ```ts
+    const { data: promotions } = await query.graph({
+      entity: "promotion",
+      fields: [
+        "orders.*",
+      ],
+    })
+
+    // promotions[0].orders
+    ```
+  </Tab>
+
+  <Tab title="useQueryGraphStep">
+    ```ts
+    import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+    // ...
+
+    const { data: promotions } = useQueryGraphStep({
+      entity: "promotion",
+      fields: [
+        "orders.*",
+      ],
+    })
+
+    // promotions[0].orders
+    ```
+  </Tab>
+</Tabs>
+
+### Manage with Link
+
+To manage the promotion of an order, use [Link](/learn/fundamentals/module-links/link):
+
+<Tabs>
+  <Tab title="link.create">
+    ```ts
+    import { Modules } from "@medusajs/framework/utils"
+
+    // ...
+
+    await link.create({
+      [Modules.ORDER]: {
+        order_id: "order_123",
+      },
+      [Modules.PROMOTION]: {
+        promotion_id: "promo_123",
+      },
+    })
+    ```
+  </Tab>
+
+  <Tab title="createRemoteLinkStep">
+    ```ts
+    import { Modules } from "@medusajs/framework/utils"
+    import { createRemoteLinkStep } from "@medusajs/medusa/core-flows"
+
+    // ...
+
+    createRemoteLinkStep({
+      [Modules.ORDER]: {
+        order_id: "order_123",
+      },
+      [Modules.PROMOTION]: {
+        promotion_id: "promo_123",
+      },
+    })
+    ```
+  </Tab>
+</Tabs>

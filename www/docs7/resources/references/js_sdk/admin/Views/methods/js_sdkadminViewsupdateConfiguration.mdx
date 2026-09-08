@@ -1,0 +1,60 @@
+---
+title: updateConfiguration
+---
+
+This method updates a view configuration's details.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.10.3](https://github.com/medusajs/medusa/releases/tag/v2.10.3).
+
+## Example
+
+```ts
+const { view_configuration } = await sdk.admin.views.updateConfiguration(
+  "orders",
+  "viewconfig_123",
+  {
+    name: "Updated View",
+  }
+)
+```
+
+<a id="updateconfiguration-parameters" />
+
+## Parameters
+
+**updateConfiguration**
+
+- `entity`: `string` — The entity the view configuration belongs to.
+- `id`: `string` — The ID of the view configuration to update.
+- `body`: [AdminUpdateViewConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateViewConfiguration) — The details to update in the view configuration.
+  - `name`: `null` | `string` (optional) — The name of the view configuration.
+  - `is_system_default`: `boolean` (optional) — Whether this is a system default configuration.
+  - `set_active`: `boolean` (optional) — Whether to set this view as the active view after update.
+  - `configuration`: `object` (optional) — The view configuration settings.
+    - `visible_columns`: `string`\[] (optional) — The list of visible column IDs.
+    - `column_order`: `string`\[] (optional) — The order of columns.
+    - `column_widths`: `Record<string, number>` (optional) — Custom column widths.
+    - `filters`: `Record<string, any>` (optional) — Active filters for the view.
+    - `sorting`: `null` | `object` (optional) — Sorting configuration.
+    - `search`: `string` (optional) — Search query for the view.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updateconfiguration-returns" />
+
+## Returns
+
+**updateConfiguration**
+
+- `Promise`: Promise\<[AdminViewConfigurationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminViewConfigurationResponse)> — The updated view configuration.
+  - `view_configuration`: `null` | [AdminViewConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminViewConfiguration) — The view configuration's details.
+    - `id`: `string` — The view configuration's ID.
+    - `entity`: `string` — The entity this configuration is for (e.g., "order", "product").
+    - `name`: `null` | `string` — The name of the view configuration.
+    - `user_id`: `null` | `string` — The ID of the user who owns this configuration, or null for system defaults.
+    - `is_system_default`: `boolean` — Whether this is a system default configuration.
+    - `configuration`: `object` — The view configuration settings.
+    - `created_at`: `Date` — The date the view configuration was created.
+    - `updated_at`: `Date` — The date the view configuration was updated.

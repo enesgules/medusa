@@ -1,0 +1,293 @@
+---
+title: updateRegions - Region Module Reference
+sidebarTitle: updateRegions
+---
+
+This documentation provides a reference to the `updateRegions` method. This belongs to the Region Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updateregions-id-data-sharedcontext-promiseregiondto" />
+
+## updateRegions(id, data, sharedContext?): Promise\<[RegionDTO](/resources/references/region/interfaces/regionRegionDTO)>
+
+This method updates an existing region.
+
+### Example
+
+```ts
+const region = await regionModuleService.updateRegions("reg_123", {
+  automatic_taxes: false,
+})
+```
+
+<a id="updateregions-parameters" />
+
+### Parameters
+
+**updateRegions**
+
+- `id`: `string` — The ID of the region.
+- `data`: [UpdateRegionDTO](/resources/references/region/interfaces/regionUpdateRegionDTO) — The attributes to update in the region.
+  - `name`: `string` (optional) — The target name of the region
+  - `currency_code`: `string` (optional) — The currency code of the region.
+  - `automatic_taxes`: `boolean` (optional) — Setting to indicate whether taxes need to be applied automatically
+  - `countries`: `string`\[] (optional) — The region's countries.
+  - `metadata`: [MetadataType](/resources/references/region/types/regionMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/region/interfaces/regionContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/region/interfaces/regionIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateregions-returns" />
+
+### Returns
+
+**updateRegions**
+
+- `Promise`: Promise\<[RegionDTO](/resources/references/region/interfaces/regionRegionDTO)> — The updated region.
+  - `id`: `string` — The ID of the region.
+  - `name`: `string` — The name of the region.
+  - `currency_code`: `string` — The currency code of the region.
+  - `automatic_taxes`: `boolean` — Setting to indicate whether taxes need to be applied automatically
+  - `countries`: [RegionCountryDTO](/resources/references/region/interfaces/regionRegionCountryDTO)\[] — The countries of the region.
+    - `id`: `string` — The ID of the country.
+    - `iso_2`: `string` — The ISO 2 code of the country.
+    - `iso_3`: `string` — The ISO 3 code of the country.
+    - `num_code`: `string` — The country's code number.
+    - `name`: `string` — The name of the country.
+    - `display_name`: `string` — The display name of the country.
+  - `payment_providers`: [PaymentProviderDTO](/resources/references/region/interfaces/regionPaymentProviderDTO)\[] — Payment providers available in the region
+    - `id`: `string` — The ID of the payment provider.
+    - `is_enabled`: `boolean` — Whether the payment provider is enabled.
+  - `metadata`: `Record<string, any>` (optional) — Holds custom data in key-value pairs.
+  - `created_at`: `string` — The date the region was created.
+  - `updated_at`: `string` — The date the region was updated.
+
+<a id="updateregions-selector-data-sharedcontext-promiseregiondto" />
+
+## updateRegions(selector, data, sharedContext?): Promise\<[RegionDTO](/resources/references/region/interfaces/regionRegionDTO)\[]>
+
+This method updates existing regions.
+
+### Example
+
+```ts
+const region = await regionModuleService.updateRegions(
+  {
+    name: "Europe",
+  },
+  {
+    automatic_taxes: false,
+  }
+)
+```
+
+<a id="updateregions-parameters-1" />
+
+### Parameters
+
+**updateRegions**
+
+- `selector`: [FilterableRegionProps](/resources/references/region/interfaces/regionFilterableRegionProps) — The filters to apply on the retrieved regions.
+  - `$and`: ([FilterableRegionProps](/resources/references/region/interfaces/regionFilterableRegionProps) | [BaseFilterable](/resources/references/region/interfaces/regionBaseFilterable)\<[FilterableRegionProps](/resources/references/region/interfaces/regionFilterableRegionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableRegionProps](/resources/references/region/interfaces/regionFilterableRegionProps) | [BaseFilterable](/resources/references/region/interfaces/regionBaseFilterable)\<[FilterableRegionProps](/resources/references/region/interfaces/regionFilterableRegionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableRegionProps](/resources/references/region/interfaces/regionFilterableRegionProps) | [BaseFilterable](/resources/references/region/interfaces/regionBaseFilterable)\<[FilterableRegionProps](/resources/references/region/interfaces/regionFilterableRegionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Find regions by name through this search term
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string | string\[]> (optional) — The IDs to filter the regions by.
+    - `name`: `string` | [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string> (optional) — Filter regions by their name.
+    - `currency_code`: `string` | [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string> (optional) — Filter regions by their currency code.
+    - `metadata`: `Record<string, unknown>` | [OperatorMap](/resources/references/region/types/regionOperatorMap)\<Record\<string, unknown>> (optional) — Filter regions by their metadata.
+    - `created_at`: [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string> (optional) — Filter regions by their creation date.
+    - `updated_at`: [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string> (optional) — Filter regions by their update date.
+  - `$or`: ([FilterableRegionProps](/resources/references/region/interfaces/regionFilterableRegionProps) | [BaseFilterable](/resources/references/region/interfaces/regionBaseFilterable)\<[FilterableRegionProps](/resources/references/region/interfaces/regionFilterableRegionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableRegionProps](/resources/references/region/interfaces/regionFilterableRegionProps) | [BaseFilterable](/resources/references/region/interfaces/regionBaseFilterable)\<[FilterableRegionProps](/resources/references/region/interfaces/regionFilterableRegionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableRegionProps](/resources/references/region/interfaces/regionFilterableRegionProps) | [BaseFilterable](/resources/references/region/interfaces/regionBaseFilterable)\<[FilterableRegionProps](/resources/references/region/interfaces/regionFilterableRegionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Find regions by name through this search term
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string | string\[]> (optional) — The IDs to filter the regions by.
+    - `name`: `string` | [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string> (optional) — Filter regions by their name.
+    - `currency_code`: `string` | [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string> (optional) — Filter regions by their currency code.
+    - `metadata`: `Record<string, unknown>` | [OperatorMap](/resources/references/region/types/regionOperatorMap)\<Record\<string, unknown>> (optional) — Filter regions by their metadata.
+    - `created_at`: [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string> (optional) — Filter regions by their creation date.
+    - `updated_at`: [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string> (optional) — Filter regions by their update date.
+  - `q`: `string` (optional) — Find regions by name through this search term
+  - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string | string\[]> (optional) — The IDs to filter the regions by.
+    - `$and`: [Query](/resources/references/region/types/regionQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/region/types/regionQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> | [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/region/types/regionQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `name`: `string` | [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string> (optional) — Filter regions by their name.
+    - `$and`: [Query](/resources/references/region/types/regionQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/region/types/regionQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> | [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/region/types/regionQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `currency_code`: `string` | [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string> (optional) — Filter regions by their currency code.
+    - `$and`: [Query](/resources/references/region/types/regionQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/region/types/regionQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> | [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/region/types/regionQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `metadata`: `Record<string, unknown>` | [OperatorMap](/resources/references/region/types/regionOperatorMap)\<Record\<string, unknown>> (optional) — Filter regions by their metadata.
+    - `$and`: [Query](/resources/references/region/types/regionQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/region/types/regionQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> | [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/region/types/regionQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_at`: [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string> (optional) — Filter regions by their creation date.
+    - `$and`: [Query](/resources/references/region/types/regionQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/region/types/regionQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> | [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/region/types/regionQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/region/types/regionOperatorMap)\<string> (optional) — Filter regions by their update date.
+    - `$and`: [Query](/resources/references/region/types/regionQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/region/types/regionQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> | [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/region/types/regionQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/region/types/regionExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `data`: [UpdateRegionDTO](/resources/references/region/interfaces/regionUpdateRegionDTO) — The attributes to update in the region.
+  - `name`: `string` (optional) — The target name of the region
+  - `currency_code`: `string` (optional) — The currency code of the region.
+  - `automatic_taxes`: `boolean` (optional) — Setting to indicate whether taxes need to be applied automatically
+  - `countries`: `string`\[] (optional) — The region's countries.
+  - `metadata`: [MetadataType](/resources/references/region/types/regionMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/region/interfaces/regionContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/region/interfaces/regionIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateregions-returns-1" />
+
+### Returns
+
+**updateRegions**
+
+- `Promise`: Promise\<[RegionDTO](/resources/references/region/interfaces/regionRegionDTO)\[]> — The updated regions.
+  - `RegionDTO[]`: [RegionDTO](/resources/references/region/interfaces/regionRegionDTO)\[]
+    - `id`: `string` — The ID of the region.
+    - `name`: `string` — The name of the region.
+    - `currency_code`: `string` — The currency code of the region.
+    - `automatic_taxes`: `boolean` — Setting to indicate whether taxes need to be applied automatically
+    - `countries`: [RegionCountryDTO](/resources/references/region/interfaces/regionRegionCountryDTO)\[] — The countries of the region.
+      - `id`: `string` — The ID of the country.
+      - `iso_2`: `string` — The ISO 2 code of the country.
+      - `iso_3`: `string` — The ISO 3 code of the country.
+      - `num_code`: `string` — The country's code number.
+      - `name`: `string` — The name of the country.
+      - `display_name`: `string` — The display name of the country.
+    - `payment_providers`: [PaymentProviderDTO](/resources/references/region/interfaces/regionPaymentProviderDTO)\[] — Payment providers available in the region
+      - `id`: `string` — The ID of the payment provider.
+      - `is_enabled`: `boolean` — Whether the payment provider is enabled.
+    - `metadata`: `Record<string, any>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` — The date the region was created.
+    - `updated_at`: `string` — The date the region was updated.

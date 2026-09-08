@@ -1,0 +1,340 @@
+---
+title: product - JS SDK Store Reference
+sidebarTitle: product
+---
+
+This documentation provides a reference to the `sdk.store.product` set of methods used to send requests to Medusa's Store API routes.
+
+## list
+
+This method retrieves a list of products. It sends a request to the
+[List Products API route](/api/store/products/list-products).
+
+Related guides:
+
+- [How to list products in a storefront](/resources/storefront-development/products/list).
+- [How to retrieve a product variant's prices in the storefront](/resources/storefront-development/products/price)
+
+### Example
+
+To retrieve the list of products:
+
+```ts
+sdk.store.product.list()
+.then(({ products, count, offset, limit }) => {
+  console.log(products)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.store.product.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ products, count, offset, limit }) => {
+  console.log(products)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each product:
+
+```ts
+sdk.store.product.list({
+  fields: "id,*collection"
+})
+.then(({ products, count, offset, limit }) => {
+  console.log(products)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [StoreProductListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductListParams) (optional) — Filters and pagination configurations.
+  - `$and`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) | [ProductStatus](/resources/references/types/types/typesProductStatus)\[] (optional) — Filter the product by status(es).
+    - `sales_channel_id`: `string` | `string`\[] (optional) — Filter the product by the sales channel(s) it belongs to.
+    - `title`: `string` | `string`\[] (optional) — Filter by the product's title(s).
+    - `handle`: `string` | `string`\[] (optional) — Filter by the product's handle(s).
+    - `external_id`: `string` | `string`\[] (optional) — Filter by the product's external ID(s).
+    - `id`: `string` | `string`\[] (optional) — Filter by the product's id(s).
+    - `is_giftcard`: `boolean` (optional) — Filter by whether the product is a gift card.
+    - `tag_id`: `string` | `string`\[] (optional) — Filter by the product's tag(s).
+    - `type_id`: `string` | `string`\[] (optional) — Filter by the product's type(s).
+    - `option_id`: `string` | `string`\[] (optional) — Filter by the product's option(s).
+    - `option_value_id`: `string` | `string`\[] (optional) — Filter by the product's option value(s).
+    - `category_id`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+    - `categories`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+    - `collection_id`: `string` | `string`\[] (optional) — Filter by the product's collection(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's deletion date.
+  - `$or`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductListParams](/resources/references/types/interfaces/typesBaseProductListParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) | [ProductStatus](/resources/references/types/types/typesProductStatus)\[] (optional) — Filter the product by status(es).
+    - `sales_channel_id`: `string` | `string`\[] (optional) — Filter the product by the sales channel(s) it belongs to.
+    - `title`: `string` | `string`\[] (optional) — Filter by the product's title(s).
+    - `handle`: `string` | `string`\[] (optional) — Filter by the product's handle(s).
+    - `external_id`: `string` | `string`\[] (optional) — Filter by the product's external ID(s).
+    - `id`: `string` | `string`\[] (optional) — Filter by the product's id(s).
+    - `is_giftcard`: `boolean` (optional) — Filter by whether the product is a gift card.
+    - `tag_id`: `string` | `string`\[] (optional) — Filter by the product's tag(s).
+    - `type_id`: `string` | `string`\[] (optional) — Filter by the product's type(s).
+    - `option_id`: `string` | `string`\[] (optional) — Filter by the product's option(s).
+    - `option_value_id`: `string` | `string`\[] (optional) — Filter by the product's option value(s).
+    - `category_id`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+    - `categories`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+    - `collection_id`: `string` | `string`\[] (optional) — Filter by the product's collection(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's deletion date.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `q`: `string` (optional) — A query or keywords to search the searchable fields by.
+  - `sales_channel_id`: `string` | `string`\[] (optional) — Filter the product by the sales channel(s) it belongs to.
+  - `title`: `string` | `string`\[] (optional) — Filter by the product's title(s).
+  - `handle`: `string` | `string`\[] (optional) — Filter by the product's handle(s).
+  - `external_id`: `string` | `string`\[] (optional) — Filter by the product's external ID(s).
+  - `id`: `string` | `string`\[] (optional) — Filter by the product's id(s).
+  - `is_giftcard`: `boolean` (optional) — Filter by whether the product is a gift card.
+  - `type_id`: `string` | `string`\[] (optional) — Filter by the product's type(s).
+  - `option_id`: `string` | `string`\[] (optional) — Filter by the product's option(s).
+  - `category_id`: `string` | `string`\[] (optional) — Filter by the product's category(s).
+  - `collection_id`: `string` | `string`\[] (optional) — Filter by the product's collection(s).
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's creation date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filers on the product's update date.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `region_id`: `string` (optional) — The ID of the customer's region. This parameter must be included if you want to apply taxes on the product variant's price.
+  - `country_code`: `string` (optional) — The customer's country code. This parameter must be included if you want to apply taxes on the product variant's price.
+  - `province`: `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province, which can be taken from a customer's address. This parameter helps further narrowing down the taxes applied on a the product variant's prices.
+  - `cart_id`: `string` (optional) — The ID of the customer's cart, if available. If set, the cart's region and shipping address's country code and province are used instead of the `region_id`, `country_code`, and `province` parameters.
+  - `tag_id`: `string` | `string`\[] (optional) — Filter by the product's tag(s).
+  - `variants`: [StoreProductVariantParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductVariantParams) & `object` (optional) — Filter by the product's variants.
+    - `$and`: ([BaseProductVariantParams](/resources/references/types/interfaces/typesBaseProductVariantParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductVariantParams](/resources/references/types/interfaces/typesBaseProductVariantParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseProductVariantParams](/resources/references/types/interfaces/typesBaseProductVariantParams) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseProductVariantParams](/resources/references/types/interfaces/typesBaseProductVariantParams)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `q`: `string` (optional) — Query or keywords to filter the variant's searchable fields.
+    - `id`: `string` | `string`\[] (optional) — Filter by variant ID(s).
+    - `options`: `object` (optional) — Apply filters on the variant's options.
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's update date.
+    - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the variant's deletion date.
+    - `sku`: `string` | `string`\[] (optional)
+    - `manage_inventory`: `boolean` (optional)
+    - `allow_backorder`: `boolean` (optional)
+    - `product_id`: `string` | `string`\[] (optional)
+    - `sku`: `string` | `string`\[] (optional) — Filter by variant sku(s).
+    - `ean`: `string` | `string`\[] (optional) — Filter by variant ean(s).
+    - `upc`: `string` | `string`\[] (optional) — Filter by variant upc(s).
+    - `barcode`: `string` | `string`\[] (optional) — Filter by variant barcode(s).
+  - `locale`: `string` (optional) — The locale code in BCP 47 format. Information of the product and related entities will be localized based on the provided locale. Learn more in the [Serve Translations in Storefront](/resources/commerce-modules/translation/storefront) guide.
+
+    Example:
+
+    ```
+    "en-US"
+    ```
+  - `option_value_id`: `string` | `string`\[] (optional) — Filter by the product's option values. Variants must include one of the provided values per option.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[StoreProductListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesStoreProductListResponse)> — The paginated list of products.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## retrieve
+
+This method is used to retrieve a product by its ID. It sends a request to the
+[Get Product](/api/store/products/get-a-product) API route.
+
+Related guides:
+
+- [How to retrieve a product in the storefront](/resources/storefront-development/products/retrieve).
+- [How to retrieve a product variant's prices in the storefront](/resources/storefront-development/products/price)
+
+### Example
+
+To retrieve a product by its ID:
+
+```ts
+sdk.store.product.retrieve("prod_123")
+.then(({ product }) => {
+  console.log(product)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.store.product.retrieve("prod_123", {
+  fields: "id,*collection"
+})
+.then(({ product }) => {
+  console.log(product)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The product's ID.
+- `query`: [StoreProductParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductParams) (optional) — Configure the fields to retrieve in the product.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `region_id`: `string` (optional) — The ID of the customer's region. This parameter must be included if you want to apply taxes on the product variant's price.
+  - `country_code`: `string` (optional) — The customer's country code. This parameter must be included if you want to apply taxes on the product variant's price.
+  - `province`: `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province, which can be taken from a customer's address. This parameter helps further narrowing down the taxes applied on a the product variant's prices.
+  - `cart_id`: `string` (optional) — The ID of the customer's cart, if available. If set, the cart's region and shipping address's country code and province are used instead of the `region_id`, `country_code`, and `province` parameters.
+  - `locale`: `string` (optional) — The locale code in BCP 47 format. Information of the product and related entities will be localized based on the provided locale. Learn more in the [Serve Translations in Storefront](/resources/commerce-modules/translation/storefront) guide.
+
+    Example:
+
+    ```
+    "en-US" @http-validation-ignore
+    ```
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[StoreProductResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductResponse)> — The product.
+  - `product`: [StoreProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProduct) — The product's details.
+    - `id`: `string` — The product's ID.
+    - `title`: `string` — The product's title.
+    - `handle`: `string` — The product's handle.
+    - `subtitle`: `null` | `string` — The product's subtitle.
+    - `description`: `null` | `string` — The product's description.
+    - `is_giftcard`: `boolean` — Whether the product is a gift card.
+    - `status`: [ProductStatus](/resources/references/types/types/typesProductStatus) — The product's status.
+    - `thumbnail`: `null` | `string` — The product's thumbnail.
+    - `width`: `null` | `number` — The product's width.
+    - `weight`: `null` | `number` — The product's weight.
+    - `length`: `null` | `number` — The product's length.
+    - `height`: `null` | `number` — The product's height.
+    - `origin_country`: `null` | `string` — The product's origin country.
+    - `hs_code`: `null` | `string` — The product's HS code.
+    - `mid_code`: `null` | `string` — The product's MID code.
+    - `material`: `null` | `string` — The product's material.
+    - `collection_id`: `null` | `string` — The ID of the associated product collection.
+    - `type_id`: `null` | `string` — The ID of the associated product type.
+    - `discountable`: `boolean` — Whether the product is discountable.
+    - `external_id`: `null` | `string` — The ID of the product in external systems.
+    - `created_at`: `null` | `string` — The date the product was created.
+    - `updated_at`: `null` | `string` — The date the product was update.
+    - `deleted_at`: `null` | `string` — The date the product was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `collection`: `null` | [StoreCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCollection) (optional) — The product's collection.
+    - `categories`: `null` | [StoreProductCategory](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductCategory)\[] (optional) — The product's categories.
+    - `variants`: `null` | [StoreProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductVariant)\[] — The product's variants.
+    - `type`: `null` | [StoreProductType](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductType) (optional) — The product's types.
+    - `tags`: `null` | [StoreProductTag](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductTag)\[] (optional) — The product's tags.
+    - `options`: `null` | [StoreProductOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductOption)\[] — The product's options.
+    - `images`: `null` | [StoreProductImage](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreProductImage)\[] — The product's images.

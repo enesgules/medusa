@@ -1,0 +1,61 @@
+---
+title: retrieve
+---
+
+This method retrieves a collection by its ID. It sends a request to the
+[Get Collection](/api/admin/collections/get-a-collection) API route.
+
+## Example
+
+To retrieve a collection by its ID:
+
+```ts
+sdk.admin.productCollection.retrieve("pcol_123")
+.then(({ collection }) => {
+  console.log(collection)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.productCollection.retrieve("pcol_123", {
+  fields: "id,*products"
+})
+.then(({ collection }) => {
+  console.log(collection)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+## Parameters
+
+**retrieve**
+
+- `id`: `string` — The collection's ID.
+- `query`: [AdminCollectionParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollectionParams) (optional) — Configure the fields to retrieve in the collection.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+## Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminCollectionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollectionResponse)> — The collection's details.
+  - `collection`: [AdminCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCollection) — The collection's details.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The collection's translations.
+    - `id`: `string` — The collection's ID.
+    - `title`: `string` — The collection's title.
+    - `handle`: `string` — The collection's handle.
+    - `created_at`: `string` — The date the collection was created.
+    - `updated_at`: `string` — The date the collection was updated.
+    - `deleted_at`: `null` | `string` — The date the collection was deleted.
+    - `products`: [BaseProduct](/resources/references/types/interfaces/typesBaseProduct)\[] (optional) — The collection's products.
+    - `external_id`: `null` | `string` (optional) — An external ID for the collection.
+    - `metadata`: `null` | `Record<string, unknown>` — Key-value pairs of custom data.

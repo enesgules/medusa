@@ -1,0 +1,720 @@
+---
+title: updateProducts - Product Module Reference
+sidebarTitle: updateProducts
+---
+
+This documentation provides a reference to the `updateProducts` method. This belongs to the Product Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="updateproducts-id-data-sharedcontext-promiseproductdto" />
+
+## updateProducts(id, data, sharedContext?): Promise\<[ProductDTO](/resources/references/product/interfaces/productProductDTO)>
+
+This method is used to update a product.
+
+### Example
+
+```ts
+const product = await productModuleService.updateProducts(
+  "prod_123",
+  {
+    handle: "pant",
+  }
+)
+```
+
+<a id="updateproducts-parameters" />
+
+### Parameters
+
+**updateProducts**
+
+- `id`: `string` — The ID of the product to be updated.
+- `data`: [UpdateProductDTO](/resources/references/product/interfaces/productUpdateProductDTO) — The attributes of the product to be updated
+  - `title`: `string` (optional) — The title of the product.
+  - `subtitle`: `null` | `string` (optional) — The subttle of the product.
+  - `description`: `null` | `string` (optional) — The description of the product.
+  - `is_giftcard`: `boolean` (optional) — Whether the product is a gift card.
+  - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+  - `thumbnail`: `null` | `string` (optional) — The URL of the product's thumbnail.
+  - `handle`: `string` (optional) — The handle of the product. The handle can be used to create slug URL paths. If not supplied, the value of the `handle` attribute of the product is set to the slug version of the `title` attribute.
+  - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) (optional) — The status of the product.
+  - `images`: [UpsertProductImageDTO](/resources/references/product/interfaces/productUpsertProductImageDTO)\[] (optional) — The associated images to create or update.
+    - `id`: `string` (optional) — The product image's ID. If not provided, the image is created. In that case, the `url` property is required.
+    - `url`: `string` (optional) — The new URL of the product image.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `external_id`: `null` | `string` (optional) — The id of the product in an external system
+  - `type_id`: `null` | `string` (optional) — The product type to associate with the product.
+  - `collection_id`: `null` | `string` (optional) — The product collection to associate with the product.
+  - `tag_ids`: `string`\[] (optional) — The tags to associate with the product
+  - `category_ids`: `string`\[] (optional) — The product categories to associate with the product.
+  - `option_ids`: `string`\[] (optional) — The product options to associate with the product.
+  - `variants`: [UpsertProductVariantDTO](/resources/references/product/interfaces/productUpsertProductVariantDTO)\[] (optional) — The product variants to be created and associated with the product. You can also update existing product variants associated with the product.
+    - `id`: `string` (optional) — The ID of the product variant to update.
+    - `title`: `string` (optional) — The tile of the product variant.
+    - `sku`: `null` | `string` (optional) — The SKU of the product variant.
+    - `barcode`: `null` | `string` (optional) — The barcode of the product variant.
+    - `ean`: `null` | `string` (optional) — The EAN of the product variant.
+    - `upc`: `null` | `string` (optional) — The UPC of the product variant.
+    - `thumbnail`: `null` | `string` (optional) — The thumbnail of the product variant.
+    - `allow_backorder`: `boolean` (optional) — Whether the product variant can be ordered when it's out of stock.
+    - `manage_inventory`: `boolean` (optional) — Whether the product variant's inventory should be managed by the core system.
+    - `hs_code`: `null` | `string` (optional) — The HS Code of the product variant.
+    - `origin_country`: `null` | `string` (optional) — The origin country of the product variant.
+    - `mid_code`: `null` | `string` (optional) — The MID Code of the product variant.
+    - `material`: `null` | `string` (optional) — The material of the product variant.
+    - `weight`: `null` | `number` (optional) — The weight of the product variant.
+    - `length`: `null` | `number` (optional) — The length of the product variant.
+    - `height`: `null` | `number` (optional) — The height of the product variant.
+    - `width`: `null` | `number` (optional) — The width of the product variant.
+    - `options`: `Record<string, string>` (optional) — The product variant options to associate with the product variant.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `width`: `null` | `number` (optional) — The width of the product.
+  - `height`: `null` | `number` (optional) — The height of the product.
+  - `length`: `null` | `number` (optional) — The length of the product.
+  - `weight`: `null` | `number` (optional) — The weight of the product.
+  - `origin_country`: `null` | `string` (optional) — The origin country of the product.
+  - `hs_code`: `null` | `string` (optional) — The HS Code of the product.
+  - `material`: `null` | `string` (optional) — The material of the product.
+  - `mid_code`: `null` | `string` (optional) — The MID Code of the product.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/product/interfaces/productContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/product/interfaces/productIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateproducts-returns" />
+
+### Returns
+
+**updateProducts**
+
+- `Promise`: Promise\<[ProductDTO](/resources/references/product/interfaces/productProductDTO)> — The updated product.
+  - `id`: `string` — The ID of the product.
+  - `title`: `string` — The title of the product.
+  - `handle`: `string` — The handle of the product. The handle can be used to create slug URL paths.
+  - `subtitle`: `null` | `string` — The subttle of the product.
+  - `description`: `null` | `string` — The description of the product.
+  - `is_giftcard`: `boolean` — Whether the product is a gift card.
+  - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) — The status of the product.
+  - `thumbnail`: `null` | `string` — The URL of the product's thumbnail.
+  - `width`: `null` | `number` — The width of the product.
+  - `weight`: `null` | `number` — The weight of the product.
+  - `length`: `null` | `number` — The length of the product.
+  - `height`: `null` | `number` — The height of the product.
+  - `origin_country`: `null` | `string` — The origin country of the product.
+  - `hs_code`: `null` | `string` — The HS Code of the product.
+  - `mid_code`: `null` | `string` — The MID Code of the product.
+  - `material`: `null` | `string` — The material of the product.
+  - `collection`: `null` | [ProductCollectionDTO](/resources/references/product/interfaces/productProductCollectionDTO) — The associated product collection.
+    - `id`: `string` — The ID of the product collection.
+    - `title`: `string` — The title of the product collection.
+    - `handle`: `string` — The handle of the product collection. The handle can be used to create slug URL paths.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product collection was created.
+    - `updated_at`: `string` | `Date` — When the product collection was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product collection was deleted.
+    - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+  - `collection_id`: `null` | `string` — The associated product collection id.
+  - `categories`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] (optional) — The associated product categories.
+    - `id`: `string` — The ID of the product category.
+    - `name`: `string` — The name of the product category.
+    - `description`: `string` — The description of the product category.
+    - `handle`: `string` — The handle of the product category. The handle can be used to create slug URL paths.
+    - `is_active`: `boolean` — Whether the product category is active.
+    - `is_internal`: `boolean` — Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.
+    - `rank`: `number` — The ranking of the product category among sibling categories.
+    - `external_id`: `null` | `string` — An external identifier for the product category, such as an ID from a third-party system.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — The ranking of the product category among sibling categories.
+    - `parent_category`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO) — The associated parent category.
+    - `parent_category_id`: `null` | `string` — The associated parent category id.
+    - `category_children`: [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] — The associated child categories.
+    - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] — The associated products.
+    - `created_at`: `string` | `Date` — When the product category was created.
+    - `updated_at`: `string` | `Date` — When the product category was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product category was deleted.
+  - `type`: `null` | [ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO) — The associated product type.
+    - `id`: `string` — The ID of the product type.
+    - `value`: `string` — The value of the product type.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product type was created.
+    - `updated_at`: `string` | `Date` — When the product type was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product type was deleted.
+  - `type_id`: `null` | `string` — The associated product type id.
+  - `tags`: [ProductTagDTO](/resources/references/product/interfaces/productProductTagDTO)\[] — The associated product tags.
+    - `id`: `string` — The ID of the product tag.
+    - `value`: `string` — The value of the product tag.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+  - `variants`: [ProductVariantDTO](/resources/references/product/interfaces/productProductVariantDTO)\[] — The associated product variants.
+    - `id`: `string` — The ID of the product variant.
+    - `title`: `string` — The tile of the product variant.
+    - `sku`: `null` | `string` — The SKU of the product variant.
+    - `barcode`: `null` | `string` — The barcode of the product variant.
+    - `ean`: `null` | `string` — The EAN of the product variant.
+    - `upc`: `null` | `string` — The UPC of the product variant.
+    - `allow_backorder`: `boolean` — Whether the product variant can be ordered when it's out of stock.
+    - `manage_inventory`: `boolean` — Whether the product variant's inventory should be managed by the core system.
+    - `thumbnail`: `null` | `string` — The thumbnail of the product variant form the product images.
+    - `requires_shipping`: `boolean` — Whether the product variant's requires shipping.
+    - `hs_code`: `null` | `string` — The HS Code of the product variant.
+    - `origin_country`: `null` | `string` — The origin country of the product variant.
+    - `mid_code`: `null` | `string` — The MID Code of the product variant.
+    - `material`: `null` | `string` — The material of the product variant.
+    - `weight`: `null` | `number` — The weight of the product variant.
+    - `length`: `null` | `number` — The length of the product variant.
+    - `height`: `null` | `number` — The height of the product variant.
+    - `width`: `null` | `number` — The width of the product variant.
+    - `options`: [ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[] — The associated product options.
+    - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `product`: `null` | [ProductDTO](/resources/references/product/interfaces/productProductDTO) (optional) — The associated product.
+    - `product_id`: `null` | `string` — The associated product id.
+    - `variant_rank`: `null` | `number` (optional) — he ranking of the variant among other variants associated with the product.
+    - `created_at`: `string` | `Date` — When the product variant was created.
+    - `updated_at`: `string` | `Date` — When the product variant was updated.
+    - `deleted_at`: `string` | `Date` — When the product variant was deleted.
+  - `options`: [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO)\[] — The associated product options.
+    - `id`: `string` — The ID of the product option.
+    - `title`: `string` — The title of the product option.
+    - `is_exclusive`: `boolean` — Whether the product option is exclusive to a product or shared across products.
+    - `products`: `null` | [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+    - `values`: [ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[] — The associated product option values.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product option was created.
+    - `updated_at`: `string` | `Date` — When the product option was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product option was deleted.
+  - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+    - `id`: `string` — The ID of the product image.
+    - `url`: `string` — The URL of the product image.
+    - `rank`: `number` — The rank of the product image.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product image was created.
+    - `updated_at`: `string` | `Date` — When the product image was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product image was deleted.
+  - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+  - `external_id`: `null` | `string` — The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.
+  - `created_at`: `string` | `Date` — When the product was created.
+  - `updated_at`: `string` | `Date` — When the product was updated.
+  - `deleted_at`: `string` | `Date` — When the product was deleted.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+
+<a id="updateproducts-selector-data-sharedcontext-promiseproductdto" />
+
+## updateProducts(selector, data, sharedContext?): Promise\<[ProductDTO](/resources/references/product/interfaces/productProductDTO)\[]>
+
+This method is used to update a list of products matching the specified filters.
+
+### Example
+
+```ts
+const products = await productModuleService.updateProducts(
+  {
+    title: "Pant",
+  },
+  {
+    handle: "pant",
+  }
+)
+```
+
+<a id="updateproducts-parameters-1" />
+
+### Parameters
+
+**updateProducts**
+
+- `selector`: [FilterableProductProps](/resources/references/product/interfaces/productFilterableProductProps) — The filters specifying which products to update.
+  - `$and`: ([FilterableProductProps](/resources/references/product/interfaces/productFilterableProductProps) | [BaseFilterable](/resources/references/product/interfaces/productBaseFilterable)\<[FilterableProductProps](/resources/references/product/interfaces/productFilterableProductProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableProductProps](/resources/references/product/interfaces/productFilterableProductProps) | [BaseFilterable](/resources/references/product/interfaces/productBaseFilterable)\<[FilterableProductProps](/resources/references/product/interfaces/productFilterableProductProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableProductProps](/resources/references/product/interfaces/productFilterableProductProps) | [BaseFilterable](/resources/references/product/interfaces/productBaseFilterable)\<[FilterableProductProps](/resources/references/product/interfaces/productFilterableProductProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search through the products' attributes, such as titles and descriptions, using this search term.
+    - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) | [ProductStatus](/resources/references/product/types/productProductStatus)\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<ProductStatus | ProductStatus\[]> (optional) — The status to filter products by
+    - `title`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The titles to filter products by.
+    - `handle`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The handles to filter products by.
+    - `sku`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The skus to filter products by.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The IDs to filter products by.
+    - `external_id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The external IDs to filter products by.
+    - `is_giftcard`: `boolean` (optional) — Filters only or excluding gift card products
+    - `tags`: `object` (optional) — Filters on a product's tags.
+    - `options`: `object` (optional) — Filters on a product's options.
+    - `variants`: `object` (optional) — Filters on a product's variant properties.
+    - `type_id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — Filter a product by the ID of the associated type
+    - `option_id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — Filter a product by the ID of the associated option
+    - `option_value_id`: `string` | `string`\[] (optional) — Filter a product by the IDs of the associated option values.
+    - `categories`: `object` (optional) — Filter a product by the IDs of their associated categories.
+    - `collection_id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — Filters a product by its associated collections.
+    - `created_at`: `string` | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string> (optional) — Filters a product based on when it was created
+    - `updated_at`: `string` | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string> (optional) — Filters a product based on when it was updated
+    - `deleted_at`: `string` | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string> (optional) — Filters soft-deleted products based on the date they were deleted at.
+  - `$or`: ([FilterableProductProps](/resources/references/product/interfaces/productFilterableProductProps) | [BaseFilterable](/resources/references/product/interfaces/productBaseFilterable)\<[FilterableProductProps](/resources/references/product/interfaces/productFilterableProductProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableProductProps](/resources/references/product/interfaces/productFilterableProductProps) | [BaseFilterable](/resources/references/product/interfaces/productBaseFilterable)\<[FilterableProductProps](/resources/references/product/interfaces/productFilterableProductProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableProductProps](/resources/references/product/interfaces/productFilterableProductProps) | [BaseFilterable](/resources/references/product/interfaces/productBaseFilterable)\<[FilterableProductProps](/resources/references/product/interfaces/productFilterableProductProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search through the products' attributes, such as titles and descriptions, using this search term.
+    - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) | [ProductStatus](/resources/references/product/types/productProductStatus)\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<ProductStatus | ProductStatus\[]> (optional) — The status to filter products by
+    - `title`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The titles to filter products by.
+    - `handle`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The handles to filter products by.
+    - `sku`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The skus to filter products by.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The IDs to filter products by.
+    - `external_id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The external IDs to filter products by.
+    - `is_giftcard`: `boolean` (optional) — Filters only or excluding gift card products
+    - `tags`: `object` (optional) — Filters on a product's tags.
+    - `options`: `object` (optional) — Filters on a product's options.
+    - `variants`: `object` (optional) — Filters on a product's variant properties.
+    - `type_id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — Filter a product by the ID of the associated type
+    - `option_id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — Filter a product by the ID of the associated option
+    - `option_value_id`: `string` | `string`\[] (optional) — Filter a product by the IDs of the associated option values.
+    - `categories`: `object` (optional) — Filter a product by the IDs of their associated categories.
+    - `collection_id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — Filters a product by its associated collections.
+    - `created_at`: `string` | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string> (optional) — Filters a product based on when it was created
+    - `updated_at`: `string` | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string> (optional) — Filters a product based on when it was updated
+    - `deleted_at`: `string` | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string> (optional) — Filters soft-deleted products based on the date they were deleted at.
+  - `q`: `string` (optional) — Search through the products' attributes, such as titles and descriptions, using this search term.
+  - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) | [ProductStatus](/resources/references/product/types/productProductStatus)\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<ProductStatus | ProductStatus\[]> (optional) — The status to filter products by
+    - `$and`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> | [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/product/types/productQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `title`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The titles to filter products by.
+    - `$and`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> | [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/product/types/productQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `handle`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The handles to filter products by.
+    - `$and`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> | [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/product/types/productQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `sku`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The skus to filter products by.
+    - `$and`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> | [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/product/types/productQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The IDs to filter products by.
+    - `$and`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> | [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/product/types/productQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `external_id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — The external IDs to filter products by.
+    - `$and`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> | [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/product/types/productQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `is_giftcard`: `boolean` (optional) — Filters only or excluding gift card products
+  - `tags`: `object` (optional) — Filters on a product's tags.
+    - `id`: `string`\[] (optional) — Filter a product by the IDs of their associated tags.
+  - `options`: `object` (optional) — Filters on a product's options.
+    - `id`: `string`\[] (optional) — Filter a product by the IDs of their associated options.
+  - `variants`: `object` (optional) — Filters on a product's variant properties.
+    - `sku`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional)
+    - `ean`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional)
+    - `upc`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional)
+    - `barcode`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional)
+    - `options`: `object` (optional)
+  - `type_id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — Filter a product by the ID of the associated type
+    - `$and`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> | [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/product/types/productQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `option_id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — Filter a product by the ID of the associated option
+    - `$and`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> | [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/product/types/productQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `option_value_id`: `string` | `string`\[] (optional) — Filter a product by the IDs of the associated option values.
+  - `categories`: `object` (optional) — Filter a product by the IDs of their associated categories.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]>
+  - `collection_id`: `string` | `string`\[] | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string | string\[]> (optional) — Filters a product by its associated collections.
+    - `$and`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> | [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/product/types/productQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_at`: `string` | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string> (optional) — Filters a product based on when it was created
+    - `$and`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> | [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/product/types/productQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: `string` | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string> (optional) — Filters a product based on when it was updated
+    - `$and`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> | [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/product/types/productQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: `string` | [OperatorMap](/resources/references/product/types/productOperatorMap)\<string> (optional) — Filters soft-deleted products based on the date they were deleted at.
+    - `$and`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/product/types/productQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> | [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/product/types/productQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/product/types/productExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `data`: [UpdateProductDTO](/resources/references/product/interfaces/productUpdateProductDTO) — The attributes to be updated on the selected products
+  - `title`: `string` (optional) — The title of the product.
+  - `subtitle`: `null` | `string` (optional) — The subttle of the product.
+  - `description`: `null` | `string` (optional) — The description of the product.
+  - `is_giftcard`: `boolean` (optional) — Whether the product is a gift card.
+  - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+  - `thumbnail`: `null` | `string` (optional) — The URL of the product's thumbnail.
+  - `handle`: `string` (optional) — The handle of the product. The handle can be used to create slug URL paths. If not supplied, the value of the `handle` attribute of the product is set to the slug version of the `title` attribute.
+  - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) (optional) — The status of the product.
+  - `images`: [UpsertProductImageDTO](/resources/references/product/interfaces/productUpsertProductImageDTO)\[] (optional) — The associated images to create or update.
+    - `id`: `string` (optional) — The product image's ID. If not provided, the image is created. In that case, the `url` property is required.
+    - `url`: `string` (optional) — The new URL of the product image.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `external_id`: `null` | `string` (optional) — The id of the product in an external system
+  - `type_id`: `null` | `string` (optional) — The product type to associate with the product.
+  - `collection_id`: `null` | `string` (optional) — The product collection to associate with the product.
+  - `tag_ids`: `string`\[] (optional) — The tags to associate with the product
+  - `category_ids`: `string`\[] (optional) — The product categories to associate with the product.
+  - `option_ids`: `string`\[] (optional) — The product options to associate with the product.
+  - `variants`: [UpsertProductVariantDTO](/resources/references/product/interfaces/productUpsertProductVariantDTO)\[] (optional) — The product variants to be created and associated with the product. You can also update existing product variants associated with the product.
+    - `id`: `string` (optional) — The ID of the product variant to update.
+    - `title`: `string` (optional) — The tile of the product variant.
+    - `sku`: `null` | `string` (optional) — The SKU of the product variant.
+    - `barcode`: `null` | `string` (optional) — The barcode of the product variant.
+    - `ean`: `null` | `string` (optional) — The EAN of the product variant.
+    - `upc`: `null` | `string` (optional) — The UPC of the product variant.
+    - `thumbnail`: `null` | `string` (optional) — The thumbnail of the product variant.
+    - `allow_backorder`: `boolean` (optional) — Whether the product variant can be ordered when it's out of stock.
+    - `manage_inventory`: `boolean` (optional) — Whether the product variant's inventory should be managed by the core system.
+    - `hs_code`: `null` | `string` (optional) — The HS Code of the product variant.
+    - `origin_country`: `null` | `string` (optional) — The origin country of the product variant.
+    - `mid_code`: `null` | `string` (optional) — The MID Code of the product variant.
+    - `material`: `null` | `string` (optional) — The material of the product variant.
+    - `weight`: `null` | `number` (optional) — The weight of the product variant.
+    - `length`: `null` | `number` (optional) — The length of the product variant.
+    - `height`: `null` | `number` (optional) — The height of the product variant.
+    - `width`: `null` | `number` (optional) — The width of the product variant.
+    - `options`: `Record<string, string>` (optional) — The product variant options to associate with the product variant.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `width`: `null` | `number` (optional) — The width of the product.
+  - `height`: `null` | `number` (optional) — The height of the product.
+  - `length`: `null` | `number` (optional) — The length of the product.
+  - `weight`: `null` | `number` (optional) — The weight of the product.
+  - `origin_country`: `null` | `string` (optional) — The origin country of the product.
+  - `hs_code`: `null` | `string` (optional) — The HS Code of the product.
+  - `material`: `null` | `string` (optional) — The material of the product.
+  - `mid_code`: `null` | `string` (optional) — The MID Code of the product.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/product/interfaces/productContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/product/interfaces/productIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updateproducts-returns-1" />
+
+### Returns
+
+**updateProducts**
+
+- `Promise`: Promise\<[ProductDTO](/resources/references/product/interfaces/productProductDTO)\[]> — The updated products.
+  - `ProductDTO[]`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[]
+    - `id`: `string` — The ID of the product.
+    - `title`: `string` — The title of the product.
+    - `handle`: `string` — The handle of the product. The handle can be used to create slug URL paths.
+    - `subtitle`: `null` | `string` — The subttle of the product.
+    - `description`: `null` | `string` — The description of the product.
+    - `is_giftcard`: `boolean` — Whether the product is a gift card.
+    - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) — The status of the product.
+    - `thumbnail`: `null` | `string` — The URL of the product's thumbnail.
+    - `width`: `null` | `number` — The width of the product.
+    - `weight`: `null` | `number` — The weight of the product.
+    - `length`: `null` | `number` — The length of the product.
+    - `height`: `null` | `number` — The height of the product.
+    - `origin_country`: `null` | `string` — The origin country of the product.
+    - `hs_code`: `null` | `string` — The HS Code of the product.
+    - `mid_code`: `null` | `string` — The MID Code of the product.
+    - `material`: `null` | `string` — The material of the product.
+    - `collection`: `null` | [ProductCollectionDTO](/resources/references/product/interfaces/productProductCollectionDTO) — The associated product collection.
+      - `id`: `string` — The ID of the product collection.
+      - `title`: `string` — The title of the product collection.
+      - `handle`: `string` — The handle of the product collection. The handle can be used to create slug URL paths.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — When the product collection was created.
+      - `updated_at`: `string` | `Date` — When the product collection was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product collection was deleted.
+      - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+    - `collection_id`: `null` | `string` — The associated product collection id.
+    - `categories`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] (optional) — The associated product categories.
+      - `id`: `string` — The ID of the product category.
+      - `name`: `string` — The name of the product category.
+      - `description`: `string` — The description of the product category.
+      - `handle`: `string` — The handle of the product category. The handle can be used to create slug URL paths.
+      - `is_active`: `boolean` — Whether the product category is active.
+      - `is_internal`: `boolean` — Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.
+      - `rank`: `number` — The ranking of the product category among sibling categories.
+      - `external_id`: `null` | `string` — An external identifier for the product category, such as an ID from a third-party system.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — The ranking of the product category among sibling categories.
+      - `parent_category`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO) — The associated parent category.
+      - `parent_category_id`: `null` | `string` — The associated parent category id.
+      - `category_children`: [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] — The associated child categories.
+      - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] — The associated products.
+      - `created_at`: `string` | `Date` — When the product category was created.
+      - `updated_at`: `string` | `Date` — When the product category was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product category was deleted.
+    - `type`: `null` | [ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO) — The associated product type.
+      - `id`: `string` — The ID of the product type.
+      - `value`: `string` — The value of the product type.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — When the product type was created.
+      - `updated_at`: `string` | `Date` — When the product type was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product type was deleted.
+    - `type_id`: `null` | `string` — The associated product type id.
+    - `tags`: [ProductTagDTO](/resources/references/product/interfaces/productProductTagDTO)\[] — The associated product tags.
+      - `id`: `string` — The ID of the product tag.
+      - `value`: `string` — The value of the product tag.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `products`: [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+    - `variants`: [ProductVariantDTO](/resources/references/product/interfaces/productProductVariantDTO)\[] — The associated product variants.
+      - `id`: `string` — The ID of the product variant.
+      - `title`: `string` — The tile of the product variant.
+      - `sku`: `null` | `string` — The SKU of the product variant.
+      - `barcode`: `null` | `string` — The barcode of the product variant.
+      - `ean`: `null` | `string` — The EAN of the product variant.
+      - `upc`: `null` | `string` — The UPC of the product variant.
+      - `allow_backorder`: `boolean` — Whether the product variant can be ordered when it's out of stock.
+      - `manage_inventory`: `boolean` — Whether the product variant's inventory should be managed by the core system.
+      - `thumbnail`: `null` | `string` — The thumbnail of the product variant form the product images.
+      - `requires_shipping`: `boolean` — Whether the product variant's requires shipping.
+      - `hs_code`: `null` | `string` — The HS Code of the product variant.
+      - `origin_country`: `null` | `string` — The origin country of the product variant.
+      - `mid_code`: `null` | `string` — The MID Code of the product variant.
+      - `material`: `null` | `string` — The material of the product variant.
+      - `weight`: `null` | `number` — The weight of the product variant.
+      - `length`: `null` | `number` — The length of the product variant.
+      - `height`: `null` | `number` — The height of the product variant.
+      - `width`: `null` | `number` — The width of the product variant.
+      - `options`: [ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[] — The associated product options.
+      - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `product`: `null` | [ProductDTO](/resources/references/product/interfaces/productProductDTO) (optional) — The associated product.
+      - `product_id`: `null` | `string` — The associated product id.
+      - `variant_rank`: `null` | `number` (optional) — he ranking of the variant among other variants associated with the product.
+      - `created_at`: `string` | `Date` — When the product variant was created.
+      - `updated_at`: `string` | `Date` — When the product variant was updated.
+      - `deleted_at`: `string` | `Date` — When the product variant was deleted.
+    - `options`: [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO)\[] — The associated product options.
+      - `id`: `string` — The ID of the product option.
+      - `title`: `string` — The title of the product option.
+      - `is_exclusive`: `boolean` — Whether the product option is exclusive to a product or shared across products.
+      - `products`: `null` | [ProductDTO](/resources/references/product/interfaces/productProductDTO)\[] (optional) — The associated products.
+      - `values`: [ProductOptionValueDTO](/resources/references/product/interfaces/productProductOptionValueDTO)\[] — The associated product option values.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — When the product option was created.
+      - `updated_at`: `string` | `Date` — When the product option was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product option was deleted.
+    - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+      - `id`: `string` — The ID of the product image.
+      - `url`: `string` — The URL of the product image.
+      - `rank`: `number` — The rank of the product image.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — When the product image was created.
+      - `updated_at`: `string` | `Date` — When the product image was updated.
+      - `deleted_at`: `string` | `Date` (optional) — When the product image was deleted.
+    - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+    - `external_id`: `null` | `string` — The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.
+    - `created_at`: `string` | `Date` — When the product was created.
+    - `updated_at`: `string` | `Date` — When the product was updated.
+    - `deleted_at`: `string` | `Date` — When the product was deleted.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.

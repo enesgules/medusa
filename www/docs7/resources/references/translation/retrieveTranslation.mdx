@@ -1,0 +1,83 @@
+---
+title: retrieveTranslation - Translation Module Reference
+sidebarTitle: retrieveTranslation
+---
+
+This documentation provides a reference to the `retrieveTranslation` method. This belongs to the Translation Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a translation by its ID.
+
+## Example
+
+A simple example that retrieves a translation by its ID:
+
+```ts
+const translation = await translationModuleService.retrieveTranslation("tra_123")
+```
+
+To specify relations that should be retrieved:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const translation = await translationModuleService.retrieveTranslation("tra_123", {
+  relations: ["locale"],
+})
+```
+
+<a id="retrievetranslation-parameters" />
+
+## Parameters
+
+**retrieveTranslation**
+
+- `id`: `string` — The ID of the translation.
+- `config`: [FindConfig](/resources/references/translation/interfaces/translationFindConfig)\<[TranslationDTO](/resources/references/translation/interfaces/translationTranslationDTO)> (optional) — The configurations determining how the translation is retrieved.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/translation/types/translationFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/translation/types/translationInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/translation/types/translationCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/translation/interfaces/translationContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/translation/interfaces/translationIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="retrievetranslation-returns" />
+
+## Returns
+
+**retrieveTranslation**
+
+- `Promise`: Promise\<[TranslationDTO](/resources/references/translation/interfaces/translationTranslationDTO)> — The retrieved translation.
+  - `id`: `string` — The ID of the translation.
+  - `reference_id`: `string` — The ID of the entity being translated.
+  - `reference`: `string` — The type of entity being translated (e.g., "product", "product\_variant").
+  - `locale_code`: `string` — The BCP 47 language tag code for this translation (e.g., "en-US", "fr-FR").
+  - `translations`: `Record<string, unknown>` — The translated fields as key-value pairs.
+  - `created_at`: `string` | `Date` — The date and time the translation was created.
+  - `updated_at`: `string` | `Date` — The date and time the translation was last updated.
+  - `deleted_at`: `null` | `string` | `Date` — The date and time the translation was deleted.

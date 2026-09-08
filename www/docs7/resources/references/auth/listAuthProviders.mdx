@@ -1,0 +1,41 @@
+---
+title: listAuthProviders - Auth Module Reference
+sidebarTitle: listAuthProviders
+---
+
+This documentation provides a reference to the `listAuthProviders` method. This belongs to the Auth Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method lists the public information of all registered auth provider
+instances.
+
+## Example
+
+```ts
+const providers = await authModuleService.listAuthProviders({ id: "emailpass" })
+```
+
+<a id="listauthproviders-parameters" />
+
+## Parameters
+
+**listAuthProviders**
+
+- `filters`: `object` (optional)
+  - `id`: `string` | `string`\[]
+
+<a id="listauthproviders-returns" />
+
+## Returns
+
+**listAuthProviders**
+
+- `Promise`: Promise\<[AuthProviderInfoDTO](/resources/references/auth/interfaces/authAuthProviderInfoDTO)\[]> — The registered auth providers' public information.
+  - `AuthProviderInfoDTO[]`: [AuthProviderInfoDTO](/resources/references/auth/interfaces/authAuthProviderInfoDTO)\[]
+    - `id`: `string` — The registered instance ID of the provider. This is the value used in authentication routes (for example, `okta` in `POST /auth/user/okta`).
+    - `identifier`: `string` — The provider's static identifier (for example, `oidc` or `emailpass`). Multiple instances can share the same identifier.
+    - `display_name`: `string` — The name to display for the provider in a frontend application.
+    - `flow`: `"credentials"` | `"redirect"` — The authentication flow the provider uses: - `credentials`: the client submits credentials (for example, email and password) directly to the authentication route. - `redirect`: the client is redirected to the provider (for example, an OIDC identity provider) and returns through a callback. A provider is considered `redirect` when it implements `validateCallback`. This value is derived and can be used by a frontend to decide whether to render a credentials form or a "Continue with ..." redirect button.

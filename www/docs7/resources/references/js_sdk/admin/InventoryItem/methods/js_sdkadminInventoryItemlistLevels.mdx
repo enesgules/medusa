@@ -1,0 +1,81 @@
+---
+title: listLevels
+---
+
+This method retrieves a paginated list of inventory levels that belong to an inventory item.
+It sends a request to the [List Inventory Items](/api/admin/inventory-items/list-inventory-items)
+API route.
+
+## Example
+
+To retrieve the list of inventory levels:
+
+```ts
+sdk.admin.inventoryItem.listLevels("iitem_123")
+.then(({ inventory_levels, count, limit, offset }) => {
+  console.log(inventory_levels)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.inventoryItem.listLevels("iitem_123", {
+  limit: 10,
+  offset: 10
+})
+.then(({ inventory_levels, count, limit, offset }) => {
+  console.log(inventory_levels)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each inventory level:
+
+```ts
+sdk.admin.inventoryItem.listLevels("iitem_123", {
+  fields: "id,*inventory_item"
+})
+.then(({ inventory_levels, count, limit, offset }) => {
+  console.log(inventory_levels)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="listlevels-parameters" />
+
+## Parameters
+
+**listLevels**
+
+- `id`: `string` — The inventory item's ID.
+- `query`: [AdminInventoryLevelFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInventoryLevelFilters) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `location_id`: `string` | `string`\[] (optional) — Filter by stock location IDs to retrieve their associated inventory levels.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listlevels-returns" />
+
+## Returns
+
+**listLevels**
+
+- `Promise`: Promise\<[AdminInventoryLevelListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminInventoryLevelListResponse)> — The paginated list of inventory levels.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.

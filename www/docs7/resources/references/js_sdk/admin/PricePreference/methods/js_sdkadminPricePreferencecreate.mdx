@@ -1,0 +1,51 @@
+---
+title: create
+---
+
+This method creates a price preference. It sends a request to the
+[Create Price Preference](/api/admin/price-preferences/create-price-preference)
+API route.
+
+## Example
+
+```ts
+sdk.admin.pricePreference.create({
+  attribute: "region_id",
+  value: "region_123",
+  is_tax_inclusive: true
+})
+.then(({ price_preference }) => {
+  console.log(price_preference)
+})
+```
+
+<a id="create-parameters" />
+
+## Parameters
+
+**create**
+
+- `body`: [AdminCreatePricePreference](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreatePricePreference) — The details of the price preference to create.
+  - `value`: `string`
+  - `attribute`: `string`
+  - `is_tax_inclusive`: `boolean` (optional)
+- `query`: [AdminGetPricePreferenceParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetPricePreferenceParams) (optional) — Configure the fields to retrieve in the price preference.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+## Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminPricePreferenceResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPricePreferenceResponse)> — The price preference's details.
+  - `price_preference`: [AdminPricePreference](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPricePreference) — The price preference's details.
+    - `id`: `string` — The price preference's ID.
+    - `attribute`: `null` | `string` — The attribute that the price preference refers to. Current supported values: `region_id` and `currency_code`.
+    - `value`: `null` | `string` — The attribute's value. For example, if the `attribute` is `region_id`, the value is a region's ID. Prices in that region use this price preference.
+    - `is_tax_inclusive`: `boolean` — Whether prices matching this price preference have taxes included in their amount.
+    - `created_at`: `string` — The date that the price preference was created.
+    - `updated_at`: `string` — The date that the price preference was updated.
+    - `deleted_at`: `null` | `string` — The date that the price preference was deleted.

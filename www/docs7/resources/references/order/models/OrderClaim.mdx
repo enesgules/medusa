@@ -1,0 +1,166 @@
+---
+title: OrderClaim - Order Module Data Models Reference
+sidebarTitle: OrderClaim
+---
+
+This documentation provides a reference to the OrderClaim data model. It belongs to the Order Module.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/order/src/models/claim.ts#L84)
+
+**OrderClaim**
+
+- `id`: PrimaryKeyModifier\<IdProperty> — The ID of the order claim.
+- `order_version`: `NumberProperty` — The order version that this claim belongs to.
+- `display_id`: `AutoIncrementProperty` — The display ID of the order claim
+- `type`: EnumProperty\<typeof [ClaimType](/resources/references/utils/OrderUtils/enums/utilsOrderUtilsClaimType)> — The type of the order claim
+- `no_notification`: [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) (optional) — Whether the customer should receive notifications about claim updates.
+  - `$dataType`: `boolean` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"boolean"`
+    - `options`: `Record<string, any>` (optional)
+- `refund_amount`: `BigNumberProperty` (optional) — The amount to refund to the customer.
+- `created_by`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the user that created the claim.
+  - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+  - `#retrievable`: `boolean` (optional)
+  - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+  - `#filterable`: `boolean` (optional)
+  - `#sortable`: `boolean` (optional)
+  - `#facetable`: `boolean` | `object` (optional)
+    - `types`: [SearchFacetKind](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetKind)\[] (optional)
+  - `#array`: `boolean` (optional)
+  - `#searchable`: `boolean` | `object` (optional)
+    - `weight`: `number` (optional)
+  - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+    - `name`: `"text"`
+    - `options`: `Record<string, any>` (optional)
+- `canceled_at`: `DateTimeProperty` (optional) — The date that the claim was canceled.
+- `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.
+- `order`: HasOneWithForeignKey\<[Order](/resources/references/order/models/Order)> — The associated order.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the order.
+  - `display_id`: `AutoIncrementProperty` — An auto-incremented display ID for the order.The display ID of the order
+  - `custom_display_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — A custom display ID for the order.The custom display ID of the order
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `region_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the region the order belongs to.The ID of the region that the order was purchased in.
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `customer_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the customer that placed the order.The ID of the customer that placed the order.
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `version`: `NumberProperty` — The order's version number.The version of the order
+  - `sales_channel_id`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The ID of the sales channel the order was placed in.The ID of the sales channel that the order was purchased through.
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `status`: EnumProperty\<typeof [OrderStatus](/resources/references/utils/OrderUtils/enums/utilsOrderUtilsOrderStatus)> — The order's status.The status of the order
+  - `is_draft_order`: [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) — Whether the order is a draft order.Whether the order is a draft order.
+    - `$dataType`: `boolean` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `email`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The email associated with the order.The email of the order's customer
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The ISO 3 character currency code of the order.The currency code of the order.
+
+    Example:
+
+    ```
+    "usd"
+    ```
+
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `locale`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The BCP 47 language tag of the order's locale.The locale of the order
+
+    Example:
+
+    ```
+    "en-US"
+    ```
+
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `no_notification`: [BooleanProperty](/resources/references/utils/classes/utilsBooleanProperty) (optional) — Whether notifications should be sent for this order.Whether the customer should receive notifications for order updates.
+    - `$dataType`: `boolean` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Custom key-value metadata for the order.Holds custom data in key-value pairs.
+  - `canceled_at`: `DateTimeProperty` (optional) — The date the order was canceled.The date the order was canceled.
+  - `shipping_address`: HasOneWithForeignKey\<any, undefined> (optional) — The associated shipping address.The associated shipping\_address.
+  - `billing_address`: HasOneWithForeignKey\<any, undefined> (optional) — The associated billing address.The associated billing address.
+  - `summary`: HasMany\<any> — The associated order summaries.The associated summary.
+  - `items`: HasMany\<any> — The associated order items.The associated items.
+  - `shipping_methods`: HasMany\<any> — The associated shipping methods.The associated shipping methods.
+  - `transactions`: HasMany\<any> — The associated transactions.The associated transactions, which include amounts captured and refunded.
+  - `credit_lines`: HasMany\<any> — The associated credit lines.The associated credit lines, which include additional payment amounts for an order.
+  - `returns`: HasMany\<any> — The associated returns.The associated returns.
+- `return`: HasOneWithForeignKey\<() => any, undefined> (optional) — The associated return.
+- `additional_items`: HasMany\<() => any> — The associated additional (outbound) items.
+- `claim_items`: HasMany\<() => any> — The associated claim (outbound) items.
+- `shipping_methods`: HasMany\<() => any> — The associated shipping methods used to send the new items.
+- `transactions`: HasMany\<() => any> — The associated transactions, which can hold the payments refunded.

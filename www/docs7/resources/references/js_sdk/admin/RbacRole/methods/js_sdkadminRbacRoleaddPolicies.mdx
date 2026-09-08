@@ -1,0 +1,53 @@
+---
+title: addPolicies
+---
+
+This method adds policies to an RBAC role. It sends a request to the
+Add Role Policies API route.
+
+## Example
+
+```ts
+sdk.admin.rbacRole.addPolicies("role_123", {
+  policies: ["policy_123", "policy_456"]
+})
+.then(({ policies }) => {
+  console.log(policies)
+})
+```
+
+<a id="addpolicies-parameters" />
+
+## Parameters
+
+**addPolicies**
+
+- `roleId`: `string` — The role's ID.
+- `body`: [AdminAddRolePolicies](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminAddRolePolicies) — The policies to add to the role.
+  - `policies`: `string`\[] — The IDs of the policies to add to the role.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="addpolicies-returns" />
+
+## Returns
+
+**addPolicies**
+
+- `Promise`: Promise\<[AdminRbacPolicyListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicyListResponse)> — The updated role with policies.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `policies`: [AdminRbacPolicy](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicy)\[] — The list of policies.
+    - `id`: `string` — The policy's ID.
+    - `key`: `string` — The policy's unique key.
+    - `resource`: `string` — The resource the policy applies to.
+    - `operation`: `string` — The operation the policy allows.
+    - `name`: `null` | `string` — The policy's name.
+    - `description`: `null` | `string` — The policy's description.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the policy.
+    - `inherited_from_role_id`: `null` | `string` (optional) — The role ID the policy is inherited from, if any.
+    - `created_at`: `string` — The date the policy was created.
+    - `updated_at`: `string` — The date the policy was updated.
+    - `deleted_at`: `null` | `string` — The date the policy was deleted.

@@ -1,0 +1,53 @@
+---
+title: createUsersStep - Medusa Core Workflows Reference
+sidebarTitle: createUsersStep
+---
+
+This documentation provides a reference to the `createUsersStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates one or more users. To allow these users to log in,
+you must attach an auth identity to each user using the [setAuthAppMetadataStep](/resources/references/medusa-workflows/steps/setAuthAppMetadataStep).
+
+## Example
+
+```ts
+const data = createUsersStep([
+  {
+    email: "example@gmail.com",
+    first_name: "John",
+    last_name: "Doe",
+  }
+])
+```
+
+<a id="createusersstep-input" />
+
+## Input
+
+**createUsersStep**
+
+- `CreateUserDTO[]`: [CreateUserDTO](/resources/references/user/interfaces/userCreateUserDTO)\[]
+  - `email`: `string` — The email of the user.
+  - `first_name`: `null` | `string` (optional) — The first name of the user.
+  - `last_name`: `null` | `string` (optional) — The last name of the user.
+  - `avatar_url`: `null` | `string` (optional) — The avatar URL of the user.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `roles`: `null` | `string`\[] (optional) — The RBAC roles to assign to the user.
+
+<a id="createusersstep-output" />
+
+## Output
+
+**createUsersStep**
+
+- `UserDTO[]`: [UserDTO](/resources/references/user/interfaces/userUserDTO)\[]
+  - `id`: `string` — The ID of the user.
+  - `email`: `string` — The email of the user.
+  - `first_name`: `null` | `string` — The first name of the user.
+  - `last_name`: `null` | `string` — The last name of the user.
+  - `avatar_url`: `null` | `string` — The avatar URL of the user.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `roles`: `null` | `string`\[] (optional) — The RBAC roles assigned to the user.
+  - `created_at`: `Date` — The creation date of the user.
+  - `updated_at`: `Date` — The updated date of the user.
+  - `deleted_at`: `null` | `Date` — The deletion date of the user.

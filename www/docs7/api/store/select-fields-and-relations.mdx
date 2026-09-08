@@ -1,0 +1,151 @@
+---
+title: Select Fields and Relations
+---
+
+Many API Routes accept a `fields` query that allows you to select which fields and relations should be returned in a record.
+Fields and relations are separated by a comma `,`.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Select fields"
+    sdk.store.product.list({
+      fields: "title,handle"
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Select fields"
+    curl 'localhost:9000/store/products?fields=title,handle'
+    ```
+  </Tab>
+</Tabs>
+
+This returns only the `title` and `handle` fields of a product.
+
+### Fields Operator
+
+By default, only the selected fields and relations are returned in the response.
+
+Before every field or relation, you can pass one of the following operators to change the default behavior:
+
+- `+`: Add the field to the fields returned by default. For example, `+title` returns the `title` field along with the fields returned by default.
+- `-`: Remove the field from the fields returned by default. For example, `-handle` removes the `handle` field from the fields returned by default.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Select relations"
+    sdk.store.product.list({
+      fields: "+title,-handle"
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Select relations"
+    curl 'localhost:9000/store/products?fields=+title,-handle'
+    ```
+  </Tab>
+</Tabs>
+
+This returns the products, each of them having their `title` field, but without the `handle` field.
+
+### Select Relations
+
+To select a relation, pass to `fields` the relation name prefixed by `*`.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Select relations"
+    sdk.store.product.list({
+      fields: "*variants"
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Select relations"
+    curl 'localhost:9000/store/products?fields=*variants'
+    ```
+  </Tab>
+</Tabs>
+
+This returns the variants of each product.
+
+To select multiple relations, pass each of the relations with the `*` prefix, separated by a comma.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Select relation's fields"
+    sdk.store.product.list({
+      fields: "*variants,*options"
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Select relation's fields"
+    curl 'localhost:9000/store/products?fields=*variants,*options'
+    ```
+  </Tab>
+</Tabs>
+
+This returns the variants and options of each product.
+
+### Select Fields in a Relation
+
+The `*` prefix selects all fields of the relation's data model.
+
+To select a specific field, pass a `.<field>` suffix instead of the `*` prefix. For example, `variants.title`.
+
+To specify multiple fields, pass each of the fields with the `<relation>.<field>` format, separated by a comma. You can do the same for multiple relations.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Select relation's fields"
+    sdk.store.product.list({
+      fields: "variants.title,variants.sku,options.title"
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Select relation's fields"
+    curl 'localhost:9000/store/products?fields=variants.title,variants.sku,options.title'
+    ```
+  </Tab>
+</Tabs>
+
+This returns the variants and options of each product, but the variants only have their `id`, `title`, and `sku` fields, and the options only have their `id` and `title` fields. The `id` is always included.
+
+### Select Nested Relations
+
+A relation can have relations of its own. To select a nested relation, chain the relation names with a dot (`.`), prefixing the deepest relation with `*` to select all its fields. For example, `*variants.prices`.
+
+Prefixing a relation with `*` only selects that relation's own fields, not its nested relations. So, to retrieve a nested relation, you must reference it explicitly through its parent, as shown in the example.
+
+You can chain more relations to select deeper levels, such as `*items.variant.product`.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Select nested relations"
+    sdk.store.product.list({
+      fields: "*variants.prices"
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Select nested relations"
+    curl 'localhost:9000/store/products?fields=*variants.prices'
+    ```
+  </Tab>
+</Tabs>
+
+This returns the variants of each product, each with its `prices` relation populated.
+
+### Select Custom Linked Data Models
+
+Most of the API routes that accept a `fields` query parameter allow you to specify custom linked data models. For example, if you linked a `Brand` to a `Product`, you can pass `brand` in the `fields` query parameter to retrieve the brand of each product.
+
+However, some API routes restrict the fields and relations you can retrieve. To learn about those API routes and how to override the allowed fields and relations, refer to the [Retrieve Custom Linked Data Models from Medusa's API routes](/learn/fundamentals/api-routes/retrieve-custom-links) documentation.

@@ -1,0 +1,59 @@
+---
+title: createRegionsStep - Medusa Core Workflows Reference
+sidebarTitle: createRegionsStep
+---
+
+This documentation provides a reference to the `createRegionsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates one or more regions.
+
+## Example
+
+```ts
+const data = createRegionsStep([
+  {
+    currency_code: "usd",
+    name: "United States",
+    countries: ["us"],
+  }
+])
+```
+
+<a id="createregionsstep-input" />
+
+## Input
+
+**createRegionsStep**
+
+- `CreateRegionDTO[]`: [CreateRegionDTO](/resources/references/region/interfaces/regionCreateRegionDTO)\[]
+  - `name`: `string` — The name of the region.
+  - `currency_code`: `string` — The currency code of the region.
+  - `automatic_taxes`: `boolean` (optional) — Setting to indicate whether taxes need to be applied automatically
+  - `countries`: `string`\[] (optional) — The region's countries.
+  - `payment_providers`: `string`\[] (optional) — The region's payment providers.
+  - `metadata`: [MetadataType](/resources/references/region/types/regionMetadataType) (optional) — Holds custom data in key-value pairs.
+
+<a id="createregionsstep-output" />
+
+## Output
+
+**createRegionsStep**
+
+- `RegionDTO[]`: [RegionDTO](/resources/references/region/interfaces/regionRegionDTO)\[]
+  - `id`: `string` — The ID of the region.
+  - `name`: `string` — The name of the region.
+  - `currency_code`: `string` — The currency code of the region.
+  - `automatic_taxes`: `boolean` — Setting to indicate whether taxes need to be applied automatically
+  - `countries`: [RegionCountryDTO](/resources/references/region/interfaces/regionRegionCountryDTO)\[] — The countries of the region.
+    - `id`: `string` — The ID of the country.
+    - `iso_2`: `string` — The ISO 2 code of the country.
+    - `iso_3`: `string` — The ISO 3 code of the country.
+    - `num_code`: `string` — The country's code number.
+    - `name`: `string` — The name of the country.
+    - `display_name`: `string` — The display name of the country.
+  - `payment_providers`: [PaymentProviderDTO](/resources/references/region/interfaces/regionPaymentProviderDTO)\[] — Payment providers available in the region
+    - `id`: `string` — The ID of the payment provider.
+    - `is_enabled`: `boolean` — Whether the payment provider is enabled.
+  - `metadata`: `Record<string, any>` (optional) — Holds custom data in key-value pairs.
+  - `created_at`: `string` — The date the region was created.
+  - `updated_at`: `string` — The date the region was updated.

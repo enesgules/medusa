@@ -1,0 +1,171 @@
+---
+title: listAndCountServiceZones - Fulfillment Module Reference
+sidebarTitle: listAndCountServiceZones
+---
+
+This documentation provides a reference to the `listAndCountServiceZones` method. This belongs to the Fulfillment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of service zones along with the total count of available service zones satisfying the provided filters.
+
+## Example
+
+To retrieve a list of service zones using their IDs:
+
+```ts
+const [serviceZones, count] =
+  await fulfillmentModuleService.listAndCountServiceZones({
+    id: ["serzo_123", "serzo_321"],
+  })
+```
+
+To specify relations that should be retrieved within the service zone:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const [serviceZones, count] =
+  await fulfillmentModuleService.listAndCountServiceZones(
+    {
+      id: ["serzo_123", "serzo_321"],
+    },
+    {
+      relations: ["shipping_options"],
+    }
+  )
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const [serviceZones, count] =
+  await fulfillmentModuleService.listAndCountServiceZones(
+    {
+      id: ["serzo_123", "serzo_321"],
+    },
+    {
+      relations: ["shipping_options"],
+      take: 20,
+      skip: 2,
+    }
+  )
+```
+
+<a id="listandcountservicezones-parameters" />
+
+## Parameters
+
+**listAndCountServiceZones**
+
+- `filters`: [FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) (optional) — The filters to apply on the retrieved service zones.
+  - `$and`: ([FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the service zones by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the service zones by their name.
+    - `geo_zones`: [FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps) (optional) — The filters to apply on the associated geo zones.
+    - `fulfillment_set`: [FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps) (optional) — The filters to apply on the associated fulfillment sets.
+  - `$or`: ([FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the service zones by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the service zones by their name.
+    - `geo_zones`: [FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps) (optional) — The filters to apply on the associated geo zones.
+    - `fulfillment_set`: [FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps) (optional) — The filters to apply on the associated fulfillment sets.
+  - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — The IDs to filter the service zones by.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/fulfillment/types/fulfillmentOperatorMap)\<string | string\[]> (optional) — Filter the service zones by their name.
+    - `$and`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> | [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/fulfillment/types/fulfillmentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/fulfillment/types/fulfillmentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `geo_zones`: [FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps) (optional) — The filters to apply on the associated geo zones.
+    - `$and`: ([FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableGeoZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableGeoZoneProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the geo zones by.
+    - `type`: [GeoZoneType](/resources/references/fulfillment/types/fulfillmentGeoZoneType) | [GeoZoneType](/resources/references/fulfillment/types/fulfillmentGeoZoneType)\[] (optional) — Filter the geo zones by their type.
+    - `country_code`: `string` | `string`\[] (optional) — Filter the geo zones by their country code.
+    - `province_code`: `string` | `string`\[] (optional) — Filter the geo zones by their lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province code.
+    - `city`: `string` | `string`\[] (optional) — Filter the geo zones by their city.
+  - `fulfillment_set`: [FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps) (optional) — The filters to apply on the associated fulfillment sets.
+    - `$and`: ([FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps) | [BaseFilterable](/resources/references/fulfillment/interfaces/fulfillmentBaseFilterable)\<[FilterableFulfillmentSetProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableFulfillmentSetProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the fulfillment sets by.
+    - `name`: `string` | `string`\[] (optional) — Filter the fulfillment sets by their name.
+    - `type`: `string` | `string`\[] (optional) — Filter the fulfillment sets by their type.
+    - `service_zones`: [FilterableServiceZoneProps](/resources/references/fulfillment/interfaces/fulfillmentFilterableServiceZoneProps) (optional) — The filters to apply on the retrieved service zones.
+- `config`: [FindConfig](/resources/references/fulfillment/interfaces/fulfillmentFindConfig)\<[ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)> (optional) — The configurations determining how the service zone is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a service zone.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/fulfillment/types/fulfillmentFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/fulfillment/types/fulfillmentInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/fulfillment/types/fulfillmentCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/fulfillment/interfaces/fulfillmentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/fulfillment/interfaces/fulfillmentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listandcountservicezones-returns" />
+
+## Returns
+
+**listAndCountServiceZones**
+
+- `Promise`: Promise\<\[[ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[], number]> — The list of service zones along with their total count.
+  - `ServiceZoneDTO[]`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[]
+  - `number`: `number`

@@ -1,0 +1,130 @@
+---
+title: upsertProductTypes - Product Module Reference
+sidebarTitle: upsertProductTypes
+---
+
+This documentation provides a reference to the `upsertProductTypes` method. This belongs to the Product Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="upsertproducttypes-data-sharedcontext-promiseproducttypedto" />
+
+## upsertProductTypes(data, sharedContext?): Promise\<[ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO)\[]>
+
+This method updates existing types, or creates new ones if they don't exist.
+
+### Example
+
+```ts
+const productTypes = await productModuleService.upsertProductTypes([
+  {
+    id: "ptyp_123",
+    metadata: {
+      test: true,
+    },
+  },
+  {
+    value: "Digital",
+  },
+])
+```
+
+<a id="upsertproducttypes-parameters" />
+
+### Parameters
+
+**upsertProductTypes**
+
+- `data`: [UpsertProductTypeDTO](/resources/references/product/interfaces/productUpsertProductTypeDTO)\[] — The attributes to update or create for each type.
+  - `id`: `string` (optional) — The product type's ID. If provided, the product tag is updated. Otheriwse, it's created. In that case, the `value` property is required.
+  - `value`: `string` (optional) — The new value of the product type.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/product/interfaces/productContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/product/interfaces/productIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="upsertproducttypes-returns" />
+
+### Returns
+
+**upsertProductTypes**
+
+- `Promise`: Promise\<[ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO)\[]> — The updated and created types.
+  - `ProductTypeDTO[]`: [ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO)\[]
+    - `id`: `string` — The ID of the product type.
+    - `value`: `string` — The value of the product type.
+    - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — When the product type was created.
+    - `updated_at`: `string` | `Date` — When the product type was updated.
+    - `deleted_at`: `string` | `Date` (optional) — When the product type was deleted.
+
+<a id="upsertproducttypes-data-sharedcontext-promiseproducttypedto-1" />
+
+## upsertProductTypes(data, sharedContext?): Promise\<[ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO)>
+
+This method updates an existing type, or creates a new one if it doesn't exist.
+
+### Example
+
+```ts
+const productType = await productModuleService.upsertProductTypes({
+  id: "ptyp_123",
+  metadata: {
+    test: true,
+  },
+})
+```
+
+<a id="upsertproducttypes-parameters-1" />
+
+### Parameters
+
+**upsertProductTypes**
+
+- `data`: [UpsertProductTypeDTO](/resources/references/product/interfaces/productUpsertProductTypeDTO) — The attributes to update or create for the type.
+  - `id`: `string` (optional) — The product type's ID. If provided, the product tag is updated. Otheriwse, it's created. In that case, the `value` property is required.
+  - `value`: `string` (optional) — The new value of the product type.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/product/interfaces/productContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/product/interfaces/productIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="upsertproducttypes-returns-1" />
+
+### Returns
+
+**upsertProductTypes**
+
+- `Promise`: Promise\<[ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO)> — The updated or created type.
+  - `id`: `string` — The ID of the product type.
+  - `value`: `string` — The value of the product type.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `created_at`: `string` | `Date` — When the product type was created.
+  - `updated_at`: `string` | `Date` — When the product type was updated.
+  - `deleted_at`: `string` | `Date` (optional) — When the product type was deleted.

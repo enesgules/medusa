@@ -1,0 +1,42 @@
+---
+title: cancelOrderExchangeStep - Medusa Core Workflows Reference
+sidebarTitle: cancelOrderExchangeStep
+---
+
+This documentation provides a reference to the `cancelOrderExchangeStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step cancels an exchange.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { cancelOrderExchangeStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = cancelOrderExchangeStep({
+      "order_id": "order_123",
+      "exchange_id": "{value}"
+    })
+  }
+)
+```
+
+<a id="cancelorderexchangestep-input" />
+
+## Input
+
+**cancelOrderExchangeStep**
+
+- `CancelOrderExchangeDTO`: [CancelOrderExchangeDTO](/resources/references/order/interfaces/orderCancelOrderExchangeDTO) — The details of the exchange cancelation.
+  - `order_id`: `string` — The associated order's ID.
+  - `return_id`: `string` (optional) — The associated return's ID.
+  - `claim_id`: `string` (optional) — The associated claim's ID.
+  - `description`: `string` (optional) — The description of the action.
+  - `internal_note`: `string` (optional) — The internal note of the action.
+  - `reference`: `string` (optional) — The name of the data model the action references. For example, `return`.
+  - `reference_id`: `string` (optional) — The ID of the record of the data model specified in [reference](/resources/references/order/interfaces/orderBaseOrderBundledActionsDTO#reference). For example, if `reference` is `return`, the value is `return_123`.
+  - `created_by`: `null` | `string` (optional) — The user or customer that created this action.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `exchange_id`: `string` — The exchange's ID.
+  - `canceled_by`: `string` (optional) — The ID of the user canceling the exchange

@@ -1,0 +1,874 @@
+---
+title: List Orders
+---
+
+`GET /store/orders`
+
+Retrieve the orders of the logged-in customer. The orders can be filtered by fields such as `id`. The orders can also be sorted or paginated.
+
+## Base URLs
+
+- `http://localhost:9000`
+
+- `https://api.medusajs.com`
+
+## Authentication
+
+```json
+{
+  "cookie_auth": {
+    "type": "apiKey",
+    "x-displayName": "Cookie Session ID",
+    "in": "cookie",
+    "name": "connect.sid"
+  }
+}
+```
+
+```json
+{
+  "jwt_token": {
+    "type": "http",
+    "x-displayName": "JWT Token",
+    "scheme": "bearer"
+  }
+}
+```
+
+[Authentication guide](/api/store/authentication)
+
+## Parameters
+
+<Accordion title="x-publishable-api-key (header, required)">
+  Publishable API Key created in the Medusa Admin.
+
+  ```json
+  {
+    "name": "x-publishable-api-key",
+    "in": "header",
+    "description": "Publishable API Key created in the Medusa Admin.",
+    "required": true,
+    "schema": {
+      "type": "string",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/api/store#publishable-api-key"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="x-medusa-locale (header, optional)">
+  The locale in BCP 47 format to retrieve localized content.
+
+  ```json
+  {
+    "name": "x-medusa-locale",
+    "in": "header",
+    "description": "The locale in BCP 47 format to retrieve localized content.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "example": "en-US",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/resources/commerce-modules/translation/storefront",
+        "description": "Learn more in the Serve Translations in Storefront guide."
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="fields (query, optional)">
+  Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+
+  ```json
+  {
+    "name": "fields",
+    "in": "query",
+    "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "title": "fields",
+      "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+      "externalDocs": {
+        "url": "#select-fields-and-relations"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="offset (query, optional)">
+  The number of items to skip when retrieving a list.
+
+  ```json
+  {
+    "name": "offset",
+    "in": "query",
+    "description": "The number of items to skip when retrieving a list.",
+    "required": false,
+    "schema": {
+      "type": "number",
+      "title": "offset",
+      "description": "The number of items to skip when retrieving a list.",
+      "externalDocs": {
+        "url": "#pagination"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="limit (query, optional)">
+  Limit the number of items returned in the list.
+
+  ```json
+  {
+    "name": "limit",
+    "in": "query",
+    "description": "Limit the number of items returned in the list.",
+    "required": false,
+    "schema": {
+      "type": "number",
+      "title": "limit",
+      "description": "Limit the number of items returned in the list.",
+      "externalDocs": {
+        "url": "#pagination"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="order (query, optional)">
+  The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+
+  ```json
+  {
+    "name": "order",
+    "in": "query",
+    "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "title": "order",
+      "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`."
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="id (query, optional)">
+  ```json
+  {
+    "name": "id",
+    "in": "query",
+    "required": false,
+    "schema": {
+      "oneOf": [
+        {
+          "type": "string",
+          "title": "id",
+          "description": "Filter by an order ID."
+        },
+        {
+          "type": "array",
+          "description": "Filter by order IDs.",
+          "items": {
+            "type": "string",
+            "title": "id",
+            "description": "An order ID."
+          }
+        }
+      ]
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="$and (query, optional)">
+  ```json
+  {
+    "name": "$and",
+    "in": "query",
+    "required": false,
+    "schema": {
+      "type": "array",
+      "description": "The order's $and.",
+      "items": {
+        "type": "object"
+      },
+      "title": "$and"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="$or (query, optional)">
+  ```json
+  {
+    "name": "$or",
+    "in": "query",
+    "required": false,
+    "schema": {
+      "type": "array",
+      "description": "The order's $or.",
+      "items": {
+        "type": "object"
+      },
+      "title": "$or"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="status (query, optional)">
+  ```json
+  {
+    "name": "status",
+    "in": "query",
+    "required": false,
+    "schema": {
+      "oneOf": [
+        {
+          "type": "string",
+          "title": "status",
+          "description": "The order's status.",
+          "enum": [
+            "canceled",
+            "requires_action",
+            "pending",
+            "completed",
+            "draft",
+            "archived"
+          ]
+        },
+        {
+          "type": "array",
+          "description": "The order's status.",
+          "items": {
+            "type": "string",
+            "description": "The status's details.",
+            "enum": [
+              "canceled",
+              "requires_action",
+              "pending",
+              "completed",
+              "draft",
+              "archived"
+            ]
+          }
+        }
+      ]
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="with_deleted (query, optional)">
+  Whether to include deleted records in the result.
+
+  ```json
+  {
+    "name": "with_deleted",
+    "in": "query",
+    "description": "Whether to include deleted records in the result.",
+    "required": false,
+    "schema": {
+      "type": "boolean",
+      "title": "with_deleted",
+      "description": "Whether to include deleted records in the result."
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="locale (query, optional)">
+  The locale in BCP 47 format to retrieve localized content.
+
+  ```json
+  {
+    "name": "locale",
+    "in": "query",
+    "description": "The locale in BCP 47 format to retrieve localized content.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "example": "en-US",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/resources/commerce-modules/translation/storefront",
+        "description": "Learn more in the Serve Translations in Storefront guide."
+      }
+    }
+  }
+  ```
+</Accordion>
+
+## Responses
+
+<Accordion title="200 — OK">
+  OK
+
+  ```json
+  {
+    "description": "OK",
+    "content": {
+      "application/json": {
+        "schema": {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The paginated list of orders.",
+              "required": [
+                "limit",
+                "offset",
+                "count"
+              ],
+              "properties": {
+                "limit": {
+                  "type": "number",
+                  "title": "limit",
+                  "description": "The maximum number of items returned."
+                },
+                "offset": {
+                  "type": "number",
+                  "title": "offset",
+                  "description": "The number of items skipped before retrieving the returned items."
+                },
+                "count": {
+                  "type": "number",
+                  "title": "count",
+                  "description": "The total number of items."
+                }
+              }
+            },
+            {
+              "type": "object",
+              "description": "The paginated list of orders.",
+              "required": [
+                "orders"
+              ],
+              "properties": {
+                "orders": {
+                  "type": "array",
+                  "description": "The order's orders.",
+                  "items": {
+                    "$ref": "#/components/schemas/StoreOrder"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [StoreOrder](/api/schemas/store-order)
+</Accordion>
+
+<Accordion title="400 — Client Error">
+  Client Error
+
+  ```json
+  {
+    "description": "Client Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "not_allowed": {
+            "$ref": "#/components/examples/not_allowed_error"
+          },
+          "invalid_data": {
+            "$ref": "#/components/examples/invalid_data_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="401 — User is not authorized. Must log in first">
+  User is not authorized. Must log in first
+
+  ```json
+  {
+    "description": "User is not authorized. Must log in first",
+    "content": {
+      "text/plain": {
+        "schema": {
+          "type": "string",
+          "default": "Unauthorized",
+          "example": "Unauthorized"
+        }
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Not Found Error">
+  Not Found Error
+
+  ```json
+  {
+    "description": "Not Found Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "message": "Entity with id 1 was not found",
+          "type": "not_found"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="409 — Invalid State Error">
+  Invalid State Error
+
+  ```json
+  {
+    "description": "Invalid State Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "unknown_error",
+          "message": "The request conflicted with another request. You may retry the request with the provided Idempotency-Key.",
+          "type": "QueryRunnerAlreadyReleasedError"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="422 — Invalid Request Error">
+  Invalid Request Error
+
+  ```json
+  {
+    "description": "Invalid Request Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "invalid_request_error",
+          "message": "Discount with code TEST already exists.",
+          "type": "duplicate_error"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="500 — Server Error">
+  Server Error
+
+  ```json
+  {
+    "description": "Server Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "database": {
+            "$ref": "#/components/examples/database_error"
+          },
+          "unexpected_state": {
+            "$ref": "#/components/examples/unexpected_state_error"
+          },
+          "invalid_argument": {
+            "$ref": "#/components/examples/invalid_argument_error"
+          },
+          "default_error": {
+            "$ref": "#/components/examples/default_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+## Examples
+
+### JS SDK
+
+```js
+import Medusa from "@medusajs/js-sdk"
+
+let MEDUSA_BACKEND_URL = "http://localhost:9000"
+
+if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
+  MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+}
+
+export const sdk = new Medusa({
+  baseUrl: MEDUSA_BACKEND_URL,
+  debug: process.env.NODE_ENV === "development",
+  publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+})
+
+// TODO must be authenticated as the customer to list their orders
+sdk.store.order.list()
+.then(({ orders, count, offset, limit }) => {
+  console.log(orders)
+})
+```
+
+### cURL
+
+```bash
+curl '{backend_url}/store/orders' \
+-H 'Authorization: Bearer {jwt_token}' \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
+```
+
+<Accordion title="OpenAPI operation">
+  ```json
+  {
+    "operationId": "GetOrders",
+    "summary": "List Logged-in Customer's Orders",
+    "x-sidebar-summary": "List Orders",
+    "description": "Retrieve the orders of the logged-in customer. The orders can be filtered by fields such as `id`. The orders can also be sorted or paginated.",
+    "x-authenticated": true,
+    "parameters": [
+      {
+        "name": "x-publishable-api-key",
+        "in": "header",
+        "description": "Publishable API Key created in the Medusa Admin.",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "externalDocs": {
+            "url": "https://docs.medusajs.com/api/store#publishable-api-key"
+          }
+        }
+      },
+      {
+        "name": "x-medusa-locale",
+        "in": "header",
+        "description": "The locale in BCP 47 format to retrieve localized content.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "example": "en-US",
+          "externalDocs": {
+            "url": "https://docs.medusajs.com/resources/commerce-modules/translation/storefront",
+            "description": "Learn more in the Serve Translations in Storefront guide."
+          }
+        }
+      },
+      {
+        "name": "fields",
+        "in": "query",
+        "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "fields",
+          "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+          "externalDocs": {
+            "url": "#select-fields-and-relations"
+          }
+        }
+      },
+      {
+        "name": "offset",
+        "in": "query",
+        "description": "The number of items to skip when retrieving a list.",
+        "required": false,
+        "schema": {
+          "type": "number",
+          "title": "offset",
+          "description": "The number of items to skip when retrieving a list.",
+          "externalDocs": {
+            "url": "#pagination"
+          }
+        }
+      },
+      {
+        "name": "limit",
+        "in": "query",
+        "description": "Limit the number of items returned in the list.",
+        "required": false,
+        "schema": {
+          "type": "number",
+          "title": "limit",
+          "description": "Limit the number of items returned in the list.",
+          "externalDocs": {
+            "url": "#pagination"
+          }
+        }
+      },
+      {
+        "name": "order",
+        "in": "query",
+        "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "order",
+          "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`."
+        }
+      },
+      {
+        "name": "id",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "oneOf": [
+            {
+              "type": "string",
+              "title": "id",
+              "description": "Filter by an order ID."
+            },
+            {
+              "type": "array",
+              "description": "Filter by order IDs.",
+              "items": {
+                "type": "string",
+                "title": "id",
+                "description": "An order ID."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "$and",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "array",
+          "description": "The order's $and.",
+          "items": {
+            "type": "object"
+          },
+          "title": "$and"
+        }
+      },
+      {
+        "name": "$or",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "array",
+          "description": "The order's $or.",
+          "items": {
+            "type": "object"
+          },
+          "title": "$or"
+        }
+      },
+      {
+        "name": "status",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "oneOf": [
+            {
+              "type": "string",
+              "title": "status",
+              "description": "The order's status.",
+              "enum": [
+                "canceled",
+                "requires_action",
+                "pending",
+                "completed",
+                "draft",
+                "archived"
+              ]
+            },
+            {
+              "type": "array",
+              "description": "The order's status.",
+              "items": {
+                "type": "string",
+                "description": "The status's details.",
+                "enum": [
+                  "canceled",
+                  "requires_action",
+                  "pending",
+                  "completed",
+                  "draft",
+                  "archived"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "with_deleted",
+        "in": "query",
+        "description": "Whether to include deleted records in the result.",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "title": "with_deleted",
+          "description": "Whether to include deleted records in the result."
+        }
+      },
+      {
+        "name": "locale",
+        "in": "query",
+        "description": "The locale in BCP 47 format to retrieve localized content.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "example": "en-US",
+          "externalDocs": {
+            "url": "https://docs.medusajs.com/resources/commerce-modules/translation/storefront",
+            "description": "Learn more in the Serve Translations in Storefront guide."
+          }
+        }
+      }
+    ],
+    "x-codeSamples": [
+      {
+        "lang": "JavaScript",
+        "label": "JS SDK",
+        "source": "import Medusa from \"@medusajs/js-sdk\"\n\nlet MEDUSA_BACKEND_URL = \"http://localhost:9000\"\n\nif (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {\n  MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL\n}\n\nexport const sdk = new Medusa({\n  baseUrl: MEDUSA_BACKEND_URL,\n  debug: process.env.NODE_ENV === \"development\",\n  publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,\n})\n\n// TODO must be authenticated as the customer to list their orders\nsdk.store.order.list()\n.then(({ orders, count, offset, limit }) => {\n  console.log(orders)\n})"
+      },
+      {
+        "lang": "Shell",
+        "label": "cURL",
+        "source": "curl '{backend_url}/store/orders' \\\n-H 'Authorization: Bearer {jwt_token}' \\\n-H 'x-publishable-api-key: {your_publishable_api_key}'"
+      }
+    ],
+    "tags": [
+      "Orders"
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "description": "The paginated list of orders.",
+                  "required": [
+                    "limit",
+                    "offset",
+                    "count"
+                  ],
+                  "properties": {
+                    "limit": {
+                      "type": "number",
+                      "title": "limit",
+                      "description": "The maximum number of items returned."
+                    },
+                    "offset": {
+                      "type": "number",
+                      "title": "offset",
+                      "description": "The number of items skipped before retrieving the returned items."
+                    },
+                    "count": {
+                      "type": "number",
+                      "title": "count",
+                      "description": "The total number of items."
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "description": "The paginated list of orders.",
+                  "required": [
+                    "orders"
+                  ],
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "description": "The order's orders.",
+                      "items": {
+                        "$ref": "#/components/schemas/StoreOrder"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/400_error"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "404": {
+        "$ref": "#/components/responses/not_found_error"
+      },
+      "409": {
+        "$ref": "#/components/responses/invalid_state_error"
+      },
+      "422": {
+        "$ref": "#/components/responses/invalid_request_error"
+      },
+      "500": {
+        "$ref": "#/components/responses/500_error"
+      }
+    },
+    "security": [
+      {
+        "cookie_auth": []
+      },
+      {
+        "jwt_token": []
+      }
+    ],
+    "x-workflow": "getOrdersListWorkflow",
+    "x-events": []
+  }
+  ```
+
+  Related schemas:
+
+  - [StoreOrder](/api/schemas/store-order)
+</Accordion>

@@ -1,0 +1,38 @@
+---
+title: listAddresses
+---
+
+This method retrieves a list of customer addresses. It sends a request to the
+[List Customer Addresses](/api/admin/customers/list-addresses)
+API route.
+
+## Example
+
+```ts
+sdk.admin.customer.listAddresses("cus_123")
+.then(({ addresses }) => {
+  console.log(addresses)
+})
+```
+
+<a id="listaddresses-parameters" />
+
+## Parameters
+
+**listAddresses**
+
+- `id`: `string` — The customer's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listaddresses-returns" />
+
+## Returns
+
+**listAddresses**
+
+- `Promise`: Promise\<[AdminCustomerAddressListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesAdminCustomerAddressListResponse)> — The list of customer addresses.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.

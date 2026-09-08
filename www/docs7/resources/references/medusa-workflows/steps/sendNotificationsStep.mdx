@@ -1,0 +1,88 @@
+---
+title: sendNotificationsStep - Medusa Core Workflows Reference
+sidebarTitle: sendNotificationsStep
+---
+
+This documentation provides a reference to the `sendNotificationsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step sends one or more notifications.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { sendNotificationsStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = sendNotificationsStep({
+      "to": "{value}",
+      "channel": "{value}"
+    })
+  }
+)
+```
+
+<a id="sendnotificationsstep-input" />
+
+## Input
+
+**sendNotificationsStep**
+
+- `SendNotificationsStepInput`: [SendNotificationsStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcSendNotificationsStepInput)
+  - `to`: `string` — The address to send the notification to, depending on the channel. For example, the email address for the email channel.
+  - `from`: `string` | `null` (optional) — The address to send the notification from, depending on the channel. For example, the email address for the email channel.
+  - `channel`: `string` — The channel to send the notification through. For example, `email`.
+  - `template`: `string` | `null` (optional) — The ID of the template to use for the notification. This template ID may be defined in a third-party service used to send the notification.
+  - `content`: [NotificationContent](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationContent) | `null` (optional) — The content that gets passed over to the provider.
+    - `subject`: `string` (optional) — the subject of the notification
+    - `text`: `string` (optional) — the text content of the notification
+    - `html`: `string` (optional) — the html content of the notification
+  - `data`: `Record<string, unknown>` | `null` (optional) — The data to use in the notification template. This data may be used to personalize the notification, such as the user's name or the order number.
+  - `provider_data`: `Record<string, unknown>` | `null` (optional) — Additional data specific to the provider or channel. For example, cc and bcc for emails.
+  - `trigger_type`: `string` | `null` (optional) — The type of trigger that caused the notification to be sent. For example, `order_created`.
+  - `resource_id`: `string` | `null` (optional) — The ID of the resource that triggered the notification. For example, the ID of the order that triggered the notification.
+  - `resource_type`: `string` | `null` (optional) — The type of the resource that triggered the notification. For example, `order`.
+  - `receiver_id`: `string` | `null` (optional) — The ID of the user receiving the notification.
+  - `original_notification_id`: `string` | `null` (optional) — The ID of the original notification if it's being resent.
+  - `idempotency_key`: `string` | `null` (optional) — A key to ensure that the notification is sent only once. If the notification is sent multiple times, the key ensures that the notification is sent only once.
+  - `attachments`: [Attachment](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesAttachment)\[] | `null` (optional) — Optional attachments for the notification.
+    - `content`: `string` — The content of the attachment, encoded as a binary string.
+    - `filename`: `string` — The filename of the attachment.
+    - `content_type`: `string` (optional) — The MIME type of the attachment.
+    - `disposition`: `string` (optional) — The disposition of the attachment, For example, "inline" or "attachment".
+    - `id`: `string` (optional) — The ID, if the attachment is meant to be referenced within the body of the message.
+
+<a id="sendnotificationsstep-output" />
+
+## Output
+
+**sendNotificationsStep**
+
+- `NotificationDTO[]`: [NotificationDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationDTO)\[]
+  - `id`: `string` — The ID of the notification.
+  - `to`: `string` — The recipient of the notification. It can be email, phone number, or username, depending on the channel.
+  - `from`: `null` | `string` (optional) — The sender of the notification. It can be email, phone number, or username, depending on the channel.
+  - `attachments`: `null` | [Attachment](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesAttachment)\[] (optional) — Optional attachments for the notification.
+    - `content`: `string` — The content of the attachment, encoded as a binary string.
+    - `filename`: `string` — The filename of the attachment.
+    - `content_type`: `string` (optional) — The MIME type of the attachment.
+    - `disposition`: `string` (optional) — The disposition of the attachment, For example, "inline" or "attachment".
+    - `id`: `string` (optional) — The ID, if the attachment is meant to be referenced within the body of the message.
+  - `channel`: `string` — The channel through which the notification is sent, such as 'email' or 'sms'
+  - `template`: `string` — The template name in the provider's system.
+  - `data`: `null` | `Record<string, unknown>` — The data that gets passed over to the provider for rendering the notification.
+  - `provider_data`: `null` | `Record<string, unknown>` (optional) — Additional data specific to the provider or channel. For example, cc and bcc for emails.
+  - `trigger_type`: `null` | `string` (optional) — The event name, the workflow, or anything else that can help to identify what triggered the notification.
+  - `resource_id`: `null` | `string` (optional) — The ID of the resource this notification is for, if applicable. Useful for displaying relevant information in the UI
+  - `resource_type`: `null` | `string` (optional) — The type of the resource this notification is for, if applicable, eg. "order"
+  - `receiver_id`: `null` | `string` (optional) — The ID of the customer this notification is for, if applicable.
+  - `original_notification_id`: `null` | `string` (optional) — The original notification, in case this is a retried notification.
+  - `external_id`: `null` | `string` (optional) — The id of the notification in the external system, if applicable
+  - `provider_id`: `string` — The ID of the notification provider.
+  - `provider`: [NotificationProviderDTO](/resources/references/types/NotificationTypes/interfaces/typesNotificationTypesNotificationProviderDTO) — Information about the notification provider
+    - `id`: `string` — The ID of the notification provider.
+    - `handle`: `string` — The handle of the notification provider.
+    - `name`: `string` — A user-friendly name of the notification provider.
+    - `channels`: `string`\[] — The supported channels by the notification provider.
+  - `created_at`: `Date` — The date and time the notification was created.
+  - `status`: `"pending"` | `"success"` | `"failure"` — The status of the notification

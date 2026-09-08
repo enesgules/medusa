@@ -1,0 +1,135 @@
+---
+title: createOrderClaimItems - Order Module Reference
+sidebarTitle: createOrderClaimItems
+---
+
+This documentation provides a reference to the `createOrderClaimItems` method. This belongs to the Order Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createorderclaimitems-data-sharedcontext-promiseorderclaimitemdto" />
+
+## createOrderClaimItems(data, sharedContext?): Promise\<[OrderClaimItemDTO](/resources/references/order/interfaces/orderOrderClaimItemDTO)>
+
+This method creates a order claim item.
+
+### Example
+
+```ts
+const orderClaimItem = await orderModuleService.createOrderClaimItems({
+  claim_id: "123",
+  item_id: "321",
+  quantity: 1
+})
+```
+
+<a id="createorderclaimitems-parameters" />
+
+### Parameters
+
+**createOrderClaimItems**
+
+- `data`: [CreateOrderClaimItemDTO](/resources/references/order/interfaces/orderCreateOrderClaimItemDTO) — The order claim item to be created.
+  - `claim_id`: `string` — The associated claim's ID.
+  - `item_id`: `string` — The associated item's ID.
+  - `reason`: [ClaimReason](/resources/references/order/types/orderClaimReason) (optional) — The reason of the order claim item
+  - `is_additional_item`: `boolean` (optional) — Whether the order claim item is an additional item sent as a replacement to the customer.
+  - `quantity`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The quantity of the order claim item
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `note`: `string` (optional) — The note of the order claim item
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createorderclaimitems-returns" />
+
+### Returns
+
+**createOrderClaimItems**
+
+- `Promise`: Promise\<[OrderClaimItemDTO](/resources/references/order/interfaces/orderOrderClaimItemDTO)> — The created order claim item.
+
+<a id="createorderclaimitems-data-sharedcontext-promiseorderclaimitemdto-1" />
+
+## createOrderClaimItems(data, sharedContext?): Promise\<[OrderClaimItemDTO](/resources/references/order/interfaces/orderOrderClaimItemDTO)\[]>
+
+This method creates order claim items.
+
+### Example
+
+```ts
+const orderClaimItems = await orderModuleService.createOrderClaimItems([
+  {
+    claim_id: "123",
+    item_id: "321",
+    quantity: 1
+  },
+  {
+    claim_id: "321",
+    item_id: "321",
+    is_additional_item: 1,
+    quantity: 1
+  }
+])
+```
+
+<a id="createorderclaimitems-parameters-1" />
+
+### Parameters
+
+**createOrderClaimItems**
+
+- `data`: [CreateOrderClaimItemDTO](/resources/references/order/interfaces/orderCreateOrderClaimItemDTO)\[] — The order claim items to be created.
+  - `claim_id`: `string` — The associated claim's ID.
+  - `item_id`: `string` — The associated item's ID.
+  - `reason`: [ClaimReason](/resources/references/order/types/orderClaimReason) (optional) — The reason of the order claim item
+  - `is_additional_item`: `boolean` (optional) — Whether the order claim item is an additional item sent as a replacement to the customer.
+  - `quantity`: [BigNumberInput](/resources/references/order/types/orderBigNumberInput) (optional) — The quantity of the order claim item
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/order/types/orderBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `note`: `string` (optional) — The note of the order claim item
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/order/interfaces/orderContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/order/interfaces/orderIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createorderclaimitems-returns-1" />
+
+### Returns
+
+**createOrderClaimItems**
+
+- `Promise`: Promise\<[OrderClaimItemDTO](/resources/references/order/interfaces/orderOrderClaimItemDTO)\[]> — The created order claim items.
+  - `OrderClaimItemDTO[]`: [OrderClaimItemDTO](/resources/references/order/interfaces/orderOrderClaimItemDTO)\[]

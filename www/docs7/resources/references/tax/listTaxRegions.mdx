@@ -1,0 +1,274 @@
+---
+title: listTaxRegions - Tax Module Reference
+sidebarTitle: listTaxRegions
+---
+
+This documentation provides a reference to the `listTaxRegions` method. This belongs to the Tax Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of tax regions based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of tax regions using their IDs:
+
+```ts
+const taxRegions = await taxModuleService.listTaxRegions({
+  id: ["txreg_123", "txreg_321"],
+})
+```
+
+To specify relations that should be retrieved within the tax region:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const taxRegions = await taxModuleService.listTaxRegions(
+  {
+    id: ["txreg_123", "txreg_321"],
+  },
+  {
+    relations: ["tax_rates"],
+  }
+)
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const taxRegions = await taxModuleService.listTaxRegions(
+  {
+    id: ["txreg_123", "txreg_321"],
+  },
+  {
+    relations: ["tax_rates"],
+    take: 20,
+    skip: 2,
+  }
+)
+```
+
+<a id="listtaxregions-parameters" />
+
+## Parameters
+
+**listTaxRegions**
+
+- `filters`: [FilterableTaxRegionProps](/resources/references/tax/interfaces/taxFilterableTaxRegionProps) (optional) — The filters to apply on the retrieved tax regions.
+  - `$and`: ([FilterableTaxRegionProps](/resources/references/tax/interfaces/taxFilterableTaxRegionProps) | [BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<[FilterableTaxRegionProps](/resources/references/tax/interfaces/taxFilterableTaxRegionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableTaxRegionProps](/resources/references/tax/interfaces/taxFilterableTaxRegionProps) | [BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<[FilterableTaxRegionProps](/resources/references/tax/interfaces/taxFilterableTaxRegionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableTaxRegionProps](/resources/references/tax/interfaces/taxFilterableTaxRegionProps) | [BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<[FilterableTaxRegionProps](/resources/references/tax/interfaces/taxFilterableTaxRegionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Find tax regions based on currency and province codes through this search term. The province code is the lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the tax regions by.
+    - `country_code`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by their country code.
+    - `province_code`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by their lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code.
+    - `parent_id`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by the ID of their parent tax region.
+    - `metadata`: `Record<string, unknown>` | `Record<string, unknown>`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<Record\<string, unknown>> (optional) — Filter the tax regions by their metadata.
+    - `created_at`: [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by their creation date.
+    - `updated_at`: [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by their update date.
+    - `created_by`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by who created it.
+  - `$or`: ([FilterableTaxRegionProps](/resources/references/tax/interfaces/taxFilterableTaxRegionProps) | [BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<[FilterableTaxRegionProps](/resources/references/tax/interfaces/taxFilterableTaxRegionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableTaxRegionProps](/resources/references/tax/interfaces/taxFilterableTaxRegionProps) | [BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<[FilterableTaxRegionProps](/resources/references/tax/interfaces/taxFilterableTaxRegionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableTaxRegionProps](/resources/references/tax/interfaces/taxFilterableTaxRegionProps) | [BaseFilterable](/resources/references/tax/interfaces/taxBaseFilterable)\<[FilterableTaxRegionProps](/resources/references/tax/interfaces/taxFilterableTaxRegionProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Find tax regions based on currency and province codes through this search term. The province code is the lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the tax regions by.
+    - `country_code`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by their country code.
+    - `province_code`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by their lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code.
+    - `parent_id`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by the ID of their parent tax region.
+    - `metadata`: `Record<string, unknown>` | `Record<string, unknown>`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<Record\<string, unknown>> (optional) — Filter the tax regions by their metadata.
+    - `created_at`: [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by their creation date.
+    - `updated_at`: [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by their update date.
+    - `created_by`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by who created it.
+  - `q`: `string` (optional) — Find tax regions based on currency and province codes through this search term. The province code is the lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the tax regions by.
+  - `country_code`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by their country code.
+    - `$and`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> | [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/tax/types/taxQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `province_code`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by their lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code.
+    - `$and`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> | [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/tax/types/taxQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `parent_id`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by the ID of their parent tax region.
+    - `$and`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> | [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/tax/types/taxQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `metadata`: `Record<string, unknown>` | `Record<string, unknown>`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<Record\<string, unknown>> (optional) — Filter the tax regions by their metadata.
+    - `$and`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> | [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/tax/types/taxQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_at`: [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by their creation date.
+    - `$and`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> | [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/tax/types/taxQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by their update date.
+    - `$and`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> | [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/tax/types/taxQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `created_by`: `string` | `string`\[] | [OperatorMap](/resources/references/tax/types/taxOperatorMap)\<string> (optional) — Filter the tax regions by who created it.
+    - `$and`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/tax/types/taxQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> | [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/tax/types/taxQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/tax/types/taxExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `config`: [FindConfig](/resources/references/tax/interfaces/taxFindConfig)\<[TaxRegionDTO](/resources/references/tax/interfaces/taxTaxRegionDTO)> (optional) — The configurations determining how the tax region is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a tax region.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/tax/types/taxFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/tax/types/taxInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/tax/types/taxCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/tax/interfaces/taxContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/tax/interfaces/taxIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listtaxregions-returns" />
+
+## Returns
+
+**listTaxRegions**
+
+- `Promise`: Promise\<[TaxRegionDTO](/resources/references/tax/interfaces/taxTaxRegionDTO)\[]> — The list of tax regions.
+  - `TaxRegionDTO[]`: [TaxRegionDTO](/resources/references/tax/interfaces/taxTaxRegionDTO)\[]
+    - `id`: `string` — The ID of the tax region.
+    - `country_code`: `string` — The ISO 2 character country code of the tax region.
+    - `province_code`: `null` | `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code of the tax region.
+    - `parent_id`: `null` | `string` — The ID of the tax region's parent tax region.
+    - `provider_id`: `null` | `string` — The ID of the tax provider for the region.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — The creation date of the tax region.
+    - `updated_at`: `string` | `Date` — The update date of the tax region.
+    - `created_by`: `null` | `string` — Who created the tax region. For example, the ID of the user that created the tax region.
+    - `deleted_at`: `null` | `string` | `Date` — The deletion date of the tax region.

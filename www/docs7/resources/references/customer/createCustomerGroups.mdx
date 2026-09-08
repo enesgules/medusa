@@ -1,0 +1,159 @@
+---
+title: createCustomerGroups - Customer Module Reference
+sidebarTitle: createCustomerGroups
+---
+
+This documentation provides a reference to the `createCustomerGroups` method. This belongs to the Customer Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createcustomergroups-data-sharedcontext-promisecustomergroupdto" />
+
+## createCustomerGroups(data, sharedContext?): Promise\<[CustomerGroupDTO](/resources/references/customer/interfaces/customerCustomerGroupDTO)\[]>
+
+This method creates customer groups.
+
+### Example
+
+```ts
+const customerGroup =
+  await customerModuleService.createCustomerGroups([
+    {
+      name: "VIP",
+    },
+  ])
+```
+
+<a id="createcustomergroups-parameters" />
+
+### Parameters
+
+**createCustomerGroups**
+
+- `data`: [CreateCustomerGroupDTO](/resources/references/customer/interfaces/customerCreateCustomerGroupDTO)\[] — The customer groups to be created.
+  - `name`: `string` — The name of the customer group.
+  - `metadata`: [MetadataType](/resources/references/customer/types/customerMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `created_by`: `string` (optional) — Who created the customer group. For example, the ID of the user that created the customer group.
+- `sharedContext`: [Context](/resources/references/customer/interfaces/customerContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/customer/interfaces/customerIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createcustomergroups-returns" />
+
+### Returns
+
+**createCustomerGroups**
+
+- `Promise`: Promise\<[CustomerGroupDTO](/resources/references/customer/interfaces/customerCustomerGroupDTO)\[]> — The created customer groups.
+  - `CustomerGroupDTO[]`: [CustomerGroupDTO](/resources/references/customer/interfaces/customerCustomerGroupDTO)\[]
+    - `id`: `string` — The ID of the customer group.
+    - `name`: `string` — The name of the customer group.
+    - `customers`: Partial\<[CustomerDTO](/resources/references/customer/interfaces/customerCustomerDTO)>\[] (optional) — The customers of the customer group.
+      - `id`: `string` — The ID of the customer.
+      - `email`: `string` — The email of the customer.
+      - `has_account`: `boolean` — A flag indicating if customer has an account or not.
+      - `default_billing_address_id`: `null` | `string` — The associated default billing address's ID.
+      - `default_shipping_address_id`: `null` | `string` — The associated default shipping address's ID.
+      - `company_name`: `null` | `string` — The company name of the customer.
+      - `first_name`: `null` | `string` — The first name of the customer.
+      - `last_name`: `null` | `string` — The last name of the customer.
+      - `addresses`: [CustomerAddressDTO](/resources/references/customer/interfaces/customerCustomerAddressDTO)\[] — The addresses of the customer.
+      - `phone`: `null` | `string` — The phone of the customer.
+      - `groups`: `object`\[] — The groups of the customer.
+      - `metadata`: `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `created_by`: `null` | `string` — Who created the customer.
+      - `deleted_at`: `null` | `string` | `Date` — The deletion date of the customer.
+      - `created_at`: `string` | `Date` — The creation date of the customer.
+      - `updated_at`: `string` | `Date` — The update date of the customer.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_by`: `null` | `string` (optional) — Who created the customer group.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The deletion date of the customer group.
+    - `created_at`: `string` | `Date` (optional) — The creation date of the customer group.
+    - `updated_at`: `string` | `Date` (optional) — The update date of the customer group.
+
+<a id="createcustomergroups-data-sharedcontext-promisecustomergroupdto-1" />
+
+## createCustomerGroups(data, sharedContext?): Promise\<[CustomerGroupDTO](/resources/references/customer/interfaces/customerCustomerGroupDTO)>
+
+This method creates a customer group.
+
+### Example
+
+```ts
+const customerGroup =
+  await customerModuleService.createCustomerGroups({
+    name: "VIP",
+  })
+```
+
+<a id="createcustomergroups-parameters-1" />
+
+### Parameters
+
+**createCustomerGroups**
+
+- `data`: [CreateCustomerGroupDTO](/resources/references/customer/interfaces/customerCreateCustomerGroupDTO) — The customer group to be created.
+  - `name`: `string` — The name of the customer group.
+  - `metadata`: [MetadataType](/resources/references/customer/types/customerMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `created_by`: `string` (optional) — Who created the customer group. For example, the ID of the user that created the customer group.
+- `sharedContext`: [Context](/resources/references/customer/interfaces/customerContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/customer/interfaces/customerIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createcustomergroups-returns-1" />
+
+### Returns
+
+**createCustomerGroups**
+
+- `Promise`: Promise\<[CustomerGroupDTO](/resources/references/customer/interfaces/customerCustomerGroupDTO)> — The created customer group.
+  - `id`: `string` — The ID of the customer group.
+  - `name`: `string` — The name of the customer group.
+  - `customers`: Partial\<[CustomerDTO](/resources/references/customer/interfaces/customerCustomerDTO)>\[] (optional) — The customers of the customer group.
+    - `id`: `string` — The ID of the customer.
+    - `email`: `string` — The email of the customer.
+    - `has_account`: `boolean` — A flag indicating if customer has an account or not.
+    - `default_billing_address_id`: `null` | `string` — The associated default billing address's ID.
+    - `default_shipping_address_id`: `null` | `string` — The associated default shipping address's ID.
+    - `company_name`: `null` | `string` — The company name of the customer.
+    - `first_name`: `null` | `string` — The first name of the customer.
+    - `last_name`: `null` | `string` — The last name of the customer.
+    - `addresses`: [CustomerAddressDTO](/resources/references/customer/interfaces/customerCustomerAddressDTO)\[] — The addresses of the customer.
+    - `phone`: `null` | `string` — The phone of the customer.
+    - `groups`: `object`\[] — The groups of the customer.
+    - `metadata`: `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_by`: `null` | `string` — Who created the customer.
+    - `deleted_at`: `null` | `string` | `Date` — The deletion date of the customer.
+    - `created_at`: `string` | `Date` — The creation date of the customer.
+    - `updated_at`: `string` | `Date` — The update date of the customer.
+  - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `created_by`: `null` | `string` (optional) — Who created the customer group.
+  - `deleted_at`: `null` | `string` | `Date` (optional) — The deletion date of the customer group.
+  - `created_at`: `string` | `Date` (optional) — The creation date of the customer group.
+  - `updated_at`: `string` | `Date` (optional) — The update date of the customer group.

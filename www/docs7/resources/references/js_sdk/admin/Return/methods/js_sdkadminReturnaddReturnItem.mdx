@@ -1,0 +1,63 @@
+---
+title: addReturnItem
+---
+
+This method adds an item to a return request. It sends a request to the
+[Add Return Item](/api/admin/returns/add-items)
+API route.
+
+## Example
+
+```ts
+sdk.admin.return.addReturnItem("return_123", {
+  id: "orlitem_123",
+  quantity: 1,
+})
+.then(({ return }) => {
+  console.log(return)
+})
+```
+
+<a id="addreturnitem-parameters" />
+
+## Parameters
+
+**addReturnItem**
+
+- `id`: `string` — The ID of the return to add the item to.
+- `body`: [AdminAddReturnItems](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminAddReturnItems) — The details of the item to add to the return.
+  - `items`: [AdminAddReturnItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminAddReturnItem)\[]
+    - `id`: `string` — The ID of the order item to add to the return.
+    - `quantity`: `number` — The quantity of the item to return.
+    - `description`: `string` (optional) — A note to describe why the item is being returned.
+    - `internal_note`: `string` (optional) — A note that is viewed by admins only to describe why the item is being returned.
+    - `metadata`: `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the return item.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields and relations to retrieve in the return.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="addreturnitem-returns" />
+
+## Returns
+
+**addReturnItem**
+
+- `Promise`: Promise\<[AdminReturnResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturnResponse)> — The return's details.
+  - `return`: [AdminReturn](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturn) — The return's details.
+    - `items`: [AdminReturnItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturnItem)\[] — The return's items.
+    - `id`: `string` — The return's ID.
+    - `order_id`: `string` — The ID of the order that the return belongs to.
+    - `status`: [ReturnStatus](/resources/references/order/types/orderReturnStatus) (optional) — The return's status.
+    - `exchange_id`: `string` (optional) — The ID of the exchange that the return belongs to, if available.
+    - `location_id`: `string` (optional) — The ID of the stock location that the items are returned to.
+    - `claim_id`: `string` (optional) — The ID of the claim that the return belongs to, if available.
+    - `order_version`: `number` — The order's version once the return is applied.
+    - `display_id`: `number` — The display ID of the return.
+    - `no_notification`: `boolean` (optional) — Whether to send the customers notifications about return updates.
+    - `refund_amount`: `number` (optional) — The amount that is to be refunded to the customer.
+    - `received_at`: `string` — The date when the return was received.
+    - `created_at`: `string` — The date when the return was created.
+    - `created_by`: `string` — The ID of the user that created the return.
+    - `canceled_at`: `string` — The date when the return was canceled.
+    - `requested_at`: `string`

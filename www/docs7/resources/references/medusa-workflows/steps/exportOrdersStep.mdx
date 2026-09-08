@@ -1,0 +1,51 @@
+---
+title: exportOrdersStep - Medusa Core Workflows Reference
+sidebarTitle: exportOrdersStep
+---
+
+This documentation provides a reference to the `exportOrdersStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { exportOrdersStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = exportOrdersStep({
+      "select": [
+        "{value}"
+      ]
+    })
+  }
+)
+```
+
+<a id="exportordersstep-input" />
+
+## Input
+
+**exportOrdersStep**
+
+- `ExportOrdersStepInput`: [ExportOrdersStepInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcExportOrdersStepInput)
+  - `batch_size`: `number` | `string` (optional)
+  - `select`: `string`\[]
+  - `filter`: [FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps) (optional) — The filters to apply on the retrieved orders.
+    - `$and`: ([FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps) | [BaseFilterable](/resources/references/order/interfaces/orderBaseFilterable)\<[FilterableOrderProps](/resources/references/order/interfaces/orderFilterableOrderProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter the orders by.
+    - `sales_channel_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their associated sales channel's ID.
+    - `customer_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their associated customer's ID.
+    - `region_id`: `string` | `string`\[] | [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their associated region's ID.
+    - `created_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter the orders by their creation date.
+    - `updated_at`: [OperatorMap](/resources/references/order/types/orderOperatorMap)\<string> (optional) — Filter orders by their update date.
+
+<a id="exportordersstep-output" />
+
+## Output
+
+**exportOrdersStep**
+
+- `ExportOrdersStepOutput`: [ExportOrdersStepOutput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcExportOrdersStepOutput)
+  - `id`: `string`
+  - `filename`: `string`

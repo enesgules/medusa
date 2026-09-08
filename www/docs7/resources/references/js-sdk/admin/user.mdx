@@ -1,0 +1,624 @@
+---
+title: user - JS SDK Admin Reference
+sidebarTitle: user
+---
+
+This documentation provides a reference to the `sdk.admin.user` set of methods used to send requests to Medusa's Admin API routes.
+
+## update
+
+This method updates a user. It sends a request to the
+[Update User](/api/admin/users/update-a-user)
+API route.
+
+### Example
+
+```ts
+sdk.admin.user.update("user_123", {
+  first_name: "John",
+  last_name: "Doe",
+})
+.then(({ user }) => {
+  console.log(user)
+})
+```
+
+<a id="update-parameters" />
+
+### Parameters
+
+**update**
+
+- `id`: `string` — The ID of the user to update.
+- `body`: [AdminUpdateUser](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateUser) — The details of the user to update.
+  - `first_name`: `null` | `string` (optional) — The first name of the user.
+  - `last_name`: `null` | `string` (optional) — The last name of the user.
+  - `avatar_url`: `null` | `string` (optional) — The URL of the user's avatar image.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Custom key-value pairs that can be added to the user.
+- `query`: [AdminUserParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserParams) (optional) — Configure the fields and relations to retrieve in the tax region.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+### Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminUserResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserResponse)> — The user's details.
+  - `user`: [AdminUser](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUser) — The user's details.
+    - `id`: `string` — The user's ID.
+    - `email`: `string` — The user's email.
+    - `first_name`: `null` | `string` — The user's first name.
+    - `last_name`: `null` | `string` — The user's last name.
+    - `avatar_url`: `null` | `string` — The URL of the user's avatar image.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the user.
+    - `created_at`: `string` — The date the user was created.
+    - `updated_at`: `string` — The date the user was updated.
+    - `deleted_at`: `null` | `string` — The date the user was deleted.
+
+## list
+
+This method retrieves a list of users. It sends a request to the
+[List Users](/api/admin/users/list-users)
+API route.
+
+### Example
+
+To retrieve the list of users:
+
+```ts
+sdk.admin.user.list()
+.then(({ users, count, limit, offset }) => {
+  console.log(users)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.user.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ users, count, limit, offset }) => {
+  console.log(users)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each user:
+
+```ts
+sdk.admin.user.list({
+  fields: "id,email"
+})
+.then(({ users, count, limit, offset }) => {
+  console.log(users)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `queryParams`: [AdminUserListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserListParams) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — Query or keywords to search the user's searchable fields.
+  - `id`: `string` | `string`\[] (optional) — Filter by user ID(s).
+  - `email`: `null` | `string` (optional) — Filter by email(s).
+  - `first_name`: `null` | `string` (optional) — Filter by first name(s).
+  - `last_name`: `null` | `string` (optional) — Filter by last name(s).
+  - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the user was created.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the user was updated.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Filter by the date the user was deleted.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[AdminUserListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserListResponse)> — The list of users.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `users`: [AdminUser](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUser)\[] — The list of users.
+    - `id`: `string` — The user's ID.
+    - `email`: `string` — The user's email.
+    - `first_name`: `null` | `string` — The user's first name.
+    - `last_name`: `null` | `string` — The user's last name.
+    - `avatar_url`: `null` | `string` — The URL of the user's avatar image.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the user.
+    - `created_at`: `string` — The date the user was created.
+    - `updated_at`: `string` — The date the user was updated.
+    - `deleted_at`: `null` | `string` — The date the user was deleted.
+
+## retrieve
+
+This method retrieves a user. It sends a request to the
+[Get User](/api/admin/users/get-a-user)
+API route.
+
+### Example
+
+To retrieve a user by its ID:
+
+```ts
+sdk.admin.user.retrieve("user_123")
+.then(({ user }) => {
+  console.log(user)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.user.retrieve("user_123", {
+  fields: "id,email"
+})
+.then(({ user }) => {
+  console.log(user)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The ID of the user to retrieve.
+- `query`: [AdminUserParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserParams) (optional) — Configure the fields and relations to retrieve in the user.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[AdminUserResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserResponse)> — The user's details.
+  - `user`: [AdminUser](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUser) — The user's details.
+    - `id`: `string` — The user's ID.
+    - `email`: `string` — The user's email.
+    - `first_name`: `null` | `string` — The user's first name.
+    - `last_name`: `null` | `string` — The user's last name.
+    - `avatar_url`: `null` | `string` — The URL of the user's avatar image.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the user.
+    - `created_at`: `string` — The date the user was created.
+    - `updated_at`: `string` — The date the user was updated.
+    - `deleted_at`: `null` | `string` — The date the user was deleted.
+
+## listAuthProviders
+
+This method retrieves the auth providers a user can authenticate with. It sends a
+request to the List User Auth Providers API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
+
+### Example
+
+```ts
+sdk.admin.user.listAuthProviders("user_123")
+.then(({ providers }) => {
+  console.log(providers)
+})
+```
+
+<a id="listauthproviders-parameters" />
+
+### Parameters
+
+**listAuthProviders**
+
+- `id`: `string` — The user's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listauthproviders-returns" />
+
+### Returns
+
+**listAuthProviders**
+
+- `Promise`: Promise\<[AdminUserAuthProvidersResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserAuthProvidersResponse)> — The IDs of the user's auth providers.
+  - `providers`: `string`\[] — The IDs of the auth providers the user can authenticate with, such as `emailpass`.
+
+## generateResetPasswordToken
+
+This method generates a reset password token for a user. It sends a request to the
+Generate Reset Password Token for a User API route.
+
+Useful for constructing the reset password link without sending an email.
+
+The token is short-lived, can only be used once, and generating it invalidates
+any reset password token previously issued for the user.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
+
+### Example
+
+```ts
+sdk.admin.user.generateResetPasswordToken("user_123")
+.then(({ token }) => {
+  console.log(token)
+})
+```
+
+<a id="generateresetpasswordtoken-parameters" />
+
+### Parameters
+
+**generateResetPasswordToken**
+
+- `id`: `string` — The ID of the user to generate the token for.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="generateresetpasswordtoken-returns" />
+
+### Returns
+
+**generateResetPasswordToken**
+
+- `Promise`: Promise\<[AdminUserResetPasswordTokenResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserResetPasswordTokenResponse)> — The generated reset password token.
+  - `token`: `string` — The generated reset password token. Append it to the admin's `/reset-password` page as a `token` query parameter to build a link the user can open to set a new password. The token is short-lived, can only be used once, and generating it invalidates any reset password token previously issued for the user.
+
+## listRoles
+
+This method retrieves a paginated list of roles assigned to a user. It sends a request to the
+List User Roles API route.
+
+### Example
+
+```ts
+sdk.admin.user.listRoles("user_123")
+.then(({ roles, count, limit, offset }) => {
+  console.log(roles)
+})
+```
+
+<a id="listroles-parameters" />
+
+### Parameters
+
+**listRoles**
+
+- `id`: `string` — The user's ID.
+- `queryParams`: [AdminRbacRoleUserListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleUserListParams) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `user_id`: `string` | `string`\[] (optional) — Filter by user ID(s).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listroles-returns" />
+
+### Returns
+
+**listRoles**
+
+- `Promise`: Promise\<[AdminGetUserRolesParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminGetUserRolesParams)> — The list of roles.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `role_id`: `string` | `string`\[] (optional)
+
+## addRoles
+
+This method assigns roles to a user. It sends a request to the
+Assign User Roles API route.
+
+### Example
+
+```ts
+sdk.admin.user.addRoles("user_123", {
+  roles: ["role_123"]
+})
+.then(({ roles }) => {
+  console.log(roles)
+})
+```
+
+<a id="addroles-parameters" />
+
+### Parameters
+
+**addRoles**
+
+- `id`: `string` — The user's ID.
+- `body`: [AdminAssignUserRoles](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminAssignUserRoles) — The roles to assign.
+  - `roles`: `string`\[] — The IDs of the roles to assign to the user.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="addroles-returns" />
+
+### Returns
+
+**addRoles**
+
+- `Promise`: Promise\<[AdminUserRolesResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserRolesResponse)> — The user's roles.
+  - `roles`: [AdminRbacRole](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRole)\[] — The list of roles.
+    - `id`: `string` — The role's ID.
+    - `name`: `string` — The role's name.
+    - `description`: `null` | `string` — The role's description.
+    - `parent_id`: `null` | `string` — The ID of the parent role, if any.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the role.
+    - `policies`: [AdminRbacPolicy](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacPolicy)\[] (optional) — The policies associated with the role.
+    - `created_at`: `string` — The date the role was created.
+    - `updated_at`: `string` — The date the role was updated.
+    - `deleted_at`: `null` | `string` — The date the role was deleted.
+
+## removeRole
+
+This method removes a role from a user. It sends a request to the
+Remove User Role API route.
+
+### Example
+
+```ts
+sdk.admin.user.removeRole("user_123", "role_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="removerole-parameters" />
+
+### Parameters
+
+**removeRole**
+
+- `id`: `string` — The user's ID.
+- `roleId`: `string` — The role's ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="removerole-returns" />
+
+### Returns
+
+**removeRole**
+
+- `Promise`: Promise\<[AdminUserRoleDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserRoleDeleteResponse)> — The removal's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: `"user_role"` — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## removeRoles
+
+This method removes roles from a user. It sends a request to the
+Remove User Roles API route.
+
+### Example
+
+```ts
+sdk.admin.user.removeRoles("user_123", {
+  roles: ["role_123"]
+})
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="removeroles-parameters" />
+
+### Parameters
+
+**removeRoles**
+
+- `id`: `string` — The user's ID.
+- `body`: [AdminRemoveUserRoles](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRemoveUserRoles) — The roles to remove.
+  - `roles`: `string`\[] — The IDs of the roles to remove from the user.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="removeroles-returns" />
+
+### Returns
+
+**removeRoles**
+
+- `Promise`: Promise\<[AdminUserRolesDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserRolesDeleteResponse)> — The removal's details.
+  - `ids`: `string`\[] — The IDs of the roles that were removed.
+  - `object`: `"user_role"` — The type of the removed items.
+  - `deleted`: `boolean` — Whether the roles were removed successfully.
+
+## delete
+
+This method deletes a user. It sends a request to the
+[Delete User](/api/admin/users/delete-a-user)
+API route.
+
+### Example
+
+```ts
+sdk.admin.user.delete("user_123")
+.then(({ deleted }) => {
+  console.log(deleted)
+})
+```
+
+<a id="delete-parameters" />
+
+### Parameters
+
+**delete**
+
+- `id`: `string` — The ID of the user to delete.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="delete-returns" />
+
+### Returns
+
+**delete**
+
+- `Promise`: Promise\<[AdminUserDeleteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserDeleteResponse)> — The deletion's details.
+  - `id`: `string` — The ID of the item that was deleted.
+  - `object`: `"user"` — The type of the item that was deleted.
+  - `deleted`: `boolean` — Whether the item was deleted successfully.
+
+## me
+
+This method retrieves the currently authenticated user. It sends a request to the
+[Get Logged-In User](/api/admin/users/get-logged-in-user)
+API route.
+
+### Example
+
+To retrieve the currently authenticated user:
+
+```ts
+sdk.admin.user.me()
+.then(({ user }) => {
+  console.log(user)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.user.me({
+  fields: "id,email"
+})
+.then(({ user }) => {
+  console.log(user)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/admin/select-fields-and-relations).
+
+<a id="me-parameters" />
+
+### Parameters
+
+**me**
+
+- `query`: [AdminUserParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserParams) (optional) — Configure the fields and relations to retrieve in the user.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="me-returns" />
+
+### Returns
+
+**me**
+
+- `Promise`: Promise\<[AdminUserResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserResponse)> — The user's details.
+  - `user`: [AdminUser](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUser) — The user's details.
+    - `id`: `string` — The user's ID.
+    - `email`: `string` — The user's email.
+    - `first_name`: `null` | `string` — The user's first name.
+    - `last_name`: `null` | `string` — The user's last name.
+    - `avatar_url`: `null` | `string` — The URL of the user's avatar image.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the user.
+    - `created_at`: `string` — The date the user was created.
+    - `updated_at`: `string` — The date the user was updated.
+    - `deleted_at`: `null` | `string` — The date the user was deleted.

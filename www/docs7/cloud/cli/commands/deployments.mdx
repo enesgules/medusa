@@ -1,0 +1,679 @@
+---
+title: deployments Command - Medusa Cloud CLI Reference
+---
+
+In this guide, you'll learn how to inspect Cloud deployments and their build logs using the CLI.
+
+## deployments list
+
+List recent deployments for a project. By default, the command returns the 20 most recent deployments across all environments in the project, ordered by creation time (newest first).
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud deployments list --organization org_123 --project proj_123
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123 --project proj_123
+
+    mcloud deployments list
+    ```
+  </Tab>
+</Tabs>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) that the project belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-p <id-or-handle>`, `--project <id-or-handle>`
+      </td>
+
+      <td>
+        The [ID or handle of the project](/cloud/cli/commands/projects#find-project-ids-and-handles) to list deployments from.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-e <handle>`, `--environment <handle>`
+      </td>
+
+      <td>
+        Filter deployments to a specific environment by [handle](/cloud/cli/commands/environments#find-environment-handles). If not provided, and not set in the [active context](/cloud/cli/commands/use#set-the-active-context), deployments from all environments in the project will be returned.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        Falls back to the environment in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--environment-type <type>`
+      </td>
+
+      <td>
+        Filter deployments by environment type. One of `production`, `long-lived`, or `preview`. If you set the environment using its flag or in the active context, this filter is applied to the specified environment.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        \-
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--commit <sha>`
+      </td>
+
+      <td>
+        Filter deployments by Git commit SHA. Accepts a full SHA or a prefix.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        \-
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--limit <number>`
+      </td>
+
+      <td>
+        Maximum number of deployments to return. Minimum: `1`, maximum: `200`.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `20`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--offset <number>`
+      </td>
+
+      <td>
+        The number of deployments to skip before retrieving the deployments. Useful for pagination.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `0`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## deployments get
+
+Retrieve a single deployment by its ID. Returns the deployment's status, commit details, environment, and timestamps as a key-value list.
+
+<Note>
+  This only retrieves the deployment's details. If you want to view its build logs, use [`mcloud deployments build-logs`](/cloud/cli/commands/deployments#deployments-build-logs) instead.
+</Note>
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud deployments get <deployment> --organization org_123 --project proj_123
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123 --project proj_123
+
+    mcloud deployments get <deployment>
+    ```
+  </Tab>
+</Tabs>
+
+### Arguments
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `deployment`
+      </td>
+
+      <td>
+        The ID of the deployment to retrieve.
+      </td>
+
+      <td>
+        Yes
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) that the project belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-p <id-or-handle>`, `--project <id-or-handle>`
+      </td>
+
+      <td>
+        The [ID or handle of the project](/cloud/cli/commands/projects#find-project-ids-and-handles) that the deployment belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## deployments build-logs
+
+Fetch the build logs for a deployment. Use this to debug build failures or to inspect the build output for a specific deployment.
+
+<Note>
+  **Tip**
+
+  To fetch the runtime logs for a deployment after it is live, use [`mcloud logs --deployment <id>`](/cloud/cli/commands/logs#fetch-logs-for-a-specific-deployment) instead.
+</Note>
+
+<Tabs>
+  <Tab title="With Flags">
+    ```bash
+    mcloud deployments build-logs <deployment> --organization org_123 --project proj_123
+    ```
+  </Tab>
+
+  <Tab title="Using mcloud use">
+    ```bash
+    # Run once: mcloud use --organization org_123 --project proj_123
+
+    mcloud deployments build-logs <deployment>
+    ```
+  </Tab>
+</Tabs>
+
+### Arguments
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `deployment`
+      </td>
+
+      <td>
+        The ID of the deployment to retrieve the build logs for.
+      </td>
+
+      <td>
+        Yes
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `-o <id>`, `--organization <id>`
+      </td>
+
+      <td>
+        The [ID of the organization](/cloud/cli/commands/organizations#find-organization-id) that the project belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the organization in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `-p <id-or-handle>`, `--project <id-or-handle>`
+      </td>
+
+      <td>
+        The [ID or handle of the project](/cloud/cli/commands/projects#find-project-ids-and-handles) that the deployment belongs to.
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Falls back to the project in the [active context](/cloud/cli/commands/use#set-the-active-context), if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--type <backend|storefront>`
+      </td>
+
+      <td>
+        Which build log stream to read.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `backend`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--json`
+      </td>
+
+      <td>
+        Print the result as JSON instead of formatted text.
+      </td>
+
+      <td>
+        No
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+***
+
+## Investigate a Failed Deployment
+
+When a deployment fails, combine `deployments list`, `deployments get`, and `deployments build-logs` to find the deployment, inspect its status, and read the build output.
+
+### Check Build Logs for a Failed Deployment
+
+If the build itself failed (status `build-failed`), use `deployments build-logs` to read the build output:
+
+```bash
+# Assuming context is set with mcloud use. Otherwise, add the necessary flags to each command as shown in previous sections.
+
+# Find the most recent build-failed deployment and store its ID in a variable
+DEPLOYMENT_ID=$(
+  mcloud deployments list --json \
+    | jq -r '.[] | select(.backend_status == "build-failed") | .id' \
+    | head -n 1
+)
+
+# Get deployment details
+mcloud deployments get "$DEPLOYMENT_ID"
+
+# Fetch its backend build logs
+mcloud deployments build-logs "$DEPLOYMENT_ID"
+
+# Or fetch the storefront build logs
+mcloud deployments build-logs "$DEPLOYMENT_ID" --type storefront
+```
+
+### Check Runtime Logs for a Failed Deployment
+
+If the build succeeded but the rollout failed (status `deployment-failed`), the build logs won't show the cause. Use [`mcloud logs`](/cloud/cli/commands/logs) with `--deployment` to read the runtime logs for that specific deployment:
+
+```bash
+# Assuming context is set with mcloud use. Otherwise, add the necessary flags to each command as shown in previous sections.
+
+# Find the most recent deployment-failed deployment and store its ID in a variable
+DEPLOYMENT_ID=$(
+  mcloud deployments list --json \
+    | jq -r '.[] | select(.backend_status == "deployment-failed") | .id' \
+    | head -n 1
+)
+
+# Get deployment details
+mcloud deployments get "$DEPLOYMENT_ID"
+
+# Fetch the runtime logs scoped to that deployment
+mcloud logs --deployment "$DEPLOYMENT_ID" --limit 1000
+
+# Or filter to error-level lines only
+mcloud logs --deployment "$DEPLOYMENT_ID" --search error --limit 1000
+```
+
+To redeploy after fixing the underlying issue, use [`mcloud environments redeploy`](/cloud/cli/commands/environments#environments-redeploy). To start a fresh build from the tracked branch, use [`mcloud environments trigger-build`](/cloud/cli/commands/environments#environments-trigger-build).
+
+***
+
+## Backend and Storefront Statuses
+
+When retrieving the details of a deployment, you can see the backend and storefront statuses through the `backend_status` and `storefront_status` fields when using the `--json` flag.
+
+Possible backend and storefront statuses are:
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Status
+      </th>
+
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `created`
+      </td>
+
+      <td>
+        The deployment record exists but the build has not started yet.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `building`
+      </td>
+
+      <td>
+        The build is running. Use [`mcloud deployments build-logs`](/cloud/cli/commands/deployments#deployments-build-logs) to follow the output.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `built`
+      </td>
+
+      <td>
+        The build finished successfully but the deployment to the environment hasn't started yet.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `deploying`
+      </td>
+
+      <td>
+        The built artifact is being rolled out to the environment.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `deployed`
+      </td>
+
+      <td>
+        The deployment is live and serving traffic. The current active deployment for an environment is marked `(active)` in the formatted table. You can get the active deployment logs using [`mcloud logs --deployment <id>`](/cloud/cli/commands/logs#fetch-logs-for-a-specific-deployment).
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `build-failed`
+      </td>
+
+      <td>
+        The build step failed before any code was deployed. Use [`mcloud deployments build-logs`](/cloud/cli/commands/deployments#deployments-build-logs) to find the build error.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `deployment-failed`
+      </td>
+
+      <td>
+        The build succeeded but the rollout to the environment failed. Use [`mcloud logs`](/cloud/cli/commands/logs) to fetch the logs for the affected deployment.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `timed-out`
+      </td>
+
+      <td>
+        The build or deployment exceeded the maximum allowed duration and was terminated. This status applies to backend deployments only.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `canceled`
+      </td>
+
+      <td>
+        The build or deployment was canceled, usually because a newer deployment superseded it.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `idle`
+      </td>
+
+      <td>
+        The deployment is no longer the active one for its environment. Idle deployments can be re-activated with [`mcloud environments redeploy`](/cloud/cli/commands/environments#environments-redeploy).
+      </td>
+    </tr>
+  </tbody>
+</table>

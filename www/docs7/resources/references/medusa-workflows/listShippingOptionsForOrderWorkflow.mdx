@@ -1,0 +1,142 @@
+---
+title: listShippingOptionsForOrderWorkflow - Medusa Core Workflows Reference
+sidebarTitle: listShippingOptionsForOrderWorkflow
+---
+
+This documentation provides a reference to the `listShippingOptionsForOrderWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow lists the shipping options of an order. It's executed by the
+[List Shipping Options Admin API Route](/api/admin/orders/list-shipping-options).
+
+You can use this workflow within your own customizations or custom workflows, allowing you to wrap custom logic around to retrieve the shipping options of an order
+in your custom flows.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.10.0](https://github.com/medusajs/medusa/releases/tag/v2.10.0).
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/order/workflows/list-shipping-options-for-order.ts#L36)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { listShippingOptionsForOrderWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await listShippingOptionsForOrderWorkflow(req.scope)
+    .run({
+      input: {
+        order_id: "order_123",
+      }
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { listShippingOptionsForOrderWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await listShippingOptionsForOrderWorkflow(container)
+    .run({
+      input: {
+        order_id: "order_123",
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { listShippingOptionsForOrderWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await listShippingOptionsForOrderWorkflow(container)
+    .run({
+      input: {
+        order_id: "order_123",
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { listShippingOptionsForOrderWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = listShippingOptionsForOrderWorkflow
+      .runAsStep({
+        input: {
+          order_id: "order_123",
+        }
+      })
+  }
+)
+```
+
+<a id="listshippingoptionsfororderworkflow-steps" />
+
+## Steps
+
+- [validatePresenceOfStep](/resources/references/medusa-workflows/steps/validatePresenceOfStep): This step validates the presence of attributes on an object
+
+<a id="listshippingoptionsfororderworkflow-input" />
+
+## Input
+
+**listShippingOptionsForOrderWorkflow**
+
+- `ListShippingOptionsForOrderWorkflowInput`: [ListShippingOptionsForOrderWorkflowInput](/resources/references/types/types/typesListShippingOptionsForOrderWorkflowInput) — The context for retrieving the shipping options.
+  - `order_id`: `string` — The order's ID.
+  - `is_return`: `boolean` (optional, default: false) — Whether to retrieve return shipping options. By default, non-return shipping options are retrieved.
+  - `enabled_in_store`: `boolean` (optional) — Whether to retrieve the shipping option's enabled in the store, which is the default.
+
+<a id="listshippingoptionsfororderworkflow-output" />
+
+## Output
+
+**listShippingOptionsForOrderWorkflow**
+
+- `any[]`: `any`\[]
+  - `any`: `any`

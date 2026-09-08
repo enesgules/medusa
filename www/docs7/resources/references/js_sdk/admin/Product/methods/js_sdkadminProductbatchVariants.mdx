@@ -1,0 +1,172 @@
+---
+title: batchVariants
+---
+
+This method manages the variants of a product. It sends a request to the
+[Manage Variants](/api/admin/products/manage-variants-in-a-product)
+API route.
+
+## Example
+
+```ts
+sdk.admin.product.batchVariants("prod_123", {
+  create: [
+    {
+      title: "Blue Shirt",
+      options: {
+        Color: "Blue"
+      },
+      prices: []
+    }
+  ],
+  update: [
+    {
+      id: "variant_123",
+      title: "Pants"
+    }
+  ],
+  delete: ["variant_123"]
+})
+.then(({ created, updated, deleted }) => {
+  console.log(created, updated, deleted)
+})
+```
+
+<a id="batchvariants-parameters" />
+
+## Parameters
+
+**batchVariants**
+
+- `productId`: `string` — The product's ID.
+- `body`: [AdminBatchProductVariantRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchProductVariantRequest) — The variants to create, update, or delete.
+  - `create`: [AdminCreateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariant)\[] (optional) — Records to create in bulk.
+    - `title`: `string` — The variant's title.
+    - `sku`: `null` | `string` (optional) — The variant's SKU.
+    - `ean`: `null` | `string` (optional) — The variant's EAN.
+    - `upc`: `null` | `string` (optional) — The variant's UPC.
+    - `barcode`: `null` | `string` (optional) — The variant's barcode.
+    - `hs_code`: `null` | `string` (optional) — The variant's HS code.
+    - `mid_code`: `null` | `string` (optional) — The variant's MID code.
+    - `allow_backorder`: `boolean` (optional) — Whether the variant can be ordered even if it's out of stock.
+    - `manage_inventory`: `boolean` (optional) — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+    - `variant_rank`: `number` (optional) — The variant's ranking among its sibling variants.
+    - `weight`: `null` | `number` (optional) — The variant's weight.
+    - `length`: `null` | `number` (optional) — The variant's length.
+    - `height`: `null` | `number` (optional) — The variant's height.
+    - `width`: `null` | `number` (optional) — The variant's width.
+    - `origin_country`: `null` | `string` (optional) — The variant's origin country.
+    - `material`: `null` | `string` (optional) — The variant's material.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `prices`: [AdminCreateProductVariantPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantPrice)\[] — The variant's prices.
+    - `inventory_items`: [AdminCreateProductVariantInventoryKit](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreateProductVariantInventoryKit)\[] (optional) — The variant's inventory items. It's only available if `manage_inventory` is enabled.
+    - `options`: `Record<string, string>` (optional) — The variant's values for the associated product's options.
+  - `update`: [AdminBatchUpdateProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchUpdateProductVariant)\[] (optional) — Records to update in bulk.
+    - `title`: `string` (optional) — The variant's title.
+    - `sku`: `null` | `string` (optional) — The variant's SKU.
+    - `ean`: `null` | `string` (optional) — The variant's EAN.
+    - `upc`: `null` | `string` (optional) — The variant's UPC.
+    - `barcode`: `null` | `string` (optional) — The variant's barcode.
+    - `hs_code`: `null` | `string` (optional) — The variant's HS code.
+    - `mid_code`: `null` | `string` (optional) — The variant's MID code.
+    - `thumbnail`: `null` | `string` (optional) — The variant's thumbnail.
+    - `allow_backorder`: `boolean` (optional) — Whether the variant can be ordered even if it's out of stock.
+    - `manage_inventory`: `boolean` (optional) — Whether Medusa should manage the variant's inventory. If disabled, the variant is always considered in stock.
+    - `variant_rank`: `number` (optional) — The variant's ranking among its sibling variants.
+    - `weight`: `null` | `number` (optional) — The variant's weight.
+    - `length`: `null` | `number` (optional) — The variant's length.
+    - `height`: `null` | `number` (optional) — The variant's height.
+    - `width`: `null` | `number` (optional) — The variant's width.
+    - `origin_country`: `null` | `string` (optional) — The variant's origin country.
+    - `material`: `null` | `string` (optional) — The variant's material.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `prices`: [AdminUpdateProductVariantPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateProductVariantPrice)\[] (optional) — The variant's prices.
+    - `options`: `Record<string, string>` (optional) — The variant's values for the associated product's options.
+    - `id`: `string` — The ID of the variant to update.
+  - `delete`: `string`\[] (optional) — Records to delete in bulk.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the product variants.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchvariants-returns" />
+
+## Returns
+
+**batchVariants**
+
+- `Promise`: Promise\<[AdminBatchProductVariantResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchProductVariantResponse)> — The product variants' details.
+  - `created`: [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)\[] — The items that were created.
+    - `prices`: `null` | [AdminPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPrice)\[] — The product variant's prices.
+    - `options`: `null` | [AdminProductOptionValue](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOptionValue)\[] — The variant's values for the associated product's options.
+    - `product`: `null` | [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) (optional) — The product that this variant belongs to.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product variant's translations.
+    - `inventory_items`: `null` | [AdminProductVariantInventoryItemLink](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantInventoryItemLink)\[] (optional) — The variant's inventory items.
+    - `id`: `string` — The variant's ID.
+    - `title`: `null` | `string` — The variant's title.
+    - `sku`: `null` | `string` — The variant's SKU.
+    - `barcode`: `null` | `string` — The variant's barcode.
+    - `ean`: `null` | `string` — The variant's EAN.
+    - `upc`: `null` | `string` — The variant's UPC.
+    - `thumbnail`: `null` | `string` — The variant's thumbnail.
+    - `images`: `null` | [BaseProductImage](/resources/references/types/interfaces/typesBaseProductImage)\[] (optional) — The variant's images.
+    - `allow_backorder`: `null` | `boolean` — Whether the variant can be ordered even if it's out of stock.
+    - `manage_inventory`: `null` | `boolean` — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+    - `inventory_quantity`: `null` | `number` (optional) — The variant's inventory quantity if `manage_inventory` is enabled. This field is only retrieved in the [Get Product](/api/store/products/get-a-product) and [List Products](/api/store/products/list-products) API routes if you pass `+variants.inventory_quantity` in the `fields` query parameter. Learn more in the [Retrieve Product Variant's Inventory](/resources/storefront-development/products/inventory) storefront guide.
+    - `hs_code`: `null` | `string` — The variant's HS code.
+    - `origin_country`: `null` | `string` — The variant's origin country.
+    - `mid_code`: `null` | `string` — The variant's MID code.
+    - `material`: `null` | `string` — The variant's material.
+    - `weight`: `null` | `number` — The variant's weight.
+    - `length`: `null` | `number` — The variant's length.
+    - `height`: `null` | `number` — The variant's height.
+    - `width`: `null` | `number` — The variant's width.
+    - `variant_rank`: `null` | `number` (optional) — The variant's ranking among its siblings.
+    - `product_id`: `string` (optional) — The ID of the product that the variant belongs to.
+    - `calculated_price`: [BaseCalculatedPriceSet](/resources/references/types/interfaces/typesBaseCalculatedPriceSet) (optional) — The variant's calculated price for the provided context.
+    - `created_at`: `string` — The date the variant was created.
+    - `updated_at`: `string` — The date the variant was updated.
+    - `deleted_at`: `null` | `string` — The date the variant was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `updated`: [AdminProductVariant](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariant)\[] — The items that were updated.
+    - `prices`: `null` | [AdminPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPrice)\[] — The product variant's prices.
+    - `options`: `null` | [AdminProductOptionValue](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductOptionValue)\[] — The variant's values for the associated product's options.
+    - `product`: `null` | [AdminProduct](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProduct) (optional) — The product that this variant belongs to.
+    - `translations`: `null` | [AdminTranslation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminTranslation)\[] (optional) — The product variant's translations.
+    - `inventory_items`: `null` | [AdminProductVariantInventoryItemLink](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminProductVariantInventoryItemLink)\[] (optional) — The variant's inventory items.
+    - `id`: `string` — The variant's ID.
+    - `title`: `null` | `string` — The variant's title.
+    - `sku`: `null` | `string` — The variant's SKU.
+    - `barcode`: `null` | `string` — The variant's barcode.
+    - `ean`: `null` | `string` — The variant's EAN.
+    - `upc`: `null` | `string` — The variant's UPC.
+    - `thumbnail`: `null` | `string` — The variant's thumbnail.
+    - `images`: `null` | [BaseProductImage](/resources/references/types/interfaces/typesBaseProductImage)\[] (optional) — The variant's images.
+    - `allow_backorder`: `null` | `boolean` — Whether the variant can be ordered even if it's out of stock.
+    - `manage_inventory`: `null` | `boolean` — Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+    - `inventory_quantity`: `null` | `number` (optional) — The variant's inventory quantity if `manage_inventory` is enabled. This field is only retrieved in the [Get Product](/api/store/products/get-a-product) and [List Products](/api/store/products/list-products) API routes if you pass `+variants.inventory_quantity` in the `fields` query parameter. Learn more in the [Retrieve Product Variant's Inventory](/resources/storefront-development/products/inventory) storefront guide.
+    - `hs_code`: `null` | `string` — The variant's HS code.
+    - `origin_country`: `null` | `string` — The variant's origin country.
+    - `mid_code`: `null` | `string` — The variant's MID code.
+    - `material`: `null` | `string` — The variant's material.
+    - `weight`: `null` | `number` — The variant's weight.
+    - `length`: `null` | `number` — The variant's length.
+    - `height`: `null` | `number` — The variant's height.
+    - `width`: `null` | `number` — The variant's width.
+    - `variant_rank`: `null` | `number` (optional) — The variant's ranking among its siblings.
+    - `product_id`: `string` (optional) — The ID of the product that the variant belongs to.
+    - `calculated_price`: [BaseCalculatedPriceSet](/resources/references/types/interfaces/typesBaseCalculatedPriceSet) (optional) — The variant's calculated price for the provided context.
+    - `created_at`: `string` — The date the variant was created.
+    - `updated_at`: `string` — The date the variant was updated.
+    - `deleted_at`: `null` | `string` — The date the variant was deleted.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+  - `deleted`: `object` — Details of the items that were deleted.
+    - `ids`: `string`\[] — The IDs of the items that were deleted.
+    - `object`: `string` — The type of the items that were deleted.
+
+      Example:
+
+      ```
+      "product"
+      ```
+    - `deleted`: `boolean` — Whether the items were deleted successfully.

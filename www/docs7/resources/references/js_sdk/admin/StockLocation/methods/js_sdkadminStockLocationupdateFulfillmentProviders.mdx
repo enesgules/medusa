@@ -1,0 +1,49 @@
+---
+title: updateFulfillmentProviders
+---
+
+This method manages the fulfillment providers of a stock location by adding or removing them. It sends a request to the
+[Manage Fulfillment Providers of Stock Location](/api/admin/stock-locations/manage-fulfillment-providers)
+API route.
+
+## Example
+
+```ts
+sdk.admin.stockLocation.updateFulfillmentProviders("sloc_123", {
+  add: ["fp_manual_manual"],
+  remove: ["fp_shipstation_shipstation"],
+})
+.then(({ stock_location }) => {
+  console.log(stock_location)
+})
+```
+
+<a id="updatefulfillmentproviders-parameters" />
+
+## Parameters
+
+**updateFulfillmentProviders**
+
+- `id`: `string` — The ID of the stock location to manage the fulfillment providers for.
+- `body`: [AdminBatchLink](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchLink) — The details of the fulfillment providers to manage.
+  - `add`: `string`\[] (optional) — The IDs of the items to create an association to.
+  - `remove`: `string`\[] (optional) — The IDs of the items to remove the association from.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updatefulfillmentproviders-returns" />
+
+## Returns
+
+**updateFulfillmentProviders**
+
+- `Promise`: Promise\<[AdminStockLocationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationResponse)> — The stock location's details.
+  - `stock_location`: [AdminStockLocation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocation) — The stock location's details.
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `null` | `Record<string, unknown>` — The metadata associated with the stock location.
+    - `address_id`: `string` — The ID of the address associated with the stock location.
+    - `address`: [AdminStockLocationAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocationAddress) (optional) — The address associated with the stock location.
+    - `sales_channels`: [AdminSalesChannel](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSalesChannel)\[] (optional) — The sales channels associated with the stock location.
+    - `fulfillment_providers`: [AdminFulfillmentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentProvider)\[] (optional) — The fulfillment providers associated with the stock location.
+    - `fulfillment_sets`: [AdminFulfillmentSet](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentSet)\[] (optional) — The fulfillment sets associated with the stock location.

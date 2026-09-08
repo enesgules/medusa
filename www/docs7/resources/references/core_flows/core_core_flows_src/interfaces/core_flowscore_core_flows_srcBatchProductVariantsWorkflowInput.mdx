@@ -1,0 +1,64 @@
+---
+title: BatchProductVariantsWorkflowInput
+---
+
+The product variants to manage.
+
+**BatchProductVariantsWorkflowInput**
+
+- `create`: [CreateProductVariantWorkflowInputDTO](/resources/references/types/types/typesCreateProductVariantWorkflowInputDTO)\[] (optional) — Records to create in bulk.
+  - `product_id`: `string` (optional) — The id of the product
+  - `title`: `string` — The tile of the product variant.
+  - `sku`: `null` | `string` (optional) — The SKU of the product variant.
+  - `barcode`: `null` | `string` (optional) — The barcode of the product variant.
+  - `ean`: `null` | `string` (optional) — The EAN of the product variant.
+  - `upc`: `null` | `string` (optional) — The UPC of the product variant.
+  - `allow_backorder`: `boolean` (optional) — Whether the product variant can be ordered when it's out of stock.
+  - `manage_inventory`: `boolean` (optional) — Whether the product variant's inventory should be managed by the core system.
+  - `inventory_items`: [CreateProductVariantInventoryKit](/resources/references/product/interfaces/productCreateProductVariantInventoryKit)\[] (optional) — The variant's inventory items. It's only available if `manage_inventory` is enabled.
+    - `inventory_item_id`: `string`
+    - `required_quantity`: `number` (optional)
+  - `hs_code`: `null` | `string` (optional) — The HS Code of the product variant.
+  - `origin_country`: `null` | `string` (optional) — The origin country of the product variant.
+  - `mid_code`: `null` | `string` (optional) — The MID Code of the product variant.
+  - `material`: `null` | `string` (optional) — The material of the product variant.
+  - `weight`: `null` | `number` (optional) — The weight of the product variant.
+  - `length`: `null` | `number` (optional) — The length of the product variant.
+  - `height`: `null` | `number` (optional) — The height of the product variant.
+  - `width`: `null` | `number` (optional) — The width of the product variant.
+  - `options`: `Record<string, string>` (optional) — The options of the variant. Each key is an option's title, and value is an option's value. If an option with the specified title doesn't exist, a new one is created.
+
+    Example:
+
+    ```
+    `{ Color: "Blue" }`
+    ```
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `prices`: [CreateMoneyAmountDTO](/resources/references/pricing/interfaces/pricingCreateMoneyAmountDTO)\[] (optional) — The variant's prices.
+    - `id`: `string` (optional) — The ID of the money amount.
+    - `currency_code`: `string` — The currency code of this money amount.
+    - `amount`: [BigNumberInput](/resources/references/pricing/types/pricingBigNumberInput) — The amount of this money amount.
+    - `min_quantity`: `null` | [BigNumberInput](/resources/references/pricing/types/pricingBigNumberInput) (optional) — The minimum quantity required to be purchased for this money amount to be applied.
+    - `max_quantity`: `null` | [BigNumberInput](/resources/references/pricing/types/pricingBigNumberInput) (optional) — The maximum quantity required to be purchased for this money amount to be applied.
+- `update`: [UpdateProductVariantWorkflowInputDTO](/resources/references/types/types/typesUpdateProductVariantWorkflowInputDTO)\[] (optional) — Records to update in bulk.
+  - `id`: `string` (optional) — The ID of the product variant to update.
+  - `title`: `string` (optional) — The tile of the product variant.
+  - `sku`: `null` | `string` (optional) — The SKU of the product variant.
+  - `barcode`: `null` | `string` (optional) — The barcode of the product variant.
+  - `ean`: `null` | `string` (optional) — The EAN of the product variant.
+  - `upc`: `null` | `string` (optional) — The UPC of the product variant.
+  - `thumbnail`: `null` | `string` (optional) — The thumbnail of the product variant.
+  - `allow_backorder`: `boolean` (optional) — Whether the product variant can be ordered when it's out of stock.
+  - `manage_inventory`: `boolean` (optional) — Whether the product variant's inventory should be managed by the core system.
+  - `hs_code`: `null` | `string` (optional) — The HS Code of the product variant.
+  - `origin_country`: `null` | `string` (optional) — The origin country of the product variant.
+  - `mid_code`: `null` | `string` (optional) — The MID Code of the product variant.
+  - `material`: `null` | `string` (optional) — The material of the product variant.
+  - `weight`: `null` | `number` (optional) — The weight of the product variant.
+  - `length`: `null` | `number` (optional) — The length of the product variant.
+  - `height`: `null` | `number` (optional) — The height of the product variant.
+  - `width`: `null` | `number` (optional) — The width of the product variant.
+  - `options`: `Record<string, string>` (optional) — The product variant options to associate with the product variant.
+  - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `prices`: `PricingTypes.UpsertMoneyAmountDTO`\[] (optional) — The variant's prices.
+- `delete`: `string`\[] (optional) — Records to delete in bulk.

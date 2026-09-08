@@ -1,0 +1,56 @@
+---
+title: cancel
+---
+
+This method cancels a claim. It sends a request to the
+[Cancel Claim](/api/admin/claims/cancel-a-claim) API route.
+
+## Example
+
+```ts
+sdk.admin.claim.cancel("claim_123")
+.then(({ claim }) => {
+  console.log(claim)
+})
+```
+
+<a id="cancel-parameters" />
+
+## Parameters
+
+**cancel**
+
+- `id`: `string` — The claim's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the claim.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="cancel-returns" />
+
+## Returns
+
+**cancel**
+
+- `Promise`: Promise\<[AdminClaimResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminClaimResponse)> — The claim's details.
+  - `claim`: [AdminClaim](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminClaim) — The claim's details.
+    - `order`: [AdminOrder](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrder) — The order this claim is created for.
+    - `return`: [AdminReturn](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminReturn) — The associated return.
+    - `shipping_methods`: [AdminOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminOrderShippingMethod)\[] (optional) — The shipping methods of the claim's additional items.
+    - `id`: `string` — The claim's ID.
+    - `type`: [OrderClaimType](/resources/references/fulfillment/types/fulfillmentOrderClaimType) — The claim's type.
+    - `order_id`: `string` — The ID of the order this claim was created for.
+    - `return_id`: `string` (optional) — The ID of the associated return.
+    - `display_id`: `number` — The claim's display ID.
+    - `order_version`: `string` — The version of the order when the claim is applied.
+    - `refund_amount`: `number` (optional) — The amount to be refunded due to this claim.
+    - `created_by`: `string` (optional) — The ID of the user that created this claim.
+    - `created_at`: `string` | `Date` — The date the claim was created.
+    - `updated_at`: `string` | `Date` — The date the claim was updated.
+    - `canceled_at`: `string` | `Date` — The date the claim was canceled.
+    - `deleted_at`: `string` | `Date` (optional) — The date the claim was deleted.
+    - `additional_items`: [BaseClaimItem](/resources/references/types/interfaces/typesBaseClaimItem)\[] — The claim's additional items if its `type` is `replace`.
+    - `claim_items`: [BaseClaimItem](/resources/references/types/interfaces/typesBaseClaimItem)\[] — The claim's items.
+    - `no_notification`: `boolean` (optional) — Whether to notify the customer about changes in the claim.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The claim's transactions.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.

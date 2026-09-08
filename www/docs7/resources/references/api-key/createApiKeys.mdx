@@ -1,0 +1,135 @@
+---
+title: createApiKeys - API Key Module Reference
+sidebarTitle: createApiKeys
+---
+
+This documentation provides a reference to the `createApiKeys` method. This belongs to the API Key Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createapikeys-data-sharedcontext-promiseapikeydto" />
+
+## createApiKeys(data, sharedContext?): Promise\<[ApiKeyDTO](/resources/references/api_key/interfaces/api_keyApiKeyDTO)\[]>
+
+This method creates API keys.
+
+### Example
+
+```ts
+const apiKey = await apiKeyModuleService.createApiKeys([{
+  title: "Development API key",
+  type: "publishable",
+  created_by: "user_123"
+}])
+```
+
+<a id="createapikeys-parameters" />
+
+### Parameters
+
+**createApiKeys**
+
+- `data`: [CreateApiKeyDTO](/resources/references/api_key/interfaces/api_keyCreateApiKeyDTO)\[] — The API keys to be created.
+  - `title`: `string` — The title of the API key.
+  - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The type of the API key.
+  - `created_by`: `string` — Who created the API key. If the API key type is `secret`, the user can use the created API key's token to authenticate as explained in the [API Reference](/api/admin#2-api-token).
+- `sharedContext`: [Context](/resources/references/api_key/interfaces/api_keyContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/api_key/interfaces/api_keyIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createapikeys-returns" />
+
+### Returns
+
+**createApiKeys**
+
+- `Promise`: Promise\<[ApiKeyDTO](/resources/references/api_key/interfaces/api_keyApiKeyDTO)\[]> — The created API keys.
+  - `ApiKeyDTO[]`: [ApiKeyDTO](/resources/references/api_key/interfaces/api_keyApiKeyDTO)\[]
+    - `id`: `string` — The ID of the API key.
+    - `token`: `string` — The token of the API key.
+    - `redacted`: `string` — The redacted form of the API key's token. This is useful when showing portion of the token. For example `sk_...123`.
+    - `title`: `string` — The title of the API key.
+    - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The type of the API key.
+    - `last_used_at`: `null` | `Date` — The date the API key was last used.
+    - `created_by`: `string` — Who created the API key.
+    - `created_at`: `Date` — The date the API key was created.
+    - `updated_at`: `Date` — The date the API key was updated.
+    - `deleted_at`: `null` | `Date` — The date the API key was deleted.
+    - `revoked_by`: `null` | `string` — Who revoked the API key. For example, the ID of the user that revoked it.
+    - `revoked_at`: `null` | `Date` — The date the API key was revoked.
+
+<a id="createapikeys-data-sharedcontext-promiseapikeydto-1" />
+
+## createApiKeys(data, sharedContext?): Promise\<[ApiKeyDTO](/resources/references/api_key/interfaces/api_keyApiKeyDTO)>
+
+This method creates an API key.
+
+### Example
+
+```ts
+const apiKey = await apiKeyModuleService.createApiKeys({
+  title: "Development API key",
+  type: "publishable",
+  created_by: "user_123"
+})
+```
+
+<a id="createapikeys-parameters-1" />
+
+### Parameters
+
+**createApiKeys**
+
+- `data`: [CreateApiKeyDTO](/resources/references/api_key/interfaces/api_keyCreateApiKeyDTO) — The API key to be created.
+  - `title`: `string` — The title of the API key.
+  - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The type of the API key.
+  - `created_by`: `string` — Who created the API key. If the API key type is `secret`, the user can use the created API key's token to authenticate as explained in the [API Reference](/api/admin#2-api-token).
+- `sharedContext`: [Context](/resources/references/api_key/interfaces/api_keyContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/api_key/interfaces/api_keyIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createapikeys-returns-1" />
+
+### Returns
+
+**createApiKeys**
+
+- `Promise`: Promise\<[ApiKeyDTO](/resources/references/api_key/interfaces/api_keyApiKeyDTO)> — The created API key.
+  - `id`: `string` — The ID of the API key.
+  - `token`: `string` — The token of the API key.
+  - `redacted`: `string` — The redacted form of the API key's token. This is useful when showing portion of the token. For example `sk_...123`.
+  - `title`: `string` — The title of the API key.
+  - `type`: [ApiKeyType](/resources/references/api_key/types/api_keyApiKeyType) — The type of the API key.
+  - `last_used_at`: `null` | `Date` — The date the API key was last used.
+  - `created_by`: `string` — Who created the API key.
+  - `created_at`: `Date` — The date the API key was created.
+  - `updated_at`: `Date` — The date the API key was updated.
+  - `deleted_at`: `null` | `Date` — The date the API key was deleted.
+  - `revoked_by`: `null` | `string` — Who revoked the API key. For example, the ID of the user that revoked it.
+  - `revoked_at`: `null` | `Date` — The date the API key was revoked.

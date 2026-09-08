@@ -1,0 +1,57 @@
+---
+title: Service Factory Reference
+---
+
+This section of the documentation provides a reference to the methods generated for services extending the service factory (`MedusaService`) and how to use them.
+
+<Note>
+  **Tip**
+
+  Refer to the [Service Factory](/learn/fundamentals/modules/service-factory) documentation to learn more.
+</Note>
+
+## Method Names
+
+When your module's main service extends the service factory, Medusa will:
+
+1. Generate [data-management methods in your main service](/resources/service-factory-reference#main-service-methods) for each of the data models passed to the `MedusaService` function.
+2. Generate [internal services](/resources/service-factory-reference#internal-generated-service-methods) for each of the data models passed to the `MedusaService` function, which can be resolved in loaders.
+
+### Main Service Methods
+
+The names of the generated methods for a service extending the service factory are of the format `{operationName}{DataModelName}`, where:
+
+- `{operationName}` is the name of the operation. For example, `create`.
+- `{DataModelName}` is the pascal-case version of the data model's key that's passed in the object parameter of `MedusaService`. The name is pluralized for all operations except the `retrieve` operation.
+
+Some examples of method names:
+
+- `createPosts` (`Post` data model)
+- `createMyPosts` (`MyPost` data model)
+- `retrievePost` (`Post` data model)
+- `listPosts` (`Post` data model)
+
+### Internal Generated Service Methods
+
+The internal services are useful when you need to perform database operations in loaders, as they're executed before the module's services are registered. Learn more in the [Module Container](/learn/fundamentals/modules/container) documentation.
+
+For the internal services, the method names are only the operation name, without the data model name.
+
+For example, a `Post` data model would have a `postService` with methods like `create`, `retrieve`, `update`, and `delete`.
+
+***
+
+## Methods Reference
+
+<Note>
+  The reference uses only the operation name to refer to the method.
+</Note>
+
+- [create](/resources/service-factory-reference/methods/create)
+- [delete](/resources/service-factory-reference/methods/delete)
+- [list](/resources/service-factory-reference/methods/list)
+- [listAndCount](/resources/service-factory-reference/methods/listAndCount)
+- [restore](/resources/service-factory-reference/methods/restore)
+- [retrieve](/resources/service-factory-reference/methods/retrieve)
+- [softDelete](/resources/service-factory-reference/methods/soft-delete)
+- [update](/resources/service-factory-reference/methods/update)

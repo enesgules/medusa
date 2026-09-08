@@ -1,0 +1,63 @@
+---
+title: ComputeActionContext
+---
+
+The context provided when computing actions of promotions.
+
+**ComputeActionContext**
+
+- `currency_code`: `string` — The cart's currency
+- `customer`: `object` (optional) — The customer associated with the cart.
+  - `id`: `string`
+  - `groups`: `object`\[] (optional) — The customer groups the customer belongs to.
+    - `id`: `string`
+- `region`: `object` (optional) — The region associated with the cart.
+  - `id`: `string`
+- `shipping_address`: `object` (optional) — The shipping address associated with the cart.
+  - `country_code`: `string`
+- `sales_channel_id`: `string` (optional)
+- `email`: `string` (optional) — The cart's email
+- `items`: [ComputeActionItemLine](/resources/references/promotion/interfaces/promotionComputeActionItemLine)\[] (optional) — The cart's line items.
+  - `id`: `string` — The ID of the item line.
+  - `quantity`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The quantity of the line item.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/promotion/types/promotionBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `subtotal`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The subtotal of the line item.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/promotion/types/promotionBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `original_total`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The total of the line item.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/promotion/types/promotionBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `is_discountable`: `boolean` — Whether the line item is discountable.
+  - `adjustments`: [ComputeActionAdjustmentLine](/resources/references/promotion/interfaces/promotionComputeActionAdjustmentLine)\[] (optional) — The adjustments applied before on the line item.
+    - `id`: `string` — The ID of the compute action's adjustment line.
+    - `code`: `string` — The promotion's code.
+  - `product`: `object` (optional) — The product ID of the line item. Our default promotion rules rely on the product ID to apply the promotion.
+    - `id`: `string`
+    - `collection_id`: `string` (optional)
+    - `tags`: `object`\[] (optional)
+    - `categories`: `object`\[] (optional)
+    - `type_id`: `string` (optional)
+- `shipping_methods`: [ComputeActionShippingLine](/resources/references/promotion/interfaces/promotionComputeActionShippingLine)\[] (optional) — The cart's shipping methods.
+  - `id`: `string` — The ID of the shipping method.
+  - `subtotal`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The subtotal of the shipping method.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/promotion/types/promotionBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `original_total`: [BigNumberInput](/resources/references/promotion/types/promotionBigNumberInput) — The total of the shipping method.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/promotion/types/promotionBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+  - `adjustments`: [ComputeActionAdjustmentLine](/resources/references/promotion/interfaces/promotionComputeActionAdjustmentLine)\[] (optional) — The adjustments applied before on the shipping method.
+    - `id`: `string` — The ID of the compute action's adjustment line.
+    - `code`: `string` — The promotion's code.
+  - `shipping_option`: `object` (optional) — The shipping option type associated with the shipping method.
+    - `shipping_option_type_id`: `string` (optional) — The ID of the shipping option type associated with the shipping method.

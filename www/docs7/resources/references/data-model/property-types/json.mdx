@@ -1,0 +1,30 @@
+---
+title: json Property Method - DML Reference
+sidebarTitle: json
+---
+
+This method defines a property whose value is stringified JSON. The
+value is stored in a `jsonb` column, so any JSON-serializable value
+is supported, including arrays.
+
+## Example
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const MyCustom = model.define("my_custom", {
+  metadata: model.json(),
+  warnings: model.json<{ code: string; message: string }[]>(),
+  // ...
+})
+
+export default MyCustom
+```
+
+<a id="json-type-parameters" />
+
+## Type Parameters
+
+**json**
+
+- `T`: `object` (optional) — The type of the stored JSON value. By default, it's a JSON object (`Record<string, unknown>`). Pass a type parameter to store another shape, such as an array of objects. To store an array of strings, consider using [array](/resources/references/data-model/property-types/array) instead, which stores the value in a `text[]` column.

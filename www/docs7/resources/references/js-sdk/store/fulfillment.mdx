@@ -1,0 +1,154 @@
+---
+title: fulfillment - JS SDK Store Reference
+sidebarTitle: fulfillment
+---
+
+This documentation provides a reference to the `sdk.store.fulfillment` set of methods used to send requests to Medusa's Store API routes.
+
+## listCartOptions
+
+This method retrieves the list of shipping options for a cart. It sends a request to
+the [List Shipping Options](/api/store/shipping-options/list-shipping-options-for-cart)
+API route.
+
+Related guide: [Implement shipping step during checkout](/resources/storefront-development/checkout/shipping).
+
+### Example
+
+```ts
+sdk.store.fulfillment.listCartOptions({
+  cart_id: "cart_123"
+})
+.then(({ shipping_options }) => {
+  console.log(shipping_options)
+})
+```
+
+<a id="listcartoptions-parameters" />
+
+### Parameters
+
+**listCartOptions**
+
+- `query`: [StoreGetShippingOptionList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreGetShippingOptionList) (optional) — The cart's details along with configurations of the fields to retrieve in the options.
+  - `$and`: ([StoreGetShippingOptionList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreGetShippingOptionList) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[StoreGetShippingOptionList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreGetShippingOptionList)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([StoreGetShippingOptionList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreGetShippingOptionList) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[StoreGetShippingOptionList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreGetShippingOptionList)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([StoreGetShippingOptionList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreGetShippingOptionList) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[StoreGetShippingOptionList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreGetShippingOptionList)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `cart_id`: `string` — The ID of the cart to retrieve the shipping options that can be applied on it.
+    - `is_return`: `boolean` (optional) — Whether to retrieve shipping options used for returns.
+  - `$or`: ([StoreGetShippingOptionList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreGetShippingOptionList) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[StoreGetShippingOptionList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreGetShippingOptionList)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([StoreGetShippingOptionList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreGetShippingOptionList) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[StoreGetShippingOptionList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreGetShippingOptionList)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([StoreGetShippingOptionList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreGetShippingOptionList) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[StoreGetShippingOptionList](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreGetShippingOptionList)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `cart_id`: `string` — The ID of the cart to retrieve the shipping options that can be applied on it.
+    - `is_return`: `boolean` (optional) — Whether to retrieve shipping options used for returns.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `cart_id`: `string` — The ID of the cart to retrieve the shipping options that can be applied on it.
+  - `is_return`: `boolean` (optional) — Whether to retrieve shipping options used for returns.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listcartoptions-returns" />
+
+### Returns
+
+**listCartOptions**
+
+- `Promise`: Promise\<[StoreShippingOptionListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreShippingOptionListResponse)> — The shipping options that can be used for the cart.
+  - `shipping_options`: [StoreCartShippingOptionWithServiceZone](/resources/references/types/HttpTypes/types/typesHttpTypesStoreCartShippingOptionWithServiceZone)\[] — The shipping options for the cart.
+    - `id`: `string` — The shipping option's ID.
+    - `name`: `string` — The shipping option's name.
+    - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The type of the shipping option's price. `flat` means the price is fixed, whereas `calculated` means the price is calculated by the associated fulfillment provider.
+    - `service_zone_id`: `string` — The ID of the associated service zone.
+    - `shipping_profile_id`: `string` — The ID of the associated shipping profile.
+    - `provider_id`: `string` — The ID of the fulfillment provider used to handle shipping.
+    - `data`: `null` | `Record<string, unknown>` — The data useful for the fulfillment provider when handling the shipment and fulfillment. Learn more in [this documentation](/resources/commerce-modules/fulfillment/shipping-option#data-property).
+    - `type`: `object` — The shipping option's type.
+    - `provider`: `object` — The details of the associated fulfillment provider.
+    - `amount`: `number` — The shipping option's amount for the cart. For a `calculated` shipping option, this amount is resolved by the fulfillment provider against the cart.
+    - `prices`: [StorePrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePrice)\[] — The shipping option's stored prices. This is empty for a `calculated` shipping option, since its price is computed by the fulfillment provider rather than stored.
+    - `calculated_price`: [StoreCalculatedPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCalculatedPrice) — The shipping option's price resolved for the cart. For a `flat` shipping option, this is the stored price matching the cart's context; for a `calculated` shipping option, this is the price computed by the fulfillment provider for the cart.
+    - `insufficient_inventory`: `boolean` — Whether the stock location of the shipping option has insufficient inventory for items in the cart.
+    - `service_zone`: `object` — The associated service zone.
+
+## calculate
+
+This method calculates the price of a shipping option in a cart, which is useful during checkout.
+It sends a request to the [Calculate Shipping Option Price](/api/store/shipping-options/calculate-shipping-option-price)
+API route.
+
+### Example
+
+```ts
+sdk.store.fulfillment.calculate("so_123", {
+  cart_id: "cart_123"
+})
+.then(({ shipping_option }) => {
+  console.log(shipping_option)
+})
+```
+
+<a id="calculate-parameters" />
+
+### Parameters
+
+**calculate**
+
+- `id`: `string` — The shipping option's ID.
+- `body`: [StoreCalculateShippingOptionPrice](/resources/references/types/HttpTypes/types/typesHttpTypesStoreCalculateShippingOptionPrice) — The price calculation's details.
+  - `cart_id`: `string` — The ID of the cart to calculate the price for.
+  - `data`: `Record<string, unknown>` (optional) — Additional data passed to the shipping option's fulfillment provider. This is useful if the third-party fulfillment provider requires additional data to calculate the price. Learn more in the [Shipping Option documentation](/resources/commerce-modules/fulfillment/shipping-option#data-property).
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the shipping option.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="calculate-returns" />
+
+### Returns
+
+**calculate**
+
+- `Promise`: Promise\<[StoreShippingOptionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreShippingOptionResponse)> — The shipping option's details.
+  - `shipping_option`: [StoreCartShippingOption](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCartShippingOption) — The shipping option's details.
+    - `id`: `string` — The shipping option's ID.
+    - `name`: `string` — The shipping option's name.
+    - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The type of the shipping option's price. `flat` means the price is fixed, whereas `calculated` means the price is calculated by the associated fulfillment provider.
+    - `service_zone_id`: `string` — The ID of the associated service zone.
+    - `shipping_profile_id`: `string` — The ID of the associated shipping profile.
+    - `provider_id`: `string` — The ID of the fulfillment provider used to handle shipping.
+    - `data`: `null` | `Record<string, unknown>` — The data useful for the fulfillment provider when handling the shipment and fulfillment. Learn more in [this documentation](/resources/commerce-modules/fulfillment/shipping-option#data-property).
+    - `type`: `object` — The shipping option's type.
+    - `provider`: `object` — The details of the associated fulfillment provider.
+    - `amount`: `number` — The shipping option's amount for the cart. For a `calculated` shipping option, this amount is resolved by the fulfillment provider against the cart.
+    - `prices`: [StorePrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePrice)\[] — The shipping option's stored prices. This is empty for a `calculated` shipping option, since its price is computed by the fulfillment provider rather than stored.
+    - `calculated_price`: [StoreCalculatedPrice](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCalculatedPrice) — The shipping option's price resolved for the cart. For a `flat` shipping option, this is the stored price matching the cart's context; for a `calculated` shipping option, this is the price computed by the fulfillment provider for the cart.
+    - `insufficient_inventory`: `boolean` — Whether the stock location of the shipping option has insufficient inventory for items in the cart.

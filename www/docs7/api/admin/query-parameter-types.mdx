@@ -1,0 +1,200 @@
+---
+title: Query Parameter Types
+---
+
+This section covers how to pass some common data types as query parameters.
+
+This is useful if you're sending requests to the API Routes using cURL or Postman.
+
+### Strings
+
+You can pass a string value in the form of `<parameter_name>=<value>`.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="String filter"
+    sdk.admin.product.list({
+      title: "Shirt"
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="String filter"
+    curl "http://localhost:9000/admin/products?title=Shirt" \
+    -H 'Authorization: Bearer {jwt_token}'
+    ```
+  </Tab>
+</Tabs>
+
+If the string has any characters other than letters and numbers, you must
+encode them. For example, if the string has spaces, you can encode the space with `+` or
+`%20`.
+
+When using the JS SDK, you can pass the string directly to the query parameter. The JS SDK will encode the string for you.
+
+You can use tools like [this one](https://www.urlencoder.org/) to learn how
+a value can be encoded.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Encoded string filter"
+    sdk.admin.product.list({
+      title: "Blue Shirt"
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Encoded string filter"
+    curl "http://localhost:9000/admin/products?title=Blue%20Shirt" \
+    -H 'Authorization: Bearer {jwt_token}'
+    ```
+  </Tab>
+</Tabs>
+
+### Integers
+
+You can pass an integer value in the form of `<parameter_name>=<value>`.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Integer filter"
+    sdk.admin.product.list({
+      offset: 1
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Integer filter"
+    curl "http://localhost:9000/admin/products?offset=1" \
+    -H 'Authorization: Bearer {jwt_token}'
+    ```
+  </Tab>
+</Tabs>
+
+### Boolean
+
+You can pass a boolean value in the form of `<parameter_name>=<value>`.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Boolean filter"
+    sdk.admin.product.list({
+      is_giftcard: true
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Boolean filter"
+    curl "http://localhost:9000/admin/products?is_giftcard=true" \
+    -H 'Authorization: Bearer {jwt_token}'
+    ```
+  </Tab>
+</Tabs>
+
+### Date and DateTime
+
+You can pass a date value in the form `<parameter_name>=<value>`. The date
+must be in the format `YYYY-MM-DD`.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Date filter"
+    sdk.admin.product.list({
+      created_at: { $lt: "2023-02-17" }
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Date filter"
+    curl -g "http://localhost:9000/admin/products?created_at[$lt]=2023-02-17" \
+    -H 'Authorization: Bearer {jwt_token}'
+    ```
+  </Tab>
+</Tabs>
+
+You can also pass the time using the format `YYYY-MM-DDTHH:MM:SSZ`. Please
+note that the `T` and `Z` here are fixed.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Date and time filter"
+    sdk.admin.product.list({
+      created_at: { $lt: "2023-02-17T07:22:30Z" }
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Date and time filter"
+    curl -g "http://localhost:9000/admin/products?created_at[$lt]=2023-02-17T07:22:30Z" \
+    -H 'Authorization: Bearer {jwt_token}'
+    ```
+  </Tab>
+</Tabs>
+
+### Array
+
+Array filters can be passed either as:
+
+- `<parameter_name>[]=<value1>,<value2>`, separating the values by a comma.
+- `<parameter_name>[]=<value1>&<parameter_name>[]=<value2>`, passing each value as a separate query parameter. You can also specify the index of each
+  parameter in the brackets `<parameter_name>[0]=<value>`.
+
+When using the JS SDK, you can pass the array directly to the query parameter. The JS SDK will handle the rest.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Array filter"
+    sdk.admin.product.list({
+      sales_channel_id: ["sc_123", "sc_456"]
+    })
+    ```
+  </Tab>
+
+  <Tab title="Comma-separated">
+    ```bash
+    curl -g "http://localhost:9000/admin/products?sales_channel_id[]=sc_123,sc_456" \
+    -H 'Authorization: Bearer {jwt_token}'
+    ```
+  </Tab>
+
+  <Tab title="Separate parameters">
+    ```bash
+    curl -g "http://localhost:9000/admin/products?sales_channel_id[]=sc_123&sales_channel_id[]=sc_456" \
+    -H 'Authorization: Bearer {jwt_token}'
+    ```
+  </Tab>
+</Tabs>
+
+Note that the `-g` parameter passed to `curl` disables errors being thrown
+for using the brackets. Read more
+[here](https://curl.se/docs/manpage.html#-g).
+
+### Object
+
+Object parameters must be passed as separate query parameters in the form
+`<parameter_name>[<key>]=<value>`.
+
+When using the JS SDK, you can pass the object directly to the query parameter. The JS SDK will handle the rest.
+
+<Tabs>
+  <Tab title="JS SDK">
+    ```js title="Object filter"
+    sdk.admin.product.list({
+      created_at: { $lt: "2023-02-17", $gt: "2022-09-17" }
+    })
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash title="Object filter"
+    curl -g "http://localhost:9000/admin/products?created_at[$lt]=2023-02-17&created_at[$gt]=2022-09-17" \
+    -H 'Authorization: Bearer {jwt_token}'
+    ```
+  </Tab>
+</Tabs>

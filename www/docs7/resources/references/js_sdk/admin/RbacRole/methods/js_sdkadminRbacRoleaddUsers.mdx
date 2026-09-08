@@ -1,0 +1,47 @@
+---
+title: addUsers
+---
+
+This method adds users to an RBAC role. It sends a request to the
+Add Role Users API route.
+
+## Example
+
+```ts
+sdk.admin.rbacRole.addUsers("role_123", {
+  users: ["user_123"]
+})
+.then(({ users }) => {
+  console.log(users)
+})
+```
+
+<a id="addusers-parameters" />
+
+## Parameters
+
+**addUsers**
+
+- `roleId`: `string` — The role's ID.
+- `body`: [AdminAssignRoleUsers](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminAssignRoleUsers) — The users to add to the role.
+  - `users`: `string`\[] — The IDs of the users to add to the role.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="addusers-returns" />
+
+## Returns
+
+**addUsers**
+
+- `Promise`: Promise\<[AdminRbacRoleUsersResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleUsersResponse)> — The role's users.
+  - `users`: [AdminUser](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUser)\[] — The list of users.
+    - `id`: `string` — The user's ID.
+    - `email`: `string` — The user's email.
+    - `first_name`: `null` | `string` — The user's first name.
+    - `last_name`: `null` | `string` — The user's last name.
+    - `avatar_url`: `null` | `string` — The URL of the user's avatar image.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the user.
+    - `created_at`: `string` — The date the user was created.
+    - `updated_at`: `string` — The date the user was updated.
+    - `deleted_at`: `null` | `string` — The date the user was deleted.

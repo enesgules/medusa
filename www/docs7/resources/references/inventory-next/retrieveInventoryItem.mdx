@@ -1,0 +1,98 @@
+---
+title: retrieveInventoryItem - Inventory Next Module Reference
+sidebarTitle: retrieveInventoryItem
+---
+
+This documentation provides a reference to the `retrieveInventoryItem` method. This belongs to the Inventory Next Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves an inventory item by its ID.
+
+## Example
+
+A simple example that retrieves a inventory item by its ID:
+
+```ts
+const inventoryItem =
+  await inventoryModuleService.retrieveInventoryItem("iitem_123")
+```
+
+To specify relations that should be retrieved:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const inventoryItem = await inventoryModuleService.retrieveInventoryItem(
+  "iitem_123",
+  {
+    relations: ["location_levels"],
+  }
+)
+```
+
+<a id="retrieveinventoryitem-parameters" />
+
+## Parameters
+
+**retrieveInventoryItem**
+
+- `inventoryItemId`: `string` — The inventory item's ID.
+- `config`: [FindConfig](/resources/references/inventory_next/interfaces/inventory_nextFindConfig)\<[InventoryItemDTO](/resources/references/inventory_next/interfaces/inventory_nextInventoryItemDTO)> (optional) — The configurations determining how the inventory item is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a inventory item.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/inventory_next/types/inventory_nextFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/inventory_next/types/inventory_nextInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/inventory_next/types/inventory_nextCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `context`: [Context](/resources/references/inventory_next/interfaces/inventory_nextContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/inventory_next/interfaces/inventory_nextIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="retrieveinventoryitem-returns" />
+
+## Returns
+
+**retrieveInventoryItem**
+
+- `Promise`: Promise\<[InventoryItemDTO](/resources/references/inventory_next/interfaces/inventory_nextInventoryItemDTO)> — The retrieved inventory item.
+  - `id`: `string` — The ID of the inventory item.
+  - `sku`: `null` | `string` (optional) — The SKU of the inventory item.
+  - `origin_country`: `null` | `string` (optional) — The origin country of the inventory item.
+  - `hs_code`: `null` | `string` (optional) — The HS code of the inventory item.
+  - `requires_shipping`: `boolean` — Whether the inventory item requires shipping.
+  - `mid_code`: `null` | `string` (optional) — The mid code of the inventory item.
+  - `material`: `null` | `string` (optional) — The material of the inventory item.
+  - `unit_of_measure`: `null` | `string` (optional) — The unit of measure of the inventory item's quantities, such as `lb` or `kg`.
+  - `weight`: `null` | `number` (optional) — The weight of the inventory item.
+  - `length`: `null` | `number` (optional) — The length of the inventory item.
+  - `height`: `null` | `number` (optional) — The height of the inventory item.
+  - `width`: `null` | `number` (optional) — The width of the inventory item.
+  - `title`: `null` | `string` (optional) — The title of the inventory item.
+  - `description`: `null` | `string` (optional) — The description of the inventory item.
+  - `thumbnail`: `null` | `string` (optional) — The thumbnail of the inventory item.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+  - `created_at`: `string` | `Date` — The creation date of the inventory item.
+  - `updated_at`: `string` | `Date` — The update date of the inventory item.
+  - `deleted_at`: `null` | `string` | `Date` — The deletion date of the inventory item.

@@ -1,0 +1,84 @@
+---
+title: addRules
+---
+
+This method creates and adds rules to a promotion. It can be the promotion's rules,
+or its application method's buy or target rules. That depends on the rule type
+you specify as a parameter.
+
+- If you set the `ruleType` to `rules`, the method sends a request to the
+  [Manage Promotion's Rules API Route](/api/admin/promotions/manage-rules).
+- If you set the `ruleType` to `buy-rules`, the method sends a request to the
+  [Manage Promotion's Buy Rules API Route](/api/admin/promotions/manage-buy-rules).
+- If you set the `ruleType` to `target-rules`, the method sends a request to the
+  [Manage Promotion's Target Rules API Route](/api/admin/promotions/manage-target-rules).
+
+## Example
+
+```ts
+sdk.admin.promotion.addRules("promo_123", "rules", {
+  rules: [
+    {
+      operator: "eq",
+      attribute: "product_id",
+      values: ["prod_123"]
+    }
+  ]
+})
+.then(({ promotion }) => {
+  console.log(promotion)
+})
+```
+
+<a id="addrules-parameters" />
+
+## Parameters
+
+**addRules**
+
+- `id`: `string` — The promotion's ID.
+- `ruleType`: `string` — The type of rules to create.
+- `payload`: [BatchAddPromotionRulesReq](/resources/references/types/HttpTypes/interfaces/typesHttpTypesBatchAddPromotionRulesReq) — The rules to create.
+  - `rules`: [AdminCreatePromotionRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCreatePromotionRule)\[] — The rules to add.
+    - `operator`: [PromotionRuleOperatorValues](/resources/references/promotion/types/promotionPromotionRuleOperatorValues) — The operator used to check whether the buy rule applies on a cart. For example, `eq` means that the cart's value for the specified attribute must match the specified value.
+    - `description`: `null` | `string` (optional) — The description of the promotion rule.
+    - `attribute`: `string` — The attribute to compare against when checking whether a promotion can be applied on a cart.
+
+      Example:
+
+      ```
+      items.product_id
+      ```
+    - `values`: `string` | `string`\[] — The value to compare against when checking whether a promotion can be applied on a cart.
+
+      Example:
+
+      ```
+      prod_123
+      ```
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="addrules-returns" />
+
+## Returns
+
+**addRules**
+
+- `Promise`: Promise\<[AdminPromotionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPromotionResponse)> — The promotion's details.
+  - `promotion`: [AdminPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPromotion) — The promotion's details.
+    - `application_method`: [AdminApplicationMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminApplicationMethod) (optional) — The promotion's application method.
+    - `rules`: [AdminPromotionRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPromotionRule)\[] (optional) — The rules for the promotion.
+    - `id`: `string`
+    - `code`: `string` (optional)
+    - `type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues) (optional) — The promotion's possible types.
+    - `is_automatic`: `boolean` (optional)
+    - `is_tax_inclusive`: `boolean` (optional)
+    - `limit`: `null` | `number` (optional)
+    - `used`: `number` (optional)
+    - `status`: [PromotionStatusValues](/resources/references/promotion/types/promotionPromotionStatusValues) (optional) — The promotion's possible types.
+    - `campaign_id`: `string` (optional)
+    - `campaign`: [AdminCampaign](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaign) (optional)
+    - `created_at`: `string`
+    - `updated_at`: `string`
+    - `deleted_at`: `null` | `string`

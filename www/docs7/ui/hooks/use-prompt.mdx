@@ -1,0 +1,151 @@
+---
+title: usePrompt
+---
+
+This hook returns a function that prompts the user to confirm an action.
+
+In this guide, you'll learn how to use the `usePrompt` hook.
+
+```tsx
+import { Button, usePrompt } from "@medusajs/ui"
+
+export default function usePromptDemo() {
+  const dialog = usePrompt()
+
+  const deleteEntity = async () => {
+    const userHasConfirmed = await dialog({
+      title: "Please confirm",
+      description: "Are you sure you want to do this?",
+    })
+    if (userHasConfirmed) {
+      // Perform Delete
+    }
+  }
+
+  return <Button onClick={async () => deleteEntity()}>Delete Entity</Button>
+}
+
+```
+
+## Usage
+
+```tsx
+import { usePrompt } from "@medusajs/ui"
+```
+
+```tsx
+const dialog = usePrompt()
+const actionFunction = async () => {
+  const confirmed = await dialog({
+    title: "Are you sure?",
+    description: "Please confirm this action",
+  })
+}
+```
+
+***
+
+## API Reference
+
+### usePrompt Return Value
+
+Returns a dialog function.
+
+```ts
+async (props: PromptProps): Promise<boolean>
+```
+
+Async function used to display a new confirmation dialog.
+
+### Returned Dialog Parameters
+
+The dialog function returned by `usePrompt` accepts an object having the following properties:
+
+### RenderPrompt Props
+
+<Accordion title="title">
+  **Required.** Type: `string`
+
+  The prompt's title.
+</Accordion>
+
+<Accordion title="description">
+  **Required.** Type: `string`
+
+  The prompt's description.
+</Accordion>
+
+<Accordion title="variant">
+  **Optional.** Type: `"danger" | "confirmation"`
+
+  Default: `"danger"`
+
+  The variant of the prompt.
+</Accordion>
+
+<Accordion title="verificationText">
+  **Optional.** Type: `string`
+
+  The text the user has to input in order to confirm the action.
+</Accordion>
+
+<Accordion title="verificationInstruction">
+  **Optional.** Type: `string`
+
+  Default: `"Please type {val} to confirm:"`
+
+  The instruction for the verification text. Useful for passing a translated string to use instead of the default english one.
+  Should be in the format: "Please type \{val} to confirm:"
+</Accordion>
+
+<Accordion title="cancelText">
+  **Optional.** Type: `string`
+
+  Default: `"Cancel"`
+
+  The label for the Cancel button.
+</Accordion>
+
+<Accordion title="confirmText">
+  **Optional.** Type: `string`
+
+  Default: `"Confirm"`
+
+  Label for the Confirm button.
+</Accordion>
+
+### Dialog Return Value
+
+The dialog function returns a Promise that resolves to a boolean indicating whether the user confirmed the action.
+
+***
+
+## Examples
+
+### Prompt with Verification Text
+
+```tsx
+import { Button, usePrompt } from "@medusajs/ui"
+
+export default function usePromptVerification() {
+  const entityName = "foo-bar-baz"
+
+  const dialog = usePrompt()
+
+  const deleteEntity = async () => {
+    const userHasConfirmed = await dialog({
+      title: "Please confirm",
+      description: "Are you sure you want to delete this entity?",
+      verificationText: entityName,
+    })
+    if (userHasConfirmed) {
+      // Perform Delete
+    }
+  }
+
+  return (
+    <Button onClick={async () => deleteEntity()}>Delete {entityName}</Button>
+  )
+}
+
+```

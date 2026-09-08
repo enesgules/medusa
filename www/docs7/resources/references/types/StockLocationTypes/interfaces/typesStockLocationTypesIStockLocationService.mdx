@@ -1,0 +1,1273 @@
+---
+title: IStockLocationService
+---
+
+The main service interface for the Stock Location Module.
+
+## Methods
+
+### listStockLocations
+
+This method retrieves a paginated list of stock locations based on optional filters and configuration.
+
+#### Example
+
+To retrieve a list of stock locations using their IDs:
+
+```ts
+const stockLocations = await stockLocationModuleService.listStockLocations({
+  id: ["sloc_123", "sloc_321"],
+})
+```
+
+To specify relations that should be retrieved within the stock locations:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const stockLocations = await stockLocationModuleService.listStockLocations(
+  {
+    id: ["sloc_123", "sloc_321"],
+  },
+  {
+    relations: ["address"],
+  }
+)
+```
+
+By default, only the first `10` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const stockLocations = await stockLocationModuleService.listStockLocations(
+  {
+    id: ["sloc_123", "sloc_321"],
+  },
+  {
+    relations: ["address"],
+    take: 20,
+    skip: 2,
+  }
+)
+```
+
+<a id="liststocklocations-parameters" />
+
+#### Parameters
+
+**listStockLocations**
+
+- `selector`: [FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) — The filters to apply on the retrieved stock locations.
+  - `$and`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search parameter for stock location names
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter stock locations by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The names to filter stock locations by.
+  - `$or`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search parameter for stock location names
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter stock locations by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The names to filter stock locations by.
+  - `q`: `string` (optional) — Search parameter for stock location names
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter stock locations by.
+  - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The names to filter stock locations by.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `config`: [FindConfig](/resources/references/types/CommonTypes/interfaces/typesCommonTypesFindConfig)\<[StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)> (optional) — The configurations determining how the stock location is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a stock location.
+  - `select`: (`string` & `object` | keyof Entity)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/types/CommonTypes/types/typesCommonTypesFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="liststocklocations-returns" />
+
+#### Returns
+
+**listStockLocations**
+
+- `Promise`: Promise\<[StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)\[]> — The list of stock locations.
+  - `StockLocationDTO[]`: [StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)\[]
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `Record<string, unknown>` | `null` — Holds custom data in key-value pairs.
+    - `address_id`: `string` — The associated address's ID.
+    - `address`: [StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO) (optional) — The address of the stock location.
+      - `id`: `string` (optional) — The ID of the stock location address.
+      - `address_1`: `string` — The address 1 of the stock location address.
+      - `address_2`: `string` | `null` (optional) — The address 2 of the stock location address.
+      - `company`: `string` | `null` (optional) — The company of the stock location address.
+      - `country_code`: `string` — The country code of the stock location address.
+      - `city`: `string` | `null` (optional) — The city of the stock location address.
+      - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+      - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+      - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+      - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — The creation date of the stock location address.
+      - `updated_at`: `string` | `Date` — The update date of the stock location address.
+      - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location address.
+    - `fulfillment_sets`: [FulfillmentSetDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentSetDTO)\[] — Fulfillment sets for the location
+      - `id`: `string` — The ID of the fulfillment set.
+      - `name`: `string` — The name of the fulfillment set.
+      - `type`: `string` — The type of the fulfillment set.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `service_zones`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[] — The service zones associated with the fulfillment set.
+      - `created_at`: `Date` — The creation date of the fulfillment set.
+      - `updated_at`: `Date` — The update date of the fulfillment set.
+      - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment set.
+    - `created_at`: `string` | `Date` — The creation date of the stock location.
+    - `updated_at`: `string` | `Date` — The update date of the stock location.
+    - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location.
+
+### listAndCountStockLocations
+
+This method retrieves a paginated list of stock locations along with the total count of available stock locations satisfying the provided filters.
+
+#### Example
+
+To retrieve a list of stock locations using their IDs:
+
+```ts
+const [stockLocations, count] =
+  await stockLocationModuleService.listandCountStockLocations({
+    id: ["sloc_123", "sloc_321"],
+  })
+```
+
+To specify relations that should be retrieved within the stock locations:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const [stockLocations, count] =
+  await stockLocationModuleService.listandCountStockLocations(
+    {
+      id: ["sloc_123", "sloc_321"],
+    },
+    {
+      relations: ["address"],
+    }
+  )
+```
+
+By default, only the first `10` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const [stockLocations, count] =
+  await stockLocationModuleService.listandCountStockLocations(
+    {
+      id: ["sloc_123", "sloc_321"],
+    },
+    {
+      relations: ["address"],
+      take: 20,
+      skip: 2,
+    }
+  )
+```
+
+<a id="listandcountstocklocations-parameters" />
+
+#### Parameters
+
+**listAndCountStockLocations**
+
+- `selector`: [FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) — The filters to apply on the retrieved stock locations.
+  - `$and`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search parameter for stock location names
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter stock locations by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The names to filter stock locations by.
+  - `$or`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search parameter for stock location names
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter stock locations by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The names to filter stock locations by.
+  - `q`: `string` (optional) — Search parameter for stock location names
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter stock locations by.
+  - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The names to filter stock locations by.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `config`: [FindConfig](/resources/references/types/CommonTypes/interfaces/typesCommonTypesFindConfig)\<[StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)> (optional) — The configurations determining how the stock location is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a stock location.
+  - `select`: (`string` & `object` | keyof Entity)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/types/CommonTypes/types/typesCommonTypesFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listandcountstocklocations-returns" />
+
+#### Returns
+
+**listAndCountStockLocations**
+
+- `Promise`: Promise\<\[[StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)\[], number]> — The list of stock locations along with their total count.
+  - `StockLocationDTO[]`: [StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)\[]
+  - `number`: `number`
+
+### retrieveStockLocation
+
+This method retrieves a stock location by its ID.
+
+#### Example
+
+```ts
+const stockLocation =
+  await stockLocationModuleService.retrieveStockLocation("sloc_123")
+```
+
+<a id="retrievestocklocation-parameters" />
+
+#### Parameters
+
+**retrieveStockLocation**
+
+- `id`: `string` — The ID of the stock location.
+- `config`: [FindConfig](/resources/references/types/CommonTypes/interfaces/typesCommonTypesFindConfig)\<[StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)> (optional) — The configurations determining how the stock location is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a stock location.
+  - `select`: (`string` & `object` | keyof Entity)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/types/CommonTypes/types/typesCommonTypesFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="retrievestocklocation-returns" />
+
+#### Returns
+
+**retrieveStockLocation**
+
+- `Promise`: Promise\<[StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)> — The retrieved stock location.
+  - `id`: `string` — The ID of the stock location.
+  - `name`: `string` — The name of the stock location.
+  - `metadata`: `Record<string, unknown>` | `null` — Holds custom data in key-value pairs.
+  - `address_id`: `string` — The associated address's ID.
+  - `address`: [StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO) (optional) — The address of the stock location.
+    - `id`: `string` (optional) — The ID of the stock location address.
+    - `address_1`: `string` — The address 1 of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The address 2 of the stock location address.
+    - `company`: `string` | `null` (optional) — The company of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — The creation date of the stock location address.
+    - `updated_at`: `string` | `Date` — The update date of the stock location address.
+    - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location address.
+  - `fulfillment_sets`: [FulfillmentSetDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentSetDTO)\[] — Fulfillment sets for the location
+    - `id`: `string` — The ID of the fulfillment set.
+    - `name`: `string` — The name of the fulfillment set.
+    - `type`: `string` — The type of the fulfillment set.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `service_zones`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[] — The service zones associated with the fulfillment set.
+    - `created_at`: `Date` — The creation date of the fulfillment set.
+    - `updated_at`: `Date` — The update date of the fulfillment set.
+    - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment set.
+  - `created_at`: `string` | `Date` — The creation date of the stock location.
+  - `updated_at`: `string` | `Date` — The update date of the stock location.
+  - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location.
+
+### createStockLocations
+
+`**createStockLocations**(input, context?): Promise<[StockLocationDTO](/references/types/StockLocationTypes/types/types.StockLocationTypes.StockLocationDTO)>`
+
+This method creates a stock location.
+
+#### Example
+
+```ts
+const stockLocation = await stockLocationModuleService.createStockLocations(
+  {
+    name: "Warehouse",
+    address: {
+      address_1: "1855 Powder Mill Rd",
+      country_code: "us",
+    },
+  }
+)
+```
+
+<a id="createstocklocations-parameters" />
+
+#### Parameters
+
+**createStockLocations**
+
+- `input`: [CreateStockLocationInput](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesCreateStockLocationInput) — The stock location to create.
+  - `name`: `string` — The name of the stock location.
+  - `address_id`: `string` | `null` (optional) — The associated address's ID.
+  - `address`: `string` | [StockLocationAddressInput](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressInput) (optional) — The associated address.
+    - `address_1`: `string` — The first line of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The second line of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createstocklocations-returns" />
+
+#### Returns
+
+**createStockLocations**
+
+- `Promise`: Promise\<[StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)> — The created stock location.
+  - `id`: `string` — The ID of the stock location.
+  - `name`: `string` — The name of the stock location.
+  - `metadata`: `Record<string, unknown>` | `null` — Holds custom data in key-value pairs.
+  - `address_id`: `string` — The associated address's ID.
+  - `address`: [StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO) (optional) — The address of the stock location.
+    - `id`: `string` (optional) — The ID of the stock location address.
+    - `address_1`: `string` — The address 1 of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The address 2 of the stock location address.
+    - `company`: `string` | `null` (optional) — The company of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — The creation date of the stock location address.
+    - `updated_at`: `string` | `Date` — The update date of the stock location address.
+    - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location address.
+  - `fulfillment_sets`: [FulfillmentSetDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentSetDTO)\[] — Fulfillment sets for the location
+    - `id`: `string` — The ID of the fulfillment set.
+    - `name`: `string` — The name of the fulfillment set.
+    - `type`: `string` — The type of the fulfillment set.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `service_zones`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[] — The service zones associated with the fulfillment set.
+    - `created_at`: `Date` — The creation date of the fulfillment set.
+    - `updated_at`: `Date` — The update date of the fulfillment set.
+    - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment set.
+  - `created_at`: `string` | `Date` — The creation date of the stock location.
+  - `updated_at`: `string` | `Date` — The update date of the stock location.
+  - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location.
+
+`**createStockLocations**(input, context?): Promise<[StockLocationDTO](/references/types/StockLocationTypes/types/types.StockLocationTypes.StockLocationDTO)[]>`
+
+This method creates stock locations.
+
+#### Example
+
+```ts
+const stockLocations =
+  await stockLocationModuleService.createStockLocations([
+    {
+      name: "Warehouse",
+      address: {
+        address_1: "1855 Powder Mill Rd",
+        country_code: "us",
+      },
+    },
+    {
+      name: "Warehouse 2",
+      address_id: "laddr_123",
+    },
+  ])
+```
+
+<a id="createstocklocations-parameters-1" />
+
+#### Parameters
+
+**createStockLocations**
+
+- `input`: [CreateStockLocationInput](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesCreateStockLocationInput)\[] — The stock locations to create.
+  - `name`: `string` — The name of the stock location.
+  - `address_id`: `string` | `null` (optional) — The associated address's ID.
+  - `address`: `string` | [StockLocationAddressInput](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressInput) (optional) — The associated address.
+    - `address_1`: `string` — The first line of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The second line of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createstocklocations-returns-1" />
+
+#### Returns
+
+**createStockLocations**
+
+- `Promise`: Promise\<[StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)\[]> — The created stock locations.
+  - `StockLocationDTO[]`: [StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)\[]
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `Record<string, unknown>` | `null` — Holds custom data in key-value pairs.
+    - `address_id`: `string` — The associated address's ID.
+    - `address`: [StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO) (optional) — The address of the stock location.
+      - `id`: `string` (optional) — The ID of the stock location address.
+      - `address_1`: `string` — The address 1 of the stock location address.
+      - `address_2`: `string` | `null` (optional) — The address 2 of the stock location address.
+      - `company`: `string` | `null` (optional) — The company of the stock location address.
+      - `country_code`: `string` — The country code of the stock location address.
+      - `city`: `string` | `null` (optional) — The city of the stock location address.
+      - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+      - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+      - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+      - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — The creation date of the stock location address.
+      - `updated_at`: `string` | `Date` — The update date of the stock location address.
+      - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location address.
+    - `fulfillment_sets`: [FulfillmentSetDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentSetDTO)\[] — Fulfillment sets for the location
+      - `id`: `string` — The ID of the fulfillment set.
+      - `name`: `string` — The name of the fulfillment set.
+      - `type`: `string` — The type of the fulfillment set.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `service_zones`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[] — The service zones associated with the fulfillment set.
+      - `created_at`: `Date` — The creation date of the fulfillment set.
+      - `updated_at`: `Date` — The update date of the fulfillment set.
+      - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment set.
+    - `created_at`: `string` | `Date` — The creation date of the stock location.
+    - `updated_at`: `string` | `Date` — The update date of the stock location.
+    - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location.
+
+### upsertStockLocations
+
+`**upsertStockLocations**(data, sharedContext?): Promise<[StockLocationDTO](/references/types/StockLocationTypes/types/types.StockLocationTypes.StockLocationDTO)[]>`
+
+This method updates or creates stock location service nexts if they don't exist.
+
+#### Example
+
+```ts
+{example-code}
+```
+
+<a id="upsertstocklocations-parameters" />
+
+#### Parameters
+
+**upsertStockLocations**
+
+- `data`: [UpsertStockLocationInput](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesUpsertStockLocationInput)\[] — The list of Make all properties in t optional
+  - `name`: `string` (optional) — The name of the stock location.
+  - `address_id`: `null` | `string` (optional) — The associated address's ID.
+  - `address`: [StockLocationAddressInput](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressInput) (optional) — The associated address's details.
+    - `address_1`: `string` — The first line of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The second line of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `id`: `string` (optional) — The ID of the stock location, if updating.
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="upsertstocklocations-returns" />
+
+#### Returns
+
+**upsertStockLocations**
+
+- `Promise`: Promise\<[StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)\[]> — The created or updated stock location service nexts.
+  - `StockLocationDTO[]`: [StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)\[]
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `Record<string, unknown>` | `null` — Holds custom data in key-value pairs.
+    - `address_id`: `string` — The associated address's ID.
+    - `address`: [StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO) (optional) — The address of the stock location.
+      - `id`: `string` (optional) — The ID of the stock location address.
+      - `address_1`: `string` — The address 1 of the stock location address.
+      - `address_2`: `string` | `null` (optional) — The address 2 of the stock location address.
+      - `company`: `string` | `null` (optional) — The company of the stock location address.
+      - `country_code`: `string` — The country code of the stock location address.
+      - `city`: `string` | `null` (optional) — The city of the stock location address.
+      - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+      - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+      - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+      - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — The creation date of the stock location address.
+      - `updated_at`: `string` | `Date` — The update date of the stock location address.
+      - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location address.
+    - `fulfillment_sets`: [FulfillmentSetDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentSetDTO)\[] — Fulfillment sets for the location
+      - `id`: `string` — The ID of the fulfillment set.
+      - `name`: `string` — The name of the fulfillment set.
+      - `type`: `string` — The type of the fulfillment set.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `service_zones`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[] — The service zones associated with the fulfillment set.
+      - `created_at`: `Date` — The creation date of the fulfillment set.
+      - `updated_at`: `Date` — The update date of the fulfillment set.
+      - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment set.
+    - `created_at`: `string` | `Date` — The creation date of the stock location.
+    - `updated_at`: `string` | `Date` — The update date of the stock location.
+    - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location.
+
+`**upsertStockLocations**(data, sharedContext?): Promise<[StockLocationDTO](/references/types/StockLocationTypes/types/types.StockLocationTypes.StockLocationDTO)>`
+
+This method updates or creates a stock location service next if it doesn't exist.
+
+#### Example
+
+```ts
+{example-code}
+```
+
+<a id="upsertstocklocations-parameters-1" />
+
+#### Parameters
+
+**upsertStockLocations**
+
+- `data`: [UpsertStockLocationInput](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesUpsertStockLocationInput) — Make all properties in T optional
+  - `name`: `string` (optional) — The name of the stock location.
+  - `address_id`: `null` | `string` (optional) — The associated address's ID.
+  - `address`: [StockLocationAddressInput](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressInput) (optional) — The associated address's details.
+    - `address_1`: `string` — The first line of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The second line of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `id`: `string` (optional) — The ID of the stock location, if updating.
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="upsertstocklocations-returns-1" />
+
+#### Returns
+
+**upsertStockLocations**
+
+- `Promise`: Promise\<[StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)> — The created or updated stock location service next.
+  - `id`: `string` — The ID of the stock location.
+  - `name`: `string` — The name of the stock location.
+  - `metadata`: `Record<string, unknown>` | `null` — Holds custom data in key-value pairs.
+  - `address_id`: `string` — The associated address's ID.
+  - `address`: [StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO) (optional) — The address of the stock location.
+    - `id`: `string` (optional) — The ID of the stock location address.
+    - `address_1`: `string` — The address 1 of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The address 2 of the stock location address.
+    - `company`: `string` | `null` (optional) — The company of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — The creation date of the stock location address.
+    - `updated_at`: `string` | `Date` — The update date of the stock location address.
+    - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location address.
+  - `fulfillment_sets`: [FulfillmentSetDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentSetDTO)\[] — Fulfillment sets for the location
+    - `id`: `string` — The ID of the fulfillment set.
+    - `name`: `string` — The name of the fulfillment set.
+    - `type`: `string` — The type of the fulfillment set.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `service_zones`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[] — The service zones associated with the fulfillment set.
+    - `created_at`: `Date` — The creation date of the fulfillment set.
+    - `updated_at`: `Date` — The update date of the fulfillment set.
+    - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment set.
+  - `created_at`: `string` | `Date` — The creation date of the stock location.
+  - `updated_at`: `string` | `Date` — The update date of the stock location.
+  - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location.
+
+### updateStockLocations
+
+`**updateStockLocations**(id, input, context?): Promise<[StockLocationDTO](/references/types/StockLocationTypes/types/types.StockLocationTypes.StockLocationDTO)>`
+
+This method updates existing stock locations.
+
+#### Example
+
+```ts
+const stockLocations =
+  await stockLocationModuleService.updateStockLocations([
+    {
+      id: "sloc_123",
+      name: "Warehouse",
+    },
+    {
+      id: "sloc_321",
+      address_id: "laddr_123",
+    },
+  ])
+```
+
+<a id="updatestocklocations-parameters" />
+
+#### Parameters
+
+**updateStockLocations**
+
+- `id`: `string`
+- `input`: [UpdateStockLocationInput](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesUpdateStockLocationInput) — The attributes to update in the stock locations.
+  - `name`: `string` (optional) — The name of the stock location.
+  - `address_id`: `string` | `null` (optional) — The associated address's ID.
+  - `address`: [StockLocationAddressInput](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressInput) (optional) — The associated address's details.
+    - `address_1`: `string` — The first line of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The second line of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatestocklocations-returns" />
+
+#### Returns
+
+**updateStockLocations**
+
+- `Promise`: Promise\<[StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)> — The updated stock locations.
+  - `id`: `string` — The ID of the stock location.
+  - `name`: `string` — The name of the stock location.
+  - `metadata`: `Record<string, unknown>` | `null` — Holds custom data in key-value pairs.
+  - `address_id`: `string` — The associated address's ID.
+  - `address`: [StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO) (optional) — The address of the stock location.
+    - `id`: `string` (optional) — The ID of the stock location address.
+    - `address_1`: `string` — The address 1 of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The address 2 of the stock location address.
+    - `company`: `string` | `null` (optional) — The company of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — The creation date of the stock location address.
+    - `updated_at`: `string` | `Date` — The update date of the stock location address.
+    - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location address.
+  - `fulfillment_sets`: [FulfillmentSetDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentSetDTO)\[] — Fulfillment sets for the location
+    - `id`: `string` — The ID of the fulfillment set.
+    - `name`: `string` — The name of the fulfillment set.
+    - `type`: `string` — The type of the fulfillment set.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `service_zones`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[] — The service zones associated with the fulfillment set.
+    - `created_at`: `Date` — The creation date of the fulfillment set.
+    - `updated_at`: `Date` — The update date of the fulfillment set.
+    - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment set.
+  - `created_at`: `string` | `Date` — The creation date of the stock location.
+  - `updated_at`: `string` | `Date` — The update date of the stock location.
+  - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location.
+
+`**updateStockLocations**(selector, input, context?): Promise<[StockLocationDTO](/references/types/StockLocationTypes/types/types.StockLocationTypes.StockLocationDTO)[]>`
+
+This method updates existing stock locations matching the specified filters.
+
+#### Example
+
+```ts
+const stockLocations =
+  await stockLocationModuleService.updateStockLocations(
+    {
+      name: "Warehouse",
+    },
+    {
+      address_id: "laddr_123",
+    }
+  )
+```
+
+<a id="updatestocklocations-parameters-1" />
+
+#### Parameters
+
+**updateStockLocations**
+
+- `selector`: [FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) — The filters specifying which stock locations to update.
+  - `$and`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search parameter for stock location names
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter stock locations by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The names to filter stock locations by.
+  - `$or`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — Search parameter for stock location names
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter stock locations by.
+    - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The names to filter stock locations by.
+  - `q`: `string` (optional) — Search parameter for stock location names
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter stock locations by.
+  - `name`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — The names to filter stock locations by.
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `input`: [UpdateStockLocationInput](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesUpdateStockLocationInput) — The attributes to update in the stock locations.
+  - `name`: `string` (optional) — The name of the stock location.
+  - `address_id`: `string` | `null` (optional) — The associated address's ID.
+  - `address`: [StockLocationAddressInput](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressInput) (optional) — The associated address's details.
+    - `address_1`: `string` — The first line of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The second line of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="updatestocklocations-returns-1" />
+
+#### Returns
+
+**updateStockLocations**
+
+- `Promise`: Promise\<[StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)\[]> — The updated stock locations.
+  - `StockLocationDTO[]`: [StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO)\[]
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `Record<string, unknown>` | `null` — Holds custom data in key-value pairs.
+    - `address_id`: `string` — The associated address's ID.
+    - `address`: [StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO) (optional) — The address of the stock location.
+      - `id`: `string` (optional) — The ID of the stock location address.
+      - `address_1`: `string` — The address 1 of the stock location address.
+      - `address_2`: `string` | `null` (optional) — The address 2 of the stock location address.
+      - `company`: `string` | `null` (optional) — The company of the stock location address.
+      - `country_code`: `string` — The country code of the stock location address.
+      - `city`: `string` | `null` (optional) — The city of the stock location address.
+      - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+      - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+      - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+      - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` | `Date` — The creation date of the stock location address.
+      - `updated_at`: `string` | `Date` — The update date of the stock location address.
+      - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location address.
+    - `fulfillment_sets`: [FulfillmentSetDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentSetDTO)\[] — Fulfillment sets for the location
+      - `id`: `string` — The ID of the fulfillment set.
+      - `name`: `string` — The name of the fulfillment set.
+      - `type`: `string` — The type of the fulfillment set.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `service_zones`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO)\[] — The service zones associated with the fulfillment set.
+      - `created_at`: `Date` — The creation date of the fulfillment set.
+      - `updated_at`: `Date` — The update date of the fulfillment set.
+      - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment set.
+    - `created_at`: `string` | `Date` — The creation date of the stock location.
+    - `updated_at`: `string` | `Date` — The update date of the stock location.
+    - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location.
+
+### deleteStockLocations
+
+This method deletes a stock location by its ID.
+
+#### Example
+
+```ts
+await stockLocationModuleService.deleteStockLocations("sloc_123")
+```
+
+<a id="deletestocklocations-parameters" />
+
+#### Parameters
+
+**deleteStockLocations**
+
+- `id`: `string` | `string`\[] — The ID of the stock location.
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="deletestocklocations-returns" />
+
+#### Returns
+
+**deleteStockLocations**
+
+- `Promise`: Promise\<void> — Resolves when the stock location is deleted successfully.
+
+### softDeleteStockLocations
+
+This method soft deletes stock locations by their IDs.
+
+#### Example
+
+```ts
+await stockLocationModuleService.softDeleteStockLocations([
+  "sloc_123",
+  "sloc_321",
+])
+```
+
+<a id="softdeletestocklocations-type-parameters" />
+
+#### Type Parameters
+
+**softDeleteStockLocations**
+
+- `TReturnableLinkableKeys`: `string` (optional)
+
+<a id="softdeletestocklocations-parameters" />
+
+#### Parameters
+
+**softDeleteStockLocations**
+
+- `stockLocationIds`: `string`\[] — The IDs of the stock locations.
+- `config`: [SoftDeleteReturn](/resources/references/types/DAL/interfaces/typesDALSoftDeleteReturn)\<TReturnableLinkableKeys> (optional) — An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
+  - `returnLinkableKeys`: TReturnableLinkableKeys\[] (optional) — An array of strings, each being the ID attribute names of the entity's relations.
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="softdeletestocklocations-returns" />
+
+#### Returns
+
+**softDeleteStockLocations**
+
+- `Promise`: Promise\<void | Record\<string, string\[]>> — An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated address. The object's keys are the ID attribute names of the stock location entity's relations, such as `address_id`, and its value is an array of strings, each being the ID of a record associated with the stock location through this relation, such as the IDs of associated address. If there are no related records, the promise resolves to `void`.
+  - `void \| Record<string, string[]>`: `void` | `Record<string, string[]>`
+
+### restoreStockLocations
+
+This method restores soft deleted stock locations by their IDs.
+
+#### Example
+
+```ts
+await stockLocationModuleService.restoreStockLocations([
+  "sloc_123",
+  "sloc_321",
+])
+```
+
+<a id="restorestocklocations-type-parameters" />
+
+#### Type Parameters
+
+**restoreStockLocations**
+
+- `TReturnableLinkableKeys`: `string` (optional)
+
+<a id="restorestocklocations-parameters" />
+
+#### Parameters
+
+**restoreStockLocations**
+
+- `stockLocationIds`: `string`\[] — The IDs of the stock locations.
+- `config`: [RestoreReturn](/resources/references/types/DAL/interfaces/typesDALRestoreReturn)\<TReturnableLinkableKeys> (optional) — Configurations determining which relations to restore along with each of the stock location. You can pass to its `returnLinkableKeys` property any of the stock location's relation attribute names, such as `address`.
+  - `returnLinkableKeys`: TReturnableLinkableKeys\[] (optional) — An array of strings, each being the ID attribute names of the entity's relations.
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="restorestocklocations-returns" />
+
+#### Returns
+
+**restoreStockLocations**
+
+- `Promise`: Promise\<void | Record\<string, string\[]>> — An object that includes the IDs of related records that were restored, such as the ID of associated address. The object's keys are the ID attribute names of the stock location entity's relations, such as `address_id`, and its value is an array of strings, each being the ID of the record associated with the stock location through this relation, such as the ID of associated address. If there are no related records restored, the promise resolves to `void`.
+  - `void \| Record<string, string[]>`: `void` | `Record<string, string[]>`
+
+### listStockLocationAddresses
+
+This method retrieves a paginated list of stock location addresses based on optional filters and configuration.
+
+<a id="liststocklocationaddresses-parameters" />
+
+#### Parameters
+
+**listStockLocationAddresses**
+
+- `selector`: [FilterableStockLocationAddressProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationAddressProps) — The filters to apply on the retrieved stock location address.
+  - `$and`: ([FilterableStockLocationAddressProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationAddressProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationAddressProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationAddressProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([FilterableStockLocationAddressProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationAddressProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationAddressProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationAddressProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableStockLocationAddressProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationAddressProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationAddressProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationAddressProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter stock location's address by.
+  - `$or`: ([FilterableStockLocationAddressProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationAddressProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationAddressProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationAddressProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([FilterableStockLocationAddressProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationAddressProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationAddressProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationAddressProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableStockLocationAddressProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationAddressProps) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[FilterableStockLocationAddressProps](/resources/references/types/StockLocationTypes/interfaces/typesStockLocationTypesFilterableStockLocationAddressProps)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter stock location's address by.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter stock location's address by.
+- `config`: [FindConfig](/resources/references/types/CommonTypes/interfaces/typesCommonTypesFindConfig)\<[StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO)> (optional) — The configurations determining how the stock location address is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a stock location address.
+  - `select`: (`string` & `object` | keyof Entity)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/types/CommonTypes/types/typesCommonTypesFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="liststocklocationaddresses-returns" />
+
+#### Returns
+
+**listStockLocationAddresses**
+
+- `Promise`: Promise\<[StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO)\[]> — The list of stock location addressess.
+  - `StockLocationAddressDTO[]`: [StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO)\[]
+    - `id`: `string` (optional) — The ID of the stock location address.
+    - `address_1`: `string` — The address 1 of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The address 2 of the stock location address.
+    - `company`: `string` | `null` (optional) — The company of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — The creation date of the stock location address.
+    - `updated_at`: `string` | `Date` — The update date of the stock location address.
+    - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location address.
+
+### upsertStockLocationAddresses
+
+This method updates or creates stock location addresses
+
+#### Example
+
+```ts
+{example-code}
+```
+
+<a id="upsertstocklocationaddresses-parameters" />
+
+#### Parameters
+
+**upsertStockLocationAddresses**
+
+- `data`: [UpsertStockLocationAddressInput](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesUpsertStockLocationAddressInput)\[] — The list of Make all properties in t optional
+  - `address_1`: `string` — The first line of the stock location address.
+  - `address_2`: `string` | `null` (optional) — The second line of the stock location address.
+  - `country_code`: `string` — The country code of the stock location address.
+  - `city`: `string` | `null` (optional) — The city of the stock location address.
+  - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+  - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+  - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+  - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `id`: `string` (optional) — The ID of the stock location address, if updating.
+- `sharedContext`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="upsertstocklocationaddresses-returns" />
+
+#### Returns
+
+**upsertStockLocationAddresses**
+
+- `Promise`: Promise\<[StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO)\[]> — The created or updated stock location address
+  - `StockLocationAddressDTO[]`: [StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO)\[]
+    - `id`: `string` (optional) — The ID of the stock location address.
+    - `address_1`: `string` — The address 1 of the stock location address.
+    - `address_2`: `string` | `null` (optional) — The address 2 of the stock location address.
+    - `company`: `string` | `null` (optional) — The company of the stock location address.
+    - `country_code`: `string` — The country code of the stock location address.
+    - `city`: `string` | `null` (optional) — The city of the stock location address.
+    - `phone`: `string` | `null` (optional) — The phone of the stock location address.
+    - `postal_code`: `string` | `null` (optional) — The postal code of the stock location address.
+    - `province`: `string` | `null` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the stock location address.
+    - `metadata`: [MetadataType](/resources/references/types/CommonTypes/types/typesCommonTypesMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — The creation date of the stock location address.
+    - `updated_at`: `string` | `Date` — The update date of the stock location address.
+    - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location address.
+
+### deleteStockLocationAddresses
+
+This method deletes a stock location address by its ID.
+
+#### Example
+
+```ts
+await stockLocationModuleService.deleteStockLocationAddresses("sla_123")
+```
+
+<a id="deletestocklocationaddresses-parameters" />
+
+#### Parameters
+
+**deleteStockLocationAddresses**
+
+- `id`: `string` | `string`\[] — The ID of the stock location address.
+- `context`: [Context](/resources/references/types/interfaces/typesContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/types/interfaces/typesIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="deletestocklocationaddresses-returns" />
+
+#### Returns
+
+**deleteStockLocationAddresses**
+
+- `Promise`: Promise\<void> — Resolves when the stock location address is deleted successfully.

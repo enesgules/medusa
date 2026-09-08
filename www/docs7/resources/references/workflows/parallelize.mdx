@@ -1,0 +1,68 @@
+---
+title: parallelize - Workflows SDK Reference
+sidebarTitle: parallelize
+---
+
+This documentation provides a reference to the `parallelize` . It belongs to the Workflows SDK.
+
+This function is used to run multiple steps in parallel. The result of each step will be returned as part of the result array.
+
+## Example
+
+```ts
+import {
+  createWorkflow,
+  parallelize,
+  WorkflowResponse
+} from "@medusajs/framework/workflows-sdk"
+import {
+  createProductStep,
+  createPricesStep,
+  attachProductToSalesChannelStep
+} from "./steps"
+
+interface WorkflowInput {
+  title: string
+}
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  (input: WorkflowInput) => {
+   const product = createProductStep(input)
+
+   const [prices, productSalesChannel] = parallelize(
+     createPricesStep(product),
+     attachProductToSalesChannelStep(product)
+   )
+
+   return new WorkflowResponse({
+    prices,
+    productSalesChannel
+   })
+ }
+)
+```
+
+<a id="parallelize-type-parameters" />
+
+## Type Parameters
+
+**parallelize**
+
+- `TResult`: (`undefined` | [WorkflowData](/resources/references/workflows/types/workflowsWorkflowData))\[] (optional) — The type of the expected result.
+
+<a id="parallelize-parameters" />
+
+## Parameters
+
+**parallelize**
+
+- `steps`: TResult
+
+<a id="parallelize-returns" />
+
+## Returns
+
+**parallelize**
+
+- `TResult`: TResult — The step results. The results are ordered in the array by the order they're passed in the function's parameter.

@@ -1,0 +1,100 @@
+---
+title: Local File Module Provider
+---
+
+The Local File Module Provider stores files uploaded to your Medusa application in the `/uploads` directory.
+
+<Warning>
+  - The Local File Module Provider is only for development purposes. Use the [S3 File Module Provider](/resources/infrastructure-modules/file/s3) in production instead.
+  - The Local File Module Provider will only read files uploaded through Medusa. It will not read files uploaded manually to the `static` (or other configured) directory.
+</Warning>
+
+***
+
+## Register the Local File Module
+
+<Note>
+  The Local File Module Provider is registered by default in your application.
+</Note>
+
+Add the module into the `providers` array of the File Module:
+
+<Note>
+  The File Module accepts one provider only.
+</Note>
+
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
+
+// ...
+
+module.exports = {
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/file",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/file-local",
+            id: "local",
+            options: {
+              // provider options...
+            },
+          },
+        ],
+      },
+    },
+  ],
+}
+```
+
+### Local File Module Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `upload_dir`
+      </td>
+
+      <td>
+        The directory to upload files to. Medusa exposes the content of the `static` directory publicly. If you change the directory, it must be served and publicly accessible.
+      </td>
+
+      <td>
+        `static`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `backend_url`
+      </td>
+
+      <td>
+        The URL that serves the files.
+      </td>
+
+      <td>
+        `http://localhost:9000/static`
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,124 @@
+---
+title: AdminCollectionListResponse
+---
+
+The paginated list of product collections.
+
+## Properties
+
+<Accordion title="limit (required)">
+  The maximum number of items returned.
+
+  ```json
+  {
+    "type": "number",
+    "title": "limit",
+    "description": "The maximum number of items returned."
+  }
+  ```
+</Accordion>
+
+<Accordion title="offset (required)">
+  The number of items skipped before retrieving the returned results.
+
+  ```json
+  {
+    "type": "number",
+    "title": "offset",
+    "description": "The number of items skipped before retrieving the returned results."
+  }
+  ```
+</Accordion>
+
+<Accordion title="count (required)">
+  The total number of items.
+
+  ```json
+  {
+    "type": "number",
+    "title": "count",
+    "description": "The total number of items."
+  }
+  ```
+</Accordion>
+
+<Accordion title="collections (required)">
+  The list of product collections.
+
+  ```json
+  {
+    "type": "array",
+    "description": "The list of product collections.",
+    "items": {
+      "$ref": "#/components/schemas/AdminCollection"
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminCollection](/api/schemas/admin-collection)
+</Accordion>
+
+<Accordion title="estimate_count (optional)">
+  The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+  ```json
+  {
+    "type": "number",
+    "title": "estimate_count",
+    "description": "The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.",
+    "x-featureFlag": "index_engine"
+  }
+  ```
+</Accordion>
+
+## Schema definition
+
+```json
+{
+  "type": "object",
+  "description": "The paginated list of product collections.",
+  "x-schemaName": "AdminCollectionListResponse",
+  "required": [
+    "limit",
+    "offset",
+    "count",
+    "collections"
+  ],
+  "properties": {
+    "limit": {
+      "type": "number",
+      "title": "limit",
+      "description": "The maximum number of items returned."
+    },
+    "offset": {
+      "type": "number",
+      "title": "offset",
+      "description": "The number of items skipped before retrieving the returned results."
+    },
+    "count": {
+      "type": "number",
+      "title": "count",
+      "description": "The total number of items."
+    },
+    "collections": {
+      "type": "array",
+      "description": "The list of product collections.",
+      "items": {
+        "$ref": "#/components/schemas/AdminCollection"
+      }
+    },
+    "estimate_count": {
+      "type": "number",
+      "title": "estimate_count",
+      "description": "The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.",
+      "x-featureFlag": "index_engine"
+    }
+  }
+}
+```
+
+Related schemas:
+
+- [AdminCollection](/api/schemas/admin-collection)

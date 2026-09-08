@@ -1,0 +1,60 @@
+---
+title: PriceSet - Pricing Module Data Models Reference
+sidebarTitle: PriceSet
+---
+
+This documentation provides a reference to the PriceSet data model. It belongs to the Pricing Module.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-set.ts#L4)
+
+**PriceSet**
+
+- `id`: PrimaryKeyModifier\<IdProperty> — The ID of the price set.
+- `prices`: HasMany\<[Price](/resources/references/pricing/models/Price)> — The associated `Price` records.
+  - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the price.
+  - `title`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) (optional) — The title of the price
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `currency_code`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The currency code of the price. For example, `usd`.
+    - `$dataType`: `string` — A type-only property to infer the JavaScript data-type of the schema property
+    - `#retrievable`: `boolean` (optional)
+    - `#providerOptions`: `Record<string, Record<string, unknown>>` (optional)
+    - `#filterable`: `boolean` (optional)
+    - `#sortable`: `boolean` (optional)
+    - `#facetable`: `boolean` | `object` (optional)
+    - `#array`: `boolean` (optional)
+    - `#searchable`: `boolean` | `object` (optional)
+    - `dataType`: `object` — The runtime dataType for the schema. It is not the same as the "\$dataType".
+  - `amount`: `BigNumberProperty` — The amount of the price.
+  - `min_quantity`: `BigNumberProperty` (optional) — The minimum quantity that must be available in the cart for the price to be applied.
+  - `max_quantity`: `BigNumberProperty` (optional) — The maximum quantity allowed to be available in the cart for the price to be applied.
+  - `rules_count`: `NumberProperty` (optional) — The total number of rules of the price.
+  - `price_set`: BelongsTo\<[PriceSet](/resources/references/pricing/models/PriceSet)> — The associated `PriceSet`.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the price set.
+    - `prices`: HasMany\<[Price](/resources/references/pricing/models/Price)> — The associated `Price` records.
+  - `price_rules`: HasMany\<[PriceRule](/resources/references/pricing/models/PriceRule)> — The associated `PriceRule` records.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the price rule.
+    - `attribute`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The attribute of the price rule. For example, `region_id`.
+    - `value`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The value of the price rule. For example, `reg_123`.
+    - `operator`: EnumProperty\<typeof [PricingRuleOperator](/resources/references/utils/PricingUtils/enums/utilsPricingUtilsPricingRuleOperator)> — The operator of the price rule. For example, `eq`.
+    - `priority`: `NumberProperty` — The priority of the price rule.
+    - `price`: BelongsTo\<[Price](/resources/references/pricing/models/Price)> — The associated `Price`.
+  - `price_list`: BelongsTo\<[PriceList](/resources/references/pricing/models/PriceList)> (optional) — The associated `PriceList`.
+    - `id`: PrimaryKeyModifier\<IdProperty> — The ID of the price list.
+    - `title`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The title of the price list.
+    - `description`: [TextProperty](/resources/references/utils/classes/utilsTextProperty) — The description of the price list.
+    - `status`: EnumProperty\<typeof [PriceListStatus](/resources/references/utils/PricingUtils/enums/utilsPricingUtilsPriceListStatus)> — The status of the price list.
+    - `type`: EnumProperty\<typeof [PriceListType](/resources/references/utils/PricingUtils/enums/utilsPricingUtilsPriceListType)> — The type of the price list.
+    - `starts_at`: `DateTimeProperty` (optional) — The date the price list starts.
+    - `ends_at`: `DateTimeProperty` (optional) — The date the price list ends.
+    - `rules_count`: `NumberProperty` (optional) — The total number of rules of the price list.
+    - `prices`: HasMany\<[Price](/resources/references/pricing/models/Price)> — The associated `Price` records.
+    - `price_list_rules`: HasMany\<[PriceListRule](/resources/references/pricing/models/PriceListRule)> — The associated `PriceListRule` records.
+    - `metadata`: JSONProperty\<NoInfer\<Record\<string, unknown>>> (optional) — Holds custom data in key-value pairs.

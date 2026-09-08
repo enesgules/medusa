@@ -1,0 +1,103 @@
+---
+title: Retrieve Cart in Storefront
+---
+
+In this guide, you'll learn how to retrieve a cart's details in your storefront.
+
+Assuming you stored the cart's ID in the `localStorage` as explained in the [Create Cart guide](/resources/storefront-development/cart/create), you can retrieve a cart by sending a request to the [Get a Cart API route](/api/store/carts/get-a-cart).
+
+For example:
+
+<Tabs>
+  <Tab title="React">
+    ```tsx
+    "use client" // include with Next.js 13+
+
+    import { useEffect, useState } from "react"
+    import { HttpTypes } from "@medusajs/types"
+    import { sdk } from "@/lib/sdk"
+
+    export default function Cart() {
+      const [cart, setCart] = useState<
+        HttpTypes.StoreCart
+      >()
+
+      useEffect(() => {
+        if (cart) {
+          return
+        }
+
+        const cartId = localStorage.getItem("cart_id")
+        if (!cartId) {
+          // TODO create cart
+          return
+        }
+
+        sdk.store.cart.retrieve(cartId)
+        .then(({ cart: dataCart }) => {
+          setCart(dataCart)
+        })
+      }, [cart])
+
+      const formatPrice = (amount: number): string => {
+        return new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: cart?.currency_code,
+        })
+        .format(amount)
+      }
+
+      return (
+        <div>
+          {!cart && <span>Loading...</span>}
+          {cart && (
+            <>
+              <span>Cart ID: {cart.id}</span>
+              <ul>
+                {cart.items?.map((item) => (
+                  <li key={item.id}>
+                    {item.title} -
+                    Quantity: {item.quantity} -
+                    Price: {formatPrice(item.unit_price)}
+                  </li>
+                ))}
+              </ul>
+              <span>Cart Total: {formatPrice(cart.total)}</span>
+            </>
+          )}
+        </div>
+      )
+    }
+    ```
+  </Tab>
+
+  <Tab title="JS SDK">
+    ```ts
+    sdk.store.cart.retrieve(cartId)
+    .then(({ cart }) => {
+      // use cart...
+      console.log(cart)
+    })
+    ```
+  </Tab>
+</Tabs>
+
+In this example, you retrieve a cart by sending a request to the [Get a Cart API route](/api/store/carts/get-a-cart).
+
+The response of the [Get a Cart API route](/api/store/carts/get-a-cart) has a `cart` field, which is a [cart object](/api/store/carts/schema).
+
+### Format Prices
+
+When displaying the cart's totals or line item's price, make sure to format the price as implemented in the `formatPrice` function shown in the above snippet:
+
+```ts
+const formatPrice = (amount: number): string => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: cart?.currency_code,
+  })
+  .format(amount)
+}
+```
+
+Since this is the same function used to [format the prices of product variants](/resources/storefront-development/products/price), you can define the function in one place and re-use it where necessary. In that case, make sure to pass the currency code as a parameter to the `formatPrice` function.

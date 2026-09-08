@@ -1,0 +1,5 @@
+---
+title: ExtractOrderByOperators
+---
+
+- `ExtractOrderByOperators`: \{ \[Key in keyof T]?: Key extends Exclusion\[number] ? never : Key extends ExcludedProps ? never : TypeOnly\<T\[Key]> extends string | number | boolean | Date ? OrderBy : TypeOnly\<T\[Key]> extends (infer R)\[] ? TypeOnly\<R> extends \{ \_\_typename: any } ? IndexOrderBy\<Key & string, T, \[Key & string, ...Exclusion], Depth\[Lim]> : TypeOnly\<R> extends object ? CleanupObject\<TypeOnly\<R>> : never : TypeOnly\<T\[Key]> extends \{ \_\_typename: any } ? IndexOrderBy\<Key & string, T\[Key], \[Key & string, ...Exclusion], Depth\[Lim]> : TypeOnly\<T\[Key]> extends object ? CleanupObject\<TypeOnly\<T\[Key]>> : never }

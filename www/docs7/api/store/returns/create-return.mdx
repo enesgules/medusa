@@ -1,0 +1,434 @@
+---
+title: Create Return
+---
+
+`POST /store/returns`
+
+Create a return for an order's items. The admin receives the return and process it from their side. This API route doesn't require customer authentication, so that guest customers can request a return for their orders. To restrict access to this API route, refer to the [Restrict Return Creation guide](/resources/commerce-modules/order/secure-return-creation).
+
+## Base URLs
+
+- `http://localhost:9000`
+
+- `https://api.medusajs.com`
+
+## Authentication
+
+This operation does not require authentication.
+
+[Authentication guide](/api/store/authentication)
+
+## Parameters
+
+<Accordion title="x-publishable-api-key (header, required)">
+  Publishable API Key created in the Medusa Admin.
+
+  ```json
+  {
+    "name": "x-publishable-api-key",
+    "in": "header",
+    "description": "Publishable API Key created in the Medusa Admin.",
+    "required": true,
+    "schema": {
+      "type": "string",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/api/store#publishable-api-key"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="x-medusa-locale (header, optional)">
+  The locale in BCP 47 format to retrieve localized content.
+
+  ```json
+  {
+    "name": "x-medusa-locale",
+    "in": "header",
+    "description": "The locale in BCP 47 format to retrieve localized content.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "example": "en-US",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/resources/commerce-modules/translation/storefront",
+        "description": "Learn more in the Serve Translations in Storefront guide."
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="locale (query, optional)">
+  The locale in BCP 47 format to retrieve localized content.
+
+  ```json
+  {
+    "name": "locale",
+    "in": "query",
+    "description": "The locale in BCP 47 format to retrieve localized content.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "example": "en-US",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/resources/commerce-modules/translation/storefront",
+        "description": "Learn more in the Serve Translations in Storefront guide."
+      }
+    }
+  }
+  ```
+</Accordion>
+
+## Request body
+
+Optional.
+
+### application/json
+
+```json
+{
+  "schema": {
+    "$ref": "#/components/schemas/StoreCreateReturn"
+  }
+}
+```
+
+Related schemas:
+
+- [StoreCreateReturn](/api/schemas/store-create-return)
+
+## Responses
+
+<Accordion title="200 — OK">
+  OK
+
+  ```json
+  {
+    "description": "OK",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/StoreReturnResponse"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [StoreReturnResponse](/api/schemas/store-return-response)
+</Accordion>
+
+<Accordion title="400 — Client Error">
+  Client Error
+
+  ```json
+  {
+    "description": "Client Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "not_allowed": {
+            "$ref": "#/components/examples/not_allowed_error"
+          },
+          "invalid_data": {
+            "$ref": "#/components/examples/invalid_data_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="401 — User is not authorized. Must log in first">
+  User is not authorized. Must log in first
+
+  ```json
+  {
+    "description": "User is not authorized. Must log in first",
+    "content": {
+      "text/plain": {
+        "schema": {
+          "type": "string",
+          "default": "Unauthorized",
+          "example": "Unauthorized"
+        }
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Not Found Error">
+  Not Found Error
+
+  ```json
+  {
+    "description": "Not Found Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "message": "Entity with id 1 was not found",
+          "type": "not_found"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="409 — Invalid State Error">
+  Invalid State Error
+
+  ```json
+  {
+    "description": "Invalid State Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "unknown_error",
+          "message": "The request conflicted with another request. You may retry the request with the provided Idempotency-Key.",
+          "type": "QueryRunnerAlreadyReleasedError"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="422 — Invalid Request Error">
+  Invalid Request Error
+
+  ```json
+  {
+    "description": "Invalid Request Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "invalid_request_error",
+          "message": "Discount with code TEST already exists.",
+          "type": "duplicate_error"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="500 — Server Error">
+  Server Error
+
+  ```json
+  {
+    "description": "Server Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "database": {
+            "$ref": "#/components/examples/database_error"
+          },
+          "unexpected_state": {
+            "$ref": "#/components/examples/unexpected_state_error"
+          },
+          "invalid_argument": {
+            "$ref": "#/components/examples/invalid_argument_error"
+          },
+          "default_error": {
+            "$ref": "#/components/examples/default_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+## Examples
+
+### cURL
+
+```bash
+curl -X POST '{backend_url}/store/returns' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "order_id": "order_123",
+  "items": [
+    {
+      "id": "id_XbfptxUVo2io9EI",
+      "quantity": 7916429753974784,
+      "reason_id": "{value}",
+      "note": "{value}"
+    }
+  ],
+  "return_shipping": {
+    "option_id": "{value}",
+    "price": 1068364080349184
+  },
+  "note": "{value}",
+  "location_id": "{value}"
+}'
+```
+
+<Accordion title="OpenAPI operation">
+  ````json
+  {
+    "operationId": "PostReturns",
+    "summary": "Create Return",
+    "description": "Create a return for an order's items. The admin receives the return and process it from their side. This API route doesn't require customer authentication, so that guest customers can request a return for their orders. To restrict access to this API route, refer to the [Restrict Return Creation guide](https://docs.medusajs.com/resources/commerce-modules/order/secure-return-creation).",
+    "x-authenticated": false,
+    "parameters": [
+      {
+        "name": "x-publishable-api-key",
+        "in": "header",
+        "description": "Publishable API Key created in the Medusa Admin.",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "externalDocs": {
+            "url": "https://docs.medusajs.com/api/store#publishable-api-key"
+          }
+        }
+      },
+      {
+        "name": "x-medusa-locale",
+        "in": "header",
+        "description": "The locale in BCP 47 format to retrieve localized content.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "example": "en-US",
+          "externalDocs": {
+            "url": "https://docs.medusajs.com/resources/commerce-modules/translation/storefront",
+            "description": "Learn more in the Serve Translations in Storefront guide."
+          }
+        }
+      },
+      {
+        "name": "locale",
+        "in": "query",
+        "description": "The locale in BCP 47 format to retrieve localized content.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "example": "en-US",
+          "externalDocs": {
+            "url": "https://docs.medusajs.com/resources/commerce-modules/translation/storefront",
+            "description": "Learn more in the Serve Translations in Storefront guide."
+          }
+        }
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/StoreCreateReturn"
+          }
+        }
+      }
+    },
+    "x-codeSamples": [
+      {
+        "lang": "Shell",
+        "label": "cURL",
+        "source": "curl -X POST '{backend_url}/store/returns' \\\n-H 'x-publishable-api-key: {your_publishable_api_key}' \\\n-H 'Content-Type: application/json' \\\n--data-raw '{\n  \"order_id\": \"order_123\",\n  \"items\": [\n    {\n      \"id\": \"id_XbfptxUVo2io9EI\",\n      \"quantity\": 7916429753974784,\n      \"reason_id\": \"{value}\",\n      \"note\": \"{value}\"\n    }\n  ],\n  \"return_shipping\": {\n    \"option_id\": \"{value}\",\n    \"price\": 1068364080349184\n  },\n  \"note\": \"{value}\",\n  \"location_id\": \"{value}\"\n}'"
+      }
+    ],
+    "tags": [
+      "Returns"
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/StoreReturnResponse"
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/400_error"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "404": {
+        "$ref": "#/components/responses/not_found_error"
+      },
+      "409": {
+        "$ref": "#/components/responses/invalid_state_error"
+      },
+      "422": {
+        "$ref": "#/components/responses/invalid_request_error"
+      },
+      "500": {
+        "$ref": "#/components/responses/500_error"
+      }
+    },
+    "x-workflow": "createAndCompleteReturnOrderWorkflow",
+    "x-events": [
+      {
+        "name": "order.return_requested",
+        "payload": "```ts\n{\n  order_id, // The ID of the order\n  return_id, // The ID of the return\n}\n```",
+        "description": "Emitted when a return request is confirmed.",
+        "deprecated": false
+      },
+      {
+        "name": "order.return_received",
+        "payload": "```ts\n{\n  order_id, // The ID of the order\n  return_id, // The ID of the return\n}\n```",
+        "description": "Emitted when a return is marked as received.",
+        "deprecated": false
+      }
+    ],
+    "x-since": "2.8.0"
+  }
+  ````
+
+  Related schemas:
+
+  - [StoreCreateReturn](/api/schemas/store-create-return)
+
+  - [StoreReturnResponse](/api/schemas/store-return-response)
+</Accordion>

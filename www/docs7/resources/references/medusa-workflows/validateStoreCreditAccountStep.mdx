@@ -1,0 +1,84 @@
+---
+title: validateStoreCreditAccountStep - Medusa Core Workflows Reference
+sidebarTitle: validateStoreCreditAccountStep
+---
+
+This documentation provides a reference to the `validateStoreCreditAccountStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that all gift cards on the cart have a positive balance.
+It throws an error for any gift card with zero or negative balance.
+
+## Example
+
+```ts
+const data = validateStoreCreditAccountStep({
+  giftCards: [
+    {
+      id: "gc_123",
+      code: "GC-XXXX",
+      // other gift card properties...
+    }
+  ],
+  giftCardsBalanceMap: {
+    "GC-XXXX": {
+      balance: 100,
+      credit: 150,
+      debit: 50,
+    }
+  },
+})
+```
+
+<a id="validatestorecreditaccountstep-input" />
+
+## Input
+
+**validateStoreCreditAccountStep**
+
+- `ValidateStoreCreditAccountStepInput`: [ValidateStoreCreditAccountStepInput](/resources/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flowsplugins_loyalty_src_workflowsValidateStoreCreditAccountStepInput)
+  - `giftCards`: [ModuleGiftCard](/resources/references/loyalty/types/loyaltyModuleGiftCard)\[] — The gift cards to validate.
+    - `id`: `string` — The gift card's ID.
+    - `code`: `string` — The unique redemption code for the gift card.
+    - `status`: [GiftCardStatus](/resources/references/loyalty/enums/loyaltyGiftCardStatus) — The current status of the gift card.
+      - `PENDING`: `"pending"` (optional)
+      - `REDEEMED`: `"redeemed"` (optional)
+    - `value`: `number` — The monetary value of the gift card.
+    - `currency_code`: `string` — The three-letter ISO currency code of the gift card's value.
+    - `customer_id`: `string` — The ID of the customer who owns this gift card.
+    - `customer`: [CustomerDTO](/resources/references/loyalty/interfaces/loyaltyCustomerDTO) — The customer who owns this gift card.
+      - `id`: `string` — The ID of the customer.
+      - `email`: `string` — The email of the customer.
+      - `has_account`: `boolean` — A flag indicating if customer has an account or not.
+      - `default_billing_address_id`: `null` | `string` — The associated default billing address's ID.
+      - `default_shipping_address_id`: `null` | `string` — The associated default shipping address's ID.
+      - `company_name`: `null` | `string` — The company name of the customer.
+      - `first_name`: `null` | `string` — The first name of the customer.
+      - `last_name`: `null` | `string` — The last name of the customer.
+      - `addresses`: [CustomerAddressDTO](/resources/references/loyalty/interfaces/loyaltyCustomerAddressDTO)\[] — The addresses of the customer.
+      - `phone`: `null` | `string` — The phone of the customer.
+      - `groups`: `object`\[] — The groups of the customer.
+      - `metadata`: `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `created_by`: `null` | `string` — Who created the customer.
+      - `deleted_at`: `null` | `string` | `Date` — The deletion date of the customer.
+      - `created_at`: `string` | `Date` — The creation date of the customer.
+      - `updated_at`: `string` | `Date` — The update date of the customer.
+    - `reference_id`: `string` | `null` — The ID of the resource this gift card was created from (e.g. an order ID).
+    - `note`: `string` | `null` — An optional note about the gift card.
+    - `reference`: `string` | `null` — The resource type this gift card references (e.g. "order").
+    - `expires_at`: `string` | `null` — The date the gift card expires, or null if it does not expire.
+    - `created_at`: `string` — The date the gift card was created.
+    - `updated_at`: `string` — The date the gift card was last updated.
+  - `giftCardsBalanceMap`: `Record<string, [ModuleAccountStats](/references/store_credit/types/store_credit.ModuleAccountStats)>` — A map of gift card codes to their current account statistics.
+    - `id`: `string` — The store credit account's ID.
+    - `balance`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The current balance of the account (credits minus debits).
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `credits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount credited to the account.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `debits`: [BigNumberValue](/resources/references/store_credit/types/store_creditBigNumberValue) — The total amount debited from the account.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/store_credit/types/store_creditBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)

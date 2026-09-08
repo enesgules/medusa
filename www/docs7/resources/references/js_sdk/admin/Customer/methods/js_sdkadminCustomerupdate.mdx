@@ -1,0 +1,61 @@
+---
+title: update
+---
+
+This method updates a customer's details. It sends a request to the
+[Update Customer](/api/admin/customers/update-a-customer) API route.
+
+## Example
+
+```ts
+sdk.admin.customer.update("cus_123", {
+  first_name: "John"
+})
+.then(({ customer }) => {
+  console.log(customer)
+})
+```
+
+<a id="update-parameters" />
+
+## Parameters
+
+**update**
+
+- `id`: `string` — The customer's ID.
+- `body`: [AdminUpdateCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateCustomer) — The details to update of the customer.
+  - `email`: `null` | `string` (optional) — The customer's email.
+  - `company_name`: `null` | `string` (optional) — The customer's company name.
+  - `first_name`: `null` | `string` (optional) — The customer's first name.
+  - `last_name`: `null` | `string` (optional) — The customer's last name.
+  - `phone`: `null` | `string` (optional) — The customer's phone number.
+  - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the customer.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="update-returns" />
+
+## Returns
+
+**update**
+
+- `Promise`: Promise\<[AdminCustomerResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerResponse)> — The customer's details.
+  - `customer`: [AdminCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomer) — The customer's details.
+    - `has_account`: `boolean` — Whether the customer is a guest.
+    - `groups`: [AdminCustomerGroup](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerGroup)\[] (optional) — The groups the customer is in.
+    - `addresses`: [AdminCustomerAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCustomerAddress)\[] — The customer's addresses.
+    - `id`: `string` — The customer's ID.
+    - `email`: `string` — The customer's email.
+    - `default_billing_address_id`: `null` | `string` — The ID of the customer's default billing address.
+    - `default_shipping_address_id`: `null` | `string` — The ID of the customer's default shipping address.
+    - `company_name`: `null` | `string` — The customer's company name.
+    - `first_name`: `null` | `string` — The customer's first name.
+    - `last_name`: `null` | `string` — The customer's last name.
+    - `phone`: `null` | `string` (optional) — The customer's phone.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_by`: `null` | `string` (optional) — The ID of the user that created the customer.
+    - `deleted_at`: `null` | `string` | `Date` (optional) — The date the customer was deleted.
+    - `created_at`: `string` | `Date` (optional) — The date the customer was created.
+    - `updated_at`: `string` | `Date` (optional) — The date the customer was updated.

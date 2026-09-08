@@ -1,0 +1,461 @@
+---
+title: Create Fulfillment
+---
+
+`POST /admin/fulfillments`
+
+Create a fulfillment for an order, return, exchange, and more.
+
+## Base URLs
+
+- `http://localhost:9000`
+
+- `https://api.medusajs.com`
+
+## Authentication
+
+```json
+{
+  "api_token": {
+    "type": "http",
+    "x-displayName": "API Token",
+    "scheme": "basic"
+  }
+}
+```
+
+```json
+{
+  "cookie_auth": {
+    "type": "apiKey",
+    "in": "cookie",
+    "name": "connect.sid",
+    "x-displayName": "Cookie Session ID"
+  }
+}
+```
+
+```json
+{
+  "jwt_token": {
+    "type": "http",
+    "x-displayName": "JWT Token",
+    "scheme": "bearer"
+  }
+}
+```
+
+[Authentication guide](/api/admin/authentication)
+
+## Parameters
+
+<Accordion title="fields (query, optional)">
+  Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+
+  ```json
+  {
+    "name": "fields",
+    "in": "query",
+    "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "title": "fields",
+      "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+      "externalDocs": {
+        "url": "#select-fields-and-relations"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+## Request body
+
+Optional.
+
+### application/json
+
+```json
+{
+  "schema": {
+    "$ref": "#/components/schemas/AdminCreateFulfillment"
+  }
+}
+```
+
+Related schemas:
+
+- [AdminCreateFulfillment](/api/schemas/admin-create-fulfillment)
+
+## Responses
+
+<Accordion title="200 — OK">
+  OK
+
+  ```json
+  {
+    "description": "OK",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/AdminFulfillmentResponse"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminFulfillmentResponse](/api/schemas/admin-fulfillment-response)
+</Accordion>
+
+<Accordion title="400 — Client Error">
+  Client Error
+
+  ```json
+  {
+    "description": "Client Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "not_allowed": {
+            "$ref": "#/components/examples/not_allowed_error"
+          },
+          "invalid_data": {
+            "$ref": "#/components/examples/invalid_data_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="401 — User is not authorized. Must log in first">
+  User is not authorized. Must log in first
+
+  ```json
+  {
+    "description": "User is not authorized. Must log in first",
+    "content": {
+      "text/plain": {
+        "schema": {
+          "type": "string",
+          "default": "Unauthorized",
+          "example": "Unauthorized"
+        }
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Not Found Error">
+  Not Found Error
+
+  ```json
+  {
+    "description": "Not Found Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "message": "Entity with id 1 was not found",
+          "type": "not_found"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="409 — Invalid State Error">
+  Invalid State Error
+
+  ```json
+  {
+    "description": "Invalid State Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "unknown_error",
+          "message": "The request conflicted with another request. You may retry the request with the provided Idempotency-Key.",
+          "type": "QueryRunnerAlreadyReleasedError"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="422 — Invalid Request Error">
+  Invalid Request Error
+
+  ```json
+  {
+    "description": "Invalid Request Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "invalid_request_error",
+          "message": "Discount with code TEST already exists.",
+          "type": "duplicate_error"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="500 — Server Error">
+  Server Error
+
+  ```json
+  {
+    "description": "Server Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "database": {
+            "$ref": "#/components/examples/database_error"
+          },
+          "unexpected_state": {
+            "$ref": "#/components/examples/unexpected_state_error"
+          },
+          "invalid_argument": {
+            "$ref": "#/components/examples/invalid_argument_error"
+          },
+          "default_error": {
+            "$ref": "#/components/examples/default_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+## Examples
+
+### JS SDK
+
+```js
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+  debug: import.meta.env.DEV,
+  auth: {
+    type: "session",
+  },
+})
+
+sdk.admin.fulfillment.create({
+  location_id: "sloc_123",
+  provider_id: "my_fulfillment",
+  delivery_address: {
+    country_code: "us"
+  },
+  items: [
+    {
+      title: "Shirt",
+      sku: "SHIRT",
+      quantity: 1,
+      barcode: "123"
+    }
+  ],
+  labels: [],
+  order: {},
+  order_id: "order_123"
+})
+.then(({ fulfillment }) => {
+  console.log(fulfillment)
+})
+```
+
+### cURL
+
+```bash
+curl -X POST '{backend_url}/admin/fulfillments' \
+-H 'Authorization: Bearer {jwt_token}' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "location_id": "{value}",
+  "provider_id": "{value}",
+  "delivery_address": {
+    "first_name": "{value}",
+    "last_name": "{value}",
+    "phone": "{value}",
+    "company": "{value}",
+    "address_1": "{value}",
+    "address_2": "{value}",
+    "city": "{value}",
+    "country_code": "{value}",
+    "province": "us-ca",
+    "postal_code": "{value}",
+    "metadata": {}
+  },
+  "items": [
+    {
+      "title": "{value}",
+      "sku": "{value}",
+      "quantity": 1667318922870784,
+      "barcode": "{value}",
+      "line_item_id": "{value}",
+      "inventory_item_id": "{value}"
+    }
+  ],
+  "labels": [
+    {
+      "tracking_number": "{value}",
+      "tracking_url": "{value}",
+      "label_url": "{value}"
+    }
+  ],
+  "order": {},
+  "order_id": "{value}",
+  "shipping_option_id": "{value}",
+  "data": {},
+  "packed_at": "2024-11-12T18:37:37.122Z",
+  "shipped_at": "2025-04-13T12:39:42.432Z",
+  "delivered_at": "2025-01-29T19:05:57.056Z",
+  "canceled_at": "2025-02-16T02:12:11.763Z",
+  "metadata": {}
+}'
+```
+
+<Accordion title="OpenAPI operation">
+  ```json
+  {
+    "operationId": "PostFulfillments",
+    "summary": "Create Fulfillment",
+    "description": "Create a fulfillment for an order, return, exchange, and more.",
+    "x-authenticated": true,
+    "parameters": [
+      {
+        "name": "fields",
+        "in": "query",
+        "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "fields",
+          "description": "Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.",
+          "externalDocs": {
+            "url": "#select-fields-and-relations"
+          }
+        }
+      }
+    ],
+    "security": [
+      {
+        "api_token": []
+      },
+      {
+        "cookie_auth": []
+      },
+      {
+        "jwt_token": []
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/AdminCreateFulfillment"
+          }
+        }
+      }
+    },
+    "x-codeSamples": [
+      {
+        "lang": "JavaScript",
+        "label": "JS SDK",
+        "source": "import Medusa from \"@medusajs/js-sdk\"\n\nexport const sdk = new Medusa({\n  baseUrl: import.meta.env.VITE_BACKEND_URL || \"/\",\n  debug: import.meta.env.DEV,\n  auth: {\n    type: \"session\",\n  },\n})\n\nsdk.admin.fulfillment.create({\n  location_id: \"sloc_123\",\n  provider_id: \"my_fulfillment\",\n  delivery_address: {\n    country_code: \"us\"\n  },\n  items: [\n    {\n      title: \"Shirt\",\n      sku: \"SHIRT\",\n      quantity: 1,\n      barcode: \"123\"\n    }\n  ],\n  labels: [],\n  order: {},\n  order_id: \"order_123\"\n})\n.then(({ fulfillment }) => {\n  console.log(fulfillment)\n})"
+      },
+      {
+        "lang": "Shell",
+        "label": "cURL",
+        "source": "curl -X POST '{backend_url}/admin/fulfillments' \\\n-H 'Authorization: Bearer {jwt_token}' \\\n-H 'Content-Type: application/json' \\\n--data-raw '{\n  \"location_id\": \"{value}\",\n  \"provider_id\": \"{value}\",\n  \"delivery_address\": {\n    \"first_name\": \"{value}\",\n    \"last_name\": \"{value}\",\n    \"phone\": \"{value}\",\n    \"company\": \"{value}\",\n    \"address_1\": \"{value}\",\n    \"address_2\": \"{value}\",\n    \"city\": \"{value}\",\n    \"country_code\": \"{value}\",\n    \"province\": \"us-ca\",\n    \"postal_code\": \"{value}\",\n    \"metadata\": {}\n  },\n  \"items\": [\n    {\n      \"title\": \"{value}\",\n      \"sku\": \"{value}\",\n      \"quantity\": 1667318922870784,\n      \"barcode\": \"{value}\",\n      \"line_item_id\": \"{value}\",\n      \"inventory_item_id\": \"{value}\"\n    }\n  ],\n  \"labels\": [\n    {\n      \"tracking_number\": \"{value}\",\n      \"tracking_url\": \"{value}\",\n      \"label_url\": \"{value}\"\n    }\n  ],\n  \"order\": {},\n  \"order_id\": \"{value}\",\n  \"shipping_option_id\": \"{value}\",\n  \"data\": {},\n  \"packed_at\": \"2024-11-12T18:37:37.122Z\",\n  \"shipped_at\": \"2025-04-13T12:39:42.432Z\",\n  \"delivered_at\": \"2025-01-29T19:05:57.056Z\",\n  \"canceled_at\": \"2025-02-16T02:12:11.763Z\",\n  \"metadata\": {}\n}'"
+      }
+    ],
+    "tags": [
+      "Fulfillments"
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AdminFulfillmentResponse"
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/400_error"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "404": {
+        "$ref": "#/components/responses/not_found_error"
+      },
+      "409": {
+        "$ref": "#/components/responses/invalid_state_error"
+      },
+      "422": {
+        "$ref": "#/components/responses/invalid_request_error"
+      },
+      "500": {
+        "$ref": "#/components/responses/500_error"
+      }
+    },
+    "x-workflow": "createFulfillmentWorkflow",
+    "x-events": []
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminCreateFulfillment](/api/schemas/admin-create-fulfillment)
+
+  - [AdminFulfillmentResponse](/api/schemas/admin-fulfillment-response)
+</Accordion>

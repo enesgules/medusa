@@ -1,0 +1,301 @@
+---
+title: ICachingModuleService
+---
+
+## Methods
+
+### get
+
+This method retrieves data from the cache. If neither `key` nor `tags` are provided, or the item is not found, `null` is returned.
+
+#### Example
+
+To retrieve by key:
+
+```ts
+const data = await cachingModuleService.get({
+  key: "products", // this key would typically be a hash
+}) as { id: string; title: string; }
+```
+
+To retrieve by tags:
+
+```ts
+const data = await cachingModuleService.get({
+  tags: ["Product:list:*"],
+}) as { id: string; title: string; }[]
+```
+
+To retrieve by key from specific providers:
+
+```ts
+const data = await cachingModuleService.get({
+  key: "products", // this key would typically be a hash
+  providers: ["caching-redis", "caching-memcached"]
+}) as { id: string; title: string; }
+```
+
+This example will try to get the data from the `caching-redis` provider first, and if not found, it will try to get it from the `caching-memcached` provider.
+
+<a id="get-parameters" />
+
+#### Parameters
+
+**get**
+
+- `param0`: `object` — The options for retrieving the item.
+  - `key`: `string` (optional) — The key of the item to retrieve. If both `key` and `tags` are provided, `key` takes precedence over `tags`.
+  - `tags`: `string`\[] (optional) — The tags of the items to retrieve. Tags are useful to retrieve multiple related items at once.
+  - `providers`: `string`\[] (optional) — The providers to retrieve the item(s) from. You can specify an array of provider IDs. They're checked in the order they're provided in, so make sure to order them based on your priority. If not provided, the [default provider](/resources/infrastructure-modules/caching/providers#default-caching-module-provider) is used.
+
+<a id="get-returns" />
+
+#### Returns
+
+**get**
+
+- `Promise`: Promise\<any> — The item(s) that was stored in the cache. If no item was found, or neither `key` nor `tags` were provided, `null` is returned.
+  - `any`: `any`
+
+### set
+
+This method stores data in the cache using the
+[default Caching Module Provider](/resources/infrastructure-modules/caching/providers#default-caching-module-provider).
+
+#### Example
+
+To store with key:
+
+```ts
+const data = { id: "prod_123", title: "Product 123" }
+const key = await cachingModuleService.computeKey(data)
+await cachingModuleService.set({
+  key,
+  data
+})
+```
+
+To store with tags:
+
+> **Note**
+>
+> Tags should follow [conventions](/resources/infrastructure-modules/caching/concepts#caching-tags-convention) to ensure they're automatically invalidated.
+
+```ts
+const data = [{ id: "prod_123", title: "Product 123" }]
+const key = await cachingModuleService.computeKey(data)
+await cachingModuleService.set({
+  key,
+  data,
+  tags: [`Product:${data[0].id}`, "Product:list:*"]
+})
+```
+
+To disable auto-invalidation for the item:
+
+```ts
+const data = [{ id: "prod_123", title: "Product 123" }]
+const key = await cachingModuleService.computeKey(data)
+await cachingModuleService.set({
+  key,
+  data,
+  options: { autoInvalidate: false }
+})
+```
+
+The item is now only invalidated when calling the `clear` method directly with the same key or tags.
+
+To store with specific providers:
+
+```ts
+const data = { id: "prod_123", title: "Product 123" }
+const key = await cachingModuleService.computeKey(data)
+await cachingModuleService.set({
+  key,
+  data,
+  providers: [
+    "caching-redis",
+    { id: "caching-memcached", ttl: 120 } // custom TTL for this provider
+  ]
+})
+```
+
+This example will store the item in both the `caching-redis` and `caching-memcached` providers, with a custom TTL of `120` seconds for the `caching-memcached` provider.
+
+<a id="set-parameters" />
+
+#### Parameters
+
+**set**
+
+- `param0`: `object` — The options for storing the item.
+  - `key`: `string` — The key of the item to store.
+  - `data`: `object` — The data to store in the cache.
+  - `ttl`: `number` (optional) — The time-to-live (TTL in seconds) value in seconds. If not provided, the default TTL value configured in the provider should be used.
+  - `tags`: `string`\[] (optional) — The tags of the items to store. Tags are useful to group related items together for retrieval or invalidation. If not provided, the tags are computed from `data`. If provided, they're used on their own unless `computeAutomaticTags` is also set.
+  - `computeAutomaticTags`: `boolean` (optional, default: false) — Whether the tags computed from `data` should be applied along with the ones given in `tags`, rather than `tags` being used on its own. Useful for tagging what the computation can't see, such as link tables, relations selected without their `id`, or entities that affect the data without appearing in it, without restating everything it can. Has no effect when `tags` is omitted.
+
+    Example:
+
+    ```
+    await cachingModuleService.set({ key, data, tags: ["LinkProductVariantInventoryItem:list:*"], computeAutomaticTags: true })
+    ```
+  - `options`: `object` (optional) — Options for storing the item. The options are stored with the item, allowing you to later match against them when clearing the item. For example, if you set `autoInvalidate: false`, the item will only be invalidated when calling the `clear` method directly with the same key or tags.
+    - `autoInvalidate`: `boolean` (optional, default: true) — Whether to automatically invalidate the item when related data changes.
+  - `providers`: [Providers](/resources/references/types/types/typesProviders) (optional) — The providers to store the item(s) in. You can specify an array of provider IDs or an array of objects with provider ID and TTL. If not provided, the [default provider](/resources/infrastructure-modules/caching/providers#default-caching-module-provider) is used.
+    - `id`: `string` — The ID of the provider to use, as set in `medusa-config.ts`.
+    - `ttl`: `number` (optional) — Optional custom time-to-live (TTL) (in seconds) for this provider. If not provided, the default TTL configured in the provider is used, or the default TTL of the Caching Module if not configured in the provider.
+
+<a id="set-returns" />
+
+#### Returns
+
+**set**
+
+- `Promise`: Promise\<void> — A promise that resolves when the item has been stored.
+
+### clear
+
+This method clears data from the cache. If neither `key` nor `tags` are provided, nothing is cleared.
+
+By default, all items matching the key or tags are cleared regardless of their options. If you provide `options.autoInvalidate: true`,
+only items that were set with `options.autoInvalidate: true` are cleared.
+
+For example, if you set `options.autoInvalidate: true`, only items that were set with `options.autoInvalidate: true` are cleared.
+Items that were set with `options.autoInvalidate: false` are only cleared when you don't provide any options.
+
+#### Example
+
+To invalidate cache by key:
+
+```ts
+await cachingModuleService.clear({
+ key: "products" // this key would typically be a hash
+})
+```
+
+This example will clear the item with the key `products` regardless of its `options.autoInvalidate` value.
+
+To invalidate cache by tags:
+
+```ts
+await cachingModuleService.clear({
+ tags: ["Product:list:*"]
+})
+```
+
+This example will clear all items with the tag `Product:list:*` regardless of their `options.autoInvalidate` value.
+
+To invalidate only the cache data that were set to automatically invalidate:
+
+```ts
+await cachingModuleService.clear({
+ tags: ["Product:list:*"],
+ options: { autoInvalidate: true }
+})
+```
+
+This example will only clear items with the tag `Product:list:*` that were set with `options.autoInvalidate: true`.
+Items that were set with `options.autoInvalidate: false` will not be cleared.
+
+> **Note**
+>
+> Setting `options.autoInvalidate: false` when calling the `clear` method will not clear any items.
+> To clear items that were set with `options.autoInvalidate: false`, you must call the `clear` method without any options.
+
+To invalidate cache from specific providers:
+
+```ts
+await cachingModuleService.clear({
+ key: "products",
+ providers: ["caching-redis", "caching-memcached"]
+})
+```
+
+This example will try to clear the data from both the `caching-redis` and `caching-memcached` providers.
+
+<a id="clear-parameters" />
+
+#### Parameters
+
+**clear**
+
+- `param0`: `object` — The options for clearing the item(s).
+  - `key`: `string` (optional) — The key of the item to clear.
+  - `tags`: `string`\[] (optional) — The tags of the items to clear. Tags are useful to clear multiple related items at once.
+  - `options`: `object` (optional) — Options for clearing the item(s). The options are matched against the stored options when the item was set. For example, if the item was set with `autoInvalidate: true`, it will only be cleared if the `autoInvalidate` option is also set to `true`. If not provided, all items matching the key or tags are cleared regardless of their options.
+    - `autoInvalidate`: `boolean` (optional) — Whether to clear item(s) that were set to automatically invalidate.
+  - `providers`: `string`\[] (optional) — The providers from which to clear the item(s). You can specify an array of provider IDs. If not provided, the [default provider](/resources/infrastructure-modules/caching/providers#default-caching-module-provider) is used.
+
+<a id="clear-returns" />
+
+#### Returns
+
+**clear**
+
+- `Promise`: Promise\<void> — A promise that resolves when the item(s) have been cleared.
+
+### computeKey
+
+This method computes a cache key based on the input object. It's useful to generate consistent and unique keys for caching.
+
+#### Example
+
+```ts
+const key = await cachingModuleService.computeKey({
+  id: "prod_123",
+  title: "Product 123"
+})
+// key will be a hash string like "a1b2c3d4e5f6g7h8i9j0"
+```
+
+<a id="computekey-parameters" />
+
+#### Parameters
+
+**computeKey**
+
+- `input`: `object` — The input object to compute the key from.
+
+<a id="computekey-returns" />
+
+#### Returns
+
+**computeKey**
+
+- `Promise`: Promise\<string> — The computed cache key.
+  - `string`: `string`
+
+### computeTags
+
+This method computes cache tags based on the input object. It's useful to generate consistent and relevant tags for caching.
+
+#### Example
+
+```ts
+const tags = await cachingModuleService.computeTags({
+  products: [{ id: "prod_123" }, { id: "prod_456" }],
+}, {
+  operation: "updated"
+})
+// tags might be ["Product:prod_123", "Product:prod_456", "Product:list:*"]
+```
+
+<a id="computetags-parameters" />
+
+#### Parameters
+
+**computeTags**
+
+- `input`: `object` — The input object to compute the tags from.
+- `options`: `Record<string, any>` (optional) — Additional options to influence tag computation.
+
+<a id="computetags-returns" />
+
+#### Returns
+
+**computeTags**
+
+- `Promise`: Promise\<string\[]> — An array of computed cache tags.
+  - `string[]`: `string`\[]
+    - `string`: `string`

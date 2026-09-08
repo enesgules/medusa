@@ -1,0 +1,634 @@
+---
+title: ISearchProvider
+---
+
+Contract implemented by a search engine provider. Optional methods
+(`swapIndex` and `waitForTask`) are omitted from the abstract class on
+purpose — define only those your engine can back. `searchMany` has a default
+that runs `search` concurrently; override it to pack queries into one
+engine round-trip.
+
+## Properties
+
+**ISearchProvider**
+
+- `identifier`: `string` — Each search provider has a unique identifier, such as `search-medusa`, used to register it and to bind an index definition to it. An index definition selects a provider by setting its `provider` property to this identifier. You can also use this identifier in `medusa-config.ts` to configure the default provider for the Search Module. On a provider extending `AbstractSearchProviderService`, this is derived from the class's `static identifier` property.
+
+  Example:
+
+  ```
+  class MySearchProviderService extends AbstractSearchProviderService { static identifier = "my-search" // ... }
+  ```
+
+## Methods
+
+### upsertIndex
+
+This method creates or updates the index at `index.physical_name` to match the definition.
+The Search Module calls it for every definition when migrations run.
+
+You may recreate the index if your engine can't alter a schema in place. That's safe:
+the module only points this at an index it's about to seed, never at one that has to
+keep serving reads, and never during a partial rebuild.
+
+Throw if the definition asks for something your engine can't hold, such as a
+facet type it doesn't support. Since migrations run before the application
+serves requests, the error surfaces at startup rather than as wrong results
+later.
+
+#### Example
+
+```ts
+class MySearchProviderService extends AbstractSearchProviderService {
+  // ...
+  async upsertIndex({
+    index,
+  }: {
+    index: SearchTypes.ResolvedSearchIndexDefinition
+  }): Promise<SearchTypes.SearchTask> {
+    await this.client.createIndex(index.physical_name, {
+      primaryKey: index.primary_key,
+    })
+
+    return { index: index.physical_name, status: "succeeded" }
+  }
+}
+```
+
+<a id="upsertindex-parameters" />
+
+#### Parameters
+
+**upsertIndex**
+
+- `input`: `object` — The index to create or update.
+  - `index`: [ResolvedSearchIndexDefinition](/resources/references/types/SearchTypes/interfaces/typesSearchTypesResolvedSearchIndexDefinition) — The definition, including the `physical_name` to create it under, the `primary_key` its documents are keyed by, the `fields` it holds, and its `settings`.
+    - `name`: `string` — The index's unique name, which is what `query.search({ entity })` resolves against.
+    - `entity`: `string` — The `query.graph` entrypoint used to hydrate non-indexed fields.
+    - `fields`: `Record<string, [SearchFieldDefinition](/references/types/SearchTypes/interfaces/types.SearchTypes.SearchFieldDefinition)>` — The fields the index holds, keyed by their path in the document.
+    - `events`: `string`\[] (optional) — Events related and that can affect the data for this index.
+    - `consume`: (`event`: [Event](/resources/references/types/EventBusTypes/types/typesEventBusTypesEvent)\<any>, `context`: [SearchIngestionContext](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIngestionContext)) => Promise\<[SearchMutation](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMutation)\[]> (optional) — Executed on event ingestion to determine the action that needs to be performed on the index.
+    - `seed`: (`context`: [SearchSeedContext](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchSeedContext)) => AsyncIterable\<[SearchDocument](/resources/references/types/SearchTypes/types/typesSearchTypesSearchDocument)\[]> — Yields the index's documents in batches. Ran when there is no data in the index or on reindex.
+    - `primary_key`: `string` — The field whose value keys the index's documents.
+    - `provider`: `string` — The identifier of the provider backing this index.
+    - `settings`: [SearchIndexSettings](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIndexSettings) — The settings applied to the index.
+    - `definition_hash`: `string` — A hash of the definition, which the module compares to detect that an index drifted from its definition and must be migrated.
+    - `physical_name`: `string` — The concrete index the provider reads and writes. Differs from `name` under an index prefix, or while a `swap` builds into a replacement.
+
+<a id="upsertindex-returns" />
+
+#### Returns
+
+**upsertIndex**
+
+- `Promise`: Promise\<[SearchTask](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchTask)> — The write's task.
+  - `id`: `string` (optional) — The ID identifying the write in the search engine, which is passed back to the provider's `waitForTask` method. It's set only for a deferred write, since a provider applying writes inline has nothing to identify.
+  - `index`: `string` (optional) — The name of the index the write was applied to.
+  - `status`: [SearchTaskStatus](/resources/references/types/SearchTypes/types/typesSearchTypesSearchTaskStatus) — The write's status.
+  - `error`: `object` (optional) — The error that made the write fail, if its `status` is `failed`.
+    - `message`: `string` — The error's message.
+    - `code`: `string` (optional) — The error's code, as reported by the search engine.
+
+### deleteIndex
+
+This method deletes an index and everything in it. The Search Module calls it
+to clean up an index it replaced, such as the index left behind by a swap.
+
+#### Example
+
+```ts
+class MySearchProviderService extends AbstractSearchProviderService {
+  // ...
+  async deleteIndex({
+    index,
+  }: {
+    index: string
+  }): Promise<SearchTypes.SearchTask> {
+    await this.client.deleteIndex(index)
+    return { index, status: "succeeded" }
+  }
+}
+```
+
+<a id="deleteindex-parameters" />
+
+#### Parameters
+
+**deleteIndex**
+
+- `input`: `object` — The index to delete.
+  - `index`: `string` — The index's physical name.
+
+<a id="deleteindex-returns" />
+
+#### Returns
+
+**deleteIndex**
+
+- `Promise`: Promise\<[SearchTask](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchTask)> — The write's task.
+  - `id`: `string` (optional) — The ID identifying the write in the search engine, which is passed back to the provider's `waitForTask` method. It's set only for a deferred write, since a provider applying writes inline has nothing to identify.
+  - `index`: `string` (optional) — The name of the index the write was applied to.
+  - `status`: [SearchTaskStatus](/resources/references/types/SearchTypes/types/typesSearchTypesSearchTaskStatus) — The write's status.
+  - `error`: `object` (optional) — The error that made the write fail, if its `status` is `failed`.
+    - `message`: `string` — The error's message.
+    - `code`: `string` (optional) — The error's code, as reported by the search engine.
+
+### listIndexes
+
+This method lists the indexes you hold. The Search Module reads the document counts to
+spot an index that lost its data and needs reseeding.
+
+#### Example
+
+```ts
+class MySearchProviderService extends AbstractSearchProviderService {
+  // ...
+  async listIndexes(): Promise<SearchTypes.SearchIndexInfo[]> {
+    const indexes = await this.client.listIndexes()
+
+    return indexes.map((index) => ({
+      name: index.uid,
+      provider: MySearchProviderService.identifier,
+      document_count: index.numberOfDocuments,
+    }))
+  }
+}
+```
+
+<a id="listindexes-returns" />
+
+#### Returns
+
+**listIndexes**
+
+- `Promise`: Promise\<[SearchIndexInfo](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIndexInfo)\[]> — The indexes and their document counts.
+  - `SearchIndexInfo[]`: [SearchIndexInfo](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIndexInfo)\[]
+    - `name`: `string` — The index's physical name.
+    - `provider`: `string` — The identifier of the provider holding the index.
+    - `document_count`: `number` — The number of documents in the index. The Search Module uses it to spot an index that lost its data and needs reseeding.
+    - `created_at`: `Date` (optional) — The date the index was created.
+    - `updated_at`: `Date` (optional) — The date the index was last updated.
+
+### swapIndex
+
+**Optional.**
+
+This method points a logical index at a different physical index, which the
+Search Module uses to reindex without downtime: it seeds a shadow index, then
+swaps it in.
+
+Implementing this method is optional. When it's not implemented, the module
+reindexes in place instead, leaving the index incomplete while it's seeded.
+
+#### Example
+
+```ts
+class MySearchProviderService extends AbstractSearchProviderService {
+  // ...
+  async swapIndex({
+    alias,
+    index,
+  }: {
+    alias: string
+    index: string
+  }): Promise<SearchTypes.SearchTask> {
+    await this.client.updateAlias(alias, index)
+
+    return { index, status: "succeeded" }
+  }
+}
+```
+
+<a id="swapindex-parameters" />
+
+#### Parameters
+
+**swapIndex**
+
+- `input`: `object` — The swap to perform.
+  - `alias`: `string` — The logical index name that must serve reads.
+  - `index`: `string` — The physical index it must point to.
+
+<a id="swapindex-returns" />
+
+#### Returns
+
+**swapIndex**
+
+- `Promise`: Promise\<[SearchTask](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchTask)> — The swap's task.
+  - `id`: `string` (optional) — The ID identifying the write in the search engine, which is passed back to the provider's `waitForTask` method. It's set only for a deferred write, since a provider applying writes inline has nothing to identify.
+  - `index`: `string` (optional) — The name of the index the write was applied to.
+  - `status`: [SearchTaskStatus](/resources/references/types/SearchTypes/types/typesSearchTypesSearchTaskStatus) — The write's status.
+  - `error`: `object` (optional) — The error that made the write fail, if its `status` is `failed`.
+    - `message`: `string` — The error's message.
+    - `code`: `string` (optional) — The error's code, as reported by the search engine.
+
+### upsertDocuments
+
+This method adds documents to an index, replacing any that already exist under the same
+ID. The Search Module uses it both for direct writes and for seeding, where it's called
+once per batch.
+
+If your engine applies writes later rather than inline, return a task with an `id` and
+implement `waitForTask`, so the module can wait before swapping a new index in.
+
+Write to `input.index` but read schema information from `input.definition`:
+during a swap, `input.index` is the shadow index being seeded, whereas the
+definition is that of the logical index.
+
+#### Example
+
+```ts
+class MySearchProviderService extends AbstractSearchProviderService {
+  // ...
+  async upsertDocuments({
+    index,
+    definition,
+    documents,
+  }: {
+    index: string
+    definition: SearchTypes.ResolvedSearchIndexDefinition
+    documents: SearchTypes.SearchDocument[]
+  }): Promise<SearchTypes.SearchTask> {
+    const task = await this.client.addDocuments(index, documents, {
+      schema: definition.fields,
+    })
+    return { id: `${task.uid}`, index, status: "enqueued" }
+  }
+}
+```
+
+<a id="upsertdocuments-parameters" />
+
+#### Parameters
+
+**upsertDocuments**
+
+- `input`: `object` — The documents to write.
+  - `index`: `string` — The index's physical name. This is the index to write to.
+  - `definition`: [ResolvedSearchIndexDefinition](/resources/references/types/SearchTypes/interfaces/typesSearchTypesResolvedSearchIndexDefinition) — The logical definition whose documents are being written. `index` can point at a shadow physical index during a swap, so providers must use this value for schema information and `index` for the destination.
+    - `name`: `string` — The index's unique name, which is what `query.search({ entity })` resolves against.
+    - `entity`: `string` — The `query.graph` entrypoint used to hydrate non-indexed fields.
+    - `fields`: `Record<string, [SearchFieldDefinition](/references/types/SearchTypes/interfaces/types.SearchTypes.SearchFieldDefinition)>` — The fields the index holds, keyed by their path in the document.
+    - `events`: `string`\[] (optional) — Events related and that can affect the data for this index.
+    - `consume`: (`event`: [Event](/resources/references/types/EventBusTypes/types/typesEventBusTypesEvent)\<any>, `context`: [SearchIngestionContext](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIngestionContext)) => Promise\<[SearchMutation](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMutation)\[]> (optional) — Executed on event ingestion to determine the action that needs to be performed on the index.
+    - `seed`: (`context`: [SearchSeedContext](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchSeedContext)) => AsyncIterable\<[SearchDocument](/resources/references/types/SearchTypes/types/typesSearchTypesSearchDocument)\[]> — Yields the index's documents in batches. Ran when there is no data in the index or on reindex.
+    - `primary_key`: `string` — The field whose value keys the index's documents.
+    - `provider`: `string` — The identifier of the provider backing this index.
+    - `settings`: [SearchIndexSettings](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIndexSettings) — The settings applied to the index.
+    - `definition_hash`: `string` — A hash of the definition, which the module compares to detect that an index drifted from its definition and must be migrated.
+    - `physical_name`: `string` — The concrete index the provider reads and writes. Differs from `name` under an index prefix, or while a `swap` builds into a replacement.
+  - `documents`: [SearchDocument](/resources/references/types/SearchTypes/types/typesSearchTypesSearchDocument)\[] — The documents, each with an `id`.
+    - `id`: `string`
+
+<a id="upsertdocuments-returns" />
+
+#### Returns
+
+**upsertDocuments**
+
+- `Promise`: Promise\<[SearchTask](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchTask)> — The write's task.
+  - `id`: `string` (optional) — The ID identifying the write in the search engine, which is passed back to the provider's `waitForTask` method. It's set only for a deferred write, since a provider applying writes inline has nothing to identify.
+  - `index`: `string` (optional) — The name of the index the write was applied to.
+  - `status`: [SearchTaskStatus](/resources/references/types/SearchTypes/types/typesSearchTypesSearchTaskStatus) — The write's status.
+  - `error`: `object` (optional) — The error that made the write fail, if its `status` is `failed`.
+    - `message`: `string` — The error's message.
+    - `code`: `string` (optional) — The error's code, as reported by the search engine.
+
+### deleteDocuments
+
+This method removes every document matching the given filters.
+
+Deleting by ID isn't a special case — it arrives as a filter on the primary key, such
+as `{ id: ["prod_1", "prod_2"] }`. Recognize that shape and use your engine's
+delete-by-ID path, which is usually much faster. If your engine can't delete by
+arbitrary filters, either search first and delete the matching IDs, or throw.
+
+#### Example
+
+```ts
+class MySearchProviderService extends AbstractSearchProviderService {
+  // ...
+  async deleteDocuments({
+    index,
+    filters,
+  }: SearchTypes.SearchDeleteDocumentsInput): Promise<SearchTypes.SearchTask> {
+    await this.client.deleteDocumentsByFilter(index, filters)
+    return { index, status: "succeeded" }
+  }
+}
+```
+
+<a id="deletedocuments-parameters" />
+
+#### Parameters
+
+**deleteDocuments**
+
+- `input`: [SearchDeleteDocumentsInput](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchDeleteDocumentsInput) — The index and the filters selecting the documents to remove.
+  - `index`: `string` — The physical name of the index to delete the documents from.
+  - `filters`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) — The filters selecting the documents to remove. Deleting by ID is a filter on the index's primary key, such as `{ id: ["prod_1", "prod_2"] }`.
+    - `$and`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters that must all match.
+    - `$or`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters of which at least one must match.
+    - `$not`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — Filters that must not match.
+    - `q`: `string` (optional) — The free-text query. Sits among the filters so a `query.graph` call converts to `query.search` unchanged; the module lifts it out before compiling the rest, so a provider never sees `q` as a field.
+
+<a id="deletedocuments-returns" />
+
+#### Returns
+
+**deleteDocuments**
+
+- `Promise`: Promise\<[SearchTask](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchTask)> — The write's task.
+  - `id`: `string` (optional) — The ID identifying the write in the search engine, which is passed back to the provider's `waitForTask` method. It's set only for a deferred write, since a provider applying writes inline has nothing to identify.
+  - `index`: `string` (optional) — The name of the index the write was applied to.
+  - `status`: [SearchTaskStatus](/resources/references/types/SearchTypes/types/typesSearchTypesSearchTaskStatus) — The write's status.
+  - `error`: `object` (optional) — The error that made the write fail, if its `status` is `failed`.
+    - `message`: `string` — The error's message.
+    - `code`: `string` (optional) — The error's code, as reported by the search engine.
+
+### clearIndex
+
+This method removes every document from an index without deleting the index itself.
+The Search Module uses it to empty an index before reseeding it in place.
+
+#### Example
+
+```ts
+class MySearchProviderService extends AbstractSearchProviderService {
+  // ...
+  async clearIndex({
+    index,
+  }: {
+    index: string
+  }): Promise<SearchTypes.SearchTask> {
+    await this.client.deleteAllDocuments(index)
+    return { index, status: "succeeded" }
+  }
+}
+```
+
+<a id="clearindex-parameters" />
+
+#### Parameters
+
+**clearIndex**
+
+- `input`: `object` — The index to empty.
+  - `index`: `string` — The index's physical name.
+
+<a id="clearindex-returns" />
+
+#### Returns
+
+**clearIndex**
+
+- `Promise`: Promise\<[SearchTask](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchTask)> — The write's task.
+  - `id`: `string` (optional) — The ID identifying the write in the search engine, which is passed back to the provider's `waitForTask` method. It's set only for a deferred write, since a provider applying writes inline has nothing to identify.
+  - `index`: `string` (optional) — The name of the index the write was applied to.
+  - `status`: [SearchTaskStatus](/resources/references/types/SearchTypes/types/typesSearchTypesSearchTaskStatus) — The write's status.
+  - `error`: `object` (optional) — The error that made the write fail, if its `status` is `failed`.
+    - `message`: `string` — The error's message.
+    - `code`: `string` (optional) — The error's code, as reported by the search engine.
+
+### search
+
+This method runs a search against an index. The Search Module will use this method in
+its `search` and `searchMany` methods.
+
+The free-text query arrives as `q`, already lifted out of `filters` passed to `query.search` or
+the Search Module's service. `attributes_to_retrieve` includes only the fields that the
+search engine can serve.
+
+Compile `input.filters` to your engine's filter syntax, and reject the
+operators it can't express rather than approximating them. Also, use
+`input.index.physical_name` as the index to query, not `input.index.name`,
+since the two differ under an index prefix or during a swap.
+
+#### Example
+
+```ts
+class MySearchProviderService extends AbstractSearchProviderService {
+  // ...
+  async search(
+    input: SearchTypes.ProviderSearchQuery
+  ): Promise<SearchTypes.SearchResult> {
+    const response = await this.client.search(input.index.physical_name, {
+      query: input.q,
+      limit: input.pagination?.take,
+    })
+
+    return {
+      hits: response.hits.map((hit) => ({ id: hit.id, document: hit })),
+      metadata: {
+        skip: input.pagination?.skip ?? 0,
+        take: input.pagination?.take ?? 20,
+        count: response.total,
+      },
+    }
+  }
+}
+```
+
+<a id="search-parameters" />
+
+#### Parameters
+
+**search**
+
+- `input`: [ProviderSearchQuery](/resources/references/types/SearchTypes/interfaces/typesSearchTypesProviderSearchQuery) — The query, the resolved index definition, and the attributes to return.
+  - `index`: [ResolvedSearchIndexDefinition](/resources/references/types/SearchTypes/interfaces/typesSearchTypesResolvedSearchIndexDefinition) — The resolved definition of the index to query. Use its `physical_name` as the index to query, since it differs from the index's name under an index prefix or while a swap builds a replacement.
+    - `name`: `string` — The index's unique name, which is what `query.search({ entity })` resolves against.
+    - `entity`: `string` — The `query.graph` entrypoint used to hydrate non-indexed fields.
+    - `fields`: `Record<string, [SearchFieldDefinition](/references/types/SearchTypes/interfaces/types.SearchTypes.SearchFieldDefinition)>` — The fields the index holds, keyed by their path in the document.
+    - `events`: `string`\[] (optional) — Events related and that can affect the data for this index.
+    - `consume`: (`event`: [Event](/resources/references/types/EventBusTypes/types/typesEventBusTypesEvent)\<any>, `context`: [SearchIngestionContext](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIngestionContext)) => Promise\<[SearchMutation](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMutation)\[]> (optional) — Executed on event ingestion to determine the action that needs to be performed on the index.
+    - `seed`: (`context`: [SearchSeedContext](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchSeedContext)) => AsyncIterable\<[SearchDocument](/resources/references/types/SearchTypes/types/typesSearchTypesSearchDocument)\[]> — Yields the index's documents in batches. Ran when there is no data in the index or on reindex.
+    - `primary_key`: `string` — The field whose value keys the index's documents.
+    - `provider`: `string` — The identifier of the provider backing this index.
+    - `settings`: [SearchIndexSettings](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIndexSettings) — The settings applied to the index.
+    - `definition_hash`: `string` — A hash of the definition, which the module compares to detect that an index drifted from its definition and must be migrated.
+    - `physical_name`: `string` — The concrete index the provider reads and writes. Differs from `name` under an index prefix, or while a `swap` builds into a replacement.
+  - `attributes_to_retrieve`: `string`\[] — The field paths the search engine must return on every hit. Already narrowed by the Search Module to the fields the index can serve, so project it as given.
+  - `q`: `string` (optional) — Lifted out of `filters` by the module, because `filters` compiles to a DSL with no representation for free text.
+  - `filters`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — The filters to apply, including the free-text query as `q`.
+    - `$and`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters that must all match.
+    - `$or`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters of which at least one must match.
+    - `$not`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — Filters that must not match.
+    - `q`: `string` (optional) — The free-text query. Sits among the filters so a `query.graph` call converts to `query.search` unchanged; the module lifts it out before compiling the rest, so a provider never sees `q` as a field.
+  - `pagination`: [SearchPagination](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchPagination) (optional) — How the results are paginated and sorted.
+    - `skip`: `number` (optional) — The number of documents to skip before the returned hits. Mutually exclusive with `cursor`.
+    - `take`: `number` (optional) — The maximum number of hits to return.
+    - `order`: `Record<string, [SearchOrderBy](/references/types/SearchTypes/types/types.SearchTypes.SearchOrderBy)>` (optional) — The fields to sort the hits by, keyed by the field's dotted path. The reserved `_score` key sorts by relevance.
+    - `cursor`: `string` (optional) — An opaque provider cursor, as returned in a previous result's `metadata.next_cursor`. Mutually exclusive with `skip`.
+  - `search_options`: [SearchOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchOptions) (optional) — The options changing how the query is matched, scored, and aggregated.
+    - `attributes_to_search_on`: `string`\[] (optional) — The dotted paths of the fields to match the free-text query against. Defaults to every field marked `searchable` on the index.
+    - `match_strategy`: [SearchMatchStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMatchStrategy) (optional) — How query terms combine. - `"all"` (default): every term must appear as a complete token. - `"any"`: at least one term must match. - `"last"`: typeahead. Completed terms must match in full; the last term is a prefix, so `"my sear"` matches `"My search results"`.
+    - `typo_tolerance`: `boolean` (optional) — Whether to match terms that are misspelled by a character or two.
+    - `facets`: (`string` | [SearchFacetRequest](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetRequest))\[] (optional) — The facets to compute alongside the hits. A string is shorthand for a `value` facet on that field.
+    - `disjunctive_facets`: `boolean` (optional) — Compute each facet ignoring the filter on that same field, so a storefront keeps showing sibling values of an active filter. Needs one query per facet on every engine reviewed, so the module expands them and hands the set to `provider.searchMany`.
+    - `highlight`: [SearchHighlightOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchHighlightOptions) (optional) — How the matched terms are highlighted in the returned hits.
+    - `distinct`: `string` (optional) — Return at most one hit per distinct value of this field.
+    - `min_score`: `number` (optional) — Discard hits scoring below this threshold.
+    - `include_score`: `boolean` (optional) — Whether to return each hit's relevance score.
+    - `locales`: `string`\[] (optional) — Query-time language hint, e.g. `["en"]`. Engines that analyze per language (Meilisearch, Algolia) use it to pick the analyzer; a provider that cannot honour it rejects it rather than silently matching differently. Defaults to the index' `settings.locales`.
+    - `vector`: [SearchVectorOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchVectorOptions) (optional) — The options of a vector, or semantic, search to run instead of, or alongside, the free-text query.
+    - `count`: [SearchCountStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchCountStrategy) (optional) — How the total number of matching documents is computed. `"exact"` may be rejected or slow depending on the provider.
+    - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Escape hatch for engine features the interface does not model, keyed by provider identifier, e.g. `{ typesense: { drop_tokens_threshold: 0 } }`.
+
+<a id="search-returns" />
+
+#### Returns
+
+**search**
+
+- `Promise`: Promise\<[SearchResult](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchResult)\<Record\<string, unknown>>> — The hits, any facets, and the metadata.
+
+### searchMany
+
+**Optional.**
+
+This method runs multiple queries in a single request to the search engine.
+The Search Module uses it for its `searchMany` method, including the extra
+queries produced by disjunctive faceting.
+
+Implementing this method is optional. When it's not implemented, the module
+runs the queries in parallel `search` calls instead. Override it to pack the
+queries into one engine round-trip.
+
+#### Example
+
+```ts
+class MySearchProviderService extends AbstractSearchProviderService {
+  // ...
+  async searchMany(
+    inputs: SearchTypes.ProviderSearchQuery[]
+  ): Promise<SearchTypes.SearchResult[]> {
+    const { results } = await this.client.multiSearch(
+      inputs.map((input) => ({
+        indexUid: input.index.physical_name,
+        query: input.q,
+      }))
+    )
+
+    return results.map((result, i) => this.buildResult(result, inputs[i]))
+  }
+}
+```
+
+<a id="searchmany-parameters" />
+
+#### Parameters
+
+**searchMany**
+
+- `inputs`: [ProviderSearchQuery](/resources/references/types/SearchTypes/interfaces/typesSearchTypesProviderSearchQuery)\[] — The queries to run.
+  - `index`: [ResolvedSearchIndexDefinition](/resources/references/types/SearchTypes/interfaces/typesSearchTypesResolvedSearchIndexDefinition) — The resolved definition of the index to query. Use its `physical_name` as the index to query, since it differs from the index's name under an index prefix or while a swap builds a replacement.
+    - `name`: `string` — The index's unique name, which is what `query.search({ entity })` resolves against.
+    - `entity`: `string` — The `query.graph` entrypoint used to hydrate non-indexed fields.
+    - `fields`: `Record<string, [SearchFieldDefinition](/references/types/SearchTypes/interfaces/types.SearchTypes.SearchFieldDefinition)>` — The fields the index holds, keyed by their path in the document.
+    - `events`: `string`\[] (optional) — Events related and that can affect the data for this index.
+    - `consume`: (`event`: [Event](/resources/references/types/EventBusTypes/types/typesEventBusTypesEvent)\<any>, `context`: [SearchIngestionContext](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIngestionContext)) => Promise\<[SearchMutation](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMutation)\[]> (optional) — Executed on event ingestion to determine the action that needs to be performed on the index.
+    - `seed`: (`context`: [SearchSeedContext](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchSeedContext)) => AsyncIterable\<[SearchDocument](/resources/references/types/SearchTypes/types/typesSearchTypesSearchDocument)\[]> — Yields the index's documents in batches. Ran when there is no data in the index or on reindex.
+    - `primary_key`: `string` — The field whose value keys the index's documents.
+    - `provider`: `string` — The identifier of the provider backing this index.
+    - `settings`: [SearchIndexSettings](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchIndexSettings) — The settings applied to the index.
+    - `definition_hash`: `string` — A hash of the definition, which the module compares to detect that an index drifted from its definition and must be migrated.
+    - `physical_name`: `string` — The concrete index the provider reads and writes. Differs from `name` under an index prefix, or while a `swap` builds into a replacement.
+  - `attributes_to_retrieve`: `string`\[] — The field paths the search engine must return on every hit. Already narrowed by the Search Module to the fields the index can serve, so project it as given.
+  - `q`: `string` (optional) — Lifted out of `filters` by the module, because `filters` compiles to a DSL with no representation for free text.
+  - `filters`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — The filters to apply, including the free-text query as `q`.
+    - `$and`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters that must all match.
+    - `$or`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters of which at least one must match.
+    - `$not`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — Filters that must not match.
+    - `q`: `string` (optional) — The free-text query. Sits among the filters so a `query.graph` call converts to `query.search` unchanged; the module lifts it out before compiling the rest, so a provider never sees `q` as a field.
+  - `pagination`: [SearchPagination](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchPagination) (optional) — How the results are paginated and sorted.
+    - `skip`: `number` (optional) — The number of documents to skip before the returned hits. Mutually exclusive with `cursor`.
+    - `take`: `number` (optional) — The maximum number of hits to return.
+    - `order`: `Record<string, [SearchOrderBy](/references/types/SearchTypes/types/types.SearchTypes.SearchOrderBy)>` (optional) — The fields to sort the hits by, keyed by the field's dotted path. The reserved `_score` key sorts by relevance.
+    - `cursor`: `string` (optional) — An opaque provider cursor, as returned in a previous result's `metadata.next_cursor`. Mutually exclusive with `skip`.
+  - `search_options`: [SearchOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchOptions) (optional) — The options changing how the query is matched, scored, and aggregated.
+    - `attributes_to_search_on`: `string`\[] (optional) — The dotted paths of the fields to match the free-text query against. Defaults to every field marked `searchable` on the index.
+    - `match_strategy`: [SearchMatchStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMatchStrategy) (optional) — How query terms combine. - `"all"` (default): every term must appear as a complete token. - `"any"`: at least one term must match. - `"last"`: typeahead. Completed terms must match in full; the last term is a prefix, so `"my sear"` matches `"My search results"`.
+    - `typo_tolerance`: `boolean` (optional) — Whether to match terms that are misspelled by a character or two.
+    - `facets`: (`string` | [SearchFacetRequest](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetRequest))\[] (optional) — The facets to compute alongside the hits. A string is shorthand for a `value` facet on that field.
+    - `disjunctive_facets`: `boolean` (optional) — Compute each facet ignoring the filter on that same field, so a storefront keeps showing sibling values of an active filter. Needs one query per facet on every engine reviewed, so the module expands them and hands the set to `provider.searchMany`.
+    - `highlight`: [SearchHighlightOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchHighlightOptions) (optional) — How the matched terms are highlighted in the returned hits.
+    - `distinct`: `string` (optional) — Return at most one hit per distinct value of this field.
+    - `min_score`: `number` (optional) — Discard hits scoring below this threshold.
+    - `include_score`: `boolean` (optional) — Whether to return each hit's relevance score.
+    - `locales`: `string`\[] (optional) — Query-time language hint, e.g. `["en"]`. Engines that analyze per language (Meilisearch, Algolia) use it to pick the analyzer; a provider that cannot honour it rejects it rather than silently matching differently. Defaults to the index' `settings.locales`.
+    - `vector`: [SearchVectorOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchVectorOptions) (optional) — The options of a vector, or semantic, search to run instead of, or alongside, the free-text query.
+    - `count`: [SearchCountStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchCountStrategy) (optional) — How the total number of matching documents is computed. `"exact"` may be rejected or slow depending on the provider.
+    - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Escape hatch for engine features the interface does not model, keyed by provider identifier, e.g. `{ typesense: { drop_tokens_threshold: 0 } }`.
+
+<a id="searchmany-returns" />
+
+#### Returns
+
+**searchMany**
+
+- `Promise`: Promise\<[SearchResult](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchResult)\<Record\<string, unknown>>\[]> — A result for each query, in the same order as the queries.
+  - `SearchResult<Record<string, unknown>>[]`: [SearchResult](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchResult)\<Record\<string, unknown>>\[]
+
+### waitForTask
+
+**Optional.**
+
+This method waits until a deferred write is applied. The Search Module uses it
+to wait for a seed to be applied before swapping the new index in.
+
+Implement it if your engine acknowledges writes and applies them later. When
+it's not implemented, the module assumes a write is applied once
+`upsertDocuments` resolves.
+
+#### Example
+
+```ts
+class MySearchProviderService extends AbstractSearchProviderService {
+  // ...
+  async waitForTask(
+    task: SearchTypes.SearchTask,
+    options?: { timeout_ms?: number }
+  ): Promise<SearchTypes.SearchTask> {
+    const result = await this.client.waitForTask(task.id!, {
+      timeOutMs: options?.timeout_ms,
+    })
+
+    return {
+      ...task,
+      status: result.status === "succeeded" ? "succeeded" : "failed",
+    }
+  }
+}
+```
+
+<a id="waitfortask-parameters" />
+
+#### Parameters
+
+**waitForTask**
+
+- `task`: [SearchTask](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchTask) — The task returned by the write, holding the `id` that identifies it.
+  - `id`: `string` (optional) — The ID identifying the write in the search engine, which is passed back to the provider's `waitForTask` method. It's set only for a deferred write, since a provider applying writes inline has nothing to identify.
+  - `index`: `string` (optional) — The name of the index the write was applied to.
+  - `status`: [SearchTaskStatus](/resources/references/types/SearchTypes/types/typesSearchTypesSearchTaskStatus) — The write's status.
+  - `error`: `object` (optional) — The error that made the write fail, if its `status` is `failed`.
+    - `message`: `string` — The error's message.
+    - `code`: `string` (optional) — The error's code, as reported by the search engine.
+- `options`: `object` (optional) — The options of the wait.
+  - `timeout_ms`: `number` (optional) — How long to wait for the task before giving up, in milliseconds.
+
+<a id="waitfortask-returns" />
+
+#### Returns
+
+**waitForTask**
+
+- `Promise`: Promise\<[SearchTask](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchTask)> — The task in its final state.
+  - `id`: `string` (optional) — The ID identifying the write in the search engine, which is passed back to the provider's `waitForTask` method. It's set only for a deferred write, since a provider applying writes inline has nothing to identify.
+  - `index`: `string` (optional) — The name of the index the write was applied to.
+  - `status`: [SearchTaskStatus](/resources/references/types/SearchTypes/types/typesSearchTypesSearchTaskStatus) — The write's status.
+  - `error`: `object` (optional) — The error that made the write fail, if its `status` is `failed`.
+    - `message`: `string` — The error's message.
+    - `code`: `string` (optional) — The error's code, as reported by the search engine.

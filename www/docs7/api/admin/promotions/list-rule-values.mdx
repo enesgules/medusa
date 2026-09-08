@@ -1,0 +1,754 @@
+---
+title: List Rule Values
+---
+
+`GET /admin/promotions/rule-value-options/{rule_type}/{rule_attribute_id}`
+
+Retrieve all potential values for promotion rules and target and buy rules based on the specified rule attribute and type.
+For example, if you provide the ID of the `currency_code` rule attribute, and set `rule_type` to `rules`, a list of currencies are retrieved in label-value pairs.
+
+## Base URLs
+
+- `http://localhost:9000`
+
+- `https://api.medusajs.com`
+
+## Authentication
+
+```json
+{
+  "api_token": {
+    "type": "http",
+    "x-displayName": "API Token",
+    "scheme": "basic"
+  }
+}
+```
+
+```json
+{
+  "cookie_auth": {
+    "type": "apiKey",
+    "in": "cookie",
+    "name": "connect.sid",
+    "x-displayName": "Cookie Session ID"
+  }
+}
+```
+
+```json
+{
+  "jwt_token": {
+    "type": "http",
+    "x-displayName": "JWT Token",
+    "scheme": "bearer"
+  }
+}
+```
+
+[Authentication guide](/api/admin/authentication)
+
+## Parameters
+
+<Accordion title="rule_type (path, required)">
+  The rule type.
+
+  ```json
+  {
+    "name": "rule_type",
+    "in": "path",
+    "description": "The rule type.",
+    "required": true,
+    "schema": {
+      "type": "string",
+      "enum": [
+        "rules",
+        "target-rules",
+        "buy-rules"
+      ]
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="rule_attribute_id (path, required)">
+  The rule attribute's ID.
+
+  ```json
+  {
+    "name": "rule_attribute_id",
+    "in": "path",
+    "description": "The rule attribute's ID.",
+    "required": true,
+    "schema": {
+      "type": "string"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="offset (query, optional)">
+  The number of items to skip when retrieving a list.
+
+  ```json
+  {
+    "name": "offset",
+    "in": "query",
+    "description": "The number of items to skip when retrieving a list.",
+    "required": false,
+    "schema": {
+      "type": "number",
+      "title": "offset",
+      "description": "The number of items to skip when retrieving a list.",
+      "externalDocs": {
+        "url": "#pagination"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="limit (query, optional)">
+  Limit the number of items returned in the list.
+
+  ```json
+  {
+    "name": "limit",
+    "in": "query",
+    "description": "Limit the number of items returned in the list.",
+    "required": false,
+    "schema": {
+      "type": "number",
+      "title": "limit",
+      "description": "Limit the number of items returned in the list.",
+      "externalDocs": {
+        "url": "#pagination"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="order (query, optional)">
+  The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+
+  ```json
+  {
+    "name": "order",
+    "in": "query",
+    "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "title": "order",
+      "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`."
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="with_deleted (query, optional)">
+  Whether to include deleted records in the result.
+
+  ```json
+  {
+    "name": "with_deleted",
+    "in": "query",
+    "description": "Whether to include deleted records in the result.",
+    "required": false,
+    "schema": {
+      "type": "boolean",
+      "title": "with_deleted",
+      "description": "Whether to include deleted records in the result."
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="application_method_target_type (query, optional)">
+  The application method target type to retrieve rules for.
+
+  ```json
+  {
+    "name": "application_method_target_type",
+    "in": "query",
+    "description": "The application method target type to retrieve rules for.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "description": "The application method target type to retrieve rules for."
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="q (query, optional)">
+  Apply a search query on the rule values' searchable properties.
+
+  ```json
+  {
+    "name": "q",
+    "in": "query",
+    "description": "Apply a search query on the rule values' searchable properties.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "title": "q",
+      "description": "Apply a search query on the rule values' searchable properties."
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="value (query, optional)">
+  ```json
+  {
+    "name": "value",
+    "in": "query",
+    "required": false,
+    "schema": {
+      "oneOf": [
+        {
+          "type": "string",
+          "title": "value",
+          "description": "Filter by a specific rule value."
+        },
+        {
+          "type": "array",
+          "description": "Filter by multiple rule values.",
+          "items": {
+            "type": "string",
+            "title": "value",
+            "description": "A rule value."
+          }
+        }
+      ]
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="fields (query, optional)">
+  Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+
+  ```json
+  {
+    "name": "fields",
+    "in": "query",
+    "description": "Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.",
+    "required": false,
+    "schema": {
+      "type": "string",
+      "title": "fields",
+      "description": "Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.",
+      "externalDocs": {
+        "url": "#select-fields-and-relations"
+      }
+    }
+  }
+  ```
+</Accordion>
+
+## Responses
+
+<Accordion title="200 — OK">
+  OK
+
+  ```json
+  {
+    "description": "OK",
+    "content": {
+      "application/json": {
+        "schema": {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The pagination fields.",
+              "required": [
+                "limit",
+                "offset",
+                "count"
+              ],
+              "properties": {
+                "limit": {
+                  "type": "number",
+                  "title": "limit",
+                  "description": "The maximum number of items returned."
+                },
+                "offset": {
+                  "type": "number",
+                  "title": "offset",
+                  "description": "The number of items skipped before retrieving the returned items."
+                },
+                "count": {
+                  "type": "number",
+                  "title": "count",
+                  "description": "The total number of items."
+                }
+              }
+            },
+            {
+              "type": "object",
+              "description": "The list of rule values.",
+              "required": [
+                "values"
+              ],
+              "properties": {
+                "values": {
+                  "type": "array",
+                  "description": "The list of rule values.",
+                  "items": {
+                    "$ref": "#/components/schemas/AdminRuleValueOption"
+                  }
+                }
+              }
+            }
+          ],
+          "description": "The paginated list of rule values."
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminRuleValueOption](/api/schemas/admin-rule-value-option)
+</Accordion>
+
+<Accordion title="400 — Client Error">
+  Client Error
+
+  ```json
+  {
+    "description": "Client Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "not_allowed": {
+            "$ref": "#/components/examples/not_allowed_error"
+          },
+          "invalid_data": {
+            "$ref": "#/components/examples/invalid_data_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="401 — User is not authorized. Must log in first">
+  User is not authorized. Must log in first
+
+  ```json
+  {
+    "description": "User is not authorized. Must log in first",
+    "content": {
+      "text/plain": {
+        "schema": {
+          "type": "string",
+          "default": "Unauthorized",
+          "example": "Unauthorized"
+        }
+      }
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Not Found Error">
+  Not Found Error
+
+  ```json
+  {
+    "description": "Not Found Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "message": "Entity with id 1 was not found",
+          "type": "not_found"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="409 — Invalid State Error">
+  Invalid State Error
+
+  ```json
+  {
+    "description": "Invalid State Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "unknown_error",
+          "message": "The request conflicted with another request. You may retry the request with the provided Idempotency-Key.",
+          "type": "QueryRunnerAlreadyReleasedError"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="422 — Invalid Request Error">
+  Invalid Request Error
+
+  ```json
+  {
+    "description": "Invalid Request Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "example": {
+          "code": "invalid_request_error",
+          "message": "Discount with code TEST already exists.",
+          "type": "duplicate_error"
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+<Accordion title="500 — Server Error">
+  Server Error
+
+  ```json
+  {
+    "description": "Server Error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Error"
+        },
+        "examples": {
+          "database": {
+            "$ref": "#/components/examples/database_error"
+          },
+          "unexpected_state": {
+            "$ref": "#/components/examples/unexpected_state_error"
+          },
+          "invalid_argument": {
+            "$ref": "#/components/examples/invalid_argument_error"
+          },
+          "default_error": {
+            "$ref": "#/components/examples/default_error"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [Error](/api/schemas/error)
+</Accordion>
+
+## Examples
+
+### JS SDK
+
+```js
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+  debug: import.meta.env.DEV,
+  auth: {
+    type: "session",
+  },
+})
+
+sdk.admin.promotion.listRuleValues("rules", "attr_123")
+.then(({ values }) => {
+  console.log(values)
+})
+```
+
+### cURL
+
+```bash
+curl '{backend_url}/admin/promotions/rule-value-options/{rule_type}/{rule_attribute_id}' \
+-H 'Authorization: Bearer {jwt_token}'
+```
+
+<Accordion title="OpenAPI operation">
+  ```json
+  {
+    "operationId": "GetPromotionsRuleValueOptionsRule_typeRule_attribute_id",
+    "summary": "List Rule Values Given a Rule Attribute",
+    "x-sidebar-summary": "List Rule Values",
+    "description": "Retrieve all potential values for promotion rules and target and buy rules based on the specified rule attribute and type.\nFor example, if you provide the ID of the `currency_code` rule attribute, and set `rule_type` to `rules`, a list of currencies are retrieved in label-value pairs.\n",
+    "x-authenticated": true,
+    "parameters": [
+      {
+        "name": "rule_type",
+        "in": "path",
+        "description": "The rule type.",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "rules",
+            "target-rules",
+            "buy-rules"
+          ]
+        }
+      },
+      {
+        "name": "rule_attribute_id",
+        "in": "path",
+        "description": "The rule attribute's ID.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "offset",
+        "in": "query",
+        "description": "The number of items to skip when retrieving a list.",
+        "required": false,
+        "schema": {
+          "type": "number",
+          "title": "offset",
+          "description": "The number of items to skip when retrieving a list.",
+          "externalDocs": {
+            "url": "#pagination"
+          }
+        }
+      },
+      {
+        "name": "limit",
+        "in": "query",
+        "description": "Limit the number of items returned in the list.",
+        "required": false,
+        "schema": {
+          "type": "number",
+          "title": "limit",
+          "description": "Limit the number of items returned in the list.",
+          "externalDocs": {
+            "url": "#pagination"
+          }
+        }
+      },
+      {
+        "name": "order",
+        "in": "query",
+        "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "order",
+          "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`."
+        }
+      },
+      {
+        "name": "with_deleted",
+        "in": "query",
+        "description": "Whether to include deleted records in the result.",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "title": "with_deleted",
+          "description": "Whether to include deleted records in the result."
+        }
+      },
+      {
+        "name": "application_method_target_type",
+        "in": "query",
+        "description": "The application method target type to retrieve rules for.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "description": "The application method target type to retrieve rules for."
+        }
+      },
+      {
+        "name": "q",
+        "in": "query",
+        "description": "Apply a search query on the rule values' searchable properties.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "q",
+          "description": "Apply a search query on the rule values' searchable properties."
+        }
+      },
+      {
+        "name": "value",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "oneOf": [
+            {
+              "type": "string",
+              "title": "value",
+              "description": "Filter by a specific rule value."
+            },
+            {
+              "type": "array",
+              "description": "Filter by multiple rule values.",
+              "items": {
+                "type": "string",
+                "title": "value",
+                "description": "A rule value."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "fields",
+        "in": "query",
+        "description": "Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "fields",
+          "description": "Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.",
+          "externalDocs": {
+            "url": "#select-fields-and-relations"
+          }
+        }
+      }
+    ],
+    "security": [
+      {
+        "api_token": []
+      },
+      {
+        "cookie_auth": []
+      },
+      {
+        "jwt_token": []
+      }
+    ],
+    "x-codeSamples": [
+      {
+        "lang": "JavaScript",
+        "label": "JS SDK",
+        "source": "import Medusa from \"@medusajs/js-sdk\"\n\nexport const sdk = new Medusa({\n  baseUrl: import.meta.env.VITE_BACKEND_URL || \"/\",\n  debug: import.meta.env.DEV,\n  auth: {\n    type: \"session\",\n  },\n})\n\nsdk.admin.promotion.listRuleValues(\"rules\", \"attr_123\")\n.then(({ values }) => {\n  console.log(values)\n})"
+      },
+      {
+        "lang": "Shell",
+        "label": "cURL",
+        "source": "curl '{backend_url}/admin/promotions/rule-value-options/{rule_type}/{rule_attribute_id}' \\\n-H 'Authorization: Bearer {jwt_token}'"
+      }
+    ],
+    "tags": [
+      "Promotions"
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "description": "The pagination fields.",
+                  "required": [
+                    "limit",
+                    "offset",
+                    "count"
+                  ],
+                  "properties": {
+                    "limit": {
+                      "type": "number",
+                      "title": "limit",
+                      "description": "The maximum number of items returned."
+                    },
+                    "offset": {
+                      "type": "number",
+                      "title": "offset",
+                      "description": "The number of items skipped before retrieving the returned items."
+                    },
+                    "count": {
+                      "type": "number",
+                      "title": "count",
+                      "description": "The total number of items."
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "description": "The list of rule values.",
+                  "required": [
+                    "values"
+                  ],
+                  "properties": {
+                    "values": {
+                      "type": "array",
+                      "description": "The list of rule values.",
+                      "items": {
+                        "$ref": "#/components/schemas/AdminRuleValueOption"
+                      }
+                    }
+                  }
+                }
+              ],
+              "description": "The paginated list of rule values."
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/400_error"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "404": {
+        "$ref": "#/components/responses/not_found_error"
+      },
+      "409": {
+        "$ref": "#/components/responses/invalid_state_error"
+      },
+      "422": {
+        "$ref": "#/components/responses/invalid_request_error"
+      },
+      "500": {
+        "$ref": "#/components/responses/500_error"
+      }
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminRuleValueOption](/api/schemas/admin-rule-value-option)
+</Accordion>

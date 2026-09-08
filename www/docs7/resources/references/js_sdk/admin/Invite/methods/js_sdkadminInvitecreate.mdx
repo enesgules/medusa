@@ -1,0 +1,51 @@
+---
+title: create
+---
+
+This method creates an invite. It sends a request to the
+[Create Invite](/api/admin/invites/create-invite)
+API route.
+
+## Example
+
+```ts
+sdk.admin.invite.create({
+  email: "user@gmail.com",
+})
+.then(({ invite }) => {
+  console.log(invite)
+})
+```
+
+<a id="create-parameters" />
+
+## Parameters
+
+**create**
+
+- `body`: [AdminCreateInvite](/resources/references/types/HttpTypes/types/typesHttpTypesAdminCreateInvite) — The invite's details.
+  - `email`: `string` — The email of the user to invite.
+  - `roles`: `string`\[] | `null` (optional) — The RBAC roles to assign to the user when the invite is accepted.
+  - `metadata`: `Record<string, unknown>` | `null` (optional) — Key-value pairs of custom data.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the invite.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="create-returns" />
+
+## Returns
+
+**create**
+
+- `Promise`: Promise\<[AdminInviteResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInviteResponse)> — The invite's details.
+  - `invite`: [AdminInvite](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminInvite) — The invite's details.
+    - `id`: `string` — The invite's ID.
+    - `email`: `string` — The email of the invited user.
+    - `accepted`: `boolean` — Whether the invite was accepted.
+    - `token`: `string` — The invite token.
+    - `expires_at`: `string` — The date the invite expires.
+    - `metadata`: `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `rbac_roles`: [AdminRbacRole](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRole)\[] (optional) — The RBAC roles assigned to the invite.
+    - `created_at`: `string` — The date that the invite was created.
+    - `updated_at`: `string` — The date that the invite was updated.

@@ -1,0 +1,54 @@
+---
+title: getWebhookActionAndData - Payment Module Reference
+sidebarTitle: getWebhookActionAndData
+---
+
+This documentation provides a reference to the `getWebhookActionAndData` method. This belongs to the Payment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves webhook event data with the associated payment provider.
+
+Learn more about handling webhook events in [this guide](/resources/commerce-modules/payment/webhook-events)
+
+## Example
+
+In the following example, `req` is an instance of `MedusaRequest`:
+
+```ts
+const dataAndAction = await paymentModuleService.getWebhookActionAndData({
+  provider: "stripe",
+  payload: {
+    data: req.body,
+    rawData: req.rawBody,
+    headers: req.headers,
+  },
+})
+```
+
+<a id="getwebhookactionanddata-parameters" />
+
+## Parameters
+
+**getWebhookActionAndData**
+
+- `data`: [ProviderWebhookPayload](/resources/references/payment/interfaces/paymentProviderWebhookPayload) — The webhook event's details.
+  - `provider`: `string` — The ID of the provider to pass the webhook event payload to.
+  - `payload`: `object` — The webhook event payload passed to the specified provider.
+    - `data`: `Record<string, unknown>` — The parsed webhook body.
+    - `rawData`: `string` | Buffer\<ArrayBufferLike> — The raw webhook request body.
+    - `headers`: `Record<string, unknown>` — The headers of the webhook request.
+
+<a id="getwebhookactionanddata-returns" />
+
+## Returns
+
+**getWebhookActionAndData**
+
+- `Promise`: Promise\<[WebhookActionResult](/resources/references/payment/interfaces/paymentWebhookActionResult)> — Resolves when the webhook event is handled successfully.
+  - `action`: [PaymentActions](/resources/references/payment/types/paymentPaymentActions) — The action that was performed so that Medusa can handle it internally.
+  - `data`: [WebhookActionData](/resources/references/payment/interfaces/paymentWebhookActionData) (optional) — The webhook action's details.
+    - `session_id`: `string` — The ID of the payment session in Medusa. Make sure to store this ID in the third-party payment provider to be able to retrieve the payment session later.
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The amount to be captured or authorized (based on the action's type.)

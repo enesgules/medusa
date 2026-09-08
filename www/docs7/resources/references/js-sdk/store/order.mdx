@@ -1,0 +1,621 @@
+---
+title: order - JS SDK Store Reference
+sidebarTitle: order
+---
+
+This documentation provides a reference to the `sdk.store.order` set of methods used to send requests to Medusa's Store API routes.
+
+## list
+
+This method retrieves a paginated list of orders matching the specified filters. It
+sends a request to the [List Orders](/api/store/orders/list-orders)
+API route.
+
+### Example
+
+To retrieve the list of orders:
+
+```ts
+// TODO must be authenticated as the customer to list their orders
+sdk.store.order.list()
+.then(({ orders, count, offset, limit }) => {
+  console.log(orders)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+// TODO must be authenticated as the customer to list their orders
+sdk.store.order.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ orders, count, offset, limit }) => {
+  console.log(orders)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each order:
+
+```ts
+// TODO must be authenticated as the customer to list their orders
+sdk.store.order.list({
+  fields: "id,*items"
+})
+.then(({ orders, count, offset, limit }) => {
+  console.log(orders)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [StoreOrderFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFilters) (optional) — Configure the fields to retrieve in the orders.
+  - `$and`: ([StoreOrderFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[StoreOrderFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([StoreOrderFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[StoreOrderFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([StoreOrderFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[StoreOrderFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by order ID(s).
+    - `status`: [OrderStatus](/resources/references/fulfillment/types/fulfillmentOrderStatus) | [OrderStatus](/resources/references/fulfillment/types/fulfillmentOrderStatus)\[] (optional) — Filter by order status(es).
+  - `$or`: ([StoreOrderFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[StoreOrderFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([StoreOrderFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[StoreOrderFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([StoreOrderFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[StoreOrderFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+    - `limit`: `number` (optional) — The maximum number of items to retrieve.
+    - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+    - `order`: `string` (optional) — The field to sort by and in which order.
+
+      Example:
+
+      ```
+      -created_at
+      ```
+    - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+    - `id`: `string` | `string`\[] (optional) — Filter by order ID(s).
+    - `status`: [OrderStatus](/resources/references/fulfillment/types/fulfillmentOrderStatus) | [OrderStatus](/resources/references/fulfillment/types/fulfillmentOrderStatus)\[] (optional) — Filter by order status(es).
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `id`: `string` | `string`\[] (optional) — Filter by order ID(s).
+  - `status`: [OrderStatus](/resources/references/fulfillment/types/fulfillmentOrderStatus) | [OrderStatus](/resources/references/fulfillment/types/fulfillmentOrderStatus)\[] (optional) — Filter by order status(es).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[StoreOrderListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesStoreOrderListResponse)> — The paginated list of orders.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## retrieve
+
+This method retrieves an order by its ID. It sends a request to the
+[Get Order](/api/store/orders/get-an-order) API route.
+
+### Example
+
+To retrieve an order by its ID:
+
+```ts
+sdk.store.order.retrieve("order_123")
+.then(({ order }) => {
+  console.log(order)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.store.order.retrieve("order_123", {
+  fields: "id,*items"
+})
+.then(({ order }) => {
+  console.log(order)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The order's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the order.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<object> — The order's details.
+  - `order`: [StoreOrder](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrder)
+    - `id`: `string` — The order's ID.
+    - `region_id`: `null` | `string` — The ID of the associated region.
+    - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+    - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+    - `email`: `null` | `string` — The email of the customer that placed the order.
+    - `currency_code`: `string` — The order's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `display_id`: `number` (optional) — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `status`: `string` — The order's status.
+    - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+    - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the order was created.
+    - `updated_at`: `string` | `Date` — The date the order was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+    - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The total gift card amount.
+    - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+    - `shipping_address`: `null` | [StoreOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderAddress) (optional) — The order's shipping address.
+    - `billing_address`: `null` | [StoreOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderAddress) (optional) — The order's billing address.
+    - `items`: `null` | [StoreOrderLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderLineItem)\[] — The order's items.
+    - `shipping_methods`: `null` | [StoreOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderShippingMethod)\[] — The order's shipping methods.
+    - `payment_collections`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection)\[] (optional) — The order's payment collections.
+    - `fulfillments`: [StoreOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `customer`: [StoreCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomer) (optional) — The customer that placed the order.
+
+## requestTransfer
+
+This method requests a order transfer from a guest account to the current, logged in customer account.
+
+Customer requesting the transfer must be logged in.
+
+### Example
+
+```ts
+// TODO must be authenticated as the customer to request the order transfer
+sdk.store.order.requestTransfer(
+  "order_123",
+  {
+    description: "I want to transfer this order to my friend."
+  },
+  {},
+  {
+    Authorization: `Bearer ${token}`
+  }
+)
+.then(({ order }) => {
+  console.log(order)
+})
+```
+
+<a id="requesttransfer-parameters" />
+
+### Parameters
+
+**requestTransfer**
+
+- `id`: `string`
+- `body`: [StoreRequestOrderTransfer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreRequestOrderTransfer) — The transfer's details.
+  - `description`: `string` (optional) — The description of the transfer request.
+  - `update_order_email`: `boolean` (optional) — Whether to update the order.email to the transferred customer email.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the order.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="requesttransfer-returns" />
+
+### Returns
+
+**requestTransfer**
+
+- `Promise`: Promise\<[StoreOrderResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderResponse)> — The order details.
+  - `order`: [StoreOrder](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrder) — The order's details.
+    - `id`: `string` — The order's ID.
+    - `region_id`: `null` | `string` — The ID of the associated region.
+    - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+    - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+    - `email`: `null` | `string` — The email of the customer that placed the order.
+    - `currency_code`: `string` — The order's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `display_id`: `number` (optional) — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `status`: `string` — The order's status.
+    - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+    - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the order was created.
+    - `updated_at`: `string` | `Date` — The date the order was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+    - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The total gift card amount.
+    - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+    - `shipping_address`: `null` | [StoreOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderAddress) (optional) — The order's shipping address.
+    - `billing_address`: `null` | [StoreOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderAddress) (optional) — The order's billing address.
+    - `items`: `null` | [StoreOrderLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderLineItem)\[] — The order's items.
+    - `shipping_methods`: `null` | [StoreOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderShippingMethod)\[] — The order's shipping methods.
+    - `payment_collections`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection)\[] (optional) — The order's payment collections.
+    - `fulfillments`: [StoreOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `customer`: [StoreCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomer) (optional) — The customer that placed the order.
+
+## cancelTransfer
+
+This method cancels an order transfer request.
+
+Customer requesting the transfer must be logged in.
+
+### Example
+
+```ts
+// TODO must be authenticated as the customer to cancel the order transfer
+sdk.store.order.cancelTransfer(
+  "order_123",
+  {},
+  {
+    Authorization: `Bearer ${token}`
+  }
+)
+.then(({ order }) => {
+  console.log(order)
+})
+```
+
+<a id="canceltransfer-parameters" />
+
+### Parameters
+
+**cancelTransfer**
+
+- `id`: `string` — The order's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the order.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="canceltransfer-returns" />
+
+### Returns
+
+**cancelTransfer**
+
+- `Promise`: Promise\<[StoreOrderResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderResponse)> — The order details.
+  - `order`: [StoreOrder](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrder) — The order's details.
+    - `id`: `string` — The order's ID.
+    - `region_id`: `null` | `string` — The ID of the associated region.
+    - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+    - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+    - `email`: `null` | `string` — The email of the customer that placed the order.
+    - `currency_code`: `string` — The order's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `display_id`: `number` (optional) — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `status`: `string` — The order's status.
+    - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+    - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the order was created.
+    - `updated_at`: `string` | `Date` — The date the order was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+    - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The total gift card amount.
+    - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+    - `shipping_address`: `null` | [StoreOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderAddress) (optional) — The order's shipping address.
+    - `billing_address`: `null` | [StoreOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderAddress) (optional) — The order's billing address.
+    - `items`: `null` | [StoreOrderLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderLineItem)\[] — The order's items.
+    - `shipping_methods`: `null` | [StoreOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderShippingMethod)\[] — The order's shipping methods.
+    - `payment_collections`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection)\[] (optional) — The order's payment collections.
+    - `fulfillments`: [StoreOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `customer`: [StoreCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomer) (optional) — The customer that placed the order.
+
+## acceptTransfer
+
+The method called for the original owner to accept the order transfer to a new owner.
+
+### Example
+
+```ts
+sdk.store.order.acceptTransfer(
+  "order_123",
+  {
+    token: "transfer_token"
+  },
+  {
+    Authorization: `Bearer ${token}`
+  }
+)
+.then(({ order }) => {
+  console.log(order)
+})
+```
+
+<a id="accepttransfer-parameters" />
+
+### Parameters
+
+**acceptTransfer**
+
+- `id`: `string` — The order's ID.
+- `body`: [StoreAcceptOrderTransfer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreAcceptOrderTransfer) — The payload containing the transfer token.
+  - `token`: `string` — The transfer token received in the email notification.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the order.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="accepttransfer-returns" />
+
+### Returns
+
+**acceptTransfer**
+
+- `Promise`: Promise\<[StoreOrderResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderResponse)> — The order details.
+  - `order`: [StoreOrder](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrder) — The order's details.
+    - `id`: `string` — The order's ID.
+    - `region_id`: `null` | `string` — The ID of the associated region.
+    - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+    - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+    - `email`: `null` | `string` — The email of the customer that placed the order.
+    - `currency_code`: `string` — The order's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `display_id`: `number` (optional) — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `status`: `string` — The order's status.
+    - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+    - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the order was created.
+    - `updated_at`: `string` | `Date` — The date the order was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+    - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The total gift card amount.
+    - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+    - `shipping_address`: `null` | [StoreOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderAddress) (optional) — The order's shipping address.
+    - `billing_address`: `null` | [StoreOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderAddress) (optional) — The order's billing address.
+    - `items`: `null` | [StoreOrderLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderLineItem)\[] — The order's items.
+    - `shipping_methods`: `null` | [StoreOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderShippingMethod)\[] — The order's shipping methods.
+    - `payment_collections`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection)\[] (optional) — The order's payment collections.
+    - `fulfillments`: [StoreOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `customer`: [StoreCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomer) (optional) — The customer that placed the order.
+
+## declineTransfer
+
+The method called for the original owner to decline the order transfer to a new owner.
+
+### Example
+
+```ts
+sdk.store.order.declineTransfer(
+  "order_123",
+  {
+    token: "transfer_token"
+  },
+  {
+    Authorization: `Bearer ${token}`
+  }
+)
+.then(({ order }) => {
+  console.log(order)
+})
+```
+
+<a id="declinetransfer-parameters" />
+
+### Parameters
+
+**declineTransfer**
+
+- `id`: `string` — The order's ID.
+- `body`: [StoreDeclineOrderTransfer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreDeclineOrderTransfer) — The payload containing the transfer token.
+  - `token`: `string` — The transfer token received in the email notification.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the order.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="declinetransfer-returns" />
+
+### Returns
+
+**declineTransfer**
+
+- `Promise`: Promise\<[StoreOrderResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderResponse)> — The order details.
+  - `order`: [StoreOrder](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrder) — The order's details.
+    - `id`: `string` — The order's ID.
+    - `region_id`: `null` | `string` — The ID of the associated region.
+    - `customer_id`: `null` | `string` — The ID of the customer that placed the order.
+    - `sales_channel_id`: `null` | `string` — The ID of the sales channel the order was placed in.
+    - `email`: `null` | `string` — The email of the customer that placed the order.
+    - `currency_code`: `string` — The order's currency code.
+
+      Example:
+
+      ```
+      usd
+      ```
+    - `display_id`: `number` (optional) — The order's display ID.
+    - `custom_display_id`: `string` (optional) — The order's custom display ID.
+    - `status`: `string` — The order's status.
+    - `payment_status`: [PaymentStatus](/resources/references/types/types/typesPaymentStatus) — The order's payment status.
+    - `fulfillment_status`: [FulfillmentStatus](/resources/references/types/types/typesFulfillmentStatus) — The order's fulfillment status.
+    - `transactions`: [BaseOrderTransaction](/resources/references/types/interfaces/typesBaseOrderTransaction)\[] (optional) — The order's transactions.
+    - `summary`: [BaseOrderSummary](/resources/references/types/interfaces/typesBaseOrderSummary) — The order's summary.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` | `Date` — The date the order was created.
+    - `updated_at`: `string` | `Date` — The date the order was updated.
+    - `original_item_total`: `number` — The sum of all line items' original totals before discounts, including taxes.
+    - `original_item_subtotal`: `number` — The sum of all line items' original subtotals before discounts, excluding taxes.
+    - `original_item_tax_total`: `number` — The sum of all line items' original tax totals before discounts.
+    - `item_total`: `number` — The sum of all line items' totals after discounts, including taxes.
+    - `item_subtotal`: `number` — The sum of all line items' subtotals before discounts, excluding taxes.
+    - `item_tax_total`: `number` — The sum of all line items' tax totals after discounts.
+    - `item_discount_total`: `number` — The sum of all discounts applied to line items, including the tax portion of discounts.
+    - `original_total`: `number` — The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
+    - `original_subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    - `original_tax_total`: `number` — The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
+    - `total`: `number` — The order's final total after discounts and credit lines, including taxes.
+    - `subtotal`: `number` — The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
+    - `tax_total`: `number` — The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
+    - `discount_total`: `number` — The total amount of discounts applied to the order, including the tax portion of discounts.
+    - `discount_tax_total`: `number` — The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
+    - `gift_card_total`: `number` — The total gift card amount.
+    - `gift_card_tax_total`: `number` — The tax total applied on the order's gift card amount.
+    - `shipping_total`: `number` — The sum of all shipping methods' totals after discounts, including taxes.
+    - `shipping_subtotal`: `number` — The sum of all shipping methods' subtotals before discounts, excluding taxes.
+    - `shipping_tax_total`: `number` — The sum of all shipping methods' tax totals after discounts.
+    - `shipping_discount_total`: `number` — The sum of all discounts applied to shipping methods, including the tax portion of discounts.
+    - `original_shipping_total`: `number` — The sum of all shipping methods' original totals before discounts, including taxes.
+    - `original_shipping_subtotal`: `number` — The sum of all shipping methods' original subtotals before discounts, excluding taxes.
+    - `original_shipping_tax_total`: `number` — The sum of all shipping methods' original tax totals before discounts.
+    - `credit_line_total`: `number` — The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
+    - `shipping_address`: `null` | [StoreOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderAddress) (optional) — The order's shipping address.
+    - `billing_address`: `null` | [StoreOrderAddress](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderAddress) (optional) — The order's billing address.
+    - `items`: `null` | [StoreOrderLineItem](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderLineItem)\[] — The order's items.
+    - `shipping_methods`: `null` | [StoreOrderShippingMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderShippingMethod)\[] — The order's shipping methods.
+    - `payment_collections`: [StorePaymentCollection](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStorePaymentCollection)\[] (optional) — The order's payment collections.
+    - `fulfillments`: [StoreOrderFulfillment](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreOrderFulfillment)\[] (optional) — The order's fulfillments.
+    - `customer`: [StoreCustomer](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreCustomer) (optional) — The customer that placed the order.

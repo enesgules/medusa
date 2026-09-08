@@ -1,0 +1,60 @@
+---
+title: listUsers
+---
+
+This method retrieves a paginated list of users associated with an RBAC role.
+It sends a request to the List Role Users API route.
+
+## Example
+
+```ts
+sdk.admin.rbacRole.listUsers("role_123")
+.then(({ users, count, limit, offset }) => {
+  console.log(users)
+})
+```
+
+<a id="listusers-parameters" />
+
+## Parameters
+
+**listUsers**
+
+- `roleId`: `string` — The role's ID.
+- `queryParams`: [AdminRbacRoleUserListParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleUserListParams) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `user_id`: `string` | `string`\[] (optional) — Filter by user ID(s).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="listusers-returns" />
+
+## Returns
+
+**listUsers**
+
+- `Promise`: Promise\<[AdminRbacRoleUserListResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminRbacRoleUserListResponse)> — The paginated list of users.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+  - `users`: [AdminUser](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUser)\[] — The list of users.
+    - `id`: `string` — The user's ID.
+    - `email`: `string` — The user's email.
+    - `first_name`: `null` | `string` — The user's first name.
+    - `last_name`: `null` | `string` — The user's last name.
+    - `avatar_url`: `null` | `string` — The URL of the user's avatar image.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the user.
+    - `created_at`: `string` — The date the user was created.
+    - `updated_at`: `string` — The date the user was updated.
+    - `deleted_at`: `null` | `string` — The date the user was deleted.

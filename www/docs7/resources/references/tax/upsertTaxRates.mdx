@@ -1,0 +1,179 @@
+---
+title: upsertTaxRates - Tax Module Reference
+sidebarTitle: upsertTaxRates
+---
+
+This documentation provides a reference to the `upsertTaxRates` method. This belongs to the Tax Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="upserttaxrates-data-sharedcontext-promisetaxratedto" />
+
+## upsertTaxRates(data, sharedContext?): Promise\<[TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)>
+
+This method updates or creates a tax rate if it doesn't exist.
+
+### Example
+
+```ts
+const taxRate = await taxModuleService.upsertTaxRates({
+  id: "txr_123",
+  rate: 10,
+})
+```
+
+<a id="upserttaxrates-parameters" />
+
+### Parameters
+
+**upsertTaxRates**
+
+- `data`: [UpsertTaxRateDTO](/resources/references/tax/interfaces/taxUpsertTaxRateDTO) — The attributes in the tax rate to be created or updated.
+  - `id`: `string` (optional) — The ID of the tax rate. If not provided, the tax rate is created.
+  - `rate`: `null` | `number` (optional) — The rate to charge
+
+    Example:
+
+    ```
+    10
+    ```
+  - `code`: `null` | `string` (optional) — The code of the tax rate.
+  - `name`: `string` (optional) — The name of the tax rate.
+  - `is_default`: `boolean` (optional) — Whether the tax rate is default.
+  - `created_by`: `null` | `string` (optional) — Who created the tax rate. For example, the ID of the user that created it.
+  - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/tax/interfaces/taxContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/tax/interfaces/taxIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="upserttaxrates-returns" />
+
+### Returns
+
+**upsertTaxRates**
+
+- `Promise`: Promise\<[TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)> — The created or updated tax rate.
+  - `id`: `string` — The ID of the tax rate.
+  - `rate`: `null` | `number` — The rate to charge.
+
+    Example:
+
+    ```
+    10
+    ```
+  - `code`: `null` | `string` — The code the tax rate is identified by.
+  - `name`: `string` — The name of the Tax Rate.
+
+    Example:
+
+    ```
+    VAT
+    ```
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `tax_region_id`: `string` — The ID of the associated tax region.
+  - `is_combinable`: `boolean` — Whether the tax rate should be combined with parent rates. Learn more [here](/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+  - `is_default`: `boolean` — Whether the tax rate is the default rate for the region.
+  - `created_at`: `string` | `Date` — The creation date of the tax rate.
+  - `updated_at`: `string` | `Date` — The update date of the tax rate.
+  - `deleted_at`: `null` | `Date` — The deletion date of the tax rate.
+  - `created_by`: `null` | `string` — Who created the tax rate. For example, the ID of the user that created the tax rate.
+
+<a id="upserttaxrates-data-sharedcontext-promisetaxratedto-1" />
+
+## upsertTaxRates(data, sharedContext?): Promise\<[TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[]>
+
+This method updates or creates tax rates if they don't exist.
+
+### Example
+
+```ts
+const taxRates = await taxModuleService.upsertTaxRates([
+  {
+    id: "txr_123",
+    rate: 10,
+  },
+])
+```
+
+<a id="upserttaxrates-parameters-1" />
+
+### Parameters
+
+**upsertTaxRates**
+
+- `data`: [UpsertTaxRateDTO](/resources/references/tax/interfaces/taxUpsertTaxRateDTO)\[] — The attributes in the tax rates to be created or updated.
+  - `id`: `string` (optional) — The ID of the tax rate. If not provided, the tax rate is created.
+  - `rate`: `null` | `number` (optional) — The rate to charge
+
+    Example:
+
+    ```
+    10
+    ```
+  - `code`: `null` | `string` (optional) — The code of the tax rate.
+  - `name`: `string` (optional) — The name of the tax rate.
+  - `is_default`: `boolean` (optional) — Whether the tax rate is default.
+  - `created_by`: `null` | `string` (optional) — Who created the tax rate. For example, the ID of the user that created it.
+  - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/tax/interfaces/taxContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/tax/interfaces/taxIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="upserttaxrates-returns-1" />
+
+### Returns
+
+**upsertTaxRates**
+
+- `Promise`: Promise\<[TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[]> — The created or updated tax rates.
+  - `TaxRateDTO[]`: [TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[]
+    - `id`: `string` — The ID of the tax rate.
+    - `rate`: `null` | `number` — The rate to charge.
+
+      Example:
+
+      ```
+      10
+      ```
+    - `code`: `null` | `string` — The code the tax rate is identified by.
+    - `name`: `string` — The name of the Tax Rate.
+
+      Example:
+
+      ```
+      VAT
+      ```
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `tax_region_id`: `string` — The ID of the associated tax region.
+    - `is_combinable`: `boolean` — Whether the tax rate should be combined with parent rates. Learn more [here](/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+    - `is_default`: `boolean` — Whether the tax rate is the default rate for the region.
+    - `created_at`: `string` | `Date` — The creation date of the tax rate.
+    - `updated_at`: `string` | `Date` — The update date of the tax rate.
+    - `deleted_at`: `null` | `Date` — The deletion date of the tax rate.
+    - `created_by`: `null` | `string` — Who created the tax rate. For example, the ID of the user that created the tax rate.

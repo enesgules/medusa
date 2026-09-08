@@ -1,0 +1,51 @@
+---
+title: createUser - JS SDK Auth Reference
+sidebarTitle: createUser
+---
+
+This documentation provides a reference to the `sdk.auth.createUser` method used to send requests to Medusa's Authentication API routes. It can be used for admin users, customers, or custom actor types.
+
+This method creates or links the `user` (admin) actor for a redirect-based
+authentication provider after a successful callback. An existing user with
+a matching, identity-provider-verified email is linked; otherwise a new
+user is created. It sends a request to the [Provision Auth User API route](/api/admin).
+
+The token returned by [callback](/resources/references/js-sdk/auth/callback) is actorless until the user is
+provisioned. Pass that token in the `Authorization` header, then call
+[refresh](/resources/references/js-sdk/auth/refresh) to obtain a token bound to the newly linked user.
+
+## Example
+
+```ts
+const token = await sdk.auth.callback("user", "okta", queryParams)
+await sdk.auth.createUser("okta", { Authorization: `Bearer ${token}` })
+await sdk.auth.refresh()
+```
+
+<a id="createuser-parameters" />
+
+## Parameters
+
+**createUser**
+
+- `provider`: `string` — The authentication provider instance ID. For example, `okta`.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request, typically the `Authorization` bearer token returned by the callback.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="createuser-returns" />
+
+## Returns
+
+**createUser**
+
+- `Promise`: Promise\<[AdminUserResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUserResponse)> — The created or linked user.
+  - `user`: [AdminUser](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUser) — The user's details.
+    - `id`: `string` — The user's ID.
+    - `email`: `string` — The user's email.
+    - `first_name`: `null` | `string` — The user's first name.
+    - `last_name`: `null` | `string` — The user's last name.
+    - `avatar_url`: `null` | `string` — The URL of the user's avatar image.
+    - `metadata`: `null` | `Record<string, unknown>` — Custom key-value pairs that can be added to the user.
+    - `created_at`: `string` — The date the user was created.
+    - `updated_at`: `string` — The date the user was updated.
+    - `deleted_at`: `null` | `string` — The date the user was deleted.

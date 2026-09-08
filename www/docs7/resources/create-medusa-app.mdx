@@ -1,0 +1,525 @@
+---
+title: create-medusa-app CLI Tool
+---
+
+The `create-medusa-app` CLI tool simplifies the process of creating a new Medusa project. It creates a monorepo containing your Medusa backend application and, optionally, a Next.js Starter Storefront. It also allows you to setup a [Medusa plugin project](/resources/create-medusa-app#create-a-medusa-plugin-project).
+
+### Prerequisites
+
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Git CLI tool](https://git-scm.com/downloads)
+- [PostgreSQL](https://www.postgresql.org/download/)
+
+## Usage
+
+```bash
+npx create-medusa-app@latest [project-name]
+```
+
+The command will use the package manager you run it with to create a new Medusa project in a directory named after the provided `project-name`.
+
+### Arguments
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `project-name`
+      </td>
+
+      <td>
+        The name of the project's directory and PostgreSQL database to be created. For example, `my-medusa-store`. If not provided, you'll be prompted to enter a project name.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Command Options
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Option
+      </th>
+
+      <th>
+        Description
+      </th>
+
+      <th>
+        Default
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        `--repo-url <url>`
+      </td>
+
+      <td>
+        The repository URL to create the project from.
+      </td>
+
+      <td>
+        `https://github.com/medusajs/dtc-starter`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--no-browser`
+      </td>
+
+      <td>
+        Disables opening the browser at the end of the project creation and only shows success message.
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--skip-db`
+      </td>
+
+      <td>
+        Skips creating the database, running migrations, and seeding, and subsequently skips opening the browser. Useful if you want to set the database URL with the `--db-url` option.
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--db-url <url>`
+      </td>
+
+      <td>
+        Skips database creation and sets the database URL to the provided URL. Throws an error if connection to the database fails. Will still run migrations and open the admin after project creation. Useful if you already have a database created, locally or remotely.
+      </td>
+
+      <td>
+        \-
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--no-migrations`
+      </td>
+
+      <td>
+        Skips running migrations, creating admin user, and seeding. If used, it's expected that you pass the `--db-url` option with a URL of a database that has all necessary migrations. Otherwise, unexpected errors will occur. Helpful only if combined with `--db-url`.
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--directory-path <path>`
+      </td>
+
+      <td>
+        Allows specifying the parent directory path to create the directory of the new project in.
+      </td>
+
+      <td>
+        The current directory the command is running in.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--with-nextjs-starter`
+      </td>
+
+      <td>
+        Installs the Next.js Starter storefront in the `apps/storefront` directory within your project monorepo. If this option is not specified, the storefront directory is removed from the project.
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--verbose`
+      </td>
+
+      <td>
+        Shows detailed logs. Useful when you're reporting an issue with the tool.
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--plugin`
+      </td>
+
+      <td>
+        Create a [plugin project](/resources/create-medusa-app#create-a-medusa-plugin-project) instead of a Medusa application. This option is available starting from [Medusa v2.3.0](https://github.com/medusajs/medusa/releases/tag/v2.3.0).
+      </td>
+
+      <td>
+        `false`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--version`
+      </td>
+
+      <td>
+        Specify the Medusa version to install in the project. The specified version will be used for every `@medusajs/*` package in the Medusa and Next.js Starter projects.
+      </td>
+
+      <td>
+        The latest version of Medusa at the time of running the command.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--use-npm`
+      </td>
+
+      <td>
+        Uses `npm` as the package manager to create the project, regardless of the package manager used to run the command.
+      </td>
+
+      <td>
+        The package manager used to run the command.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--use-yarn`
+      </td>
+
+      <td>
+        Uses `yarn` as the package manager to create the project, regardless of the package manager used to run the command.
+      </td>
+
+      <td>
+        The package manager used to run the command.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `--use-pnpm`
+      </td>
+
+      <td>
+        Uses `pnpm` as the package manager to create the project, regardless of the package manager used to run the command.
+      </td>
+
+      <td>
+        The package manager used to run the command.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Examples
+
+### Connect to a Vercel PostgreSQL Database
+
+To use a PostgreSQL database hosted on Vercel, use the `--db-url` option and add to the end of your connection URL `?sslmode=require`. For example:
+
+```bash
+npx create-medusa-app@latest --db-url "postgres://default:<password><host-region>.postgres.vercel-storage.com:5432/verceldb?sslmode=require"
+```
+
+<Note>
+  If the database already has the necessary migrations and you don't need the command to run migrations, you can pass the `--no-migrations` option.
+</Note>
+
+### Connect to a Supabase Database
+
+To connect to a Supabase database, use the `--db-url` option with its value being the connection URL to your Supabase database. For example:
+
+```bash
+npx create-medusa-app@latest --db-url "postgres://postgres.<host>:<password>@aws-0-eu-central-1.pooler.supabase.com:5432/postgres"
+```
+
+<Note>
+  If the database already has the necessary migrations and you don't need the command to run migrations, you can pass the `--no-migrations` option.
+</Note>
+
+***
+
+## Project Structure
+
+The `create-medusa-app` tool creates a monorepo project with the following structure:
+
+```
+my-medusa-store/
+├── apps/
+│   ├── backend/          # Your Medusa backend application
+│   │   ├── src/
+│   │   ├── package.json
+│   │   └── medusa-config.ts
+│   └── storefront/       # Next.js Starter Storefront (if --with-nextjs-starter is used)
+│       ├── src/
+│       ├── package.json
+│       └── next.config.js
+├── package.json          # Root package.json for workspace management
+└── pnpm-workspace.yaml   # Workspace configuration
+```
+
+Your Medusa backend will be located in the `apps/backend` directory, and the optional Next.js Starter Storefront in `apps/storefront`.
+
+***
+
+## Create a Medusa Plugin Project
+
+The `create-medusa-app` tool can also be used to create a Medusa Plugin Project. You can do that by passing the `--plugin` option:
+
+```bash
+npx create-medusa-app@latest my-plugin --plugin
+```
+
+Learn more about how to create a plugin in [this documentation](/learn/fundamentals/plugins).
+
+***
+
+## Install a Specific Medusa Version
+
+To install a specific version of Medusa, use the `--version` option. This will install the specified version for every `@medusajs/*` package in the Medusa and Next.js Starter projects. For example:
+
+```bash
+npx create-medusa-app@latest my-medusa-store --version 2.3.0
+```
+
+This will create a new Medusa project with the `2.3.0` version.
+
+***
+
+## Troubleshooting
+
+### Errors when using VSCode or GitHub Codespaces
+
+If you're running the Medusa application through tools like VSCode or GitHub Codespaces, you must ensure that:
+
+1. Port forwarding is configured for ports `9000` and `7001`. Refer to the following resources on how to configure forwarded ports:
+   - [VSCode local development.](https://code.visualstudio.com/docs/editor/port-forwarding)
+   - [VSCode remote development.](https://code.visualstudio.com/docs/remote/ssh#_forwarding-a-port-creating-ssh-tunnel)
+   - [GitHub Codespaces.](https://docs.github.com/en/codespaces/developing-in-a-codespace/forwarding-ports-in-your-codespace)
+2. If your tool or IDE exposes an address other than `localhost`, such as `127.0.0.1`, make sure to add that address to the `adminCors` Medusa configuration. Your tool will show you what the forwarded address is.
+
+After setting these configurations, run your Medusa application and try again. If you couldn't create an admin user before, run the following command in the root directory of your Medusa project to create an admin user:
+
+```bash
+npx medusa user -e admin@medusa-test.com -p supersecret
+```
+
+### Can't connect to database with --db-url option
+
+If you use the `--db-url` option with the `create-medusa-app` command and the connection to the database fails, try the following:
+
+- Specify `?sslmode=require` at the end of the connection URL. Some PostgreSQL hosting providers, like Vercel, require passing this option. For example:
+
+```bash
+npx create-medusa-app@latest --db-url "postgres://default:<password><host-region>.postgres.vercel-storage.com:5432/verceldb?sslmode=require"
+```
+
+- Change the password to remove special characters. PostgreSQL requires encoding passwords if they have special characters. While the `create-medusa-app` command handles this automatically when you specify the password to the `create-medusa-app` command, when you pass a connection URL with the `--db-url` the command uses that URL as-is. So, you must either encode the special characters in the password yourself, or remove the special characters in the password.
+
+### Error: EADDRINUSE
+
+When you run your Medusa application you may run to an error similar to the following:
+
+```bash
+code: 'EADDRINUSE',
+errno: -48,
+syscall: 'Listen',
+address: '::',
+port: 9000
+```
+
+This means that there's another process running at port `9000`. You need to either terminate the other process or change the port used by your Medusa application.
+
+To change the default port used by the Medusa application, set the `PORT` environment variable before starting your application. For example, set it in `.env`:
+
+```shell
+PORT=9001
+```
+
+After changing the port, make sure to change the port used in other apps that interact with your Medusa server, such as in your [admin](/learn/configurations/medusa-config#admin-configurations-admin) or [storefront](/resources/nextjs-starter#change-medusa-application-url).
+
+### Can't Connect to PostgreSQL Docker Container
+
+When connecting your Medusa application to a PostgreSQL Docker container, make sure the `5432` port is exposed.
+
+To do that, either pass the `-p` option to the `docker run` command. For example:
+
+```bash
+docker run -d -p 5432:5432 --name some-postgres -e POSTGRES_PASSWORD=supersecret postgres
+```
+
+Or, if you're using Docker Desktop, you can provide the option under the container's "Optional settings" collapsable.
+
+![Setting Port option in Docker Desktop](https://res.cloudinary.com/dza7lstvk/image/upload/v1699952615/Medusa%20Docs/Screenshots/Screenshot_2023-11-14_at_10.56.04_AM_nsur0q.png)
+
+If you expose the PostgreSQL docker container at a port other than `5432`, make sure to include it in your database URL.
+
+When installing Medusa with `create-medusa-app`, you can provide a database URL with the different port using the `--db-url` option.
+
+For example:
+
+```bash
+npx create-medusa-app@latest --db-url "postgres://user:password@localhost:<YOUR_PORT>/medusa-store"
+```
+
+Where `<YOUR_PORT>` is the exposed port if it's different than `5432`.
+
+Refer to the [databaseUrl configuration documentation](/learn/configurations/medusa-config#databaseurl) to learn how to set the database URL for an installed Medusa application.
+
+### EAGAIN Error
+
+When using the `create-medusa-app` npx command, you might run into an NPM `EAGAIN` error. This error can randomly occur due to conflicting processes.
+
+The easiest solution is to start the command over. Alternatively, if your setup crossed the "create database" point, you can manually perform the following steps. You can skip any steps that you're sure have been performed by `create-medusa-app`.
+
+For monorepo projects (latest `create-medusa-app`), navigate to the backend directory first:
+
+```bash
+cd my-project/apps/backend
+```
+
+Then perform the following steps:
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Build project:
+
+```bash
+npm run build
+```
+
+3. Run migrations:
+
+```bash
+npx medusa db:migrate
+```
+
+4. Create an admin user:
+
+```bash
+npx medusa user -e user@test.com -p supersecret
+```
+
+5. Optionally seed the database:
+
+```bash
+npx medusa seed -f ./data/seed.json
+```
+
+6. Start project:
+
+For monorepo projects (created with `create-medusa-app` starting from v2.14.0), navigate back to the root directory and run:
+
+```bash
+cd ../..
+npm run dev
+```
+
+For older single-application projects:
+
+```bash
+npx medusa develop
+```
+
+### TypeError: cmd is not a function
+
+This error typically occurs when you set up a Medusa project with `create-medusa-app` and try to run the Medusa application.
+
+To resolve this issue, make sure you change into the application's directory of the Medusa project you created before trying to start the Medusa application:
+
+```bash
+cd my-medusa-store
+npm run dev
+```
+
+### Error: connect ECONNREFUSED ::1:5432
+
+When you start your Medusa application you may run into the following error:
+
+```bash
+Error: connect ECONNREFUSED ::1:5432
+```
+
+This error occurs because the application couldn't connect to the PostgreSQL database. The issue could be one of the following:
+
+1. PostgreSQL server isn't running. Make sure it's always running while the Medusa application is running.
+2. The connection URL to your PostgreSQL database is incorrect. This could be because of incorrect credentials, port number, or connection URL format. The format should be `postgres://[user][:password]@[host][:port]/[dbname]`. Make sure that the connection URL format is correct, and the credentials passed in the URL are correct. You can learn more about formatting the connection URL [here](/learn/configurations/medusa-config#databaseurl)
+
+### Invalid Token Error After Using --no-browser option
+
+If you use the `--no-browser` option with the `create-medusa-app` command, you'll find a URL outputted at the end of the command execution. This is the URL that you can use to set a password for your admin user.
+
+However, if you copy the URL, then try later to access that URL, you may receive an "Invalid Token" error. This is because when you copy the URL, a lot of extra space may be added into the token. So, you must clear out the spaces within the token and the `||` characters, then try again.
+
+Alternatively, you can create a new user with the [medusa user command](/resources/medusa-cli/commands/user).
+
+### Other Errors
+
+As a last resort to resolve your issue, please try to clear your `npx` cache, as it could hold a cached version of `create-medusa-app` with errors.
+
+<Tabs>
+  <Tab title="MacOS / Linux">
+    Run the following command:
+
+    ```bash
+    rm -rf "$(npm config get cache)/_npx"
+    ```
+
+    Try running the `create-medusa-app` command again.
+  </Tab>
+
+  <Tab title="Windows">
+    First, find the cache directory with the following command:
+
+    ```bash
+    npm config get cache
+    ```
+
+    The npx cache should be in the directory `<NPM_CACHE>/_npx`, where `<NPM_CACHE>` is the cache directory returned by the previous command. Delete that directory and try running the `create-medusa-app` command again.
+  </Tab>
+</Tabs>
+
+If your issue persists, please try to search through [our GitHub issues](https://github.com/medusajs/medusa/issues) to see if there's a solution for your issue. If not, please [create an issue on GitHub](https://github.com/medusajs/medusa/issues/new?assignees=olivermrbl\&labels=status:+needs+triaging,+type:+bug\&template=bug_report.md\&title=") and our team will help you resolve it soon."

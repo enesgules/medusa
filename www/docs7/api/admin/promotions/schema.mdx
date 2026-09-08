@@ -1,0 +1,314 @@
+---
+title: Promotions schema
+---
+
+The promotion's details.
+
+## Properties
+
+<Accordion title="application_method (optional)">
+  ```json
+  {
+    "$ref": "#/components/schemas/AdminApplicationMethod"
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminApplicationMethod](/api/schemas/admin-application-method)
+</Accordion>
+
+<Accordion title="rules (optional)">
+  The promotion's rules.
+
+  ```json
+  {
+    "type": "array",
+    "description": "The promotion's rules.",
+    "items": {
+      "$ref": "#/components/schemas/AdminPromotionRule"
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminPromotionRule](/api/schemas/admin-promotion-rule)
+</Accordion>
+
+<Accordion title="id (required)">
+  The promotion's ID.
+
+  ```json
+  {
+    "type": "string",
+    "title": "id",
+    "description": "The promotion's ID."
+  }
+  ```
+</Accordion>
+
+<Accordion title="code (optional)">
+  The promotion's code.
+
+  ```json
+  {
+    "type": "string",
+    "title": "code",
+    "description": "The promotion's code.",
+    "example": "OFF50"
+  }
+  ```
+</Accordion>
+
+<Accordion title="type (optional)">
+  The promotion's type.
+
+  ```json
+  {
+    "type": "string",
+    "description": "The promotion's type.",
+    "enum": [
+      "standard",
+      "buyget"
+    ]
+  }
+  ```
+</Accordion>
+
+<Accordion title="is_automatic (optional)">
+  Whether the promotion is applied on a cart automatically if it matches the promotion's rules.
+
+  ```json
+  {
+    "type": "boolean",
+    "title": "is_automatic",
+    "description": "Whether the promotion is applied on a cart automatically if it matches the promotion's rules."
+  }
+  ```
+</Accordion>
+
+<Accordion title="campaign_id (optional)">
+  The ID of the campaign this promotion belongs to.
+
+  ```json
+  {
+    "type": "string",
+    "title": "campaign_id",
+    "description": "The ID of the campaign this promotion belongs to."
+  }
+  ```
+</Accordion>
+
+<Accordion title="campaign (optional)">
+  ```json
+  {
+    "$ref": "#/components/schemas/AdminCampaign"
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminCampaign](/api/schemas/admin-campaign)
+</Accordion>
+
+<Accordion title="created_at (required)">
+  The date the promotion was created.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "created_at",
+    "description": "The date the promotion was created."
+  }
+  ```
+</Accordion>
+
+<Accordion title="updated_at (required)">
+  The date the promotion was updated.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "updated_at",
+    "description": "The date the promotion was updated."
+  }
+  ```
+</Accordion>
+
+<Accordion title="deleted_at (required)">
+  The date the promotion was deleted.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "deleted_at",
+    "description": "The date the promotion was deleted."
+  }
+  ```
+</Accordion>
+
+<Accordion title="status (optional)">
+  The promotion's status.
+
+  ```json
+  {
+    "type": "string",
+    "description": "The promotion's status.",
+    "enum": [
+      "draft",
+      "active",
+      "inactive"
+    ]
+  }
+  ```
+</Accordion>
+
+<Accordion title="is_tax_inclusive (optional)">
+  Whether the promotion is tax inclusive. If enabled, the promotion is applied after tax is calculated.
+
+  ```json
+  {
+    "type": "boolean",
+    "title": "is_tax_inclusive",
+    "description": "Whether the promotion is tax inclusive. If enabled, the promotion is applied after tax is calculated."
+  }
+  ```
+</Accordion>
+
+<Accordion title="limit (optional)">
+  The limit of times the promotion can be used.
+
+  ```json
+  {
+    "type": "number",
+    "title": "limit",
+    "description": "The limit of times the promotion can be used."
+  }
+  ```
+</Accordion>
+
+<Accordion title="used (optional)">
+  The number of times the promotion has been used.
+
+  ```json
+  {
+    "type": "number",
+    "title": "used",
+    "description": "The number of times the promotion has been used."
+  }
+  ```
+</Accordion>
+
+## Schema definition
+
+```json
+{
+  "type": "object",
+  "description": "The promotion's details.",
+  "x-schemaName": "AdminPromotion",
+  "required": [
+    "id",
+    "created_at",
+    "updated_at",
+    "deleted_at"
+  ],
+  "properties": {
+    "application_method": {
+      "$ref": "#/components/schemas/AdminApplicationMethod"
+    },
+    "rules": {
+      "type": "array",
+      "description": "The promotion's rules.",
+      "items": {
+        "$ref": "#/components/schemas/AdminPromotionRule"
+      }
+    },
+    "id": {
+      "type": "string",
+      "title": "id",
+      "description": "The promotion's ID."
+    },
+    "code": {
+      "type": "string",
+      "title": "code",
+      "description": "The promotion's code.",
+      "example": "OFF50"
+    },
+    "type": {
+      "type": "string",
+      "description": "The promotion's type.",
+      "enum": [
+        "standard",
+        "buyget"
+      ]
+    },
+    "is_automatic": {
+      "type": "boolean",
+      "title": "is_automatic",
+      "description": "Whether the promotion is applied on a cart automatically if it matches the promotion's rules."
+    },
+    "campaign_id": {
+      "type": "string",
+      "title": "campaign_id",
+      "description": "The ID of the campaign this promotion belongs to."
+    },
+    "campaign": {
+      "$ref": "#/components/schemas/AdminCampaign"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "created_at",
+      "description": "The date the promotion was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "updated_at",
+      "description": "The date the promotion was updated."
+    },
+    "deleted_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "deleted_at",
+      "description": "The date the promotion was deleted."
+    },
+    "status": {
+      "type": "string",
+      "description": "The promotion's status.",
+      "enum": [
+        "draft",
+        "active",
+        "inactive"
+      ]
+    },
+    "is_tax_inclusive": {
+      "type": "boolean",
+      "title": "is_tax_inclusive",
+      "description": "Whether the promotion is tax inclusive. If enabled, the promotion is applied after tax is calculated."
+    },
+    "limit": {
+      "type": "number",
+      "title": "limit",
+      "description": "The limit of times the promotion can be used."
+    },
+    "used": {
+      "type": "number",
+      "title": "used",
+      "description": "The number of times the promotion has been used."
+    }
+  }
+}
+```
+
+Related schemas:
+
+- [AdminApplicationMethod](/api/schemas/admin-application-method)
+
+- [AdminCampaign](/api/schemas/admin-campaign)
+
+- [AdminPromotionRule](/api/schemas/admin-promotion-rule)

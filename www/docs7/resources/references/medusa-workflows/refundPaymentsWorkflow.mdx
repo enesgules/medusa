@@ -1,0 +1,392 @@
+---
+title: refundPaymentsWorkflow - Medusa Core Workflows Reference
+sidebarTitle: refundPaymentsWorkflow
+---
+
+This documentation provides a reference to the `refundPaymentsWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow refunds payments.
+
+You can use this workflow within your customizations or your own custom workflows, allowing you to
+refund payments in your custom flow.
+
+[View source code](https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/core-flows/src/payment/workflows/refund-payments.ts#L160)
+
+## Examples
+
+**API Route**
+
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { refundPaymentsWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await refundPaymentsWorkflow(req.scope)
+    .run({
+      input: [{
+        payment_id: "pay_123",
+        amount: 10,
+      }]
+    })
+
+  res.send(result)
+}
+```
+
+**Subscriber**
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { refundPaymentsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await refundPaymentsWorkflow(container)
+    .run({
+      input: [{
+        payment_id: "pay_123",
+        amount: 10,
+      }]
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+**Scheduled Job**
+
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { refundPaymentsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await refundPaymentsWorkflow(container)
+    .run({
+      input: [{
+        payment_id: "pay_123",
+        amount: 10,
+      }]
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+**Another Workflow**
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { refundPaymentsWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = refundPaymentsWorkflow
+      .runAsStep({
+        input: [{
+          payment_id: "pay_123",
+          amount: 10,
+        }]
+      })
+  }
+)
+```
+
+<a id="refundpaymentsworkflow-steps" />
+
+## Steps
+
+- [validatePaymentsRefundStep](/resources/references/medusa-workflows/validatePaymentsRefundStep): This step validates that the refund is valid for the payment. If the payment's refundable amount is less than the amount to be refunded, the step throws an error. :::note You can retrieve a payment's details using [Query](/learn/fundamentals/module-links/query), or [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep). :::
+  - [refundPaymentsStep](/resources/references/medusa-workflows/steps/refundPaymentsStep): This step refunds one or more payments.
+    - [addOrderTransactionStep](/resources/references/medusa-workflows/steps/addOrderTransactionStep): This step creates order transactions.
+
+<a id="refundpaymentsworkflow-input" />
+
+## Input
+
+**refundPaymentsWorkflow**
+
+- `RefundPaymentsWorkflowInput`: [RefundPaymentsWorkflowInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcRefundPaymentsWorkflowInput)
+  - `payment_id`: `string` — The ID of the payment to refund.
+  - `amount`: [BigNumberInput](/resources/references/types/types/typesBigNumberInput) — The amount to refund. Must be less than the refundable amount of the payment.
+    - `value`: `string` | `number`
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/types/types/typesBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `created_by`: `string` (optional) — The ID of the user that's refunding the payment.
+  - `note`: `string` (optional) — The note to attach to the refund.
+  - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+
+<a id="refundpaymentsworkflow-output" />
+
+## Output
+
+**refundPaymentsWorkflow**
+
+- `PaymentDTO[]`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO)\[]
+  - `id`: `string` — The ID of the payment.
+  - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The payment's total amount.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw amount of the payment.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The authorized amount of the payment.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `raw_authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw authorized amount of the payment.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+  - `provider_id`: `string` — The ID of the associated payment provider.
+  - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+  - `created_at`: `string` | `Date` (optional) — When the payment was created.
+  - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+  - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+  - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+  - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' amounts.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `raw_captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' raw amounts.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' amounts.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `raw_refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' raw amounts.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `value`: `string` | `number`
+    - `bigNumber`: `BigNumber` (optional)
+  - `captures`: [CaptureDTO](/resources/references/payment/interfaces/paymentCaptureDTO)\[] (optional) — The associated captures.
+    - `id`: `string` — The ID of the capture.
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The captured amount.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw captured amount.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `created_at`: `Date` — The creation date of the capture.
+    - `created_by`: `string` (optional) — Who the capture was created by. For example, the ID of a user.
+    - `payment`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO) — The associated payment.
+      - `id`: `string` — The ID of the payment.
+      - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The payment's total amount.
+      - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw amount of the payment.
+      - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The authorized amount of the payment.
+      - `raw_authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw authorized amount of the payment.
+      - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+      - `provider_id`: `string` — The ID of the associated payment provider.
+      - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+      - `created_at`: `string` | `Date` (optional) — When the payment was created.
+      - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+      - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+      - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+      - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' amounts.
+      - `raw_captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' raw amounts.
+      - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' amounts.
+      - `raw_refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' raw amounts.
+      - `captures`: [CaptureDTO](/resources/references/payment/interfaces/paymentCaptureDTO)\[] (optional) — The associated captures.
+      - `refunds`: [RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)\[] (optional) — The associated refunds.
+      - `payment_collection_id`: `string` — The ID of the associated payment collection.
+      - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The associated payment collection.
+      - `payment_session`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO) (optional) — The payment session from which the payment is created.
+  - `refunds`: [RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)\[] (optional) — The associated refunds.
+    - `id`: `string` — The ID of the refund
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The refunded amount.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw refunded amount.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `refund_reason_id`: `null` | `string` (optional) — The id of the refund\_reason that is associated with the refund
+    - `refund_reason`: `null` | [RefundReasonDTO](/resources/references/payment/interfaces/paymentRefundReasonDTO) (optional) — The id of the refund\_reason that is associated with the refund
+      - `id`: `string` — The ID of the refund reason
+      - `label`: `string` — The label of the refund reason
+      - `description`: `null` | `string` (optional) — The description of the refund reason
+      - `metadata`: `null` | `Record<string, unknown>` — The metadata of the refund reason
+      - `created_at`: `string` | `Date` — When the refund reason was created
+      - `updated_at`: `string` | `Date` — When the refund reason was updated
+    - `note`: `null` | `string` (optional) — A field to add some additional information about the refund
+    - `created_at`: `Date` — The creation date of the refund.
+    - `created_by`: `string` (optional) — Who created the refund. For example, the user's ID.
+    - `payment`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO) — The associated payment.
+      - `id`: `string` — The ID of the payment.
+      - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The payment's total amount.
+      - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw amount of the payment.
+      - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The authorized amount of the payment.
+      - `raw_authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw authorized amount of the payment.
+      - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+      - `provider_id`: `string` — The ID of the associated payment provider.
+      - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+      - `created_at`: `string` | `Date` (optional) — When the payment was created.
+      - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+      - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+      - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+      - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' amounts.
+      - `raw_captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' raw amounts.
+      - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' amounts.
+      - `raw_refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' raw amounts.
+      - `captures`: [CaptureDTO](/resources/references/payment/interfaces/paymentCaptureDTO)\[] (optional) — The associated captures.
+      - `refunds`: [RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)\[] (optional) — The associated refunds.
+      - `payment_collection_id`: `string` — The ID of the associated payment collection.
+      - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The associated payment collection.
+      - `payment_session`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO) (optional) — The payment session from which the payment is created.
+  - `payment_collection_id`: `string` — The ID of the associated payment collection.
+  - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The associated payment collection.
+    - `id`: `string` — The ID of the payment collection.
+    - `currency_code`: `string` — The ISO 3 character currency code of the payment sessions and payments associated with payment collection.
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The total amount to be authorized and captured.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount authorized within the associated payment sessions.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount refunded within the associated payments.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount captured within the associated payments.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `completed_at`: `string` | `Date` (optional) — When the payment collection was completed.
+    - `created_at`: `string` | `Date` (optional) — When the payment collection was created.
+    - `updated_at`: `string` | `Date` (optional) — When the payment collection was updated.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `status`: [PaymentCollectionStatus](/resources/references/payment/types/paymentPaymentCollectionStatus) — The status of the payment collection.
+    - `payment_providers`: [PaymentProviderDTO](/resources/references/payment/interfaces/paymentPaymentProviderDTO)\[] — The payment provider used to process the associated payment sessions and payments.
+      - `id`: `string` — The ID of the payment provider.
+      - `is_enabled`: `boolean` — Whether the payment provider is enabled.
+    - `payment_sessions`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO)\[] (optional) — The associated payment sessions.
+      - `id`: `string` — The ID of the payment session.
+      - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The amount to authorize.
+      - `currency_code`: `string` — The 3 character currency code of the payment session.
+      - `provider_id`: `string` — The ID of the associated payment provider.
+      - `data`: `Record<string, unknown>` — The data necessary for the payment provider to process the payment session.
+      - `context`: `Record<string, unknown>` (optional) — The context necessary for the payment provider.
+      - `status`: [PaymentSessionStatus](/resources/references/payment/types/paymentPaymentSessionStatus) — The status of the payment session.
+      - `authorized_at`: `Date` (optional) — When the payment session was authorized.
+      - `created_at`: `string` | `Date` — When the payment session was created
+      - `updated_at`: `string` | `Date` — When the payment session was updated
+      - `payment_collection_id`: `string` — The ID of the associated payment collection.
+      - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The payment collection the session is associated with.
+      - `payment`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO) (optional) — The payment created from the session.
+      - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `payments`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO)\[] (optional) — The associated payments.
+      - `id`: `string` — The ID of the payment.
+      - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The payment's total amount.
+      - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw amount of the payment.
+      - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The authorized amount of the payment.
+      - `raw_authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw authorized amount of the payment.
+      - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+      - `provider_id`: `string` — The ID of the associated payment provider.
+      - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+      - `created_at`: `string` | `Date` (optional) — When the payment was created.
+      - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+      - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+      - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+      - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' amounts.
+      - `raw_captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' raw amounts.
+      - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' amounts.
+      - `raw_refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' raw amounts.
+      - `captures`: [CaptureDTO](/resources/references/payment/interfaces/paymentCaptureDTO)\[] (optional) — The associated captures.
+      - `refunds`: [RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)\[] (optional) — The associated refunds.
+      - `payment_collection_id`: `string` — The ID of the associated payment collection.
+      - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The associated payment collection.
+      - `payment_session`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO) (optional) — The payment session from which the payment is created.
+  - `payment_session`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO) (optional) — The payment session from which the payment is created.
+    - `id`: `string` — The ID of the payment session.
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The amount to authorize.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `currency_code`: `string` — The 3 character currency code of the payment session.
+    - `provider_id`: `string` — The ID of the associated payment provider.
+    - `data`: `Record<string, unknown>` — The data necessary for the payment provider to process the payment session.
+    - `context`: `Record<string, unknown>` (optional) — The context necessary for the payment provider.
+    - `status`: [PaymentSessionStatus](/resources/references/payment/types/paymentPaymentSessionStatus) — The status of the payment session.
+    - `authorized_at`: `Date` (optional) — When the payment session was authorized.
+    - `created_at`: `string` | `Date` — When the payment session was created
+    - `updated_at`: `string` | `Date` — When the payment session was updated
+    - `payment_collection_id`: `string` — The ID of the associated payment collection.
+    - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The payment collection the session is associated with.
+      - `id`: `string` — The ID of the payment collection.
+      - `currency_code`: `string` — The ISO 3 character currency code of the payment sessions and payments associated with payment collection.
+      - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The total amount to be authorized and captured.
+      - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount authorized within the associated payment sessions.
+      - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount refunded within the associated payments.
+      - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount captured within the associated payments.
+      - `completed_at`: `string` | `Date` (optional) — When the payment collection was completed.
+      - `created_at`: `string` | `Date` (optional) — When the payment collection was created.
+      - `updated_at`: `string` | `Date` (optional) — When the payment collection was updated.
+      - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+      - `status`: [PaymentCollectionStatus](/resources/references/payment/types/paymentPaymentCollectionStatus) — The status of the payment collection.
+      - `payment_providers`: [PaymentProviderDTO](/resources/references/payment/interfaces/paymentPaymentProviderDTO)\[] — The payment provider used to process the associated payment sessions and payments.
+      - `payment_sessions`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO)\[] (optional) — The associated payment sessions.
+      - `payments`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO)\[] (optional) — The associated payments.
+    - `payment`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO) (optional) — The payment created from the session.
+      - `id`: `string` — The ID of the payment.
+      - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The payment's total amount.
+      - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw amount of the payment.
+      - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The authorized amount of the payment.
+      - `raw_authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw authorized amount of the payment.
+      - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+      - `provider_id`: `string` — The ID of the associated payment provider.
+      - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+      - `created_at`: `string` | `Date` (optional) — When the payment was created.
+      - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+      - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+      - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+      - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' amounts.
+      - `raw_captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' raw amounts.
+      - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' amounts.
+      - `raw_refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' raw amounts.
+      - `captures`: [CaptureDTO](/resources/references/payment/interfaces/paymentCaptureDTO)\[] (optional) — The associated captures.
+      - `refunds`: [RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)\[] (optional) — The associated refunds.
+      - `payment_collection_id`: `string` — The ID of the associated payment collection.
+      - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The associated payment collection.
+      - `payment_session`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO) (optional) — The payment session from which the payment is created.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.

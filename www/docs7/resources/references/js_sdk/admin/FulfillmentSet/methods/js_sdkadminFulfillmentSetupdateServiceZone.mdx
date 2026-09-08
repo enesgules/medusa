@@ -1,0 +1,74 @@
+---
+title: updateServiceZone
+---
+
+This method updates a service zone in a fulfillment set. It sends a request to the
+[Update Service Zone](/api/admin/fulfillment-sets/update-service-zone)
+API route.
+
+## Example
+
+```ts
+sdk.admin.fulfillmentSet.updateServiceZone(
+  "fset_123", 
+  "serzo_123",
+  {
+    name: "Europe Service Zone",
+  }
+)
+.then(({ fulfillment_set }) => {
+  console.log(fulfillment_set)
+})
+```
+
+<a id="updateservicezone-parameters" />
+
+## Parameters
+
+**updateServiceZone**
+
+- `fulfillmentSetId`: `string` — The fulfillment set's ID.
+- `serviceZoneId`: `string` — The service zone's ID.
+- `body`: [AdminUpdateFulfillmentSetServiceZone](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUpdateFulfillmentSetServiceZone) — The data to update in the service zone.
+  - `name`: `string` (optional) — The service zone's name.
+  - `geo_zones`: [AdminUpdateFulfillmentSetServiceZoneGeoZone](/resources/references/types/types/typesAdminUpdateFulfillmentSetServiceZoneGeoZone)\[] (optional) — The service zone's geo zones to restrict it to specific geographical locations. You can update existing ones by their IDs or add new ones.
+    - `country_code`: `string` — The geo zone's country code.
+
+      Example:
+
+      ```
+      us
+      ```
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Key-value pairs of custom data.
+    - `id`: `string` (optional) — The ID of the geo zone to update.
+    - `type`: `"country"` — The geo zone's type.
+    - `province_code`: `string` — The geo zone's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province code.
+    - `city`: `string` — The geo zone's city.
+    - `postal_expression`: `Record<string, unknown>` — The geo zone's postal expression or ZIP code.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the fulfillment set.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="updateservicezone-returns" />
+
+## Returns
+
+**updateServiceZone**
+
+- `Promise`: Promise\<[AdminFulfillmentSetResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentSetResponse)> — The fulfillment set's details.
+  - `fulfillment_set`: [AdminFulfillmentSet](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminFulfillmentSet) — The fulfillment set's details.
+    - `id`: `string` — The fulfillment set's ID.
+    - `name`: `string` — The fulfillment set's name.
+    - `type`: `string` — The fulfillment set's type.
+
+      Example:
+
+      ```
+      delivery
+      ```
+    - `location`: [AdminStockLocation](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminStockLocation) — The stock location associated with this fulfillment set.
+    - `service_zones`: [AdminServiceZone](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminServiceZone)\[] — The fulfillment set's service zones.
+    - `created_at`: `string` — The date the fulfillment set is created.
+    - `updated_at`: `string` — The date the fulfillment set is updated.
+    - `deleted_at`: `null` | `string` — The date the fulfillment set is deleted.

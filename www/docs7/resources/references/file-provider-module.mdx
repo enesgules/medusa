@@ -1,0 +1,511 @@
+---
+title: How to Create a File Module Provider
+---
+
+In this document, you’ll learn how to create a File Module Provider and the methods you must implement in its main service.
+
+***
+
+## Implementation Example
+
+As you implement your File Module Provider, it can be useful to refer to an existing provider and how it's implemeted.
+
+If you need to refer to an existing implementation as an example, check the [S3 File Module Provider in the Medusa repository](https://github.com/medusajs/medusa/tree/develop/packages/modules/providers/file-s3).
+
+***
+
+## Create Module Provider Directory
+
+Start by creating a new directory for your module provider.
+
+If you're creating the module provider in a Medusa application, create it under the `src/modules` directory. For example, `src/modules/my-file`.
+
+If you're creating the module provider in a plugin, create it under the `src/providers` directory. For example, `src/providers/my-file`.
+
+> **Note**
+>
+> The rest of this guide always uses the `src/modules/my-file` directory as an example.
+
+***
+
+## 2. Create the File Module Provider's Service
+
+Create the file `src/modules/my-file/service.ts` that holds the implementation of the module provider's main service. It must extend the `AbstractFileProviderService` class imported from `@medusajs/framework/utils`:
+
+```ts title="src/modules/my-file/service.ts"
+import { AbstractFileProviderService } from "@medusajs/framework/utils"
+
+class MyFileProviderService extends AbstractFileProviderService {
+  // TODO implement methods
+}
+
+export default MyFileProviderService
+```
+
+### constructor
+
+The constructor allows you to access resources from the module's container using the first parameter,
+and the module's options using the second parameter.
+
+If you're creating a client or establishing a connection with a third-party service, do it in the constructor.
+
+#### Example
+
+```ts
+import { Logger } from "@medusajs/framework/types"
+import { AbstractFileProviderService } from "@medusajs/framework/utils"
+
+type InjectedDependencies = {
+  logger: Logger
+}
+
+type Options = {
+  apiKey: string
+}
+
+class MyFileProviderService extends AbstractFileProviderService {
+  protected logger_: Logger
+  protected options_: Options
+  static identifier = "my-file"
+  // assuming you're initializing a client
+  protected client
+
+  constructor (
+    { logger }: InjectedDependencies,
+    options: Options
+  ) {
+    super()
+
+    this.logger_ = logger
+    this.options_ = options
+
+    // assuming you're initializing a client
+    this.client = new Client(options)
+  }
+}
+
+export default MyFileProviderService
+```
+
+### identifier
+
+Each file provider has a unique ID used to identify it. The provider's ID
+will be stored as `fs_{identifier}_{id}`, where `{id}` is the provider's `id`
+property in the `medusa-config.ts`.
+
+#### Example
+
+```ts
+class MyFileProviderService extends AbstractFileProviderService {
+  static identifier = "my-file"
+  // ...
+}
+```
+
+### delete
+
+This method deletes one or more files from the storage. It's used when an admin user
+deletes a product image, or other custom file deletions.
+
+#### Example
+
+```ts
+class MyFileProviderService extends AbstractFileProviderService {
+  // ...
+  async delete(
+    files: FileTypes.ProviderDeleteFileDTO | FileTypes.ProviderDeleteFileDTO[]
+  ): Promise<void> {
+    // TODO logic to remove the file from storage
+    // Use the `file.fileKey` to delete the file, which is the identifier of the file
+   // in the provider's storage.
+    // for example:
+    const fileArray = Array.isArray(files) ? files : [files]
+    for (const file of fileArray) {
+      this.client.delete(file.fileKey)
+    }
+  }
+}
+```
+
+<a id="delete-parameters" />
+
+#### Parameters
+
+**delete**
+
+- `files`: [ProviderDeleteFileDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderDeleteFileDTO) | [ProviderDeleteFileDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderDeleteFileDTO)\[] — The details of the files to delete.
+  - `fileKey`: `string` — The file's key. When uploading a file, the returned key is used here.
+
+<a id="delete-returns" />
+
+#### Returns
+
+**delete**
+
+- `Promise`: Promise\<void> — Resolves when the files are deleted.
+
+### getAsBuffer
+
+This method retrieves an uploaded file as a buffer. This is useful when you want to
+process the entire file in memory or send it as a response.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.8.0](https://github.com/medusajs/medusa/releases/tag/v2.8.0).
+
+#### Example
+
+```ts
+class MyFileProviderService extends AbstractFileProviderService {
+  // ...
+  async getAsBuffer(file: ProviderDeleteFileDTO): Promise<Buffer> {
+    // TODO logic to get the file as a buffer
+    // Use the `file.fileKey` to get the file, which is the identifier of the file
+    // in the provider's storage.
+    // for example:
+    this.client.getAsBuffer(file.fileKey)
+  }
+}
+```
+
+<a id="getasbuffer-parameters" />
+
+#### Parameters
+
+**getAsBuffer**
+
+- `fileData`: [ProviderGetFileDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderGetFileDTO) — The details of the file to get its buffer.
+  - `fileKey`: `string` — The file's key allowing you to later identify the file in the third-party system. For example, the S3 Module Provider returns the file's key in S3, whereas the Local File Module Provider returns the file's path.
+
+<a id="getasbuffer-returns" />
+
+#### Returns
+
+**getAsBuffer**
+
+- `Promise`: Promise\<Buffer\<ArrayBufferLike>> — The file's buffer.
+
+### getDownloadStream
+
+This method retrieves an uploaded file as a stream. This is useful when streaming
+a file to clients or you want to process the file in chunks.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.8.0](https://github.com/medusajs/medusa/releases/tag/v2.8.0).
+
+#### Example
+
+```ts
+class MyFileProviderService extends AbstractFileProviderService {
+  // ...
+  async getAsStream(file: ProviderDeleteFileDTO): Promise<Readable> {
+   // TODO logic to get the file as a stream
+   // Use the `file.fileKey` to get the file, which is the identifier of the file
+   // in the provider's storage.
+   // for example:
+    this.client.getAsStream(file.fileKey)
+  }
+}
+```
+
+<a id="getdownloadstream-parameters" />
+
+#### Parameters
+
+**getDownloadStream**
+
+- `fileData`: [ProviderGetFileDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderGetFileDTO) — The details of the file to get its stream.
+  - `fileKey`: `string` — The file's key allowing you to later identify the file in the third-party system. For example, the S3 Module Provider returns the file's key in S3, whereas the Local File Module Provider returns the file's path.
+
+<a id="getdownloadstream-returns" />
+
+#### Returns
+
+**getDownloadStream**
+
+- `Promise`: Promise\<Readable> — The file's stream.
+
+### getPresignedDownloadUrl
+
+This method is used to retrieve a download URL of the file. For some providers,
+such as S3, a presigned URL indicates a temporary URL to get access to a file.
+
+If your provider doesn’t perform or offer a similar functionality, you can
+return the URL to download the file.
+
+#### Example
+
+```ts
+class MyFileProviderService extends AbstractFileProviderService {
+  // ...
+  async getPresignedDownloadUrl(
+    fileData: ProviderGetFileDTO
+  ): Promise<string> {
+    // TODO logic to get the presigned URL
+    // Use the `file.fileKey` to delete the file, which is the identifier of the file
+   // in the provider's storage.
+    // for example:
+    return this.client.getPresignedUrl(fileData.fileKey)
+  }
+}
+```
+
+<a id="getpresigneddownloadurl-parameters" />
+
+#### Parameters
+
+**getPresignedDownloadUrl**
+
+- `fileData`: [ProviderGetFileDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderGetFileDTO) — The details of the file to get its presigned URL.
+  - `fileKey`: `string` — The file's key allowing you to later identify the file in the third-party system. For example, the S3 Module Provider returns the file's key in S3, whereas the Local File Module Provider returns the file's path.
+
+<a id="getpresigneddownloadurl-returns" />
+
+#### Returns
+
+**getPresignedDownloadUrl**
+
+- `Promise`: Promise\<string> — The file's presigned URL.
+  - `string`: `string`
+
+### getPresignedUploadUrl
+
+**Optional.**
+
+This method is used to get a presigned upload URL for a file. For some providers,
+such as S3, a presigned URL indicates a temporary URL to get upload a file.
+
+If your provider doesn’t perform or offer a similar functionality, you don't have to
+implement this method. Instead, an error is thrown when the method is called.
+
+#### Example
+
+```ts
+class MyFileProviderService extends AbstractFileProviderService {
+  // ...
+  async getPresignedUploadUrl(
+    fileData: ProviderGetPresignedUploadUrlDTO
+  ): Promise<ProviderFileResultDTO> {
+    // TODO logic to get the presigned upload URL
+    // for example:
+    return this.client.getPresignedUploadUrl(fileData.filename, fileData.mimeType)
+  }
+}
+```
+
+<a id="getpresigneduploadurl-parameters" />
+
+#### Parameters
+
+**getPresignedUploadUrl**
+
+- `fileData`: [ProviderGetPresignedUploadUrlDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderGetPresignedUploadUrlDTO) — The details of the file to get a presigned upload URL for.
+  - `filename`: `string` — The filename of the file to get a presigned upload URL for.
+  - `mimeType`: `string` (optional) — The mimetype of the file to get a presigned upload URL for.
+  - `access`: [FileAccessPermission](/resources/references/types/FileTypes/types/typesFileTypesFileAccessPermission) (optional) — The access level of the file to get a presigned upload URL for.
+  - `expiresIn`: `number` (optional) — The validity of the presigned upload URL in seconds.
+
+<a id="getpresigneduploadurl-returns" />
+
+#### Returns
+
+**getPresignedUploadUrl**
+
+- `Promise`: Promise\<[ProviderFileResultDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderFileResultDTO)> — The presigned URL and file key to upload the file to
+  - `url`: `string` — The file's URL that users or systems can use to access the file.
+  - `key`: `string` — The file's key allowing you to later identify the file in the third-party system. For example, the S3 Module Provider returns the file's key in S3, whereas the Local File Module Provider returns the file's path.
+
+### getUploadStream
+
+This method returns a writeable stream to upload a file.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.8.0](https://github.com/medusajs/medusa/releases/tag/v2.8.0).
+
+#### Example
+
+```ts
+class MyFileProviderService extends AbstractFileProviderService {
+  // ...
+  async getUploadStream(fileData: FileTypes.ProviderUploadStreamDTO): Promise<{
+    writeStream: Writable
+    promise: Promise<FileTypes.ProviderFileResultDTO>
+    url: string
+    fileKey: string
+  }> {
+    // TODO logic to get the writeable stream
+  }
+}
+```
+
+<a id="getuploadstream-parameters" />
+
+#### Parameters
+
+**getUploadStream**
+
+- `fileData`: [ProviderUploadStreamDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderUploadStreamDTO) — The details of the file to upload.
+  - `filename`: `string` — The filename of the uploaded file
+  - `mimeType`: `string` — The mimetype of the uploaded file
+  - `access`: [FileAccessPermission](/resources/references/types/FileTypes/types/typesFileTypesFileAccessPermission) (optional) — The access level of the file. Defaults to private if not passed
+
+<a id="getuploadstream-returns" />
+
+#### Returns
+
+**getUploadStream**
+
+- `Promise`: Promise\<object> — The writeable stream and upload promise.
+  - `writeStream`: `Writable`
+  - `promise`: Promise\<[ProviderFileResultDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderFileResultDTO)>
+    - `url`: `string` — The file's URL that users or systems can use to access the file.
+    - `key`: `string` — The file's key allowing you to later identify the file in the third-party system. For example, the S3 Module Provider returns the file's key in S3, whereas the Local File Module Provider returns the file's path.
+  - `url`: `string`
+  - `fileKey`: `string`
+
+### upload
+
+This method uploads a file using your provider's custom logic. In this method, you can upload the file
+into your provider's storage, and return the uploaded file's details.
+
+This method will be used when uploading product images, CSV files for imports, or other
+custom file uploads.
+
+#### Example
+
+```ts
+class MyFileProviderService extends AbstractFileProviderService {
+  // ...
+  async upload(
+    file: ProviderUploadFileDTO
+  ): Promise<ProviderFileResultDTO> {
+    // TODO upload file to third-party provider
+    // or using custom logic
+    // for example:
+    this.client.upload(file)
+
+    return {
+      url: "some-url.com",
+      key: "file-name-or-id"
+    }
+  }
+}
+```
+
+<a id="upload-parameters" />
+
+#### Parameters
+
+**upload**
+
+- `file`: [ProviderUploadFileDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderUploadFileDTO) — The file to upload.
+  - `filename`: `string` — The filename of the uploaded file
+  - `mimeType`: `string` — The mimetype of the uploaded file
+  - `content`: `string` — The file content as a base64-encoded string
+  - `access`: [FileAccessPermission](/resources/references/types/FileTypes/types/typesFileTypesFileAccessPermission) (optional) — The access level of the file. Defaults to private if not passed
+
+<a id="upload-returns" />
+
+#### Returns
+
+**upload**
+
+- `Promise`: Promise\<[ProviderFileResultDTO](/resources/references/types/FileTypes/interfaces/typesFileTypesProviderFileResultDTO)> — The uploaded file's details.
+  - `url`: `string` — The file's URL that users or systems can use to access the file.
+  - `key`: `string` — The file's key allowing you to later identify the file in the third-party system. For example, the S3 Module Provider returns the file's key in S3, whereas the Local File Module Provider returns the file's path.
+
+### validateOptions
+
+This method validates the options of the provider set in `medusa-config.ts`.
+Implementing this method is optional. It's useful if your provider requires custom validation.
+
+If the options aren't valid, throw an error.
+
+#### Example
+
+```ts
+class MyFileProviderService extends AbstractFileProviderService {
+  static validateOptions(options: Record<any, any>) {
+    if (!options.apiKey) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "API key is required in the provider's options."
+      )
+    }
+  }
+}
+```
+
+<a id="validateoptions-parameters" />
+
+#### Parameters
+
+**validateOptions**
+
+- `options`: `Record<any, any>` — The provider's options.
+
+***
+
+## 3. Create Module Provider Definition File
+
+Create the file `src/modules/my-file/index.ts` with the following content:
+
+```ts title="src/modules/my-file/index.ts"
+import MyFileProviderService from "./service"
+import { 
+  ModuleProvider, 
+  Modules
+} from "@medusajs/framework/utils"
+
+export default ModuleProvider(Modules.FILE, {
+  services: [MyFileProviderService],
+})
+```
+
+This exports the module provider's definition, indicating that the `MyFileProviderService` is the module provider's service.
+
+***
+
+## 4. Use Module Provider
+
+To use your File Module Provider, add it to the `providers` array of the File Module in `medusa-config.ts`:
+
+> **Note**
+>
+> The File Module accepts one provider only.
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/file",
+      options: {
+        providers: [
+          // default provider
+          {
+            resolve: "@medusajs/medusa/file-local",
+            id: "local",
+          },
+          {
+            // if module provider is in a plugin, use `plugin-name/providers/my-file`
+            resolve: "./src/modules/my-file",
+            id: "my-file",
+            options: {
+              // provider options...
+            },
+          },
+        ],
+      },
+    },
+  ]
+})
+```
+
+***
+
+## 5. Test it Out
+
+To test out your File Module Provider, use the Medusa Admin or the [Upload API route](/api/admin/uploads/upload-files) to upload a file.

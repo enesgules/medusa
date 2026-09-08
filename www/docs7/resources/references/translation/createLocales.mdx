@@ -1,0 +1,151 @@
+---
+title: createLocales - Translation Module Reference
+sidebarTitle: createLocales
+---
+
+This documentation provides a reference to the `createLocales` method. This belongs to the Translation Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createlocales-data-sharedcontext-promiselocaledto" />
+
+## createLocales(data, sharedContext?): Promise\<[LocaleDTO](/resources/references/translation/interfaces/translationLocaleDTO)>
+
+This method creates a locale.
+
+### Example
+
+```ts
+const locale = await translationModuleService.createLocales({
+  code: "en-US",
+  name: "English (United States)",
+})
+```
+
+<a id="createlocales-parameters" />
+
+### Parameters
+
+**createLocales**
+
+- `data`: [CreateLocaleDTO](/resources/references/translation/interfaces/translationCreateLocaleDTO) — The locale to be created.
+  - `id`: `string` (optional) — The ID of the locale to create.
+  - `code`: `string` — The BCP 47 language tag code of the locale.
+
+    Example:
+
+    ```
+    "en-US"
+    ```
+  - `name`: `string` — The human-readable name of the locale.
+
+    Example:
+
+    ```
+    "English (United States)"
+    ```
+- `sharedContext`: [Context](/resources/references/translation/interfaces/translationContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/translation/interfaces/translationIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createlocales-returns" />
+
+### Returns
+
+**createLocales**
+
+- `Promise`: Promise\<[LocaleDTO](/resources/references/translation/interfaces/translationLocaleDTO)> — The created locale.
+  - `id`: `string` — The ID of the locale.
+  - `code`: `string` — The BCP 47 language tag code of the locale (e.g., "en-US", "fr-FR").
+  - `name`: `string` — The human-readable name of the locale (e.g., "English (United States)").
+  - `created_at`: `string` | `Date` — The date and time the locale was created.
+  - `updated_at`: `string` | `Date` — The date and time the locale was last updated.
+  - `deleted_at`: `null` | `string` | `Date` — The date and time the locale was deleted.
+
+<a id="createlocales-data-sharedcontext-promiselocaledto-1" />
+
+## createLocales(data, sharedContext?): Promise\<[LocaleDTO](/resources/references/translation/interfaces/translationLocaleDTO)\[]>
+
+This method creates locales.
+
+### Example
+
+```ts
+const locales = await translationModuleService.createLocales([
+  {
+    code: "en-US",
+    name: "English (United States)",
+  },
+  {
+    code: "fr-FR",
+    name: "French (France)",
+  },
+])
+```
+
+<a id="createlocales-parameters-1" />
+
+### Parameters
+
+**createLocales**
+
+- `data`: [CreateLocaleDTO](/resources/references/translation/interfaces/translationCreateLocaleDTO)\[] — The locales to be created.
+  - `id`: `string` (optional) — The ID of the locale to create.
+  - `code`: `string` — The BCP 47 language tag code of the locale.
+
+    Example:
+
+    ```
+    "en-US"
+    ```
+  - `name`: `string` — The human-readable name of the locale.
+
+    Example:
+
+    ```
+    "English (United States)"
+    ```
+- `sharedContext`: [Context](/resources/references/translation/interfaces/translationContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/translation/interfaces/translationIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createlocales-returns-1" />
+
+### Returns
+
+**createLocales**
+
+- `Promise`: Promise\<[LocaleDTO](/resources/references/translation/interfaces/translationLocaleDTO)\[]> — The created locales.
+  - `LocaleDTO[]`: [LocaleDTO](/resources/references/translation/interfaces/translationLocaleDTO)\[]
+    - `id`: `string` — The ID of the locale.
+    - `code`: `string` — The BCP 47 language tag code of the locale (e.g., "en-US", "fr-FR").
+    - `name`: `string` — The human-readable name of the locale (e.g., "English (United States)").
+    - `created_at`: `string` | `Date` — The date and time the locale was created.
+    - `updated_at`: `string` | `Date` — The date and time the locale was last updated.
+    - `deleted_at`: `null` | `string` | `Date` — The date and time the locale was deleted.

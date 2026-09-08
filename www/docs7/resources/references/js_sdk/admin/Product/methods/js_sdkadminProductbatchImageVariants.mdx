@@ -1,0 +1,47 @@
+---
+title: batchImageVariants
+---
+
+This method manages image-variant associations for a specific image. It sends a request to the
+[Batch Image Variants](/api/admin/products/manage-variants-of-product-image)
+API route.
+
+> **Note**
+>
+> This is available starting from [Medusa v2.11.2](https://github.com/medusajs/medusa/releases/tag/v2.11.2).
+
+## Example
+
+```ts
+sdk.admin.product.batchImageVariants("prod_123", "img_123", {
+  add: ["variant_123", "variant_456"],
+  remove: ["variant_789"]
+})
+.then(({ added, removed }) => {
+  console.log(added, removed)
+})
+```
+
+<a id="batchimagevariants-parameters" />
+
+## Parameters
+
+**batchImageVariants**
+
+- `productId`: `string` — The product's ID.
+- `imageId`: `string` — The image's ID.
+- `body`: [AdminBatchImageVariantRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchImageVariantRequest) — The variants to add or remove from the image.
+  - `add`: `string`\[] (optional) — The variant IDs to add to the image.
+  - `remove`: `string`\[] (optional) — The variant IDs to remove from the image.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="batchimagevariants-returns" />
+
+## Returns
+
+**batchImageVariants**
+
+- `Promise`: Promise\<[AdminBatchImageVariantResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminBatchImageVariantResponse)> — The batch operation details.
+  - `added`: `string`\[] — The variant IDs that were added to the image.
+  - `removed`: `string`\[] — The variant IDs that were removed from the image.

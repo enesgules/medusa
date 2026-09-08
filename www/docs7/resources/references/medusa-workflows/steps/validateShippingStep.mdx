@@ -1,0 +1,274 @@
+---
+title: validateShippingStep - Medusa Core Workflows Reference
+sidebarTitle: validateShippingStep
+---
+
+This documentation provides a reference to the `validateShippingStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates shipping data when cart is completed.
+
+It ensures that a shipping method is selected if there is an item in the cart that requires shipping.
+It also ensures that product's shipping profile mathes the selected shipping options. If the
+conditions are not met, an error is thrown.
+
+> **Note**
+>
+> You can retrieve cart or shipping option's details using [Query](/learn/fundamentals/module-links/query),
+> or [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep).
+
+## Example
+
+```ts
+validateShippingStep({
+  cart: {
+    id: "cart_123",
+    items: [
+      {
+        id: "item_123",
+        variant: {
+          id: "variant_123",
+          // other item details...
+        },
+      }
+    ],
+    // other cart details...
+  },
+  shippingOptions: [
+    {
+      id: "option_123",
+      shipping_profile_id: "sp_123",
+      // other option details...
+    }
+  ]
+})
+```
+
+<a id="validateshippingstep-input" />
+
+## Input
+
+**validateShippingStep**
+
+- `ValidateShippingInput`: [ValidateShippingInput](/resources/references/core_flows/core_core_flows_src/types/core_flowscore_core_flows_srcValidateShippingInput)
+  - `cart`: Omit\<[CartWorkflowDTO](/resources/references/types/interfaces/typesCartWorkflowDTO), "items"> & `object` — The cart's details.
+    - `customer`: [CustomerDTO](/resources/references/customer/interfaces/customerCustomerDTO) (optional) — The cart's customer.
+      - `id`: `string` — The ID of the customer.
+      - `email`: `string` — The email of the customer.
+      - `has_account`: `boolean` — A flag indicating if customer has an account or not.
+      - `default_billing_address_id`: `null` | `string` — The associated default billing address's ID.
+      - `default_shipping_address_id`: `null` | `string` — The associated default shipping address's ID.
+      - `company_name`: `null` | `string` — The company name of the customer.
+      - `first_name`: `null` | `string` — The first name of the customer.
+      - `last_name`: `null` | `string` — The last name of the customer.
+      - `addresses`: [CustomerAddressDTO](/resources/references/customer/interfaces/customerCustomerAddressDTO)\[] — The addresses of the customer.
+      - `phone`: `null` | `string` — The phone of the customer.
+      - `groups`: `object`\[] — The groups of the customer.
+      - `metadata`: `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `created_by`: `null` | `string` — Who created the customer.
+      - `deleted_at`: `null` | `string` | `Date` — The deletion date of the customer.
+      - `created_at`: `string` | `Date` — The creation date of the customer.
+      - `updated_at`: `string` | `Date` — The update date of the customer.
+    - `product`: [ProductDTO](/resources/references/product/interfaces/productProductDTO) (optional) — The cart's product to be added.
+      - `id`: `string` — The ID of the product.
+      - `title`: `string` — The title of the product.
+      - `handle`: `string` — The handle of the product. The handle can be used to create slug URL paths.
+      - `subtitle`: `null` | `string` — The subttle of the product.
+      - `description`: `null` | `string` — The description of the product.
+      - `is_giftcard`: `boolean` — Whether the product is a gift card.
+      - `status`: [ProductStatus](/resources/references/product/types/productProductStatus) — The status of the product.
+      - `thumbnail`: `null` | `string` — The URL of the product's thumbnail.
+      - `width`: `null` | `number` — The width of the product.
+      - `weight`: `null` | `number` — The weight of the product.
+      - `length`: `null` | `number` — The length of the product.
+      - `height`: `null` | `number` — The height of the product.
+      - `origin_country`: `null` | `string` — The origin country of the product.
+      - `hs_code`: `null` | `string` — The HS Code of the product.
+      - `mid_code`: `null` | `string` — The MID Code of the product.
+      - `material`: `null` | `string` — The material of the product.
+      - `collection`: `null` | [ProductCollectionDTO](/resources/references/product/interfaces/productProductCollectionDTO) — The associated product collection.
+      - `collection_id`: `null` | `string` — The associated product collection id.
+      - `categories`: `null` | [ProductCategoryDTO](/resources/references/product/interfaces/productProductCategoryDTO)\[] (optional) — The associated product categories.
+      - `type`: `null` | [ProductTypeDTO](/resources/references/product/interfaces/productProductTypeDTO) — The associated product type.
+      - `type_id`: `null` | `string` — The associated product type id.
+      - `tags`: [ProductTagDTO](/resources/references/product/interfaces/productProductTagDTO)\[] — The associated product tags.
+      - `variants`: [ProductVariantDTO](/resources/references/product/interfaces/productProductVariantDTO)\[] — The associated product variants.
+      - `options`: [ProductOptionDTO](/resources/references/product/interfaces/productProductOptionDTO)\[] — The associated product options.
+      - `images`: [ProductImageDTO](/resources/references/product/interfaces/productProductImageDTO)\[] — The associated product images.
+      - `discountable`: `boolean` (optional) — Whether the product can be discounted.
+      - `external_id`: `null` | `string` — The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.
+      - `created_at`: `string` | `Date` — When the product was created.
+      - `updated_at`: `string` | `Date` — When the product was updated.
+      - `deleted_at`: `string` | `Date` — When the product was deleted.
+      - `metadata`: [MetadataType](/resources/references/product/types/productMetadataType) (optional) — Holds custom data in key-value pairs.
+    - `region`: [RegionDTO](/resources/references/region/interfaces/regionRegionDTO) (optional) — The cart's region.
+      - `id`: `string` — The ID of the region.
+      - `name`: `string` — The name of the region.
+      - `currency_code`: `string` — The currency code of the region.
+      - `automatic_taxes`: `boolean` — Setting to indicate whether taxes need to be applied automatically
+      - `countries`: [RegionCountryDTO](/resources/references/region/interfaces/regionRegionCountryDTO)\[] — The countries of the region.
+      - `payment_providers`: [PaymentProviderDTO](/resources/references/region/interfaces/regionPaymentProviderDTO)\[] — Payment providers available in the region
+      - `metadata`: `Record<string, any>` (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `string` — The date the region was created.
+      - `updated_at`: `string` — The date the region was updated.
+    - `id`: `string` — The ID of the cart.
+    - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) — The payment collection details.
+      - `id`: `string` — The ID of the payment collection.
+      - `currency_code`: `string` — The ISO 3 character currency code of the payment sessions and payments associated with payment collection.
+      - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The total amount to be authorized and captured.
+      - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount authorized within the associated payment sessions.
+      - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount refunded within the associated payments.
+      - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount captured within the associated payments.
+      - `completed_at`: `string` | `Date` (optional) — When the payment collection was completed.
+      - `created_at`: `string` | `Date` (optional) — When the payment collection was created.
+      - `updated_at`: `string` | `Date` (optional) — When the payment collection was updated.
+      - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+      - `status`: [PaymentCollectionStatus](/resources/references/payment/types/paymentPaymentCollectionStatus) — The status of the payment collection.
+      - `payment_providers`: [PaymentProviderDTO](/resources/references/payment/interfaces/paymentPaymentProviderDTO)\[] — The payment provider used to process the associated payment sessions and payments.
+      - `payment_sessions`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO)\[] (optional) — The associated payment sessions.
+      - `payments`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO)\[] (optional) — The associated payments.
+    - `items`: [CartLineItemDTO](/resources/references/cart/interfaces/cartCartLineItemDTO) & `object`\[] — The cart's line items.
+      - `original_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The original total of the cart line item.
+      - `original_subtotal`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The original subtotal of the cart line item.
+      - `original_tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The original tax total of the cart line item.
+      - `item_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The item total of the cart line item.
+      - `item_subtotal`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The item subtotal of the cart line item.
+      - `item_tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The item tax total of the cart line item.
+      - `total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The total of the cart line item.
+      - `subtotal`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The subtotal of the cart line item.
+      - `tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The tax total of the cart line item.
+      - `discount_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The discount total of the cart line item.
+      - `discount_tax_total`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The discount tax total of the cart line item.
+      - `raw_original_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw original total of the cart line item.
+      - `raw_original_subtotal`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw original subtotal of the cart line item.
+      - `raw_original_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw original tax total of the cart line item.
+      - `raw_item_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw item total of the cart line item.
+      - `raw_item_subtotal`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw item subtotal of the cart line item.
+      - `raw_item_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw item tax total of the cart line item.
+      - `raw_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw total of the cart line item.
+      - `raw_subtotal`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw subtotal of the cart line item.
+      - `raw_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw tax total of the cart line item.
+      - `raw_discount_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw discount total of the cart line item.
+      - `raw_discount_tax_total`: [BigNumberRawValue](/resources/references/cart/types/cartBigNumberRawValue) — The raw discount tax total of the cart line item.
+      - `id`: `string` — The ID of the line item.
+      - `title`: `string` — The title of the line item.
+      - `subtitle`: `string` (optional) — The subtitle of the line item.
+      - `thumbnail`: `string` (optional) — The line item's thumbnail.
+      - `quantity`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The line item's quantity in the cart.
+      - `product_id`: `string` (optional) — The ID of the associated product.
+      - `product_title`: `string` (optional) — The title of the associated product.
+      - `product_description`: `string` (optional) — The description of the associated product.
+      - `product_subtitle`: `string` (optional) — The subtitle of the associated product.
+      - `product_type`: `string` (optional) — The type of the associated product.
+      - `product_type_id`: `string` (optional) — The type of the associated product.
+      - `product_collection`: `string` (optional) — The collection of the associated product.
+      - `product_handle`: `string` (optional) — The handle of the associated product.
+      - `variant_id`: `string` (optional) — The associated variant's ID of the line item.
+      - `variant_sku`: `string` (optional) — The sku of the associated variant.
+      - `variant_barcode`: `string` (optional) — The barcode of the associated variant.
+      - `variant_title`: `string` (optional) — The title of the associated variant.
+      - `variant_option_values`: `Record<string, unknown>` (optional) — The option values of the associated variant.
+      - `requires_shipping`: `boolean` — Whether the line item requires shipping.
+      - `is_discountable`: `boolean` — Whether the line item is discountable.
+      - `is_giftcard`: `boolean` — Whether the line item is a gift card.
+      - `is_tax_inclusive`: `boolean` — Whether the line item price is tax inclusive.
+      - `is_custom_price`: `boolean` — Whether the line item price is a custom price.
+      - `compare_at_unit_price`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) (optional) — The calculated price of the line item.
+      - `unit_price`: [BigNumberValue](/resources/references/cart/types/cartBigNumberValue) — The unit price of the item.
+      - `tax_lines`: [LineItemTaxLineDTO](/resources/references/cart/interfaces/cartLineItemTaxLineDTO)\[] (optional) — The associated tax lines.
+      - `adjustments`: [LineItemAdjustmentDTO](/resources/references/cart/interfaces/cartLineItemAdjustmentDTO)\[] (optional) — The associated adjustments.
+      - `cart`: [CartDTO](/resources/references/cart/interfaces/cartCartDTO) — The associated cart.
+      - `cart_id`: `string` — The ID of the associated cart.
+      - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+      - `created_at`: `Date` (optional) — When the line item was created.
+      - `updated_at`: `Date` (optional) — When the line item was updated.
+      - `deleted_at`: `Date` (optional) — When the line item was deleted.
+      - `variant`: [ProductVariantDTO](/resources/references/product/interfaces/productProductVariantDTO) — The item's variant.
+  - `shippingOptions`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[] — The selected shipping options.
+    - `id`: `string` — The ID of the shipping option.
+    - `name`: `string` — The name of the shipping option.
+    - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The type of the shipping option's price.
+    - `service_zone_id`: `string` — The associated service zone's ID.
+    - `shipping_profile_id`: `string` — The associated shipping profile's ID.
+    - `provider_id`: `string` — The associated fulfillment provider's ID.
+    - `shipping_option_type_id`: `null` | `string` — The associated shipping option type's ID.
+    - `data`: `null` | `Record<string, unknown>` — The data necessary for the associated fulfillment provider to process the shipping option and, later, its associated fulfillments.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `service_zone`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO) — The associated service zone.
+      - `id`: `string` — The ID of the service zone.
+      - `name`: `string` — The name of the service zone.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `fulfillment_set`: [FulfillmentSetDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentSetDTO) — The fulfillment set assoiated with the service zone.
+      - `fulfillment_set_id`: `string` — The fulfillment set id of the service zone.
+      - `geo_zones`: [GeoZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentGeoZoneDTO)\[] — The geo zones assoiated with the service zone.
+      - `shipping_options`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[] — The shipping options assoiated with the service zone.
+      - `created_at`: `Date` — The creation date of the service zone.
+      - `updated_at`: `Date` — The update date of the service zone.
+      - `deleted_at`: `null` | `Date` — The deletion date of the service zone.
+    - `shipping_profile`: [ShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingProfileDTO) — The associated shipping profile.
+      - `id`: `string` — The ID of the shipping profile.
+      - `name`: `string` — The name of the shipping profile.
+      - `type`: `string` — The type of the shipping profile.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `shipping_options`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[] — The shipping options associated with the shipping profile.
+      - `created_at`: `Date` — The creation date of the shipping profile.
+      - `updated_at`: `Date` — The update date of the shipping profile.
+      - `deleted_at`: `null` | `Date` — The deletion date of the shipping profile.
+    - `fulfillment_provider`: [FulfillmentProviderDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentProviderDTO) — The associated fulfillment provider.
+      - `id`: `string` — The ID of the fulfillment provider.
+      - `name`: `string` — The name of the fulfillment provider.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `shipping_options`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[] — The shipping options associated with the fulfillment provider.
+      - `created_at`: `Date` — The creation date of the fulfillment provider.
+      - `updated_at`: `Date` — The update date of the fulfillment provider.
+      - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment provider.
+    - `type`: [ShippingOptionTypeDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionTypeDTO) — The associated shipping option type.
+      - `id`: `string` — The ID of the shipping option type.
+      - `label`: `string` — The label of the shipping option type.
+      - `description`: `string` — The description of the shipping option type.
+      - `code`: `string` — The code of the shipping option type.
+      - `shipping_option_id`: `string` — The associated shipping option's ID.
+      - `shipping_option`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO) — The associated shipping option.
+      - `created_at`: `Date` — The creation date of the shipping option type.
+      - `updated_at`: `Date` — The update date of the shipping option type.
+      - `deleted_at`: `null` | `Date` — The deletion date of the shipping option type.
+    - `rules`: [ShippingOptionRuleDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionRuleDTO)\[] — The rules associated with the shipping option.
+      - `id`: `string` — The ID of the shipping option rule.
+      - `attribute`: `string` — The attribute of the shipping option rule.
+      - `operator`: `string` — The operator of the shipping option rule.
+
+        Example:
+
+        ```
+        in
+        ```
+      - `value`: `null` | `object` — The values of the shipping option rule.
+      - `shipping_option_id`: `string` — The associated shipping option's ID.
+      - `shipping_option`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO) — The associated shipping option.
+      - `created_at`: `Date` — The creation date of the shipping option rule.
+      - `updated_at`: `Date` — The update date of the shipping option rule.
+      - `deleted_at`: `null` | `Date` — The deletion date of the shipping option rule.
+    - `fulfillments`: [FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO)\[] — The fulfillments associated with the shipping option.
+      - `id`: `string` — The ID of the fulfillment.
+      - `location_id`: `string` — The associated location's ID.
+      - `packed_at`: `null` | `Date` — The date the fulfillment was packed.
+      - `shipped_at`: `null` | `Date` — The date the fulfillment was shipped.
+      - `delivered_at`: `null` | `Date` — The date the fulfillment was delivered.
+      - `canceled_at`: `null` | `Date` — The date the fulfillment was canceled.
+      - `marked_shipped_by`: `null` | `string` (optional) — The id of the user that marked fulfillment as shipped
+      - `created_by`: `null` | `string` (optional) — The id of the user that created the fulfillment
+      - `data`: `null` | `Record<string, unknown>` — The data necessary for the fulfillment provider to process the fulfillment.
+      - `provider_id`: `string` — The associated fulfillment provider's ID.
+      - `shipping_option_id`: `null` | `string` — The associated shipping option's ID.
+      - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+      - `shipping_option`: `null` | [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO) — The associated shipping option.
+      - `requires_shipping`: `boolean` — Flag to indidcate whether shipping is required
+      - `provider`: [FulfillmentProviderDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentProviderDTO) — The associated fulfillment provider.
+      - `delivery_address`: [FulfillmentAddressDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentAddressDTO) — The associated fulfillment address used for delivery.
+      - `items`: [FulfillmentItemDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentItemDTO)\[] — The items of the fulfillment.
+      - `labels`: [FulfillmentLabelDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentLabelDTO)\[] — The labels of the fulfillment.
+      - `created_at`: `Date` — The creation date of the fulfillment.
+      - `updated_at`: `Date` — The update date of the fulfillment.
+      - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment.
+    - `created_at`: `Date` — The creation date of the shipping option.
+    - `updated_at`: `Date` — The update date of the shipping option.
+    - `deleted_at`: `null` | `Date` — The deletion date of the shipping option.

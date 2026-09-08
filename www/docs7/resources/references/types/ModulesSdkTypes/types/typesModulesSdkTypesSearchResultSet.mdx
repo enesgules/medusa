@@ -1,0 +1,14 @@
+---
+title: SearchResultSet
+---
+
+What `query.search` returns: the hydrated entities in `data`, and whatever the
+engine reported — hits, scores, facets, counts — in `search_result`.
+
+- `SearchResultSet`: `object` — What `query.search` returns: the hydrated entities in `data`, and whatever the engine reported — hits, scores, facets, counts — in `search_result`.
+  - `data`: TEntry extends keyof [RemoteQueryEntryPoints](/resources/references/types/ModulesSdkTypes/interfaces/typesModulesSdkTypesRemoteQueryEntryPoints) ? [RemoteQueryEntryPoints](/resources/references/types/ModulesSdkTypes/interfaces/typesModulesSdkTypesRemoteQueryEntryPoints)\[TEntry]\[] : `any`\[]
+  - `search_result`: [SearchResult](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchResult)
+    - `hits`: [SearchHit](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchHit)\<T>\[] — The documents matching the query, ordered by the query's sort or by relevance.
+    - `facets`: `Record<string, [SearchFacetResult](/references/types/SearchTypes/types/types.SearchTypes.SearchFacetResult)>` (optional) — The computed facets, keyed by the field they were requested on.
+    - `metadata`: [SearchResultMetadata](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchResultMetadata) — The result's pagination and timing details.
+    - `provider_metadata`: `Record<string, unknown>` (optional) — Extra details the provider returned, passed through verbatim. Nothing in Medusa's core reads from this.

@@ -1,0 +1,130 @@
+---
+title: listViewConfigurations - Settings Module Reference
+sidebarTitle: listViewConfigurations
+---
+
+This documentation provides a reference to the `listViewConfigurations` method. This belongs to the Settings Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a list of view configurations based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of view configurations using their IDs:
+
+```ts
+const viewConfigurations =
+  await settingsModuleService.listViewConfigurations({
+    id: ["viewcfg_123", "viewcfg_321"],
+  })
+```
+
+To specify the fields to retrieve in each view configuration:
+
+```ts
+const viewConfigurations =
+  await settingsModuleService.listViewConfigurations(
+    {
+      id: ["viewcfg_123", "viewcfg_321"],
+    },
+    {
+      select: ["id", "name", "configuration"],
+    }
+  )
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const viewConfigurations =
+  await settingsModuleService.listViewConfigurations(
+    {
+      entity: "product",
+    },
+    {
+      take: 20,
+      skip: 2,
+    }
+  )
+```
+
+<a id="listviewconfigurations-parameters" />
+
+## Parameters
+
+**listViewConfigurations**
+
+- `filters`: [FilterableViewConfigurationProps](/resources/references/settings/interfaces/settingsFilterableViewConfigurationProps) (optional) — The filters to apply on the retrieved view configurations.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter by.
+  - `entity`: `string` | `string`\[] (optional) — Filter by entity name.
+  - `user_id`: `null` | `string` | `string`\[] (optional) — Filter by user ID.
+  - `is_system_default`: `boolean` (optional) — Filter by system default flag.
+  - `name`: `string` | `string`\[] (optional) — Filter by name.
+  - `$and`: ([FilterableViewConfigurationProps](/resources/references/settings/interfaces/settingsFilterableViewConfigurationProps) | [ViewConfigurationFilterableFields](/resources/references/settings/interfaces/settingsViewConfigurationFilterableFields))\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter by.
+    - `entity`: `string` | `string`\[] (optional) — Filter by entity name.
+    - `user_id`: `null` | `string` | `string`\[] (optional) — Filter by user ID.
+    - `is_system_default`: `boolean` (optional) — Filter by system default flag.
+    - `name`: `string` | `string`\[] (optional) — Filter by name.
+    - `$and`: ([FilterableViewConfigurationProps](/resources/references/settings/interfaces/settingsFilterableViewConfigurationProps) | [ViewConfigurationFilterableFields](/resources/references/settings/interfaces/settingsViewConfigurationFilterableFields))\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableViewConfigurationProps](/resources/references/settings/interfaces/settingsFilterableViewConfigurationProps) | [ViewConfigurationFilterableFields](/resources/references/settings/interfaces/settingsViewConfigurationFilterableFields))\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `$or`: ([FilterableViewConfigurationProps](/resources/references/settings/interfaces/settingsFilterableViewConfigurationProps) | [ViewConfigurationFilterableFields](/resources/references/settings/interfaces/settingsViewConfigurationFilterableFields))\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` | `string`\[] (optional) — The IDs to filter by.
+    - `entity`: `string` | `string`\[] (optional) — Filter by entity name.
+    - `user_id`: `null` | `string` | `string`\[] (optional) — Filter by user ID.
+    - `is_system_default`: `boolean` (optional) — Filter by system default flag.
+    - `name`: `string` | `string`\[] (optional) — Filter by name.
+    - `$and`: ([FilterableViewConfigurationProps](/resources/references/settings/interfaces/settingsFilterableViewConfigurationProps) | [ViewConfigurationFilterableFields](/resources/references/settings/interfaces/settingsViewConfigurationFilterableFields))\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([FilterableViewConfigurationProps](/resources/references/settings/interfaces/settingsFilterableViewConfigurationProps) | [ViewConfigurationFilterableFields](/resources/references/settings/interfaces/settingsViewConfigurationFilterableFields))\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+- `config`: [FindConfig](/resources/references/settings/interfaces/settingsFindConfig)\<[ViewConfigurationDTO](/resources/references/settings/interfaces/settingsViewConfigurationDTO)> (optional) — The configurations determining how the view configurations are retrieved.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/settings/types/settingsFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/settings/types/settingsInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/settings/types/settingsCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/settings/interfaces/settingsContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/settings/interfaces/settingsIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listviewconfigurations-returns" />
+
+## Returns
+
+**listViewConfigurations**
+
+- `Promise`: Promise\<[ViewConfigurationDTO](/resources/references/settings/interfaces/settingsViewConfigurationDTO)\[]> — The list of view configurations.
+  - `ViewConfigurationDTO[]`: [ViewConfigurationDTO](/resources/references/settings/interfaces/settingsViewConfigurationDTO)\[]
+    - `id`: `string` — The ID of the configuration.
+    - `entity`: `string` — The entity this configuration is for.
+    - `name`: `string` — The name of the configuration.
+    - `user_id`: `null` | `string` — The user ID this configuration belongs to.
+    - `is_system_default`: `boolean` — Whether this is a system default configuration.
+    - `configuration`: `object` — The configuration data.
+      - `visible_columns`: `string`\[] — The visible columns.
+      - `column_order`: `string`\[] — The column order.
+      - `column_widths`: `Record<string, number>` (optional) — The column widths.
+      - `filters`: `Record<string, any>` (optional) — The filters to apply.
+      - `sorting`: `null` | `object` (optional) — The sorting configuration.
+      - `search`: `string` (optional) — The search string.
+    - `created_at`: `Date` — The date the configuration was created.
+    - `updated_at`: `Date` — The date the configuration was last updated.

@@ -1,0 +1,62 @@
+---
+title: SearchQuery
+---
+
+A query to run against a search index.
+
+## Type parameters
+
+**SearchQuery**
+
+- `TEntry`: `string` (optional)
+
+## Properties
+
+**SearchQuery**
+
+- `entity`: TEntry — The name of the index to query, which defaults to the index whose name equals the entity.
+- `fields`: `string`\[] (optional) — The dotted paths of the fields the search engine should return. Only fields available in the search engine can be passed here.
+- `filters`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — The filters to apply, including the free-text query as `q`.
+  - `$and`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters that must all match.
+    - `$and`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters that must all match.
+    - `$or`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters of which at least one must match.
+    - `$not`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — Filters that must not match.
+    - `q`: `string` (optional) — The free-text query. Sits among the filters so a `query.graph` call converts to `query.search` unchanged; the module lifts it out before compiling the rest, so a provider never sees `q` as a field.
+  - `$or`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters of which at least one must match.
+    - `$and`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters that must all match.
+    - `$or`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters of which at least one must match.
+    - `$not`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — Filters that must not match.
+    - `q`: `string` (optional) — The free-text query. Sits among the filters so a `query.graph` call converts to `query.search` unchanged; the module lifts it out before compiling the rest, so a provider never sees `q` as a field.
+  - `$not`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — Filters that must not match.
+    - `$and`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters that must all match.
+    - `$or`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters of which at least one must match.
+    - `$not`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — Filters that must not match.
+    - `q`: `string` (optional) — The free-text query. Sits among the filters so a `query.graph` call converts to `query.search` unchanged; the module lifts it out before compiling the rest, so a provider never sees `q` as a field.
+  - `q`: `string` (optional) — The free-text query. Sits among the filters so a `query.graph` call converts to `query.search` unchanged; the module lifts it out before compiling the rest, so a provider never sees `q` as a field.
+- `pagination`: [SearchPagination](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchPagination) (optional) — How the results are paginated and sorted.
+  - `skip`: `number` (optional) — The number of documents to skip before the returned hits. Mutually exclusive with `cursor`.
+  - `take`: `number` (optional) — The maximum number of hits to return.
+  - `order`: `Record<string, [SearchOrderBy](/references/types/SearchTypes/types/types.SearchTypes.SearchOrderBy)>` (optional) — The fields to sort the hits by, keyed by the field's dotted path. The reserved `_score` key sorts by relevance.
+  - `cursor`: `string` (optional) — An opaque provider cursor, as returned in a previous result's `metadata.next_cursor`. Mutually exclusive with `skip`.
+- `search_options`: [SearchOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchOptions) (optional) — The options changing how the query is matched, scored, and aggregated.
+  - `attributes_to_search_on`: `string`\[] (optional) — The dotted paths of the fields to match the free-text query against. Defaults to every field marked `searchable` on the index.
+  - `match_strategy`: [SearchMatchStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchMatchStrategy) (optional) — How query terms combine. - `"all"` (default): every term must appear as a complete token. - `"any"`: at least one term must match. - `"last"`: typeahead. Completed terms must match in full; the last term is a prefix, so `"my sear"` matches `"My search results"`.
+  - `typo_tolerance`: `boolean` (optional) — Whether to match terms that are misspelled by a character or two.
+  - `facets`: (`string` | [SearchFacetRequest](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFacetRequest))\[] (optional) — The facets to compute alongside the hits. A string is shorthand for a `value` facet on that field.
+  - `disjunctive_facets`: `boolean` (optional) — Compute each facet ignoring the filter on that same field, so a storefront keeps showing sibling values of an active filter. Needs one query per facet on every engine reviewed, so the module expands them and hands the set to `provider.searchMany`.
+  - `highlight`: [SearchHighlightOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchHighlightOptions) (optional) — How the matched terms are highlighted in the returned hits.
+    - `fields`: `string`\[] — The dotted paths of the fields to highlight.
+    - `pre_tag`: `string` (optional) — The tag inserted before a matched term.
+    - `post_tag`: `string` (optional) — The tag inserted after a matched term.
+    - `snippet`: `boolean` | `object` (optional) — Whether to crop a fragment around the match rather than returning the whole field, optionally specifying the fragment's length.
+  - `distinct`: `string` (optional) — Return at most one hit per distinct value of this field.
+  - `min_score`: `number` (optional) — Discard hits scoring below this threshold.
+  - `include_score`: `boolean` (optional) — Whether to return each hit's relevance score.
+  - `locales`: `string`\[] (optional) — Query-time language hint, e.g. `["en"]`. Engines that analyze per language (Meilisearch, Algolia) use it to pick the analyzer; a provider that cannot honour it rejects it rather than silently matching differently. Defaults to the index' `settings.locales`.
+  - `vector`: [SearchVectorOptions](/resources/references/types/SearchTypes/interfaces/typesSearchTypesSearchVectorOptions) (optional) — The options of a vector, or semantic, search to run instead of, or alongside, the free-text query.
+    - `field`: `string` (optional) — The dotted path of the `vector` field to search in. Optional when the index declares exactly one vector field.
+    - `value`: `number`\[] (optional) — A pre-computed embedding to search with. Mutually exclusive with `query`. Allowed whether documents store customer-supplied embeddings or the engine embeds them.
+    - `query`: `string` (optional) — Text the engine embeds at query time. Requires the vector field to set `embed: true`. Mutually exclusive with `value`.
+    - `semantic_ratio`: `number` (optional) — How much the semantic score contributes relative to the keyword score, where `0` is keyword-only and `1` is semantic-only. Defaults to `1` when there is no free-text query, and `0.5` when both run together.
+  - `count`: [SearchCountStrategy](/resources/references/types/SearchTypes/types/typesSearchTypesSearchCountStrategy) (optional) — How the total number of matching documents is computed. `"exact"` may be rejected or slow depending on the provider.
+  - `provider_options`: `Record<string, Record<string, unknown>>` (optional) — Escape hatch for engine features the interface does not model, keyed by provider identifier, e.g. `{ typesense: { drop_tokens_threshold: 0 } }`.

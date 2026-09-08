@@ -1,0 +1,270 @@
+---
+title: client
+---
+
+## constructor
+
+<a id="constructor-parameters" />
+
+### Parameters
+
+**constructor**
+
+- `config`: [Config](/resources/references/js_sdk/admin/types/js_sdkadminConfig)
+  - `baseUrl`: `string` — The base URL of the Medusa server.
+  - `globalHeaders`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Default headers to include with every request.
+    - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+  - `publishableKey`: `string` (optional) — The publishable API key for storefront authentication.
+  - `apiKey`: `string` (optional) — The secret API key for admin authentication.
+  - `auth`: `object` (optional) — Authentication configuration.
+    - `type`: `"jwt"` | `"session"` (optional) — The authentication type: "jwt" or "session".
+    - `jwtTokenStorageKey`: `string` (optional) — The storage key for JWT tokens.
+    - `jwtTokenStorageMethod`: `"local"` | `"session"` | `"memory"` | `"custom"` | `"nostore"` (optional) — The storage method for JWT tokens.
+    - `fetchCredentials`: `"include"` | `"omit"` | `"same-origin"` (optional) — The credentials mode for fetch requests.
+    - `storage`: [CustomStorage](/resources/references/js_sdk/admin/interfaces/js_sdkadminCustomStorage) (optional) — Custom storage implementation for JWT tokens.
+  - `logger`: [Logger](/resources/references/js_sdk/admin/types/js_sdkadminLogger) (optional) — Custom logger instance.
+    - `error`: (...`messages`: `string`\[]) => `void` — Log error messages.
+    - `warn`: (...`messages`: `string`\[]) => `void` — Log warning messages.
+    - `info`: (...`messages`: `string`\[]) => `void` — Log info messages.
+    - `debug`: (...`messages`: `string`\[]) => `void` — Log debug messages.
+  - `debug`: `boolean` (optional) — Whether to enable debug logging.
+
+## setLocale
+
+<a id="setlocale-parameters" />
+
+### Parameters
+
+**setLocale**
+
+- `locale`: `string`
+
+## fetch
+
+`fetch` closely follows (and uses under the hood) the native `fetch` API. There are, however, few key differences:
+
+- Non 2xx statuses throw a `FetchError` with the status code as the `status` property, rather than resolving the promise
+- You can pass `body` and `query` as objects, and they will be encoded and stringified.
+- The response gets parsed as JSON if the `accept` header is set to `application/json`, otherwise the raw Response object is returned
+
+Since the response is dynamically determined, we cannot know if it is JSON or not. Therefore, it is important to pass `Response` as the return type
+
+<a id="fetch-type-parameters" />
+
+### Type Parameters
+
+**fetch**
+
+- `T`: `unknown` (optional)
+
+<a id="fetch-parameters" />
+
+### Parameters
+
+**fetch**
+
+- `input`: `string` | `URL` | `Request`
+- `init`: [FetchArgs](/resources/references/js_sdk/admin/types/js_sdkadminFetchArgs) (optional)
+  - `query`: `Record<string, any>` (optional) — Query parameters to append to the URL.
+  - `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Request headers.
+    - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+  - `body`: `RequestInit`\[`"body"`] | `Record<string, any>` (optional) — Request body data.
+
+<a id="fetch-returns" />
+
+### Returns
+
+**fetch**
+
+- `Promise`: Promise\<T> — Promise\<T>
+
+## fetchStream
+
+`fetchStream` is a helper method to deal with server-sent events. It returns an object with a stream and an abort function.
+It follows a very similar interface to `fetch`, with the return value being an async generator.
+The stream is an async generator that yields `ServerSentEventMessage` objects, which contains the event name, stringified data, and few other properties.
+The caller is responsible for handling `disconnect` events and aborting the stream. The caller is also responsible for parsing the data field.
+
+<a id="fetchstream-parameters" />
+
+### Parameters
+
+**fetchStream**
+
+- `input`: `string` | `URL` | `Request`
+- `init`: [FetchArgs](/resources/references/js_sdk/admin/types/js_sdkadminFetchArgs) (optional)
+  - `query`: `Record<string, any>` (optional) — Query parameters to append to the URL.
+  - `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Request headers.
+    - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+  - `body`: `RequestInit`\[`"body"`] | `Record<string, any>` (optional) — Request body data.
+
+<a id="fetchstream-returns" />
+
+### Returns
+
+**fetchStream**
+
+- `Promise`: Promise\<[FetchStreamResponse](/resources/references/js_sdk/admin/interfaces/js_sdkadminFetchStreamResponse)> — FetchStreamResponse
+  - `stream`: AsyncGenerator\<[ServerSentEventMessage](/resources/references/js_sdk/admin/interfaces/js_sdkadminServerSentEventMessage), void, unknown>
+    - `comment`: `string` (optional) — Ignored by the client.
+    - `event`: `string` (optional) — A string identifying the type of event described.
+    - `data`: `string` (optional) — The data field for the message. Split by new lines.
+    - `id`: `string` | `number` (optional) — The event ID to set the EventSource object's last event ID value.
+    - `retry`: `number` (optional) — The reconnection time.
+  - `abort`: () => `void`
+
+## setToken
+
+<a id="settoken-parameters" />
+
+### Parameters
+
+**setToken**
+
+- `token`: `string`
+
+<a id="settoken-returns" />
+
+### Returns
+
+**setToken**
+
+- `Promise`: Promise\<void>
+
+## getToken
+
+<a id="gettoken-returns" />
+
+### Returns
+
+**getToken**
+
+- `Promise`: Promise\<undefined | null | string>
+  - `undefined \| null \| string`: `undefined` | `null` | `string`
+
+## clearToken
+
+<a id="cleartoken-returns" />
+
+### Returns
+
+**clearToken**
+
+- `Promise`: Promise\<void>
+
+<a id="cleartoken-1" />
+
+## clearToken\_
+
+<a id="cleartoken-returns-1" />
+
+### Returns
+
+**clearToken\_**
+
+- `Promise`: Promise\<void>
+
+## initClient
+
+<a id="initclient-returns" />
+
+### Returns
+
+**initClient**
+
+- `ClientFetch`: (`input`: [FetchInput](/resources/references/js_sdk/admin/types/js_sdkadminFetchInput), `init?`: [FetchArgs](/resources/references/js_sdk/admin/types/js_sdkadminFetchArgs)) => Promise\<Response> — Client fetch function type.
+
+<a id="getapikeyheader" />
+
+## getApiKeyHeader\_
+
+<a id="getapikeyheader-returns" />
+
+### Returns
+
+**getApiKeyHeader\_**
+
+- `object \| object`: `object` | `object`
+
+<a id="getpublishablekeyheader" />
+
+## getPublishableKeyHeader\_
+
+<a id="getpublishablekeyheader-returns" />
+
+### Returns
+
+**getPublishableKeyHeader\_**
+
+- `object \| object`: `object` | `object`
+
+<a id="getjwtheader" />
+
+## getJwtHeader\_
+
+<a id="getjwtheader-returns" />
+
+### Returns
+
+**getJwtHeader\_**
+
+- `Promise`: Promise\<object | object>
+  - `object \| object`: `object` | `object`
+
+<a id="settoken-1" />
+
+## setToken\_
+
+<a id="settoken-parameters-1" />
+
+### Parameters
+
+**setToken\_**
+
+- `token`: `string`
+
+<a id="settoken-returns-1" />
+
+### Returns
+
+**setToken\_**
+
+- `Promise`: Promise\<void>
+
+<a id="gettoken-1" />
+
+## getToken\_
+
+<a id="gettoken-returns-1" />
+
+### Returns
+
+**getToken\_**
+
+- `Promise`: Promise\<undefined | null | string>
+  - `undefined \| null \| string`: `undefined` | `null` | `string`
+
+<a id="gettokenstorageinfo" />
+
+## getTokenStorageInfo\_
+
+<a id="gettokenstorageinfo-returns" />
+
+### Returns
+
+**getTokenStorageInfo\_**
+
+- `storageMethod`: `"local"` | `"session"` | `"memory"` | `"custom"` | `"nostore"`
+- `storageKey`: `string`
+
+<a id="throwerror" />
+
+## throwError\_
+
+<a id="throwerror-parameters" />
+
+### Parameters
+
+**throwError\_**
+
+- `message`: `string`

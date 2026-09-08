@@ -1,0 +1,16 @@
+---
+title: SearchMutation
+---
+
+A change to apply to a search index, as returned by an index definition's
+`consume` function.
+
+- `SearchMutation`: `object` | `object` — A change to apply to a search index, as returned by an index definition's `consume` function.
+  - `action`: `"upsert"` — Adds the documents to the index, replacing any that already exist under the same ID.
+  - `documents`: [SearchDocument](/resources/references/types/SearchTypes/types/typesSearchTypesSearchDocument)\[] — The documents to write.
+    - `id`: `string`
+  - `filters`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)
+    - `$and`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters that must all match.
+    - `$or`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters)\[] (optional) — Filters of which at least one must match.
+    - `$not`: [SearchFilters](/resources/references/types/SearchTypes/types/typesSearchTypesSearchFilters) (optional) — Filters that must not match.
+    - `q`: `string` (optional) — The free-text query. Sits among the filters so a `query.graph` call converts to `query.search` unchanged; the module lifts it out before compiling the rest, so a provider never sees `q` as a field.

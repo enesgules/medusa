@@ -1,0 +1,62 @@
+---
+title: removeRules
+---
+
+This method removes rules from a promotion. It can be the promotion's rules,
+or its application method's buy or target rules. That depends on the rule type
+you specify as a parameter.
+
+- If you set the `ruleType` to `rules`, the method sends a request to the
+  [Manage Promotion's Rules API Route](/api/admin/promotions/manage-rules).
+- If you set the `ruleType` to `buy-rules`, the method sends a request to the
+  [Manage Promotion's Buy Rules API Route](/api/admin/promotions/manage-buy-rules).
+- If you set the `ruleType` to `target-rules`, the method sends a request to the
+  [Manage Promotion's Target Rules API Route](/api/admin/promotions/manage-target-rules).
+
+## Example
+
+```ts
+sdk.admin.promotion.removeRules("promo_123", "rules", {
+  rule_ids: ["rule_123"]
+})
+.then(({ promotion }) => {
+  console.log(promotion)
+})
+```
+
+<a id="removerules-parameters" />
+
+## Parameters
+
+**removeRules**
+
+- `id`: `string` — The promotion's ID.
+- `ruleType`: `string` — The type of rules to remove.
+- `payload`: [BatchRemovePromotionRulesReq](/resources/references/types/HttpTypes/interfaces/typesHttpTypesBatchRemovePromotionRulesReq) — The rules to remove.
+  - `rule_ids`: `string`\[] — The IDs of the rules to remove.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="removerules-returns" />
+
+## Returns
+
+**removeRules**
+
+- `Promise`: Promise\<[AdminPromotionResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPromotionResponse)> — The promotion's details.
+  - `promotion`: [AdminPromotion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPromotion) — The promotion's details.
+    - `application_method`: [AdminApplicationMethod](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminApplicationMethod) (optional) — The promotion's application method.
+    - `rules`: [AdminPromotionRule](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPromotionRule)\[] (optional) — The rules for the promotion.
+    - `id`: `string`
+    - `code`: `string` (optional)
+    - `type`: [PromotionTypeValues](/resources/references/promotion/types/promotionPromotionTypeValues) (optional) — The promotion's possible types.
+    - `is_automatic`: `boolean` (optional)
+    - `is_tax_inclusive`: `boolean` (optional)
+    - `limit`: `null` | `number` (optional)
+    - `used`: `number` (optional)
+    - `status`: [PromotionStatusValues](/resources/references/promotion/types/promotionPromotionStatusValues) (optional) — The promotion's possible types.
+    - `campaign_id`: `string` (optional)
+    - `campaign`: [AdminCampaign](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminCampaign) (optional)
+    - `created_at`: `string`
+    - `updated_at`: `string`
+    - `deleted_at`: `null` | `string`

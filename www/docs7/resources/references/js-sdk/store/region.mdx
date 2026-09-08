@@ -1,0 +1,201 @@
+---
+title: region - JS SDK Store Reference
+sidebarTitle: region
+---
+
+This documentation provides a reference to the `sdk.store.region` set of methods used to send requests to Medusa's Store API routes.
+
+## list
+
+This method retrieves the paginated list of regions in the store. It sends a request to the
+[List Regions API route](/api/store/regions/list-regions).
+
+Related guide: [How to list regions in a storefront](/resources/storefront-development/regions/list).
+
+### Example
+
+To retrieve the list of regions:
+
+```ts
+sdk.store.region.list()
+.then(({ regions, count, limit, offset }) => {
+  console.log(regions)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.store.region.list({
+  limit: 10,
+  offset: 10
+})
+.then(({ regions, count, limit, offset }) => {
+  console.log(regions)
+})
+```
+
+Using the `fields` query parameter, you can specify the fields and relations to retrieve
+in each region:
+
+```ts
+sdk.store.region.list({
+  fields: "id,*countries"
+})
+.then(({ regions, count, limit, offset }) => {
+  console.log(regions)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="list-parameters" />
+
+### Parameters
+
+**list**
+
+- `query`: [FindParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesFindParams) & [StoreRegionFilters](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreRegionFilters) (optional) — Filters and pagination configurations.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `$and`: ([BaseRegionFilters](/resources/references/types/interfaces/typesBaseRegionFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseRegionFilters](/resources/references/types/interfaces/typesBaseRegionFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$and`: ([BaseRegionFilters](/resources/references/types/interfaces/typesBaseRegionFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseRegionFilters](/resources/references/types/interfaces/typesBaseRegionFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseRegionFilters](/resources/references/types/interfaces/typesBaseRegionFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseRegionFilters](/resources/references/types/interfaces/typesBaseRegionFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — A query or keywords to search a region's searchable fields by.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by region ID(s).
+    - `name`: `string` | `string`\[] (optional) — Filter by region name(s).
+    - `currency_code`: `string` | `string`\[] (optional) — Filter by currency code(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the region's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the region's update date.
+  - `$or`: ([BaseRegionFilters](/resources/references/types/interfaces/typesBaseRegionFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseRegionFilters](/resources/references/types/interfaces/typesBaseRegionFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `$and`: ([BaseRegionFilters](/resources/references/types/interfaces/typesBaseRegionFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseRegionFilters](/resources/references/types/interfaces/typesBaseRegionFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseRegionFilters](/resources/references/types/interfaces/typesBaseRegionFilters) | [BaseFilterable](/resources/references/types/DAL/interfaces/typesDALBaseFilterable)\<[BaseRegionFilters](/resources/references/types/interfaces/typesBaseRegionFilters)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `q`: `string` (optional) — A query or keywords to search a region's searchable fields by.
+    - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by region ID(s).
+    - `name`: `string` | `string`\[] (optional) — Filter by region name(s).
+    - `currency_code`: `string` | `string`\[] (optional) — Filter by currency code(s).
+    - `created_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the region's creation date.
+    - `updated_at`: [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string> (optional) — Apply filters on the region's update date.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+  - `limit`: `number` (optional) — The maximum number of items to retrieve.
+  - `offset`: `number` (optional) — The number of items to skip before retrieving the returned items.
+  - `order`: `string` (optional) — The field to sort by and in which order.
+
+    Example:
+
+    ```
+    -created_at
+    ```
+  - `with_deleted`: `boolean` (optional) — Whether to include soft-deleted items in the results.
+  - `q`: `string` (optional) — A query or keywords to search a region's searchable fields by.
+  - `id`: `string` | `string`\[] | [OperatorMap](/resources/references/types/DAL/types/typesDALOperatorMap)\<string | string\[]> (optional) — Filter by region ID(s).
+    - `$and`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/types/types/typesQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> | [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/types/types/typesQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/types/types/typesExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `name`: `string` | `string`\[] (optional) — Filter by region name(s).
+  - `currency_code`: `string` | `string`\[] (optional) — Filter by currency code(s).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="list-returns" />
+
+### Returns
+
+**list**
+
+- `Promise`: Promise\<[StoreRegionListResponse](/resources/references/types/HttpTypes/types/typesHttpTypesStoreRegionListResponse)> — The paginated list of regions.
+  - `limit`: `number` — The maximum number of items retrieved.
+  - `offset`: `number` — The number of items to skip before retrieving the returned items.
+  - `count`: `number` — The total number of items.
+  - `estimate_count`: `number` (optional) — The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+
+## retrieve
+
+This method retrieves a region by its ID. It sends a request to the [Get Region](/api/store/regions/get-a-region)
+API route.
+
+Related guide: [Store and retrieve regions in a storefront](/resources/storefront-development/regions/store-retrieve-region).
+
+### Example
+
+To retrieve a region by its ID:
+
+```ts
+sdk.store.region.retrieve("reg_123")
+.then(({ region }) => {
+  console.log(region)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.store.region.retrieve(
+  "reg_123",
+  {
+    fields: "id,*countries"
+  }
+)
+.then(({ region }) => {
+  console.log(region)
+})
+```
+
+Learn more about the `fields` property in the [API reference](/api/store/select-fields-and-relations).
+
+<a id="retrieve-parameters" />
+
+### Parameters
+
+**retrieve**
+
+- `id`: `string` — The region's ID.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Configure the fields to retrieve in the region.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="retrieve-returns" />
+
+### Returns
+
+**retrieve**
+
+- `Promise`: Promise\<[StoreRegionResponse](/resources/references/types/HttpTypes/types/typesHttpTypesStoreRegionResponse)> — The region.
+  - `region`: [StoreRegion](/resources/references/types/HttpTypes/interfaces/typesHttpTypesStoreRegion) — The region's details.
+    - `id`: `string` — The region's ID.
+    - `name`: `string` — The region's name.
+    - `currency_code`: `string` — The region's currency code.
+    - `automatic_taxes`: `boolean` (optional) — Whether taxes are calculated automatically in the region.
+    - `countries`: [BaseRegionCountry](/resources/references/types/interfaces/typesBaseRegionCountry)\[] (optional) — The countries that belong to the region.
+    - `payment_providers`: [AdminPaymentProvider](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminPaymentProvider)\[] (optional) — The payment providers enabled in the region.
+    - `metadata`: `null` | `Record<string, any>` (optional) — Key-value pairs of custom data.
+    - `created_at`: `string` (optional) — The date the region was created.
+    - `updated_at`: `string` (optional) — The date the region was updated.

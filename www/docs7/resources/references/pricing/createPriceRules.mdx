@@ -1,0 +1,76 @@
+---
+title: createPriceRules - Pricing Module Reference
+sidebarTitle: createPriceRules
+---
+
+This documentation provides a reference to the `createPriceRules` method. This belongs to the Pricing Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method is used to create new price rules based on the provided data.
+
+## Example
+
+```ts
+const priceRules =
+  await pricingModuleService.createPriceRules([
+    {
+      value: "VIP",
+      attribute: "customer_group",
+      price_set_id: "pset_123",
+    },
+  ])
+```
+
+<a id="createpricerules-parameters" />
+
+## Parameters
+
+**createPriceRules**
+
+- `data`: [CreatePriceRuleDTO](/resources/references/pricing/interfaces/pricingCreatePriceRuleDTO)\[] — The price rules to create.
+  - `price_set_id`: `string` (optional) — The ID of the associated price set.
+  - `attribute`: `string` — The attribute of the price rule
+  - `value`: `string` — The value of the price rule.
+  - `priority`: `number` (optional) — The priority of the price rule in comparison to other applicable price rules.
+  - `price_id`: `string` (optional) — The ID of the associated price.
+- `sharedContext`: [Context](/resources/references/pricing/interfaces/pricingContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/pricing/interfaces/pricingIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createpricerules-returns" />
+
+## Returns
+
+**createPriceRules**
+
+- `Promise`: Promise\<[PriceRuleDTO](/resources/references/pricing/interfaces/pricingPriceRuleDTO)\[]> — The list of created price rules.
+  - `PriceRuleDTO[]`: [PriceRuleDTO](/resources/references/pricing/interfaces/pricingPriceRuleDTO)\[]
+    - `id`: `string` — The ID of the price rule.
+    - `price_set_id`: `string` — The ID of the associated price set.
+    - `price_set`: [PriceSetDTO](/resources/references/pricing/interfaces/pricingPriceSetDTO) — The associated price set.
+      - `id`: `string` — The ID of the price set.
+      - `prices`: [MoneyAmountDTO](/resources/references/pricing/interfaces/pricingMoneyAmountDTO)\[] (optional) — The prices that belong to this price set.
+      - `calculated_price`: [CalculatedPriceSet](/resources/references/pricing/interfaces/pricingCalculatedPriceSet) (optional) — The calculated price based on the context.
+    - `attribute`: `string` — The attribute of the price rule
+    - `value`: `string` — The value of the price rule.
+    - `priority`: `number` — The priority of the price rule in comparison to other applicable price rules.
+    - `price_id`: `string` — The ID of the associated price.
+    - `price_list_id`: `string` — The ID of the associated price list.
+    - `created_at`: `Date` — When the price\_rule was created.
+    - `updated_at`: `Date` — When the price\_rule was updated.
+    - `deleted_at`: `null` | `Date` — When the price\_rule was deleted.

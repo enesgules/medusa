@@ -1,0 +1,274 @@
+---
+title: listPaymentSessions - Payment Module Reference
+sidebarTitle: listPaymentSessions
+---
+
+This documentation provides a reference to the `listPaymentSessions` method. This belongs to the Payment Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+This method retrieves a paginated list of payment sessions based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of payment sessions using their IDs:
+
+```ts
+const paymentSessions =
+  await paymentModuleService.listPaymentSessions({
+    id: ["payses_123", "payses_321"],
+  })
+```
+
+To specify relations that should be retrieved within the payment session:
+
+> **Note**
+>
+> You can only retrieve data models defined in the same module. To retrieve linked data models
+> from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+
+```ts
+const paymentSessions =
+  await paymentModuleService.listPaymentSessions(
+    {
+      id: ["payses_123", "payses_321"],
+    },
+    {
+      relations: ["payment"],
+    }
+  )
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const paymentSessions =
+  await paymentModuleService.listPaymentSessions(
+    {
+      id: ["payses_123", "payses_321"],
+    },
+    {
+      relations: ["payment"],
+      take: 20,
+      skip: 2,
+    }
+  )
+```
+
+<a id="listpaymentsessions-parameters" />
+
+## Parameters
+
+**listPaymentSessions**
+
+- `filters`: [FilterablePaymentSessionProps](/resources/references/payment/interfaces/paymentFilterablePaymentSessionProps) (optional) — The filters to apply on the retrieved payment sessions.
+  - `$and`: ([PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO) | [BaseFilterable](/resources/references/payment/interfaces/paymentBaseFilterable)\<[PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `id`: `string` — The ID of the payment session.
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The amount to authorize.
+    - `currency_code`: `string` — The 3 character currency code of the payment session.
+    - `provider_id`: `string` — The ID of the associated payment provider.
+    - `data`: `Record<string, unknown>` — The data necessary for the payment provider to process the payment session.
+    - `context`: `Record<string, unknown>` (optional) — The context necessary for the payment provider.
+    - `status`: [PaymentSessionStatus](/resources/references/payment/types/paymentPaymentSessionStatus) — The status of the payment session.
+    - `authorized_at`: `Date` (optional) — When the payment session was authorized.
+    - `created_at`: `string` | `Date` — When the payment session was created
+    - `updated_at`: `string` | `Date` — When the payment session was updated
+    - `payment_collection_id`: `string` — The ID of the associated payment collection.
+    - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The payment collection the session is associated with.
+    - `payment`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO) (optional) — The payment created from the session.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `$and`: ([BaseFilterable](/resources/references/payment/interfaces/paymentBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseFilterable](/resources/references/payment/interfaces/paymentBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `$or`: ([PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO) | [BaseFilterable](/resources/references/payment/interfaces/paymentBaseFilterable)\<[PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO)>)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+    - `id`: `string` — The ID of the payment session.
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The amount to authorize.
+    - `currency_code`: `string` — The 3 character currency code of the payment session.
+    - `provider_id`: `string` — The ID of the associated payment provider.
+    - `data`: `Record<string, unknown>` — The data necessary for the payment provider to process the payment session.
+    - `context`: `Record<string, unknown>` (optional) — The context necessary for the payment provider.
+    - `status`: [PaymentSessionStatus](/resources/references/payment/types/paymentPaymentSessionStatus) — The status of the payment session.
+    - `authorized_at`: `Date` (optional) — When the payment session was authorized.
+    - `created_at`: `string` | `Date` — When the payment session was created
+    - `updated_at`: `string` | `Date` — When the payment session was updated
+    - `payment_collection_id`: `string` — The ID of the associated payment collection.
+    - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The payment collection the session is associated with.
+    - `payment`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO) (optional) — The payment created from the session.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `$and`: ([BaseFilterable](/resources/references/payment/interfaces/paymentBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+    - `$or`: ([BaseFilterable](/resources/references/payment/interfaces/paymentBaseFilterable)\<T> | T)\[] (optional) — An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+  - `id`: `string` | `string`\[] (optional) — The IDs to filter the payment sessions by.
+  - `currency_code`: `string` | `string`\[] (optional) — Filter the payment sessions by their currency code.
+  - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) | [OperatorMap](/resources/references/payment/types/paymentOperatorMap)\<[BigNumberValue](/resources/references/payment/types/paymentBigNumberValue)> (optional) — Filter the payment sessions by their amount.
+    - `numeric`: `number`
+    - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+    - `bigNumber`: `BigNumber` (optional)
+    - `$and`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> | [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/payment/types/paymentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `provider_id`: `string` | `string`\[] (optional) — Filter the payment sessions by the ID of their associated payment provider.
+  - `payment_collection_id`: `string` | `string`\[] (optional) — Filter the payment sessions by the ID of their associated payment collection.
+  - `created_at`: [OperatorMap](/resources/references/payment/types/paymentOperatorMap)\<string> (optional) — Filter the payment sessions by their creation date.
+    - `$and`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> | [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/payment/types/paymentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `updated_at`: [OperatorMap](/resources/references/payment/types/paymentOperatorMap)\<string> (optional) — Filter the payment sessions by their update date.
+    - `$and`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> | [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/payment/types/paymentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+  - `deleted_at`: [OperatorMap](/resources/references/payment/types/paymentOperatorMap)\<string> (optional) — Filter the payment sessions by their deletion date.
+    - `$and`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$or`: [Query](/resources/references/payment/types/paymentQuery)\<T>\[] (optional)
+    - `$eq`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> | [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$ne`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$in`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$nin`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T>\[] (optional)
+    - `$not`: [Query](/resources/references/payment/types/paymentQuery)\<T> (optional)
+    - `$gt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$gte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lt`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$lte`: [ExpandScalar](/resources/references/payment/types/paymentExpandScalar)\<T> (optional)
+    - `$like`: `string` (optional)
+    - `$re`: `string` (optional)
+    - `$ilike`: `string` (optional)
+    - `$fulltext`: `string` (optional)
+    - `$overlap`: `string`\[] (optional)
+    - `$contains`: `string`\[] (optional)
+    - `$contained`: `string`\[] (optional)
+    - `$exists`: `boolean` (optional)
+- `config`: [FindConfig](/resources/references/payment/interfaces/paymentFindConfig)\<[PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO)> (optional) — The configurations determining how the payment session is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a payment session.
+  - `select`: (keyof Entity | `string` & `object`)\[] (optional) — An array of strings, each being attribute names of the entity to retrieve in the result.
+  - `skip`: `null` | `number` (optional) — A number indicating the number of records to skip before retrieving the results.
+  - `take`: `null` | `number` (optional) — A number indicating the number of records to return in the result.
+  - `relations`: `string`\[] (optional) — An array of strings, each being relation names of the entity to retrieve in the result. You can only retrieve data models defined in the same module. To retrieve linked data models from other modules, use [Query](/learn/fundamentals/module-links/query) instead.
+  - `order`: [FindConfigOrder](/resources/references/payment/types/paymentFindConfigOrder) (optional) — An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+  - `withDeleted`: `boolean` (optional) — A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.
+  - `filters`: `Record<string, any>` (optional) — Enable ORM specific defined filters
+  - `options`: `Record<string, any>` (optional) — Enable ORM specific defined options
+  - `__internal`: [InternalQueryOptions](/resources/references/payment/types/paymentInternalQueryOptions) (optional)
+    - `crossModuleJoins`: [CrossModuleJoinSpec](/resources/references/payment/types/paymentCrossModuleJoinSpec)\[] (optional) — Cross-module join specifications that allows the graph layer to optimize data fetching. The logic behind what gets passed here is owned by the graph layer, and that layer will ensure we don't break boundaries between modules other than for performance optimizations.
+- `sharedContext`: [Context](/resources/references/payment/interfaces/paymentContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/payment/interfaces/paymentIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="listpaymentsessions-returns" />
+
+## Returns
+
+**listPaymentSessions**
+
+- `Promise`: Promise\<[PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO)\[]> — The list of payment sessions.
+  - `PaymentSessionDTO[]`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO)\[]
+    - `id`: `string` — The ID of the payment session.
+    - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The amount to authorize.
+      - `numeric`: `number`
+      - `raw`: [BigNumberRawValue](/resources/references/payment/types/paymentBigNumberRawValue) (optional)
+      - `bigNumber`: `BigNumber` (optional)
+    - `currency_code`: `string` — The 3 character currency code of the payment session.
+    - `provider_id`: `string` — The ID of the associated payment provider.
+    - `data`: `Record<string, unknown>` — The data necessary for the payment provider to process the payment session.
+    - `context`: `Record<string, unknown>` (optional) — The context necessary for the payment provider.
+    - `status`: [PaymentSessionStatus](/resources/references/payment/types/paymentPaymentSessionStatus) — The status of the payment session.
+    - `authorized_at`: `Date` (optional) — When the payment session was authorized.
+    - `created_at`: `string` | `Date` — When the payment session was created
+    - `updated_at`: `string` | `Date` — When the payment session was updated
+    - `payment_collection_id`: `string` — The ID of the associated payment collection.
+    - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The payment collection the session is associated with.
+      - `id`: `string` — The ID of the payment collection.
+      - `currency_code`: `string` — The ISO 3 character currency code of the payment sessions and payments associated with payment collection.
+      - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The total amount to be authorized and captured.
+      - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount authorized within the associated payment sessions.
+      - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount refunded within the associated payments.
+      - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The amount captured within the associated payments.
+      - `completed_at`: `string` | `Date` (optional) — When the payment collection was completed.
+      - `created_at`: `string` | `Date` (optional) — When the payment collection was created.
+      - `updated_at`: `string` | `Date` (optional) — When the payment collection was updated.
+      - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+      - `status`: [PaymentCollectionStatus](/resources/references/payment/types/paymentPaymentCollectionStatus) — The status of the payment collection.
+      - `payment_providers`: [PaymentProviderDTO](/resources/references/payment/interfaces/paymentPaymentProviderDTO)\[] — The payment provider used to process the associated payment sessions and payments.
+      - `payment_sessions`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO)\[] (optional) — The associated payment sessions.
+      - `payments`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO)\[] (optional) — The associated payments.
+    - `payment`: [PaymentDTO](/resources/references/payment/interfaces/paymentPaymentDTO) (optional) — The payment created from the session.
+      - `id`: `string` — The ID of the payment.
+      - `amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) — The payment's total amount.
+      - `raw_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw amount of the payment.
+      - `authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The authorized amount of the payment.
+      - `raw_authorized_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The raw authorized amount of the payment.
+      - `currency_code`: `string` — The ISO 3 character currency code of the payment.
+      - `provider_id`: `string` — The ID of the associated payment provider.
+      - `data`: `Record<string, unknown>` (optional) — The data relevant for the payment provider to process the payment.
+      - `created_at`: `string` | `Date` (optional) — When the payment was created.
+      - `updated_at`: `string` | `Date` (optional) — When the payment was updated.
+      - `captured_at`: `string` | `Date` (optional) — When the payment was captured.
+      - `canceled_at`: `string` | `Date` (optional) — When the payment was canceled.
+      - `captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' amounts.
+      - `raw_captured_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated captures' raw amounts.
+      - `refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' amounts.
+      - `raw_refunded_amount`: [BigNumberValue](/resources/references/payment/types/paymentBigNumberValue) (optional) — The sum of the associated refunds' raw amounts.
+      - `captures`: [CaptureDTO](/resources/references/payment/interfaces/paymentCaptureDTO)\[] (optional) — The associated captures.
+      - `refunds`: [RefundDTO](/resources/references/payment/interfaces/paymentRefundDTO)\[] (optional) — The associated refunds.
+      - `payment_collection_id`: `string` — The ID of the associated payment collection.
+      - `payment_collection`: [PaymentCollectionDTO](/resources/references/payment/interfaces/paymentPaymentCollectionDTO) (optional) — The associated payment collection.
+      - `payment_session`: [PaymentSessionDTO](/resources/references/payment/interfaces/paymentPaymentSessionDTO) (optional) — The payment session from which the payment is created.
+    - `metadata`: `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.

@@ -1,0 +1,487 @@
+---
+title: IFulfillmentProvider
+---
+
+## Methods
+
+### getFulfillmentOptions
+
+Return the available fulfillment options for the given data.
+
+<a id="getfulfillmentoptions-returns" />
+
+#### Returns
+
+**getFulfillmentOptions**
+
+- `Promise`: Promise\<[FulfillmentOption](/resources/references/types/types/typesFulfillmentOption)\[]> — Return the available fulfillment options for the given data.
+  - `FulfillmentOption[]`: [FulfillmentOption](/resources/references/types/types/typesFulfillmentOption)\[]
+    - `id`: `string` — The option's ID. This ID can be an ID in the third-party system relevant for later processing of fulfillment.
+
+      Example:
+
+      ```
+      express
+      ```
+    - `is_return`: `boolean` (optional) — Whether the option can be used to return items.
+
+### validateFulfillmentData
+
+Validate the given fulfillment data.
+
+<a id="validatefulfillmentdata-parameters" />
+
+#### Parameters
+
+**validateFulfillmentData**
+
+- `optionData`: `Record<string, unknown>`
+- `data`: `Record<string, unknown>`
+- `context`: [ValidateFulfillmentDataContext](/resources/references/types/types/typesValidateFulfillmentDataContext) — The context for validating fulfillment data.
+  - `id`: [CartDTO](/resources/references/fulfillment/interfaces/fulfillmentCartDTO)\[`"id"`] — The cart's ID.
+  - `shipping_address`: [CartDTO](/resources/references/fulfillment/interfaces/fulfillmentCartDTO)\[`"shipping_address"`] — The cart's shipping address.
+  - `items`: [CartLineItemDTO](/resources/references/fulfillment/interfaces/fulfillmentCartLineItemDTO) & `object`\[] — The cart's items
+    - `original_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original total of the cart line item.
+    - `original_subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original subtotal of the cart line item.
+    - `original_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original tax total of the cart line item.
+    - `item_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The item total of the cart line item.
+    - `item_subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The item subtotal of the cart line item.
+    - `item_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The item tax total of the cart line item.
+    - `total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The total of the cart line item.
+    - `subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The subtotal of the cart line item.
+    - `tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The tax total of the cart line item.
+    - `discount_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The discount total of the cart line item.
+    - `discount_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The discount tax total of the cart line item.
+    - `raw_original_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw original total of the cart line item.
+    - `raw_original_subtotal`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw original subtotal of the cart line item.
+    - `raw_original_tax_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw original tax total of the cart line item.
+    - `raw_item_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw item total of the cart line item.
+    - `raw_item_subtotal`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw item subtotal of the cart line item.
+    - `raw_item_tax_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw item tax total of the cart line item.
+    - `raw_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw total of the cart line item.
+    - `raw_subtotal`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw subtotal of the cart line item.
+    - `raw_tax_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw tax total of the cart line item.
+    - `raw_discount_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw discount total of the cart line item.
+    - `raw_discount_tax_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw discount tax total of the cart line item.
+    - `id`: `string` — The ID of the line item.
+    - `title`: `string` — The title of the line item.
+    - `subtitle`: `string` (optional) — The subtitle of the line item.
+    - `thumbnail`: `string` (optional) — The line item's thumbnail.
+    - `quantity`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The line item's quantity in the cart.
+    - `product_id`: `string` (optional) — The ID of the associated product.
+    - `product_title`: `string` (optional) — The title of the associated product.
+    - `product_description`: `string` (optional) — The description of the associated product.
+    - `product_subtitle`: `string` (optional) — The subtitle of the associated product.
+    - `product_type`: `string` (optional) — The type of the associated product.
+    - `product_type_id`: `string` (optional) — The type of the associated product.
+    - `product_collection`: `string` (optional) — The collection of the associated product.
+    - `product_handle`: `string` (optional) — The handle of the associated product.
+    - `variant_id`: `string` (optional) — The associated variant's ID of the line item.
+    - `variant_sku`: `string` (optional) — The sku of the associated variant.
+    - `variant_barcode`: `string` (optional) — The barcode of the associated variant.
+    - `variant_title`: `string` (optional) — The title of the associated variant.
+    - `variant_option_values`: `Record<string, unknown>` (optional) — The option values of the associated variant.
+    - `requires_shipping`: `boolean` — Whether the line item requires shipping.
+    - `is_discountable`: `boolean` — Whether the line item is discountable.
+    - `is_giftcard`: `boolean` — Whether the line item is a gift card.
+    - `is_tax_inclusive`: `boolean` — Whether the line item price is tax inclusive.
+    - `is_custom_price`: `boolean` — Whether the line item price is a custom price.
+    - `compare_at_unit_price`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) (optional) — The calculated price of the line item.
+    - `unit_price`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The unit price of the item.
+    - `tax_lines`: [LineItemTaxLineDTO](/resources/references/fulfillment/interfaces/fulfillmentLineItemTaxLineDTO)\[] (optional) — The associated tax lines.
+    - `adjustments`: [LineItemAdjustmentDTO](/resources/references/fulfillment/interfaces/fulfillmentLineItemAdjustmentDTO)\[] (optional) — The associated adjustments.
+    - `cart`: [CartDTO](/resources/references/fulfillment/interfaces/fulfillmentCartDTO) — The associated cart.
+    - `cart_id`: `string` — The ID of the associated cart.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `Date` (optional) — When the line item was created.
+    - `updated_at`: `Date` (optional) — When the line item was updated.
+    - `deleted_at`: `Date` (optional) — When the line item was deleted.
+    - `variant`: `object` — The item's variant.
+    - `product`: `object` — The item's product.
+  - `from_location`: [StockLocationDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationDTO) — Details about the location that items are being shipped from.
+    - `id`: `string` — The ID of the stock location.
+    - `name`: `string` — The name of the stock location.
+    - `metadata`: `Record<string, unknown>` | `null` — Holds custom data in key-value pairs.
+    - `address_id`: `string` — The associated address's ID.
+    - `address`: [StockLocationAddressDTO](/resources/references/types/StockLocationTypes/types/typesStockLocationTypesStockLocationAddressDTO) (optional) — The address of the stock location.
+    - `fulfillment_sets`: [FulfillmentSetDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentSetDTO)\[] — Fulfillment sets for the location
+    - `created_at`: `string` | `Date` — The creation date of the stock location.
+    - `updated_at`: `string` | `Date` — The update date of the stock location.
+    - `deleted_at`: `string` | `Date` | `null` — The deletion date of the stock location.
+
+<a id="validatefulfillmentdata-returns" />
+
+#### Returns
+
+**validateFulfillmentData**
+
+- `Promise`: Promise\<any> — Validate the given fulfillment data.
+  - `any`: `any`
+
+### validateOption
+
+Validate the given option.
+
+<a id="validateoption-parameters" />
+
+#### Parameters
+
+**validateOption**
+
+- `data`: `Record<string, unknown>`
+
+<a id="validateoption-returns" />
+
+#### Returns
+
+**validateOption**
+
+- `Promise`: Promise\<boolean> — Validate the given option.
+  - `boolean`: `boolean`
+
+### canCalculate
+
+Check if the provider can calculate the fulfillment price.
+
+<a id="cancalculate-parameters" />
+
+#### Parameters
+
+**canCalculate**
+
+- `data`: [CreateShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateShippingOptionDTO) — The shipping option to be created.
+  - `name`: `string` — The name of the shipping option.
+  - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The type of the shipping option's price.
+  - `service_zone_id`: `string` — The associated service zone's ID.
+  - `shipping_profile_id`: `string` — The associated shipping profile's ID.
+  - `provider_id`: `string` — The associated provider's ID.
+  - `type`: `string` | [CreateShippingOptionTypeDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateShippingOptionTypeDTO) — The shipping option type associated with the shipping option.
+    - `label`: `string` — The label of the shipping option type.
+    - `description`: `string` (optional) — The description of the shipping option type.
+    - `code`: `string` — The code of the shipping option type.
+  - `data`: `null` | `Record<string, unknown>` (optional) — The data necessary for the associated fulfillment provider to process the shipping option and its associated fulfillments.
+  - `rules`: Omit\<[CreateShippingOptionRuleDTO](/resources/references/fulfillment/interfaces/fulfillmentCreateShippingOptionRuleDTO), "shipping\_option\_id">\[] (optional) — The shipping option rules associated with the shipping option.
+    - `attribute`: `string` — The attribute of the shipping option rule.
+    - `operator`: [RuleOperatorType](/resources/references/fulfillment/types/fulfillmentRuleOperatorType) — The operator of the shipping option rule.
+    - `value`: `string` | `string`\[] — The value(s) of the shipping option rule.
+
+<a id="cancalculate-returns" />
+
+#### Returns
+
+**canCalculate**
+
+- `Promise`: Promise\<boolean> — Check if the provider can calculate the fulfillment price.
+  - `boolean`: `boolean`
+
+### calculatePrice
+
+Calculate the price for the given fulfillment option.
+
+<a id="calculateprice-parameters" />
+
+#### Parameters
+
+**calculatePrice**
+
+- `optionData`: `Record<string, unknown>`
+- `data`: `Record<string, unknown>`
+- `context`: [CartPropsForFulfillment](/resources/references/fulfillment/types/fulfillmentCartPropsForFulfillment) & \{ \[k: string]: unknown; from\_location?: StockLocationDTO | undefined; } & CalculatedRMAShippingContext
+  - `id`: [CartDTO](/resources/references/fulfillment/interfaces/fulfillmentCartDTO)\[`"id"`] — The cart's ID.
+  - `shipping_address`: [CartDTO](/resources/references/fulfillment/interfaces/fulfillmentCartDTO)\[`"shipping_address"`] — The cart's shipping address.
+  - `items`: [CartLineItemDTO](/resources/references/fulfillment/interfaces/fulfillmentCartLineItemDTO) & `object`\[] — The cart's items
+    - `original_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original total of the cart line item.
+    - `original_subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original subtotal of the cart line item.
+    - `original_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The original tax total of the cart line item.
+    - `item_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The item total of the cart line item.
+    - `item_subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The item subtotal of the cart line item.
+    - `item_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The item tax total of the cart line item.
+    - `total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The total of the cart line item.
+    - `subtotal`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The subtotal of the cart line item.
+    - `tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The tax total of the cart line item.
+    - `discount_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The discount total of the cart line item.
+    - `discount_tax_total`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The discount tax total of the cart line item.
+    - `raw_original_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw original total of the cart line item.
+    - `raw_original_subtotal`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw original subtotal of the cart line item.
+    - `raw_original_tax_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw original tax total of the cart line item.
+    - `raw_item_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw item total of the cart line item.
+    - `raw_item_subtotal`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw item subtotal of the cart line item.
+    - `raw_item_tax_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw item tax total of the cart line item.
+    - `raw_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw total of the cart line item.
+    - `raw_subtotal`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw subtotal of the cart line item.
+    - `raw_tax_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw tax total of the cart line item.
+    - `raw_discount_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw discount total of the cart line item.
+    - `raw_discount_tax_total`: [BigNumberRawValue](/resources/references/fulfillment/types/fulfillmentBigNumberRawValue) — The raw discount tax total of the cart line item.
+    - `id`: `string` — The ID of the line item.
+    - `title`: `string` — The title of the line item.
+    - `subtitle`: `string` (optional) — The subtitle of the line item.
+    - `thumbnail`: `string` (optional) — The line item's thumbnail.
+    - `quantity`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The line item's quantity in the cart.
+    - `product_id`: `string` (optional) — The ID of the associated product.
+    - `product_title`: `string` (optional) — The title of the associated product.
+    - `product_description`: `string` (optional) — The description of the associated product.
+    - `product_subtitle`: `string` (optional) — The subtitle of the associated product.
+    - `product_type`: `string` (optional) — The type of the associated product.
+    - `product_type_id`: `string` (optional) — The type of the associated product.
+    - `product_collection`: `string` (optional) — The collection of the associated product.
+    - `product_handle`: `string` (optional) — The handle of the associated product.
+    - `variant_id`: `string` (optional) — The associated variant's ID of the line item.
+    - `variant_sku`: `string` (optional) — The sku of the associated variant.
+    - `variant_barcode`: `string` (optional) — The barcode of the associated variant.
+    - `variant_title`: `string` (optional) — The title of the associated variant.
+    - `variant_option_values`: `Record<string, unknown>` (optional) — The option values of the associated variant.
+    - `requires_shipping`: `boolean` — Whether the line item requires shipping.
+    - `is_discountable`: `boolean` — Whether the line item is discountable.
+    - `is_giftcard`: `boolean` — Whether the line item is a gift card.
+    - `is_tax_inclusive`: `boolean` — Whether the line item price is tax inclusive.
+    - `is_custom_price`: `boolean` — Whether the line item price is a custom price.
+    - `compare_at_unit_price`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) (optional) — The calculated price of the line item.
+    - `unit_price`: [BigNumberValue](/resources/references/fulfillment/types/fulfillmentBigNumberValue) — The unit price of the item.
+    - `tax_lines`: [LineItemTaxLineDTO](/resources/references/fulfillment/interfaces/fulfillmentLineItemTaxLineDTO)\[] (optional) — The associated tax lines.
+    - `adjustments`: [LineItemAdjustmentDTO](/resources/references/fulfillment/interfaces/fulfillmentLineItemAdjustmentDTO)\[] (optional) — The associated adjustments.
+    - `cart`: [CartDTO](/resources/references/fulfillment/interfaces/fulfillmentCartDTO) — The associated cart.
+    - `cart_id`: `string` — The ID of the associated cart.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Holds custom data in key-value pairs.
+    - `created_at`: `Date` (optional) — When the line item was created.
+    - `updated_at`: `Date` (optional) — When the line item was updated.
+    - `deleted_at`: `Date` (optional) — When the line item was deleted.
+    - `variant`: `object` — The item's variant.
+    - `product`: `object` — The item's product.
+
+<a id="calculateprice-returns" />
+
+#### Returns
+
+**calculatePrice**
+
+- `Promise`: Promise\<[CalculatedShippingOptionPrice](/resources/references/types/types/typesCalculatedShippingOptionPrice)> — Calculate the price for the given fulfillment option.
+  - `calculated_amount`: `number` — The calculated price.
+  - `is_calculated_price_tax_inclusive`: `boolean` — Whether the calculated price includes taxes. If enabled, Medusa will infer the taxes from the calculated price. If false, Medusa will add taxes to the calculated price.
+
+### createFulfillment
+
+Create a fulfillment for the given data.
+
+<a id="createfulfillment-parameters" />
+
+#### Parameters
+
+**createFulfillment**
+
+- `data`: `Record<string, unknown>`
+- `items`: Partial\<Omit\<[FulfillmentItemDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentItemDTO), "fulfillment">>\[]
+- `order`: `undefined` | Partial\<FulfillmentOrderDTO>
+- `fulfillment`: Partial\<Omit\<[FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO), "items" | "data" | "provider\_id">>
+  - `id`: `string` — The ID of the fulfillment.
+  - `location_id`: `string` — The associated location's ID.
+  - `packed_at`: `null` | `Date` — The date the fulfillment was packed.
+  - `shipped_at`: `null` | `Date` — The date the fulfillment was shipped.
+  - `delivered_at`: `null` | `Date` — The date the fulfillment was delivered.
+  - `canceled_at`: `null` | `Date` — The date the fulfillment was canceled.
+  - `marked_shipped_by`: `null` | `string` (optional) — The id of the user that marked fulfillment as shipped
+  - `created_by`: `null` | `string` (optional) — The id of the user that created the fulfillment
+  - `shipping_option_id`: `null` | `string` — The associated shipping option's ID.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `shipping_option`: `null` | [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO) — The associated shipping option.
+    - `id`: `string` — The ID of the shipping option.
+    - `name`: `string` — The name of the shipping option.
+    - `price_type`: [ShippingOptionPriceType](/resources/references/fulfillment/types/fulfillmentShippingOptionPriceType) — The type of the shipping option's price.
+    - `service_zone_id`: `string` — The associated service zone's ID.
+    - `shipping_profile_id`: `string` — The associated shipping profile's ID.
+    - `provider_id`: `string` — The associated fulfillment provider's ID.
+    - `shipping_option_type_id`: `null` | `string` — The associated shipping option type's ID.
+    - `data`: `null` | `Record<string, unknown>` — The data necessary for the associated fulfillment provider to process the shipping option and, later, its associated fulfillments.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `service_zone`: [ServiceZoneDTO](/resources/references/fulfillment/interfaces/fulfillmentServiceZoneDTO) — The associated service zone.
+    - `shipping_profile`: [ShippingProfileDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingProfileDTO) — The associated shipping profile.
+    - `fulfillment_provider`: [FulfillmentProviderDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentProviderDTO) — The associated fulfillment provider.
+    - `type`: [ShippingOptionTypeDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionTypeDTO) — The associated shipping option type.
+    - `rules`: [ShippingOptionRuleDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionRuleDTO)\[] — The rules associated with the shipping option.
+    - `fulfillments`: [FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO)\[] — The fulfillments associated with the shipping option.
+    - `created_at`: `Date` — The creation date of the shipping option.
+    - `updated_at`: `Date` — The update date of the shipping option.
+    - `deleted_at`: `null` | `Date` — The deletion date of the shipping option.
+  - `requires_shipping`: `boolean` — Flag to indidcate whether shipping is required
+  - `provider`: [FulfillmentProviderDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentProviderDTO) — The associated fulfillment provider.
+    - `id`: `string` — The ID of the fulfillment provider.
+    - `name`: `string` — The name of the fulfillment provider.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `shipping_options`: [ShippingOptionDTO](/resources/references/fulfillment/interfaces/fulfillmentShippingOptionDTO)\[] — The shipping options associated with the fulfillment provider.
+    - `created_at`: `Date` — The creation date of the fulfillment provider.
+    - `updated_at`: `Date` — The update date of the fulfillment provider.
+    - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment provider.
+  - `delivery_address`: [FulfillmentAddressDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentAddressDTO) — The associated fulfillment address used for delivery.
+    - `id`: `string` — The ID of the address.
+    - `fulfillment_id`: `null` | `string` — The associated fulfillment's ID.
+    - `company`: `null` | `string` — The company of the address.
+    - `first_name`: `null` | `string` — The first name of the address.
+    - `last_name`: `null` | `string` — The last name of the address.
+    - `address_1`: `null` | `string` — The first line of the address.
+    - `address_2`: `null` | `string` — The second line of the address.
+    - `city`: `null` | `string` — The city of the address.
+    - `country_code`: `null` | `string` — The ISO 2 character country code of the address.
+    - `province`: `null` | `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province of the address.
+    - `postal_code`: `null` | `string` — The postal code of the address.
+    - `phone`: `null` | `string` — The phone of the address.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_at`: `Date` — The creation date of the address.
+    - `updated_at`: `Date` — The update date of the address.
+    - `deleted_at`: `null` | `Date` — The deletion date of the address.
+  - `labels`: [FulfillmentLabelDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentLabelDTO)\[] — The labels of the fulfillment.
+    - `id`: `string` — The ID of the fulfillment label.
+    - `tracking_number`: `string` — The tracking number of the fulfillment label.
+    - `tracking_url`: `string` — The tracking URL of the fulfillment label.
+    - `label_url`: `string` — The label's URL.
+    - `fulfillment_id`: `string` — The associated fulfillment's ID.
+    - `fulfillment`: [FulfillmentDTO](/resources/references/fulfillment/interfaces/fulfillmentFulfillmentDTO) — The associated fulfillment.
+    - `created_at`: `Date` — The creation date of the fulfillment label.
+    - `updated_at`: `Date` — The update date of the fulfillment label.
+    - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment label.
+  - `created_at`: `Date` — The creation date of the fulfillment.
+  - `updated_at`: `Date` — The update date of the fulfillment.
+  - `deleted_at`: `null` | `Date` — The deletion date of the fulfillment.
+- `additionalData`: `Record<string, unknown>` (optional)
+
+<a id="createfulfillment-returns" />
+
+#### Returns
+
+**createFulfillment**
+
+- `Promise`: Promise\<[CreateFulfillmentResult](/resources/references/types/types/typesCreateFulfillmentResult)> — Create a fulfillment for the given data.
+  - `data`: `Record<string, unknown>` — Additional fulfillment data from provider
+  - `labels`: `object`\[]
+    - `tracking_number`: `string` — The tracking number of the fulfillment label.
+    - `tracking_url`: `string` — The tracking URL of the fulfillment label.
+    - `label_url`: `string` — The label's URL.
+
+### cancelFulfillment
+
+Cancel the given fulfillment.
+
+<a id="cancelfulfillment-parameters" />
+
+#### Parameters
+
+**cancelFulfillment**
+
+- `fulfillment`: `Record<string, unknown>`
+
+<a id="cancelfulfillment-returns" />
+
+#### Returns
+
+**cancelFulfillment**
+
+- `Promise`: Promise\<any> — Cancel the given fulfillment.
+  - `any`: `any`
+
+### getFulfillmentDocuments
+
+Get the documents for the given fulfillment data.
+
+<a id="getfulfillmentdocuments-parameters" />
+
+#### Parameters
+
+**getFulfillmentDocuments**
+
+- `data`: `Record<string, unknown>`
+
+<a id="getfulfillmentdocuments-returns" />
+
+#### Returns
+
+**getFulfillmentDocuments**
+
+- `Promise`: Promise\<any> — Get the documents for the given fulfillment data.
+  - `any`: `any`
+
+### createReturnFulfillment
+
+Create a return for the given data.
+
+<a id="createreturnfulfillment-parameters" />
+
+#### Parameters
+
+**createReturnFulfillment**
+
+- `fromData`: `Record<string, unknown>`
+
+<a id="createreturnfulfillment-returns" />
+
+#### Returns
+
+**createReturnFulfillment**
+
+- `Promise`: Promise\<[CreateFulfillmentResult](/resources/references/types/types/typesCreateFulfillmentResult)> — Create a return for the given data.
+  - `data`: `Record<string, unknown>` — Additional fulfillment data from provider
+  - `labels`: `object`\[]
+    - `tracking_number`: `string` — The tracking number of the fulfillment label.
+    - `tracking_url`: `string` — The tracking URL of the fulfillment label.
+    - `label_url`: `string` — The label's URL.
+
+### retrieveDocuments
+
+Get the documents for the given return data.
+
+<a id="retrievedocuments-parameters" />
+
+#### Parameters
+
+**retrieveDocuments**
+
+- `fulfillmentData`: `Record<string, unknown>`
+- `documentType`: `string`
+
+<a id="retrievedocuments-returns" />
+
+#### Returns
+
+**retrieveDocuments**
+
+- `Promise`: Promise\<any> — Get the documents for the given return data.
+  - `any`: `any`
+
+### getReturnDocuments
+
+Get the documents for the given return data.
+
+<a id="getreturndocuments-parameters" />
+
+#### Parameters
+
+**getReturnDocuments**
+
+- `data`: `Record<string, unknown>`
+
+<a id="getreturndocuments-returns" />
+
+#### Returns
+
+**getReturnDocuments**
+
+- `Promise`: Promise\<any> — Get the documents for the given return data.
+  - `any`: `any`
+
+### getShipmentDocuments
+
+Get the documents for the given shipment data.
+
+<a id="getshipmentdocuments-parameters" />
+
+#### Parameters
+
+**getShipmentDocuments**
+
+- `data`: `Record<string, unknown>`
+
+<a id="getshipmentdocuments-returns" />
+
+#### Returns
+
+**getShipmentDocuments**
+
+- `Promise`: Promise\<any> — Get the documents for the given shipment data.
+  - `any`: `any`

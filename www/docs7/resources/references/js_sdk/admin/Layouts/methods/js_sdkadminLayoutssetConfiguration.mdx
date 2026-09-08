@@ -1,0 +1,46 @@
+---
+title: setConfiguration
+---
+
+Create or replace a layout configuration for a zone. Set `is_default` to
+update the zone's system default (applies to all users) instead of the
+current user's personal configuration.
+
+<a id="setconfiguration-parameters" />
+
+## Parameters
+
+**setConfiguration**
+
+- `zone`: `string`
+- `body`: [AdminSetLayoutConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminSetLayoutConfiguration)
+  - `is_default`: `boolean` (optional) — Whether to set the zone's system default configuration (applies to all users) instead of the current user's personal configuration.
+  - `configuration`: `object` — The layout configuration settings.
+    - `widgets`: `Record<string, [AdminLayoutWidgetPreference](/references/types/HttpTypes/interfaces/types.HttpTypes.AdminLayoutWidgetPreference)>` — Per-widget placement and visibility preferences, keyed by widget ID.
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional)
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="setconfiguration-returns" />
+
+## Returns
+
+**setConfiguration**
+
+- `Promise`: Promise\<[AdminLayoutConfigurationResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLayoutConfigurationResponse)> — Create or replace a layout configuration for a zone. Set `is_default` to update the zone's system default (applies to all users) instead of the current user's personal configuration.
+  - `personal_configuration`: `null` | [AdminLayoutConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLayoutConfiguration) — The current user's personal layout configuration for the zone, or null if they have not saved one.
+    - `id`: `string` — The layout configuration's ID.
+    - `zone`: `string` — The zone (page) this configuration is for, e.g. "product.details".
+    - `user_id`: `null` | `string` — The ID of the user who owns this configuration, or null for the system default.
+    - `is_system_default`: `boolean` — Whether this is the system default configuration for the zone.
+    - `configuration`: `object` — The layout configuration settings.
+    - `created_at`: `Date` — The date the layout configuration was created.
+    - `updated_at`: `Date` — The date the layout configuration was updated.
+  - `default_configuration`: `null` | [AdminLayoutConfiguration](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminLayoutConfiguration) — The zone's system default layout configuration (applies to all users), or null if none has been saved.
+    - `id`: `string` — The layout configuration's ID.
+    - `zone`: `string` — The zone (page) this configuration is for, e.g. "product.details".
+    - `user_id`: `null` | `string` — The ID of the user who owns this configuration, or null for the system default.
+    - `is_system_default`: `boolean` — Whether this is the system default configuration for the zone.
+    - `configuration`: `object` — The layout configuration settings.
+    - `created_at`: `Date` — The date the layout configuration was created.
+    - `updated_at`: `Date` — The date the layout configuration was updated.
+  - `active_scope`: [AdminLayoutScope](/resources/references/types/HttpTypes/types/typesHttpTypesAdminLayoutScope) — The scope the current user is actively viewing for this zone — their persisted choice, falling back to "personal" when they have a personal configuration and "default" otherwise.

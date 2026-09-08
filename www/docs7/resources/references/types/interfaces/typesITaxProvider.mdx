@@ -1,0 +1,244 @@
+---
+title: ITaxProvider
+---
+
+### Identifier Property
+
+Each tax provider has a unique identifier defined in its class. The provider's ID
+will be stored as `tp_{identifier}_{id}`, where `{id}` is the provider's `id`
+property in the `medusa-config.ts`.
+
+For example:
+
+```ts title="src/modules/my-tax/service.ts"
+export default class MyTaxProvider implements ITaxProvider {
+  static identifier = "my-tax"
+  // ...
+}
+```
+
+### constructor
+
+You can use the `constructor` of your Tax Module Provider's service to access the resources registered in the [Module Container](/resources/medusa-container-resources#module-container-resources).
+
+You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.
+
+Additionally, if you’re creating your tax provider as a plugin or a module provider to be installed in any Medusa application and you want to access its options, you can access them in the second parameter of the constructor.
+
+For example:
+
+```ts
+import {
+  ITaxProvider,
+  Logger
+} from "@medusajs/framework/types"
+
+type InjectedDependencies = {
+  logger: Logger
+}
+
+type Options = {
+  apiKey: string
+}
+
+export default class MyTaxProvider implements ITaxProvider {
+  static identifier = "my-tax"
+  protected logger_: Logger
+  protected options_: Options
+  // assuming you're initializing a client
+  protected client
+
+  constructor (
+    { logger }: InjectedDependencies,
+    options: Options
+  ) {
+    this.logger_ = logger
+    this.options_ = options
+
+    // assuming you're initializing a client
+    this.client = new Client(options)
+  }
+}
+```
+
+***
+
+## Methods
+
+### getIdentifier
+
+This method is used to retrieve the unique identifier of the tax provider.
+
+#### Example
+
+```ts
+export default class MyTaxProvider implements ITaxProvider {
+  static identifier = "my-tax"
+  
+  getIdentifier(): string {
+    return MyTaxProvider.identifier
+  }
+}
+```
+
+<a id="getidentifier-returns" />
+
+#### Returns
+
+**getIdentifier**
+
+- `string`: `string` — The unique identifier of the tax provider.
+
+### getTaxLines
+
+This method is used to retrieve the tax lines of items and shipping methods. It's used during checkout
+when the `getTaxLines` method of the Tax Module's main service is called for a tax
+region that uses this tax provider.
+
+#### Example
+
+An example of how this method is implemented in the `system` provider:
+
+```ts
+// ...
+
+export default class SystemTaxService implements ITaxProvider {
+  // ...
+
+  async getTaxLines(
+    itemLines: TaxTypes.ItemTaxCalculationLine[],
+    shippingLines: TaxTypes.ShippingTaxCalculationLine[],
+    _: TaxTypes.TaxCalculationContext
+  ): Promise<(TaxTypes.ItemTaxLineDTO | TaxTypes.ShippingTaxLineDTO)[]> {
+    let taxLines: (TaxTypes.ItemTaxLineDTO | TaxTypes.ShippingTaxLineDTO)[] =
+      itemLines.flatMap((l) => {
+        return l.rates.map((r) => ({
+          rate_id: r.id, // this is optional. When integrating with a third-party, you don't need to provide it
+          rate: r.rate || 0, // For example, 10 for 10%
+          name: r.name,
+          code: r.code,
+          line_item_id: l.line_item.id,
+          provider_id: this.getIdentifier(),
+        }))
+      })
+
+    taxLines = taxLines.concat(
+      shippingLines.flatMap((l) => {
+        return l.rates.map((r) => ({
+          rate_id: r.id, // this is optional. When integrating with a third-party, you don't need to provide it
+          rate: r.rate || 0, // For example, 10 for 10%
+          name: r.name,
+          code: r.code,
+          shipping_line_id: l.shipping_line.id,
+          provider_id: this.getIdentifier(),
+        }))
+      })
+    )
+
+    return taxLines
+  }
+}
+```
+
+<a id="gettaxlines-parameters" />
+
+#### Parameters
+
+**getTaxLines**
+
+- `itemLines`: [ItemTaxCalculationLine](/resources/references/types/types/typesItemTaxCalculationLine)\[] — The line item lines to calculate taxes for.
+  - `line_item`: [TaxableItemDTO](/resources/references/tax/interfaces/taxTaxableItemDTO) — The line item to calculate taxes for.
+    - `id`: `string` — The ID of the taxable item.
+    - `product_id`: `string` — The associated product's ID.
+    - `product_type_id`: `string` (optional) — The ID of the type of the item's product.
+    - `quantity`: [BigNumberInput](/resources/references/tax/types/taxBigNumberInput) (optional) — The quantity of the taxable item.
+    - `unit_price`: [BigNumberInput](/resources/references/tax/types/taxBigNumberInput) (optional) — The unit price of the taxable item.
+    - `currency_code`: `string` (optional) — The ISO 3 character currency code of the taxable item.
+  - `rates`: [TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[] — The rates applicable on the item.
+    - `id`: `string` — The ID of the tax rate.
+    - `rate`: `null` | `number` — The rate to charge.
+
+      Example:
+
+      ```
+      10
+      ```
+    - `code`: `null` | `string` — The code the tax rate is identified by.
+    - `name`: `string` — The name of the Tax Rate.
+
+      Example:
+
+      ```
+      VAT
+      ```
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `tax_region_id`: `string` — The ID of the associated tax region.
+    - `is_combinable`: `boolean` — Whether the tax rate should be combined with parent rates. Learn more [here](/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+    - `is_default`: `boolean` — Whether the tax rate is the default rate for the region.
+    - `created_at`: `string` | `Date` — The creation date of the tax rate.
+    - `updated_at`: `string` | `Date` — The update date of the tax rate.
+    - `deleted_at`: `null` | `Date` — The deletion date of the tax rate.
+    - `created_by`: `null` | `string` — Who created the tax rate. For example, the ID of the user that created the tax rate.
+- `shippingLines`: [ShippingTaxCalculationLine](/resources/references/types/types/typesShippingTaxCalculationLine)\[] — The shipping method lines to calculate taxes for.
+  - `shipping_line`: [TaxableShippingDTO](/resources/references/tax/interfaces/taxTaxableShippingDTO) — The shipping method to calculate taxes for.
+    - `id`: `string` — The ID of the taxable shipping.
+    - `shipping_option_id`: `string` — The associated shipping option's ID.
+    - `unit_price`: [BigNumberInput](/resources/references/tax/types/taxBigNumberInput) (optional) — The unit price of the taxable shipping.
+    - `currency_code`: `string` (optional) — The ISO 3 character currency code of the taxable shipping.
+  - `rates`: [TaxRateDTO](/resources/references/tax/interfaces/taxTaxRateDTO)\[] — The rates applicable on the shipping method.
+    - `id`: `string` — The ID of the tax rate.
+    - `rate`: `null` | `number` — The rate to charge.
+
+      Example:
+
+      ```
+      10
+      ```
+    - `code`: `null` | `string` — The code the tax rate is identified by.
+    - `name`: `string` — The name of the Tax Rate.
+
+      Example:
+
+      ```
+      VAT
+      ```
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `tax_region_id`: `string` — The ID of the associated tax region.
+    - `is_combinable`: `boolean` — Whether the tax rate should be combined with parent rates. Learn more [here](/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
+    - `is_default`: `boolean` — Whether the tax rate is the default rate for the region.
+    - `created_at`: `string` | `Date` — The creation date of the tax rate.
+    - `updated_at`: `string` | `Date` — The update date of the tax rate.
+    - `deleted_at`: `null` | `Date` — The deletion date of the tax rate.
+    - `created_by`: `null` | `string` — Who created the tax rate. For example, the ID of the user that created the tax rate.
+- `context`: [TaxCalculationContext](/resources/references/tax/interfaces/taxTaxCalculationContext) — The context relevant and useful for the taxes calculation.
+  - `locale`: `string` (optional) — The locale of the tax calculation.
+  - `address`: `object` — The customer's address
+    - `country_code`: `string` — The ISO 2 character currency code.
+    - `province_code`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code.
+    - `address_1`: `string` (optional) — The first line of the address.
+    - `address_2`: `null` | `string` (optional) — The second line of the address
+    - `city`: `string` (optional) — The city.
+    - `postal_code`: `string` (optional) — The postal code.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Address metadata.
+  - `customer`: `object` (optional) — The customer's details.
+    - `id`: `string` — The ID of the customer.
+    - `email`: `string` — The email of the customer.
+    - `customer_groups`: `string`\[] — The groups that the customer belongs to.
+    - `metadata`: `null` | `Record<string, unknown>` (optional) — Customer metadata.
+  - `is_return`: `boolean` (optional) — Whether the tax lines are calculated for an order return.
+  - `shipping_methods`: `object`\[] (optional) — The shipping method details.
+    - `id`: `string` — The associated shipping method's ID.
+    - `name`: `string` — The name of the shipping method.
+    - `shipping_option_id`: `string` — The associated shipping options's ID.
+    - `amount`: `number` — The amount of the shipping method.
+  - `additional_context`: `Record<string, unknown>` (optional) — Additional context to pass to the underlying tax provider. Use this to forward custom data that isn't part of the framework-provided fields but that your tax provider needs to calculate tax lines accurately. In cart and order tax workflows, this is populated by the `setTaxLineContext` hook.
+
+<a id="gettaxlines-returns" />
+
+#### Returns
+
+**getTaxLines**
+
+- `Promise`: Promise\<([ItemTaxLineDTO](/resources/references/tax/interfaces/taxItemTaxLineDTO) | [ShippingTaxLineDTO](/resources/references/tax/interfaces/taxShippingTaxLineDTO))\[]> — The list of calculated line item and shipping tax lines. If an item in the array has the `shipping_line_id` property, then it's a shipping tax line. Otherwise, if it has the `line_item_id` property, then it's a line item tax line.
+  - `(ItemTaxLineDTO \| ShippingTaxLineDTO)[]`: ([ItemTaxLineDTO](/resources/references/tax/interfaces/taxItemTaxLineDTO) | [ShippingTaxLineDTO](/resources/references/tax/interfaces/taxShippingTaxLineDTO))\[]
+    - `ItemTaxLineDTO \| ShippingTaxLineDTO`: [ItemTaxLineDTO](/resources/references/tax/interfaces/taxItemTaxLineDTO) | [ShippingTaxLineDTO](/resources/references/tax/interfaces/taxShippingTaxLineDTO)

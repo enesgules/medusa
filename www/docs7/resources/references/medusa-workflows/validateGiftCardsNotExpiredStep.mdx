@@ -1,0 +1,35 @@
+---
+title: validateGiftCardsNotExpiredStep - Medusa Core Workflows Reference
+sidebarTitle: validateGiftCardsNotExpiredStep
+---
+
+This documentation provides a reference to the `validateGiftCardsNotExpiredStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that none of the gift cards applied to the cart have
+expired. It throws an error for any gift card whose expiration date has
+passed, preventing its remaining balance from being debited at checkout.
+
+## Example
+
+```ts
+const data = validateGiftCardsNotExpiredStep({
+  giftCards: [
+    {
+      code: "GC-XXXX",
+      expires_at: null,
+      // other gift card properties...
+    }
+  ],
+})
+```
+
+<a id="validategiftcardsnotexpiredstep-input" />
+
+## Input
+
+**validateGiftCardsNotExpiredStep**
+
+- `ValidateGiftCardsNotExpiredStepInput`: [ValidateGiftCardsNotExpiredStepInput](/resources/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flowsplugins_loyalty_src_workflowsValidateGiftCardsNotExpiredStepInput)
+  - `giftCards`: Pick\<[ModuleGiftCard](/resources/references/loyalty/types/loyaltyModuleGiftCard), "expires\_at" | "code">\[] — The gift cards applied to the cart.
+    - `code`: `string` — The unique redemption code for the gift card.
+    - `expires_at`: `string` | `null` — The date the gift card expires, or null if it does not expire.

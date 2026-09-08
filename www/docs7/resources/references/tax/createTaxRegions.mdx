@@ -1,0 +1,160 @@
+---
+title: createTaxRegions - Tax Module Reference
+sidebarTitle: createTaxRegions
+---
+
+This documentation provides a reference to the `createTaxRegions` method. This belongs to the Tax Module.
+
+> **Note**
+>
+> You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/resources/medusa-workflows-reference).
+
+<a id="createtaxregions-data-sharedcontext-promisetaxregiondto" />
+
+## createTaxRegions(data, sharedContext?): Promise\<[TaxRegionDTO](/resources/references/tax/interfaces/taxTaxRegionDTO)>
+
+This method creates a tax region.
+
+### Example
+
+```ts
+const taxRegion = await taxModuleService.createTaxRegions({
+  country_code: "us",
+})
+```
+
+<a id="createtaxregions-parameters" />
+
+### Parameters
+
+**createTaxRegions**
+
+- `data`: [CreateTaxRegionDTO](/resources/references/tax/interfaces/taxCreateTaxRegionDTO) — The tax region to be created.
+  - `country_code`: `string` — The ISO 3 character country code of the tax region.
+  - `province_code`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code of the tax region.
+  - `parent_id`: `null` | `string` (optional) — The ID of the tax region's parent.
+  - `provider_id`: `null` | `string` (optional) — The ID of the tax provider for the region.
+  - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `created_by`: `string` (optional) — Who created the tax region. For example, the ID of the user that created the tax region.
+  - `default_tax_rate`: `object` (optional) — The default tax rate of the tax region.
+    - `rate`: `null` | `number` (optional) — The rate to charge.
+
+      Example:
+
+      ```
+      10
+      ```
+    - `code`: `null` | `string` (optional) — The code of the tax rate.
+    - `name`: `string` — The name of the tax rate.
+    - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/tax/interfaces/taxContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/tax/interfaces/taxIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createtaxregions-returns" />
+
+### Returns
+
+**createTaxRegions**
+
+- `Promise`: Promise\<[TaxRegionDTO](/resources/references/tax/interfaces/taxTaxRegionDTO)> — The created tax region.
+  - `id`: `string` — The ID of the tax region.
+  - `country_code`: `string` — The ISO 2 character country code of the tax region.
+  - `province_code`: `null` | `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code of the tax region.
+  - `parent_id`: `null` | `string` — The ID of the tax region's parent tax region.
+  - `provider_id`: `null` | `string` — The ID of the tax provider for the region.
+  - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+  - `created_at`: `string` | `Date` — The creation date of the tax region.
+  - `updated_at`: `string` | `Date` — The update date of the tax region.
+  - `created_by`: `null` | `string` — Who created the tax region. For example, the ID of the user that created the tax region.
+  - `deleted_at`: `null` | `string` | `Date` — The deletion date of the tax region.
+
+<a id="createtaxregions-data-sharedcontext-promisetaxregiondto-1" />
+
+## createTaxRegions(data, sharedContext?): Promise\<[TaxRegionDTO](/resources/references/tax/interfaces/taxTaxRegionDTO)\[]>
+
+This method creates tax regions.
+
+### Example
+
+```ts
+const taxRegions = await taxModuleService.createTaxRegions([
+  {
+    country_code: "us",
+  },
+  {
+    country_code: "gb",
+  },
+])
+```
+
+<a id="createtaxregions-parameters-1" />
+
+### Parameters
+
+**createTaxRegions**
+
+- `data`: [CreateTaxRegionDTO](/resources/references/tax/interfaces/taxCreateTaxRegionDTO)\[] — The tax regions to be created.
+  - `country_code`: `string` — The ISO 3 character country code of the tax region.
+  - `province_code`: `null` | `string` (optional) — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code of the tax region.
+  - `parent_id`: `null` | `string` (optional) — The ID of the tax region's parent.
+  - `provider_id`: `null` | `string` (optional) — The ID of the tax provider for the region.
+  - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+  - `created_by`: `string` (optional) — Who created the tax region. For example, the ID of the user that created the tax region.
+  - `default_tax_rate`: `object` (optional) — The default tax rate of the tax region.
+    - `rate`: `null` | `number` (optional) — The rate to charge.
+
+      Example:
+
+      ```
+      10
+      ```
+    - `code`: `null` | `string` (optional) — The code of the tax rate.
+    - `name`: `string` — The name of the tax rate.
+    - `metadata`: [MetadataType](/resources/references/tax/types/taxMetadataType) (optional) — Holds custom data in key-value pairs.
+- `sharedContext`: [Context](/resources/references/tax/interfaces/taxContext) (optional) — A context used to share resources, such as transaction manager, between the application and the module.
+  - `transactionManager`: TManager (optional) — An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
+  - `manager`: TManager (optional) — An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
+  - `isolationLevel`: `string` (optional) — A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+  - `enableNestedTransactions`: `boolean` (optional) — A boolean value indicating whether nested transactions are enabled.
+  - `eventGroupId`: `string` (optional) — A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+  - `transactionId`: `string` (optional) — A string indicating the ID of the current transaction.
+  - `runId`: `string` (optional) — A string indicating the ID of the current run.
+  - `messageAggregator`: [IMessageAggregator](/resources/references/tax/interfaces/taxIMessageAggregator) (optional) — An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+  - `requestId`: `string` (optional) — A string indicating the ID of the current request.
+  - `idempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the current workflow execution.
+  - `parentStepIdempotencyKey`: `string` (optional) — A string indicating the idempotencyKey of the parent workflow execution.
+  - `preventReleaseEvents`: `boolean` (optional) — preventReleaseEvents
+  - `isCancelling`: `boolean` (optional) — A boolean value indicating whether the current workflow execution is being cancelled.
+  - `cancelingFromParentStep`: `boolean` (optional) — Weither or not a sub workflow cancellation is being triggered from a parent step. If true, the parent step will not be triggered by the sub workflow.
+
+<a id="createtaxregions-returns-1" />
+
+### Returns
+
+**createTaxRegions**
+
+- `Promise`: Promise\<[TaxRegionDTO](/resources/references/tax/interfaces/taxTaxRegionDTO)\[]> — The created tax regions.
+  - `TaxRegionDTO[]`: [TaxRegionDTO](/resources/references/tax/interfaces/taxTaxRegionDTO)\[]
+    - `id`: `string` — The ID of the tax region.
+    - `country_code`: `string` — The ISO 2 character country code of the tax region.
+    - `province_code`: `null` | `string` — The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code of the tax region.
+    - `parent_id`: `null` | `string` — The ID of the tax region's parent tax region.
+    - `provider_id`: `null` | `string` — The ID of the tax provider for the region.
+    - `metadata`: `null` | `Record<string, unknown>` — Holds custom data in key-value pairs.
+    - `created_at`: `string` | `Date` — The creation date of the tax region.
+    - `updated_at`: `string` | `Date` — The update date of the tax region.
+    - `created_by`: `null` | `string` — Who created the tax region. For example, the ID of the user that created the tax region.
+    - `deleted_at`: `null` | `string` | `Date` — The deletion date of the tax region.

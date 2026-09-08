@@ -1,0 +1,40 @@
+---
+title: fetch
+---
+
+`fetch` closely follows (and uses under the hood) the native `fetch` API. There are, however, few key differences:
+
+- Non 2xx statuses throw a `FetchError` with the status code as the `status` property, rather than resolving the promise
+- You can pass `body` and `query` as objects, and they will be encoded and stringified.
+- The response gets parsed as JSON if the `accept` header is set to `application/json`, otherwise the raw Response object is returned
+
+Since the response is dynamically determined, we cannot know if it is JSON or not. Therefore, it is important to pass `Response` as the return type
+
+<a id="fetch-type-parameters" />
+
+## Type Parameters
+
+**fetch**
+
+- `T`: `unknown` (optional)
+
+<a id="fetch-parameters" />
+
+## Parameters
+
+**fetch**
+
+- `input`: `string` | `URL` | `Request`
+- `init`: [FetchArgs](/resources/references/js_sdk/admin/types/js_sdkadminFetchArgs) (optional)
+  - `query`: `Record<string, any>` (optional) — Query parameters to append to the URL.
+  - `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Request headers.
+    - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+  - `body`: `RequestInit`\[`"body"`] | `Record<string, any>` (optional) — Request body data.
+
+<a id="fetch-returns" />
+
+## Returns
+
+**fetch**
+
+- `Promise`: Promise\<T> — Promise\<T>

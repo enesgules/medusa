@@ -1,0 +1,441 @@
+---
+title: Claims schema
+---
+
+The claim's details.
+
+## Properties
+
+<Accordion title="id (required)">
+  The claim's ID.
+
+  ```json
+  {
+    "type": "string",
+    "title": "id",
+    "description": "The claim's ID."
+  }
+  ```
+</Accordion>
+
+<Accordion title="order_id (required)">
+  The ID of the order associated with the claim.
+
+  ```json
+  {
+    "type": "string",
+    "title": "order_id",
+    "description": "The ID of the order associated with the claim."
+  }
+  ```
+</Accordion>
+
+<Accordion title="claim_items (required)">
+  The order items targetted by the claim.
+
+  ```json
+  {
+    "type": "array",
+    "description": "The order items targetted by the claim.",
+    "items": {
+      "$ref": "#/components/schemas/BaseClaimItem"
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [BaseClaimItem](/api/schemas/base-claim-item)
+</Accordion>
+
+<Accordion title="additional_items (required)">
+  The outbound or new items of the claim.
+
+  ```json
+  {
+    "type": "array",
+    "description": "The outbound or new items of the claim.",
+    "items": {
+      "$ref": "#/components/schemas/BaseClaimItem"
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [BaseClaimItem](/api/schemas/base-claim-item)
+</Accordion>
+
+<Accordion title="return (required)">
+  ```json
+  {
+    "$ref": "#/components/schemas/AdminReturn"
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminReturn](/api/schemas/admin-return)
+</Accordion>
+
+<Accordion title="return_id (optional)">
+  The ID of the associated return.
+
+  ```json
+  {
+    "type": "string",
+    "title": "return_id",
+    "description": "The ID of the associated return."
+  }
+  ```
+</Accordion>
+
+<Accordion title="no_notification (optional)">
+  Whether the customer should be notified about changes in the claim.
+
+  ```json
+  {
+    "type": "boolean",
+    "title": "no_notification",
+    "description": "Whether the customer should be notified about changes in the claim."
+  }
+  ```
+</Accordion>
+
+<Accordion title="refund_amount (optional)">
+  The amount to be refunded.
+
+  ```json
+  {
+    "type": "number",
+    "title": "refund_amount",
+    "description": "The amount to be refunded."
+  }
+  ```
+</Accordion>
+
+<Accordion title="display_id (required)">
+  The claim's display ID.
+
+  ```json
+  {
+    "type": "number",
+    "title": "display_id",
+    "description": "The claim's display ID."
+  }
+  ```
+</Accordion>
+
+<Accordion title="shipping_methods (optional)">
+  The claim's shipping methods.
+
+  ```json
+  {
+    "type": "array",
+    "description": "The claim's shipping methods.",
+    "items": {
+      "$ref": "#/components/schemas/AdminOrderShippingMethod"
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminOrderShippingMethod](/api/schemas/admin-order-shipping-method)
+</Accordion>
+
+<Accordion title="transactions (optional)">
+  The claim's transactions.
+
+  ```json
+  {
+    "type": "array",
+    "description": "The claim's transactions.",
+    "externalDocs": {
+      "url": "https://docs.medusajs.com/resources/commerce-modules/order/transactions",
+      "description": "Learn more about transactions of orders and associated models."
+    },
+    "items": {
+      "$ref": "#/components/schemas/BaseOrderTransaction"
+    }
+  }
+  ```
+
+  Related schemas:
+
+  - [BaseOrderTransaction](/api/schemas/base-order-transaction)
+</Accordion>
+
+<Accordion title="metadata (optional)">
+  The claim's metadata, used to store custom key-value pairs.
+
+  ```json
+  {
+    "type": "object",
+    "description": "The claim's metadata, used to store custom key-value pairs.",
+    "externalDocs": {
+      "url": "https://docs.medusajs.com/api/admin#manage-metadata",
+      "description": "Learn how to manage metadata"
+    }
+  }
+  ```
+</Accordion>
+
+<Accordion title="created_at (required)">
+  The claim's creation date.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "created_at",
+    "description": "The claim's creation date."
+  }
+  ```
+</Accordion>
+
+<Accordion title="updated_at (required)">
+  The claim's update date.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "updated_at",
+    "description": "The claim's update date."
+  }
+  ```
+</Accordion>
+
+<Accordion title="order (required)">
+  ```json
+  {
+    "$ref": "#/components/schemas/AdminOrder"
+  }
+  ```
+
+  Related schemas:
+
+  - [AdminOrder](/api/schemas/admin-order)
+</Accordion>
+
+<Accordion title="type (required)">
+  The claim's type.
+
+  ```json
+  {
+    "type": "string",
+    "description": "The claim's type.",
+    "enum": [
+      "replace",
+      "refund"
+    ]
+  }
+  ```
+</Accordion>
+
+<Accordion title="order_version (required)">
+  The version of the order when the claim is applied.
+
+  ```json
+  {
+    "type": "string",
+    "title": "order_version",
+    "description": "The version of the order when the claim is applied."
+  }
+  ```
+</Accordion>
+
+<Accordion title="created_by (optional)">
+  The ID of the user that created the claim.
+
+  ```json
+  {
+    "type": "string",
+    "title": "created_by",
+    "description": "The ID of the user that created the claim."
+  }
+  ```
+</Accordion>
+
+<Accordion title="canceled_at (required)">
+  The date the claim was canceled.
+
+  ```json
+  {
+    "type": "string",
+    "title": "canceled_at",
+    "description": "The date the claim was canceled.",
+    "format": "date-time"
+  }
+  ```
+</Accordion>
+
+<Accordion title="deleted_at (optional)">
+  The date the claim was deleted.
+
+  ```json
+  {
+    "type": "string",
+    "format": "date-time",
+    "title": "deleted_at",
+    "description": "The date the claim was deleted."
+  }
+  ```
+</Accordion>
+
+## Schema definition
+
+```json
+{
+  "type": "object",
+  "description": "The claim's details.",
+  "x-schemaName": "AdminClaim",
+  "required": [
+    "order",
+    "return",
+    "id",
+    "type",
+    "order_id",
+    "display_id",
+    "order_version",
+    "created_at",
+    "updated_at",
+    "canceled_at",
+    "additional_items",
+    "claim_items"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "title": "id",
+      "description": "The claim's ID."
+    },
+    "order_id": {
+      "type": "string",
+      "title": "order_id",
+      "description": "The ID of the order associated with the claim."
+    },
+    "claim_items": {
+      "type": "array",
+      "description": "The order items targetted by the claim.",
+      "items": {
+        "$ref": "#/components/schemas/BaseClaimItem"
+      }
+    },
+    "additional_items": {
+      "type": "array",
+      "description": "The outbound or new items of the claim.",
+      "items": {
+        "$ref": "#/components/schemas/BaseClaimItem"
+      }
+    },
+    "return": {
+      "$ref": "#/components/schemas/AdminReturn"
+    },
+    "return_id": {
+      "type": "string",
+      "title": "return_id",
+      "description": "The ID of the associated return."
+    },
+    "no_notification": {
+      "type": "boolean",
+      "title": "no_notification",
+      "description": "Whether the customer should be notified about changes in the claim."
+    },
+    "refund_amount": {
+      "type": "number",
+      "title": "refund_amount",
+      "description": "The amount to be refunded."
+    },
+    "display_id": {
+      "type": "number",
+      "title": "display_id",
+      "description": "The claim's display ID."
+    },
+    "shipping_methods": {
+      "type": "array",
+      "description": "The claim's shipping methods.",
+      "items": {
+        "$ref": "#/components/schemas/AdminOrderShippingMethod"
+      }
+    },
+    "transactions": {
+      "type": "array",
+      "description": "The claim's transactions.",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/resources/commerce-modules/order/transactions",
+        "description": "Learn more about transactions of orders and associated models."
+      },
+      "items": {
+        "$ref": "#/components/schemas/BaseOrderTransaction"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "The claim's metadata, used to store custom key-value pairs.",
+      "externalDocs": {
+        "url": "https://docs.medusajs.com/api/admin#manage-metadata",
+        "description": "Learn how to manage metadata"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "created_at",
+      "description": "The claim's creation date."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "updated_at",
+      "description": "The claim's update date."
+    },
+    "order": {
+      "$ref": "#/components/schemas/AdminOrder"
+    },
+    "type": {
+      "type": "string",
+      "description": "The claim's type.",
+      "enum": [
+        "replace",
+        "refund"
+      ]
+    },
+    "order_version": {
+      "type": "string",
+      "title": "order_version",
+      "description": "The version of the order when the claim is applied."
+    },
+    "created_by": {
+      "type": "string",
+      "title": "created_by",
+      "description": "The ID of the user that created the claim."
+    },
+    "canceled_at": {
+      "type": "string",
+      "title": "canceled_at",
+      "description": "The date the claim was canceled.",
+      "format": "date-time"
+    },
+    "deleted_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "deleted_at",
+      "description": "The date the claim was deleted."
+    }
+  }
+}
+```
+
+Related schemas:
+
+- [AdminOrder](/api/schemas/admin-order)
+
+- [AdminOrderShippingMethod](/api/schemas/admin-order-shipping-method)
+
+- [AdminReturn](/api/schemas/admin-return)
+
+- [BaseClaimItem](/api/schemas/base-claim-item)
+
+- [BaseOrderTransaction](/api/schemas/base-order-transaction)

@@ -1,0 +1,46 @@
+---
+title: presignedUrl
+---
+
+This method creates a presigned URL for a file upload. It sends a request to the
+`/admin/uploads/presigned-urls` API route.
+
+## Example
+
+```ts
+sdk.admin.upload.presignedUrl({
+  name: "test.txt",
+  size: 1000,
+  type: "text/plain",
+}))
+```
+
+<a id="presignedurl-parameters" />
+
+## Parameters
+
+**presignedUrl**
+
+- `body`: [AdminUploadPreSignedUrlRequest](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUploadPreSignedUrlRequest) — The details of the file to upload.
+  - `originalname`: `string` — The original name of the file on the user's computer (aka clientName)
+  - `mime_type`: `string` — The mime type of the file.
+  - `size`: `number` — The size of the file in bytes.
+  - `access`: `"public"` | `"private"` (optional) — The access level of the file.
+- `query`: [SelectParams](/resources/references/types/HttpTypes/interfaces/typesHttpTypesSelectParams) (optional) — Query parameters to pass in the request.
+  - `fields`: `string` (optional) — The fields and relations to retrieve separated by commas. Learn more in the [API reference](/api/store/select-fields-and-relations).
+- `headers`: [ClientHeaders](/resources/references/js_sdk/admin/types/js_sdkadminClientHeaders) (optional) — Headers to pass in the request.
+  - `tags`: `string`\[] — Tags to cache data under for Next.js applications. Learn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).
+
+<a id="presignedurl-returns" />
+
+## Returns
+
+**presignedUrl**
+
+- `Promise`: Promise\<[AdminUploadPreSignedUrlResponse](/resources/references/types/HttpTypes/interfaces/typesHttpTypesAdminUploadPreSignedUrlResponse)> — The presigned URL for the file upload.
+  - `url`: `string` — The URL to be used for uploading the file
+  - `filename`: `string` — The unique filename that can be used with the file provider to fetch the file
+  - `originalname`: `string` — The original name of the file on the user's computer (aka clientName)
+  - `mime_type`: `string` — The mime type of the file.
+  - `extension`: `string` — Extension of the file to be uploaded
+  - `size`: `number` — Size of the file to be uploaded (in bytes)
