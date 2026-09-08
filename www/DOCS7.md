@@ -25,3 +25,7 @@ Reference page names omit dots, as required by Docs7. Internal links use the new
 page names. Section links with no matching section open the target page.
 The conversion does not include Medusa's application servers, live
 component previews, or external services.
+
+`llms-full.txt` contains the written guides and stays below the upload limit.
+The generated `llms.txt` index and individual `.md` URLs include the API and type
+references. Update the text export if you edit the guide content.
