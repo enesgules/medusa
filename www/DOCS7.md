@@ -15,7 +15,8 @@ The content was converted from upstream commit
 `www/docs7` directly.
 
 The project includes Learn, Resources, User Guide, UI, Cloud, and the Admin and
-Store API references. Resources use a section selector to keep pages small.
+Store API references. Resources use Docs7 product groups. Each module or reference has its own sidebar.
+The selector lists only the items in its group. Page-count batches are not used.
 Imported MDX sections are included in their parent pages.
 The home page uses Docs7 cards, tabs, and a copyable AI prompt. The icon catalog
 uses the original SVG artwork and Docs7 copy controls. Color samples use Docs7's
