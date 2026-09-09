@@ -111,6 +111,23 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["validateSearchIndexesExistStep"]
+end
+subgraph stage1["Stage 2"]
+node1["reindexSearchIndexesStep"]
+end
+subgraph stage2["Stage 3"]
+node2["Hook: searchIndexesReindexed"]
+end
+stage0 --> stage1
+stage1 --> stage2
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [validateSearchIndexesExistStep](/resources/references/medusa-workflows/steps/validateSearchIndexesExistStep): This step validates that each requested search index is registered. If an index is missing, the step throws an error.
   - [reindexSearchIndexesStep](/resources/references/medusa-workflows/steps/reindexSearchIndexesStep): This step rebuilds one or more search indexes from their seed.
     - [searchIndexesReindexed](/resources/references/medusa-workflows/reindexSearchIndexesWorkflow#searchindexesreindexed): This hook is called after the indexes have been reindexed. You can use it to perform any custom actions.

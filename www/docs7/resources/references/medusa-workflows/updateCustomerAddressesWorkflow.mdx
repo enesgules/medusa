@@ -149,6 +149,24 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["maybeUnsetDefaultShippingAddressesStep"]
+node1["maybeUnsetDefaultBillingAddressesStep"]
+end
+subgraph stage1["Stage 2"]
+node2["updateCustomerAddressesStep"]
+end
+subgraph stage2["Stage 3"]
+node3["Hook: addressesUpdated"]
+end
+stage0 --> stage1
+stage1 --> stage2
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [maybeUnsetDefaultShippingAddressesStep](/resources/references/medusa-workflows/steps/maybeUnsetDefaultShippingAddressesStep): This step unsets the `is_default_billing` property of existing customer addresses if the `is_default_billing` property in the addresses in the input is set to `true`.
 - [maybeUnsetDefaultBillingAddressesStep](/resources/references/medusa-workflows/steps/maybeUnsetDefaultBillingAddressesStep): This step unsets the `is_default_billing` property of existing customer addresses if the `is_default_billing` property in the addresses in the input is set to `true`.
   - [updateCustomerAddressesStep](/resources/references/medusa-workflows/steps/updateCustomerAddressesStep): This step updates one or more customer addresses.

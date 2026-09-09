@@ -115,6 +115,49 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["useRemoteQueryStep"]
+end
+subgraph stage1["Stage 2"]
+subgraph condition1["Conditional steps"]
+node2["validateRefundPaymentExceedsCapturedAmountStep"]
+end
+end
+subgraph stage2["Stage 3"]
+node3["useRemoteQueryStep"]
+end
+subgraph stage3["Stage 4"]
+node4["useRemoteQueryStep"]
+end
+subgraph stage4["Stage 5"]
+subgraph condition5["Conditional steps"]
+node6["useRemoteQueryStep"]
+end
+end
+subgraph stage5["Stage 6"]
+node7["refundPaymentStep"]
+end
+subgraph stage6["Stage 7"]
+subgraph condition8["Conditional steps"]
+node9["addOrderTransactionStep"]
+end
+end
+subgraph stage7["Stage 9"]
+node10["emitEventStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+stage4 --> stage5
+stage5 --> stage6
+stage6 --> stage7
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [useRemoteQueryStep](/resources/references/medusa-workflows/steps/useRemoteQueryStep): This step fetches data across modules using the remote query. Learn more in the [Remote Query documentation](/learn/fundamentals/module-links/query). :::note This step is deprecated. Use [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep) instead. :::
   - **when** (when: !!input.amount)
   - [validateRefundPaymentExceedsCapturedAmountStep](/resources/references/medusa-workflows/validateRefundPaymentExceedsCapturedAmountStep): This step validates that the refund amount does not exceed the captured amount for a payment. The validation accounts for currency decimal precision to handle rounding issues.

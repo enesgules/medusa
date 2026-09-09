@@ -137,6 +137,19 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["Workflow: createUsersWorkflow"]
+end
+subgraph stage1["Stage 2"]
+node1["setAuthAppMetadataStep"]
+end
+stage0 --> stage1
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [createUsersWorkflow](/resources/references/medusa-workflows/createUsersWorkflow): Create one or more users with optional role assignment.
   - [setAuthAppMetadataStep](/resources/references/medusa-workflows/steps/setAuthAppMetadataStep): This step sets the `app_metadata` property of an auth identity. This is useful to associate a user (whether it's an admin user or customer) with an auth identity that allows them to authenticate into Medusa. You can learn more about auth identites in [this documentation](/resources/commerce-modules/auth/auth-identity-and-actor-types). To use this for a custom actor type, check out [this guide](/resources/commerce-modules/auth/create-actor-type) that explains how to create a custom `manager` actor type and manage its users.
 

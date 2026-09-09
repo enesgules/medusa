@@ -117,6 +117,31 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["Workflow: deleteInventoryItemWorkflow"]
+end
+subgraph stage1["Stage 2"]
+node1["deleteProductsStep"]
+end
+subgraph stage2["Stage 3"]
+node2["Workflow: deleteProductOptionsWorkflow"]
+end
+subgraph stage3["Stage 4"]
+node3["emitEventStep"]
+end
+subgraph stage4["Stage 5"]
+node4["Hook: productsDeleted"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [deleteInventoryItemWorkflow](/resources/references/medusa-workflows/deleteInventoryItemWorkflow): Delete one or more inventory items.
   - [deleteProductsStep](/resources/references/medusa-workflows/steps/deleteProductsStep): This step deletes one or more products.
     - [deleteProductOptionsWorkflow](/resources/references/medusa-workflows/deleteProductOptionsWorkflow): Delete one or more product option.

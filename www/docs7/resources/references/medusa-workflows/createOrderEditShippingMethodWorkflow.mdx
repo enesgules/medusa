@@ -127,6 +127,39 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["acquireLockStep"]
+end
+subgraph stage1["Stage 2"]
+node1["Hook: setPricingContext"]
+end
+subgraph stage2["Stage 3"]
+node2["getTranslatedShippingOptionsStep"]
+end
+subgraph stage3["Stage 4"]
+node3["Workflow: updateOrderTaxLinesWorkflow"]
+end
+subgraph stage4["Stage 5"]
+node4["Workflow: createOrderChangeActionsWorkflow"]
+end
+subgraph stage5["Stage 6"]
+node5["previewOrderChangeStep"]
+end
+subgraph stage6["Stage 7"]
+node6["releaseLockStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+stage4 --> stage5
+stage5 --> stage6
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [acquireLockStep](/resources/references/medusa-workflows/steps/acquireLockStep): This step acquires a lock for a given key. Learn more about locks in the [Locking Module](/resources/infrastructure-modules/locking) guide.
   - [setPricingContext](/resources/references/medusa-workflows/createOrderEditShippingMethodWorkflow#setpricingcontext): This hook is executed after the order is retrieved and before the line items are created. You can consume this hook to return any custom context useful for the prices retrieval of the variants to be added to the order. For example, assuming you have the following custom pricing rule: `json { "attribute": "location_id", "operator": "eq", "value": "sloc_123", } ` You can consume the `setPricingContext` hook to add the `location_id` context to the prices calculation: `ts import { addOrderLineItemsWorkflow } from "@medusajs/medusa/core-flows"; import { StepResponse } from "@medusajs/workflows-sdk"; addOrderLineItemsWorkflow.hooks.setPricingContext(( { order, variantIds, region, customerData, additional_data }, { container } ) => { return new StepResponse({ location_id: "sloc_123", // Special price for in-store purchases }); }); ` The variants' prices will now be retrieved using the context you return. :::note Learn more about prices calculation context in the [Prices Calculation](/resources/commerce-modules/pricing/price-calculation) documentation. :::
     - [getTranslatedShippingOptionsStep](/resources/references/medusa-workflows/steps/getTranslatedShippingOptionsStep): This step applies translations to a list of shipping options based on the provided locale. It modifies the shipping options in place and returns them.

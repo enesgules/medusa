@@ -229,6 +229,27 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["exportProductsStep"]
+end
+subgraph stage1["Stage 2"]
+node1["notifyOnFailureStep"]
+end
+subgraph stage2["Stage 3"]
+node2["useQueryGraphStep"]
+end
+subgraph stage3["Stage 4"]
+node3["sendNotificationsStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [exportProductsStep](/resources/references/medusa-workflows/steps/exportProductsStep): This step exports products to a CSV file based on the provided filters.
   - [notifyOnFailureStep](/resources/references/medusa-workflows/steps/notifyOnFailureStep): This step sends one or more notification when a workflow fails. This step can be used in the beginning of a workflow so that, when the workflow fails, the step's compensation function is triggered to send the notification.
     - [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep): This step fetches data across modules using the Query. Learn more in the [Query documentation](/learn/fundamentals/module-links/query).

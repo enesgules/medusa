@@ -122,6 +122,35 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 2"]
+node0["validateCartStep"]
+end
+subgraph stage1["Stage 3"]
+node1["acquireLockStep"]
+end
+subgraph stage2["Stage 4"]
+node2["Hook: setTaxLineContext"]
+end
+subgraph stage3["Stage 5"]
+node3["getItemTaxLinesStep"]
+end
+subgraph stage4["Stage 6"]
+node4["setTaxLinesForItemsStep"]
+end
+subgraph stage5["Stage 7"]
+node5["releaseLockStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+stage4 --> stage5
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [validateCartStep](/resources/references/medusa-workflows/steps/validateCartStep): This step validates a cart to ensure it exists and is not completed. If not valid, the step throws an error. :::tip You can use the [retrieveCartStep](/resources/references/medusa-workflows/steps/retrieveCartStep) to retrieve a cart's details. :::
   - [acquireLockStep](/resources/references/medusa-workflows/steps/acquireLockStep): This step acquires a lock for a given key. Learn more about locks in the [Locking Module](/resources/infrastructure-modules/locking) guide.
     - [setTaxLineContext](/resources/references/medusa-workflows/updateTaxLinesWorkflow#settaxlinecontext): This hook is executed after the cart is fetched and before tax lines are calculated. You can consume this hook to add custom context to the tax calculation. The returned object is set as the additional\_context property in the getItemTaxLinesStep input.

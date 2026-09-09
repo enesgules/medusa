@@ -121,6 +121,27 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["validateOrderCreditLinesStep"]
+end
+subgraph stage1["Stage 2"]
+node1["createOrderChangeStep"]
+end
+subgraph stage2["Stage 3"]
+node2["Workflow: createOrderChangeActionsWorkflow"]
+end
+subgraph stage3["Stage 4"]
+node3["Hook: creditLinesCreated"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [validateOrderCreditLinesStep](/resources/references/medusa-workflows/validateOrderCreditLinesStep)
   - [createOrderChangeStep](/resources/references/medusa-workflows/steps/createOrderChangeStep): This step creates an order change.
     - [createOrderChangeActionsWorkflow](/resources/references/medusa-workflows/createOrderChangeActionsWorkflow): Create an order change action.

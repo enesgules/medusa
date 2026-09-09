@@ -150,6 +150,32 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["previewOrderChangeStep"]
+end
+subgraph stage1["Stage 2"]
+node1["Hook: setPromotionContext"]
+end
+subgraph stage2["Stage 3"]
+subgraph condition2["Conditional steps"]
+node3["getActionsToComputeFromPromotionsStep"]
+node4["prepareAdjustmentsFromPromotionActionsStep"]
+end
+end
+subgraph stage3["Stage 4"]
+subgraph condition5["Conditional steps"]
+node6["deleteOrderChangeActionsStep"]
+end
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [previewOrderChangeStep](/resources/references/medusa-workflows/steps/previewOrderChangeStep): This step retrieves a preview of an order change.
   - [setPromotionContext](/resources/references/medusa-workflows/computeAdjustmentsForPreviewWorkflow#setpromotioncontext): This hook is executed before promotion rules are evaluated for the draft order. You can consume this hook to return any custom context that should be merged on top of the order context when evaluating promotion rules (e.g. `company.id`, `custom_tier`).
     - **when** (when: !!order.promotions.length && !!orderChange.carry\_over\_promotions)

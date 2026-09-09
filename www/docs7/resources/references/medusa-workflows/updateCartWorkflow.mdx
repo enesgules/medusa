@@ -181,6 +181,72 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["acquireLockStep"]
+end
+subgraph stage1["Stage 2"]
+node1["useQueryGraphStep"]
+end
+subgraph stage2["Stage 3"]
+node2["validateCartStep"]
+end
+subgraph stage3["Stage 4"]
+node3["findSalesChannelStep"]
+node4["findOrCreateCustomerStep"]
+end
+subgraph stage4["Stage 5"]
+subgraph condition5["Conditional steps"]
+node6["useQueryGraphStep"]
+end
+end
+subgraph stage5["Stage 6"]
+node7["prepareCartToUpdateStep"]
+end
+subgraph stage6["Stage 7"]
+node8["Hook: validate"]
+end
+subgraph stage7["Stage 8"]
+subgraph condition9["Conditional steps"]
+node10["emitEventStep"]
+end
+end
+subgraph stage8["Stage 9"]
+node11["updateCartsStep"]
+node12["emitEventStep"]
+end
+subgraph stage9["Stage 10"]
+subgraph condition13["Conditional steps"]
+node14["useQueryGraphStep"]
+node15["deleteLineItemsStep"]
+end
+end
+subgraph stage10["Stage 11"]
+node16["Workflow: refreshCartItemsWorkflow"]
+end
+subgraph stage11["Stage 12"]
+node17["Hook: cartUpdated"]
+end
+subgraph stage12["Stage 13"]
+node18["releaseLockStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+stage4 --> stage5
+stage5 --> stage6
+stage6 --> stage7
+stage7 --> stage8
+stage8 --> stage9
+stage9 --> stage10
+stage10 --> stage11
+stage11 --> stage12
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [acquireLockStep](/resources/references/medusa-workflows/steps/acquireLockStep): This step acquires a lock for a given key. Learn more about locks in the [Locking Module](/resources/infrastructure-modules/locking) guide.
   - [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep): This step fetches data across modules using the Query. Learn more in the [Query documentation](/learn/fundamentals/module-links/query).
     - [validateCartStep](/resources/references/medusa-workflows/steps/validateCartStep): This step validates a cart to ensure it exists and is not completed. If not valid, the step throws an error. :::tip You can use the [retrieveCartStep](/resources/references/medusa-workflows/steps/retrieveCartStep) to retrieve a cart's details. :::

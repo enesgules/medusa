@@ -122,6 +122,23 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 2"]
+node0["validateCartStep"]
+end
+subgraph stage1["Stage 3"]
+node1["Hook: setTaxLineContext"]
+end
+subgraph stage2["Stage 4"]
+node2["getItemTaxLinesStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [validateCartStep](/resources/references/medusa-workflows/steps/validateCartStep): This step validates a cart to ensure it exists and is not completed. If not valid, the step throws an error. :::tip You can use the [retrieveCartStep](/resources/references/medusa-workflows/steps/retrieveCartStep) to retrieve a cart's details. :::
   - [setTaxLineContext](/resources/references/medusa-workflows/upsertTaxLinesWorkflow#settaxlinecontext): This hook is executed after the cart is fetched and before tax lines are calculated. You can consume this hook to add custom context to the tax calculation. The returned object is set as the additional\_context property in the getItemTaxLinesStep input.
     - [getItemTaxLinesStep](/resources/references/medusa-workflows/steps/getItemTaxLinesStep): This step retrieves the tax lines for an order or cart's line items and shipping methods. :::note You can retrieve an order, cart, item, shipping method, and address details using [Query](/learn/fundamentals/module-links/query), or [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep). :::

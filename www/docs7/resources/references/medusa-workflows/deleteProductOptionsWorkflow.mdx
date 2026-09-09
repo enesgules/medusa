@@ -117,6 +117,24 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["deleteProductOptionsStep"]
+end
+subgraph stage1["Stage 2"]
+node1["Hook: productOptionsDeleted"]
+end
+subgraph stage2["Stage 3"]
+node2["removeRemoteLinkStep"]
+node3["emitEventStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [deleteProductOptionsStep](/resources/references/medusa-workflows/steps/deleteProductOptionsStep): This step deletes one or more product options.
   - [productOptionsDeleted](/resources/references/medusa-workflows/deleteProductOptionsWorkflow#productoptionsdeleted): This hook is executed after the options are deleted. You can consume this hook to perform custom actions on the deleted options.
     - [removeRemoteLinkStep](/resources/references/medusa-workflows/steps/removeRemoteLinkStep): This step deletes linked records of a record if cascade deletion is enabled. Learn more in the [Link documentation](/learn/fundamentals/module-links/link#cascade-delete-linked-records)

@@ -119,6 +119,32 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["validatePaymentProviderInRegionStep"]
+end
+subgraph stage1["Stage 2"]
+subgraph condition1["Conditional steps"]
+node2["createPaymentAccountHolderStep"]
+end
+end
+subgraph stage2["Stage 3"]
+subgraph condition3["Conditional steps"]
+node4["createRemoteLinkStep"]
+end
+end
+subgraph stage3["Stage 4"]
+node5["createPaymentSessionStep"]
+node6["Workflow: deletePaymentSessionsWorkflow"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [validatePaymentProviderInRegionStep](/resources/references/medusa-workflows/steps/validatePaymentProviderInRegionStep): This step validates that a payment provider can be used for a payment collection. If the payment collection belongs to an active (not yet completed) cart, the payment provider must be enabled in the cart's region. If not, the step throws an error. Payment collections that aren't linked to an active cart, such as those of an order, aren't affected by this validation.
   - **when** (when: \{
     return !!data.input.customer\_id

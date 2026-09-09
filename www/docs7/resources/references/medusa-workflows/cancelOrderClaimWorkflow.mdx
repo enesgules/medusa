@@ -115,6 +115,30 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["cancelClaimValidateOrderStep"]
+end
+subgraph stage1["Stage 2"]
+node1["cancelOrderClaimStep"]
+node2["deleteReservationsByLineItemsStep"]
+end
+subgraph stage2["Stage 3"]
+node3["emitEventStep"]
+end
+subgraph stage3["Stage 4"]
+subgraph condition4["Conditional steps"]
+node5["Workflow: cancelReturnWorkflow"]
+end
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [cancelClaimValidateOrderStep](/resources/references/medusa-workflows/cancelClaimValidateOrderStep): This step validates that a confirmed claim can be canceled. If the claim is canceled, or the claim's fulfillments are not canceled, the step will throw an error. :::note You can retrieve an order claim's details using [Query](/learn/fundamentals/module-links/query), or [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep). :::
   - [cancelOrderClaimStep](/resources/references/medusa-workflows/steps/cancelOrderClaimStep): This step cancels a claim.
   - [deleteReservationsByLineItemsStep](/resources/references/medusa-workflows/steps/deleteReservationsByLineItemsStep): This step deletes reservations by their associated line items.

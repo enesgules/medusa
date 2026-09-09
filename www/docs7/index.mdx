@@ -1,31 +1,359 @@
 ---
-title: Medusa
+title: Medusa Documentation
+description: Learn how to build, customize, and deploy commerce applications with Medusa.
+mode: custom
 ---
 
-Build and customize commerce applications with Medusa.
+<div className="medusa-home">
 
-<CardGroup cols="2">
-  <Card title="Learn" href="/learn">
-    Install Medusa and learn its core concepts.
-  </Card>
+<div className="medusa-home-hero">
 
-  <Card title="Resources" href="/resources/recipes">
-    Explore guides, integrations, and reference pages.
-  </Card>
+<p className="medusa-home-eyebrow">Medusa documentation</p>
 
-  <Card title="API reference" href="/api/admin">
-    Use the Admin and Store APIs.
-  </Card>
+# Build your commerce application
 
-  <Card title="User guide" href="/user-guide">
-    Manage your store in Medusa Admin.
-  </Card>
+Learn Medusa, build custom features, and deploy your store.
 
-  <Card title="UI" href="/ui">
-    Build interfaces with the Medusa component library.
-  </Card>
+</div>
 
-  <Card title="Cloud" href="/cloud">
-    Deploy and manage Medusa applications.
-  </Card>
+<nav className="medusa-home-sections" aria-label="Documentation sections">
+  <a href="/learn">Learn</a>
+  <a href="/resources/recipes">Resources</a>
+  <a href="/api/admin">Admin API</a>
+  <a href="/api/store">Store API</a>
+  <a href="/user-guide">User guide</a>
+  <a href="/ui">UI</a>
+  <a href="/cloud">Cloud</a>
+</nav>
+
+<CardGroup cols={3}>
+  <Card title="Get started" href="/learn/installation">Install Medusa and create your first application.</Card>
+  <Card title="Build with AI" href="/start">Use your AI agent to install and deploy a Medusa store.</Card>
+  <Card title="Explore the framework" href="/learn/fundamentals/framework">Build API routes, data models, and workflows.</Card>
 </CardGroup>
+
+## Start with your AI agent
+
+<Prompt description="Create a Medusa store" actions={["copy", "cursor"]}>
+Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
+</Prompt>
+
+For questions about the documentation, select **Ask AI** in the navigation bar.
+
+## Find your next guide
+
+### Customize Medusa Application
+
+<CardGroup cols={3}>
+  <Card title="Install Medusa" href="/learn/installation">Install a digital commerce application with Medusa.</Card>
+  <Card title="Deploy to Cloud" href="/cloud/sign-up">Deploy Medusa to Medusa Cloud.</Card>
+  <Card title="Browse integrations" href="/resources/integrations">Integrate third-party services with Medusa.</Card>
+</CardGroup>
+
+### Admin Development
+
+<CardGroup cols={3}>
+  <Card title="Build a UI widget" href="/learn/fundamentals/admin/widgets">Create custom widgets for the admin dashboard.</Card>
+  <Card title="Add a UI route" href="/learn/fundamentals/admin/ui-routes">Create custom UI routes in the admin dashboard.</Card>
+  <Card title="Browse the UI library" href="/ui">A React library to build applications using Medusa's design system.</Card>
+</CardGroup>
+
+### Storefront Development
+
+<CardGroup cols={3}>
+  <Card title="Explore storefront starter" href="/resources/nextjs-starter">Next.js storefront starter template.</Card>
+  <Card title="Build custom storefront" href="/resources/storefront-development">Build storefronts with Medusa.</Card>
+  <Card title="Use agent skills" href="/learn/introduction/build-with-llms-ai/agentic-skills#ecommerce-storefront-best-practices">Best practices for storefront development with AI agents.</Card>
+</CardGroup>
+
+### Medusa Cloud
+
+<CardGroup cols={3}>
+  <Card title="Deploy from GitHub" href="/cloud/projects">Deploy Medusa projects from GitHub.</Card>
+  <Card title="Preview environments" href="/cloud/environments/preview">Use preview environments in Medusa Cloud.</Card>
+  <Card title="Medusa Emails" href="/cloud/emails">Manage emails in Medusa Cloud.</Card>
+</CardGroup>
+
+### Agentic Development
+
+<CardGroup cols={3}>
+  <Card title="Agentic deployments" href="/learn/introduction/build-with-llms-ai/cloud-cli">Deploy Medusa projects with an AI agent.</Card>
+  <Card title="Agent Skills" href="/learn/introduction/build-with-llms-ai">Learn how to build with AI assistants and LLMs.</Card>
+  <Card title="Medusa Docs MCP" href="/learn/introduction/build-with-llms-ai/mcp-server">Use the Medusa Docs MCP server.</Card>
+</CardGroup>
+
+## Build with the framework
+
+Create custom commerce features with API routes, workflows, data models, and modules.
+
+<Tabs>
+<Tab title="Create API Route">
+
+Expose custom features with REST API routes, then consume them from your client applications.
+
+```ts
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const query = req.scope.resolve("query")
+
+  const { data } = await query.graph({
+    entity: "company",
+    fields: ["id", "name"],
+    filters: { name: "ACME" },
+  })
+
+  res.json({
+    companies: data
+  })
+}
+```
+
+- [API Routes](/learn/fundamentals/api-routes): Learn more about API routes.
+
+</Tab>
+<Tab title="Build Workflows">
+
+Build flows as a series of steps, with retry mechanisms and tracking of each steps' status.
+
+```ts
+const handleDeliveryWorkflow = createWorkflow(
+  "handle-delivery",
+  function (input: WorkflowInput) {
+    notifyRestaurantStep(input.delivery_id)
+
+    const order = createOrderStep(input.delivery_id)
+
+    createFulfillmentStep(order)
+
+    awaitDeliveryStep()
+
+    return new WorkflowResponse("Delivery completed")
+  }
+)
+```
+
+- [Workflows](/learn/fundamentals/workflows): Learn more about workflows.
+
+</Tab>
+<Tab title="Add a Data Model">
+
+Create data models that represent tables in the database using Medusa's Data Model Language.
+
+```ts
+const DigitalProduct = model.define("digital_product",
+  {
+    id: model.id().primaryKey(),
+    name: model.text(),
+    medias: model.hasMany(() => DigitalProductMedia, {
+      mappedBy: "digitalProduct"
+    })
+  })
+  .cascades({
+    delete: ["medias"]
+  })
+```
+
+- [DML](/learn/fundamentals/modules#1-create-data-model): Learn more about data models.
+
+</Tab>
+<Tab title="Build a Custom Module">
+
+Build custom modules with commerce or architectural features and use them in API routes or workflows.
+
+```ts
+class DigitalProductService extends MedusaService({
+  DigitalProduct,
+}) {
+  async authorizeLicense() {
+    console.log("License authorized!")
+  }
+}
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const moduleService = req.scope.resolve(
+    "digitalProduct"
+  )
+
+  await moduleService.authorizeLicense()
+
+  res.json({ success: true })
+}
+```
+
+- [Modules](/learn/fundamentals/modules): Learn more about modules.
+
+</Tab>
+<Tab title="Link Data Models">
+
+Add custom properties to Medusa's data models using module links to build custom use cases.
+
+```ts
+const DigitalProduct = model.define("digital_product", {
+  id: model.id().primaryKey(),
+  name: model.text(),
+})
+
+export default defineLink(
+  DigitalProductModule.linkable.digitalProduct,
+  ProductModule.linkable.productVariant
+)
+```
+
+- [Module Links](/learn/fundamentals/module-links): Learn more about module links.
+
+</Tab>
+<Tab title="Subscribe to Events">
+
+Handle events emitted by the Medusa application to perform custom actions.
+
+```ts
+async function orderPlaced({
+  container,
+}: SubscriberArgs) {
+  const moduleService = container.resolve(
+    Modules.NOTIFICATION
+  )
+
+  await moduleService.createNotifications({
+    to: "customer@gmail.com",
+    channel: "email",
+    template: "order-placed"
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+- [Subscribers](/learn/fundamentals/events-and-subscribers): Learn more about events and subscribers.
+
+</Tab>
+<Tab title="Customize Admin">
+
+Inject widgets into predefined zones in the Medusa Admin, or add new pages.
+
+```tsx
+const ProductBrandWidget = () => {
+  const [brand, setBrand] = useState({
+    name: "Acme"
+  })
+
+  return (
+    <Container>
+      <Heading level="h2">Brand</Heading>
+      {brand && <span>Name: {brand.name}</span>}
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+```
+
+- [Admin Widgets](/learn/fundamentals/admin/widgets): Learn more about admin widgets.
+
+</Tab>
+<Tab title="Integrate Systems">
+
+Build workflows around multiple systems to add more powerful features to Medusa.
+
+```tsx
+const syncBrandsFromSystemWorkflow = createWorkflow(
+  "sync-brands-from-system",
+  () => {
+    const toCreate = retrieveBrandsFromSystemStep()
+
+    const created = createBrandsInMedusaStep({
+      brands: toCreate
+    })
+
+    return new WorkflowResponse({
+      created,
+    })
+  }
+)
+```
+
+- [Integrate Systems](/learn/customization/integrate-systems): Learn more about integrating systems.
+
+</Tab>
+</Tabs>
+
+## Build a business use case
+
+<CardGroup cols={3}>
+  <Card title="Marketplace" href="/resources/recipes/marketplace/examples/vendors">Build a marketplace with multiple vendors.</Card>
+  <Card title="ERP" href="/resources/recipes/erp">Integrate an ERP system to manage custom product prices, purchase rules, syncing orders, and more.</Card>
+  <Card title="Bundled Products" href="/resources/recipes/bundled-products/examples/standard">Sell products as bundles with Admin and storefront customizations.</Card>
+  <Card title="Subscriptions" href="/resources/recipes/subscriptions/examples/standard">Implement a subscription-based commerce store.</Card>
+  <Card title="Restaurant-Delivery" href="/resources/recipes/marketplace/examples/restaurant-delivery">Build a restaurant marketplace inspired by UberEats, with real-time delivery handling.</Card>
+  <Card title="Digital Products" href="/resources/recipes/digital-products/examples/standard">Sell digital products with custom fulfillment.</Card>
+</CardGroup>
+
+[Browse all recipes](/resources/recipes).
+
+## Commerce modules
+
+### Cart & Purchase
+
+<CardGroup cols={3}>
+  <Card title="Cart" href="/resources/commerce-modules/cart">Add to cart, checkout, and totals.</Card>
+  <Card title="Payment" href="/resources/commerce-modules/payment">Process any payment type.</Card>
+  <Card title="Customer" href="/resources/commerce-modules/customer">Customer and group management.</Card>
+</CardGroup>
+
+### Merchandising
+
+<CardGroup cols={3}>
+  <Card title="Pricing" href="/resources/commerce-modules/pricing">Configurable pricing engine.</Card>
+  <Card title="Promotion" href="/resources/commerce-modules/promotion">Discounts and promotions.</Card>
+  <Card title="Product" href="/resources/commerce-modules/product">Variants, categories, and bulk edits.</Card>
+</CardGroup>
+
+### Fulfillment
+
+<CardGroup cols={3}>
+  <Card title="Order" href="/resources/commerce-modules/order">Omnichannel order management.</Card>
+  <Card title="Inventory" href="/resources/commerce-modules/inventory">Multi-warehouse and reservations.</Card>
+  <Card title="Fulfillment" href="/resources/commerce-modules/fulfillment">Order fulfillment and shipping.</Card>
+  <Card title="Stock Location" href="/resources/commerce-modules/stock-location">Locations of stock-kept items.</Card>
+</CardGroup>
+
+### Regions & Channels
+
+<CardGroup cols={3}>
+  <Card title="Region" href="/resources/commerce-modules/region">Cross-border commerce.</Card>
+  <Card title="Sales Channel" href="/resources/commerce-modules/sales-channel">Omnichannel sales.</Card>
+  <Card title="Tax" href="/resources/commerce-modules/tax">Granular tax control.</Card>
+  <Card title="Currency" href="/resources/commerce-modules/currency">Multi-currency support.</Card>
+</CardGroup>
+
+### User Access
+
+<CardGroup cols={3}>
+  <Card title="API Keys" href="/resources/commerce-modules/api-key">Store and admin access.</Card>
+  <Card title="User Module" href="/resources/commerce-modules/user">Admin user management.</Card>
+  <Card title="Auth" href="/resources/commerce-modules/auth">Integrate authentication methods.</Card>
+</CardGroup>
+
+## Reference and support
+
+<CardGroup cols={3}>
+  <Card title="Admin API" href="/api/admin">Manage products, customers, and orders.</Card>
+  <Card title="Store API" href="/api/store">Build storefronts and checkout flows.</Card>
+  <Card title="Medusa UI" href="/ui">Build interfaces with Medusa components.</Card>
+  <Card title="User guide" href="/user-guide">Manage your store in Medusa Admin.</Card>
+  <Card title="Troubleshooting" href="/resources/troubleshooting">Find solutions to common errors.</Card>
+  <Card title="Medusa Cloud" href="/cloud">Deploy and manage Medusa applications.</Card>
+</CardGroup>
+
+[Read product updates](https://medusajs.com/changelog/) · [Join the community](https://discord.gg/medusajs) · [Report a documentation issue](https://github.com/medusajs/medusa/issues/new/choose)
+
+</div>

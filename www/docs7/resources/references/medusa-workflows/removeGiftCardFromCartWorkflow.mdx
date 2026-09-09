@@ -120,6 +120,31 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["validateGiftCardStep"]
+end
+subgraph stage1["Stage 2"]
+node1["validateGiftCardInCartStep"]
+end
+subgraph stage2["Stage 3"]
+node2["Workflow: deleteCartCreditLinesWorkflow"]
+end
+subgraph stage3["Stage 4"]
+node3["Workflow: dismissLinksWorkflow"]
+end
+subgraph stage4["Stage 5"]
+node4["Workflow: refreshCartItemsWorkflow"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [validateGiftCardStep](/resources/references/medusa-workflows/validateGiftCardStep): This step validates that a gift card code exists in the cart and that the gift card itself exists. It throws an error if the gift card code is not in the cart or if the gift card record is not found.
   - [validateGiftCardInCartStep](/resources/references/medusa-workflows/validateGiftCardInCartStep): This step validates that a gift card is present in a cart. It throws an error if the gift card is not found in the cart's gift cards.
     - [deleteCartCreditLinesWorkflow](/resources/references/medusa-workflows/deleteCartCreditLinesWorkflow): This workflow deletes one or more credit lines from a cart.

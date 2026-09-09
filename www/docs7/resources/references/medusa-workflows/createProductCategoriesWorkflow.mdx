@@ -123,6 +123,23 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["createProductCategoriesStep"]
+end
+subgraph stage1["Stage 2"]
+node1["emitEventStep"]
+end
+subgraph stage2["Stage 3"]
+node2["Hook: categoriesCreated"]
+end
+stage0 --> stage1
+stage1 --> stage2
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [createProductCategoriesStep](/resources/references/medusa-workflows/steps/createProductCategoriesStep): This step creates one or more product categories.
   - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
     - [categoriesCreated](/resources/references/medusa-workflows/createProductCategoriesWorkflow#categoriescreated): This step is a hook that you can inject custom functionality into.

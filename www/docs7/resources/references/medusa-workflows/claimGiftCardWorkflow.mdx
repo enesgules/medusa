@@ -121,6 +121,19 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["validateClaimGiftCardInputStep"]
+end
+subgraph stage1["Stage 2"]
+node1["Workflow: claimStoreCreditAccountWorkflow"]
+end
+stage0 --> stage1
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [validateClaimGiftCardInputStep](/resources/references/medusa-workflows/validateClaimGiftCardInputStep): This step validates that a gift card can be claimed. It throws an error if the gift card does not have a store credit account, the gift card's store credit account has no code, or the customer does not have a registered account.
   - [claimStoreCreditAccountWorkflow](/resources/references/medusa-workflows/claimStoreCreditAccountWorkflow): Claim an anonymous store credit account for a customer.
 
