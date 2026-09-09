@@ -135,6 +135,19 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["validateShipmentStep"]
+end
+subgraph stage1["Stage 2"]
+node1["Workflow: updateFulfillmentWorkflow"]
+end
+stage0 --> stage1
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [validateShipmentStep](/resources/references/medusa-workflows/steps/validateShipmentStep): This step validates that a shipment can be created for a fulfillment. If the shipment has already been created, the fulfillment has been canceled, or the fulfillment does not have a shipping option, the step throws an error.
   - [updateFulfillmentWorkflow](/resources/references/medusa-workflows/updateFulfillmentWorkflow): Update a fulfillment.
 

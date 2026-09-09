@@ -129,6 +129,44 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["updateOrderValidationStep"]
+end
+subgraph stage1["Stage 2"]
+subgraph condition1["Conditional steps"]
+node2["findOrCreateCustomerStep"]
+end
+end
+subgraph stage2["Stage 3"]
+node3["updateOrdersStep"]
+end
+subgraph stage3["Stage 4"]
+node4["registerOrderChangesStep"]
+end
+subgraph stage4["Stage 5"]
+subgraph condition5["Conditional steps"]
+node6["updateOrderItemsTranslationsStep"]
+node7["updateOrderShippingMethodsTranslationsStep"]
+end
+end
+subgraph stage5["Stage 6"]
+node8["emitEventStep"]
+end
+subgraph stage6["Stage 7"]
+node9["previewOrderChangeStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+stage4 --> stage5
+stage5 --> stage6
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [updateOrderValidationStep](/resources/references/medusa-workflows/updateOrderValidationStep): This step validates that an order can be updated with provided input. If the order is cancelled, the email is invalid, or the country code is being changed in the shipping or billing addresses, the step will throw an error. :::note You can retrieve an order's details using [Query](/learn/fundamentals/module-links/query), or [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep). :::
   - **when** (when: \{
     return !order.email && !!input.email

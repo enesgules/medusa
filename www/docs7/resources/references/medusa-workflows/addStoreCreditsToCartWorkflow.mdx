@@ -121,6 +121,32 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["validateCartStep"]
+end
+subgraph stage1["Stage 2"]
+node1["validateCustomerStoreCreditAccountStep"]
+end
+subgraph stage2["Stage 3"]
+node2["computeCreditLineActionsStep"]
+end
+subgraph stage3["Stage 4"]
+node3["Workflow: deleteCartCreditLinesWorkflow"]
+node4["Workflow: createCartCreditLinesWorkflow"]
+end
+subgraph stage4["Stage 5"]
+node5["Workflow: refreshCartItemsWorkflow"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [validateCartStep](/resources/references/medusa-workflows/steps/validateCartStep): This step validates a cart to ensure it exists and is not completed. If not valid, the step throws an error. :::tip You can use the [retrieveCartStep](/resources/references/medusa-workflows/steps/retrieveCartStep) to retrieve a cart's details. :::
   - [validateCustomerStoreCreditAccountStep](/resources/references/medusa-workflows/validateCustomerStoreCreditAccountStep): This step validates that a customer's store credit account exists and has a positive balance. It throws an error if the account is not found or has no balance.
     - [computeCreditLineActionsStep](/resources/references/medusa-workflows/computeCreditLineActionsStep): This step computes the credit lines to create and delete when applying store credits to a cart. It collects the existing store-credit lines to delete and builds a new credit line for the specified amount, or for the full store credit balance if no amount is specified. It throws an error if the requested amount is greater than the store credit account balance.

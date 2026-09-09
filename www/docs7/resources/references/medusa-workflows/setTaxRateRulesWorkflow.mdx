@@ -130,6 +130,23 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["listTaxRateRuleIdsStep"]
+end
+subgraph stage1["Stage 2"]
+node1["deleteTaxRateRulesStep"]
+end
+subgraph stage2["Stage 3"]
+node2["createTaxRateRulesStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [listTaxRateRuleIdsStep](/resources/references/medusa-workflows/steps/listTaxRateRuleIdsStep): This step retrieves the IDs of tax rate rules matching the specified filters.
   - [deleteTaxRateRulesStep](/resources/references/medusa-workflows/steps/deleteTaxRateRulesStep): This step deletes one or more tax rate rules.
     - [createTaxRateRulesStep](/resources/references/medusa-workflows/steps/createTaxRateRulesStep): This step creates one or more tax rate rules.

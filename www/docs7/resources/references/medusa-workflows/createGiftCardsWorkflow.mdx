@@ -148,6 +148,31 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["createGiftCardsStep"]
+end
+subgraph stage1["Stage 2"]
+node1["createStoreCreditAccountsStep"]
+end
+subgraph stage2["Stage 3"]
+node2["Workflow: createLinksWorkflow"]
+end
+subgraph stage3["Stage 4"]
+node3["Workflow: creditAccountsWorkflow"]
+end
+subgraph stage4["Stage 5"]
+node4["Workflow: updateGiftCardsWorkflow"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [createGiftCardsStep](/resources/references/medusa-workflows/steps/createGiftCardsStep): This step creates gift cards. If no code is provided for a gift card, a unique code is automatically generated. The step supports rollback by deleting the created gift cards.
   - [createStoreCreditAccountsStep](/resources/references/medusa-workflows/steps/createStoreCreditAccountsStep): This step creates store credit accounts. If no code is provided, a unique code prefixed with "SC" is automatically generated. The step supports rollback by deleting the created accounts.
     - [createLinksWorkflow](/resources/references/medusa-workflows/createLinksWorkflow): Create links between two records of linked data models.

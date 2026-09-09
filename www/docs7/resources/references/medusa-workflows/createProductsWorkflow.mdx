@@ -209,6 +209,35 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["createProductsStep"]
+end
+subgraph stage1["Stage 2"]
+node1["associateProductsWithSalesChannelsStep"]
+end
+subgraph stage2["Stage 3"]
+node2["createRemoteLinkStep"]
+end
+subgraph stage3["Stage 4"]
+node3["Workflow: createProductVariantsWorkflow"]
+end
+subgraph stage4["Stage 5"]
+node4["emitEventStep"]
+end
+subgraph stage5["Stage 6"]
+node5["Hook: productsCreated"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+stage4 --> stage5
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [createProductsStep](/resources/references/medusa-workflows/steps/createProductsStep): This step creates one or more products.
   - [associateProductsWithSalesChannelsStep](/resources/references/medusa-workflows/steps/associateProductsWithSalesChannelsStep): This step creates links between products and sales channel records.
     - [createRemoteLinkStep](/resources/references/medusa-workflows/steps/createRemoteLinkStep): This step creates links between two records of linked data models. Learn more in the [Link documentation.](/learn/fundamentals/module-links/link#create-link).

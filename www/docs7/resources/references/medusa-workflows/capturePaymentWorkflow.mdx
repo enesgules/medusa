@@ -115,6 +115,29 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["capturePaymentStep"]
+end
+subgraph stage1["Stage 2"]
+node1["useRemoteQueryStep"]
+end
+subgraph stage2["Stage 3"]
+subgraph condition2["Conditional steps"]
+node3["addOrderTransactionStep"]
+end
+end
+subgraph stage3["Stage 4"]
+node4["emitEventStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [capturePaymentStep](/resources/references/medusa-workflows/steps/capturePaymentStep): This step captures a payment.
   - [useRemoteQueryStep](/resources/references/medusa-workflows/steps/useRemoteQueryStep): This step fetches data across modules using the remote query. Learn more in the [Remote Query documentation](/learn/fundamentals/module-links/query). :::note This step is deprecated. Use [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep) instead. :::
     - **when** (when: \{

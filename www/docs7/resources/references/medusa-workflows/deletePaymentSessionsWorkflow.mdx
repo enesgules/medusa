@@ -115,6 +115,19 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["deletePaymentSessionsStep"]
+end
+subgraph stage1["Stage 2"]
+node1["validateDeletedPaymentSessionsStep"]
+end
+stage0 --> stage1
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [deletePaymentSessionsStep](/resources/references/medusa-workflows/steps/deletePaymentSessionsStep): This step deletes one or more payment sessions. Note: This step should not be used alone as it doesn't consider a revert Use [deletePaymentSessionsWorkflow](/resources/references/medusa-workflows/deletePaymentSessionsWorkflow) instead, which uses this step.
   - [validateDeletedPaymentSessionsStep](/resources/references/medusa-workflows/steps/validateDeletedPaymentSessionsStep): This step validates that the specified payment session IDs were deleted. If not all payment sessions were deleted, the step throws an error.
 

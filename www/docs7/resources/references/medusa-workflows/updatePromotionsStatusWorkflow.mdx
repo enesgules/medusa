@@ -141,6 +141,23 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["updatePromotionsValidationStep"]
+end
+subgraph stage1["Stage 2"]
+node1["updatePromotionsStep"]
+end
+subgraph stage2["Stage 3"]
+node2["Hook: promotionStatusUpdated"]
+end
+stage0 --> stage1
+stage1 --> stage2
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [updatePromotionsValidationStep](/resources/references/medusa-workflows/updatePromotionsValidationStep)
   - [updatePromotionsStep](/resources/references/medusa-workflows/steps/updatePromotionsStep): This step updates one or more promotions.
     - [promotionStatusUpdated](/resources/references/medusa-workflows/updatePromotionsStatusWorkflow#promotionstatusupdated): This hook is executed after the promotions' status is updated. You can consume this hook to perform custom actions on the updated promotions.

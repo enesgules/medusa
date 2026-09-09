@@ -125,6 +125,40 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["acquireLockStep"]
+end
+subgraph stage1["Stage 2"]
+node1["Hook: setPromotionContext"]
+end
+subgraph stage2["Stage 3"]
+subgraph condition2["Conditional steps"]
+node3["deleteOrderChangeActionsStep"]
+end
+end
+subgraph stage3["Stage 4"]
+node4["previewOrderChangeStep"]
+end
+subgraph stage4["Stage 6"]
+subgraph condition5["Conditional steps"]
+node6["getActionsToComputeFromPromotionsStep"]
+node7["prepareAdjustmentsFromPromotionActionsStep"]
+end
+end
+subgraph stage5["Stage 7"]
+node8["releaseLockStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+stage4 --> stage5
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [acquireLockStep](/resources/references/medusa-workflows/steps/acquireLockStep): This step acquires a lock for a given key. Learn more about locks in the [Locking Module](/resources/infrastructure-modules/locking) guide.
   - [setPromotionContext](/resources/references/medusa-workflows/computeDraftOrderAdjustmentsWorkflow#setpromotioncontext): This hook is executed before promotion rules are evaluated for the draft order. You can consume this hook to return any custom context that should be merged on top of the order context when evaluating promotion rules (e.g. `company.id`, `custom_tier`).
     - **when** (when: toDeleteActions.length > 0)

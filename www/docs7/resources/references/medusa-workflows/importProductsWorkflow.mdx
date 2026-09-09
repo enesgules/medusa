@@ -176,6 +176,31 @@ export const POST = async (
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["normalizeCsvStep"]
+end
+subgraph stage1["Stage 2"]
+node1["waitConfirmationProductImportStep"]
+end
+subgraph stage2["Stage 3"]
+node2["notifyOnFailureStep"]
+end
+subgraph stage3["Stage 4"]
+node3["Workflow: batchProductsWorkflow"]
+end
+subgraph stage4["Stage 5"]
+node4["sendNotificationsStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [normalizeCsvStep](/resources/references/medusa-workflows/steps/normalizeCsvStep): This step parses a CSV file holding products to import, returning the products as objects that can be imported.
   - [waitConfirmationProductImportStep](/resources/references/medusa-workflows/steps/waitConfirmationProductImportStep): This step waits until a product import is confirmed. It's useful before executing the [batchProductsWorkflow](/resources/references/medusa-workflows/batchProductsWorkflow). This step is asynchronous and will make the workflow using it a [Long-Running Workflow](/learn/fundamentals/workflows/long-running-workflow).
     - [notifyOnFailureStep](/resources/references/medusa-workflows/steps/notifyOnFailureStep): This step sends one or more notification when a workflow fails. This step can be used in the beginning of a workflow so that, when the workflow fails, the step's compensation function is triggered to send the notification.

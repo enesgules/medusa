@@ -149,6 +149,23 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["updateCollectionsStep"]
+end
+subgraph stage1["Stage 2"]
+node1["emitEventStep"]
+end
+subgraph stage2["Stage 3"]
+node2["Hook: collectionsUpdated"]
+end
+stage0 --> stage1
+stage1 --> stage2
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [updateCollectionsStep](/resources/references/medusa-workflows/steps/updateCollectionsStep): This step updates collections matching the specified filters.
   - [emitEventStep](/resources/references/medusa-workflows/steps/emitEventStep): This step emits an event, which you can listen to in a [subscriber](/learn/fundamentals/events-and-subscribers). You can pass data to the subscriber by including it in the `data` property. The event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
     - [collectionsUpdated](/resources/references/medusa-workflows/updateCollectionsWorkflow#collectionsupdated): This hook is executed after the collections are updated. You can consume this hook to perform custom actions on the updated collections.

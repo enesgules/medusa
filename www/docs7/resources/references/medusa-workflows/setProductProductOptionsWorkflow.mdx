@@ -111,6 +111,29 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+subgraph condition0["Conditional steps"]
+node1["addProductOptionsToProductStep"]
+end
+end
+subgraph stage1["Stage 2"]
+subgraph condition2["Conditional steps"]
+node3["removeProductOptionsFromProductStep"]
+end
+end
+subgraph stage2["Stage 3"]
+subgraph condition4["Conditional steps"]
+node5["updateProductOptionValuesOnProductStep"]
+end
+end
+stage0 --> stage1
+stage1 --> stage2
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - **when** (when: !!toAdd?.length)
 - [addProductOptionsToProductStep](/resources/references/medusa-workflows/steps/addProductOptionsToProductStep): This step adds product options to products.
   - **when** (when: !!toRemove?.length)

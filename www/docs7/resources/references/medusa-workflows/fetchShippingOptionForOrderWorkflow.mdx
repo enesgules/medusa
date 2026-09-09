@@ -151,6 +151,25 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["Hook: setCalculatedShippingPricingContext"]
+end
+subgraph stage1["Stage 2"]
+subgraph condition1["Conditional steps"]
+node2["calculateShippingOptionsPricesStep"]
+end
+end
+subgraph stage2["Stage 3"]
+node3["Hook: setPricingContext"]
+end
+stage0 --> stage1
+stage1 --> stage2
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [setCalculatedShippingPricingContext](/resources/references/medusa-workflows/fetchShippingOptionForOrderWorkflow#setcalculatedshippingpricingcontext): This hook is executed before the calculated shipping methods' prices are refreshed. You can consume it to return any custom context that is merged into the `context` parameter of the fulfillment provider's `calculatePrice` method (framework-provided properties take precedence on a naming conflict).
   - **when** (when: isCalculatedPriceShippingOption)
   - [calculateShippingOptionsPricesStep](/resources/references/medusa-workflows/steps/calculateShippingOptionsPricesStep): This step calculates the prices for one or more shipping options.

@@ -143,6 +143,20 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["validatePriceListsStep"]
+node1["validateVariantPriceLinksStep"]
+end
+subgraph stage1["Stage 2"]
+node2["createPriceListPricesStep"]
+end
+stage0 --> stage1
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [validatePriceListsStep](/resources/references/medusa-workflows/steps/validatePriceListsStep): This step validates that the specified price lists exist. If not valid, the step throws an error.
 - [validateVariantPriceLinksStep](/resources/references/medusa-workflows/steps/validateVariantPriceLinksStep): This step validates that the specified variants have prices. If not valid, the step throws an error.
   - [createPriceListPricesStep](/resources/references/medusa-workflows/steps/createPriceListPricesStep): This step creates prices for a price list.

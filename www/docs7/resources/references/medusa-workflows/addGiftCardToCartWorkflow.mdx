@@ -120,6 +120,35 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["validateGiftCardStep"]
+end
+subgraph stage1["Stage 2"]
+node1["validateCartGiftCardStep"]
+end
+subgraph stage2["Stage 3"]
+node2["retrieveGiftCardBalanceStep"]
+end
+subgraph stage3["Stage 4"]
+node3["Workflow: createCartCreditLinesWorkflow"]
+end
+subgraph stage4["Stage 5"]
+node4["Workflow: createLinksWorkflow"]
+end
+subgraph stage5["Stage 6"]
+node5["Workflow: refreshCartItemsWorkflow"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+stage4 --> stage5
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [validateGiftCardStep](/resources/references/medusa-workflows/validateGiftCardStep): This step validates that a gift card code exists in the cart and that the gift card itself exists. It throws an error if the gift card code is not in the cart or if the gift card record is not found.
   - [validateCartGiftCardStep](/resources/references/medusa-workflows/validateCartGiftCardStep): This step validates that gift cards can be added to a cart. It throws an error if a gift card is already applied to the cart, if the gift card has expired, or if the gift card currency does not match the cart's currency.
     - [retrieveGiftCardBalanceStep](/resources/references/medusa-workflows/retrieveGiftCardBalanceStep): This step retrieves the balance of a single gift card from its associated store credit account. Returns a map of the gift card code to its account stats.

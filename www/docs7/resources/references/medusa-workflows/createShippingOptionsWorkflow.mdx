@@ -312,6 +312,27 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["validateShippingOptionPricesStep"]
+end
+subgraph stage1["Stage 2"]
+node1["upsertShippingOptionsStep"]
+end
+subgraph stage2["Stage 3"]
+node2["createShippingOptionsPriceSetsStep"]
+end
+subgraph stage3["Stage 4"]
+node3["emitEventStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [validateShippingOptionPricesStep](/resources/references/medusa-workflows/steps/validateShippingOptionPricesStep): This step validates that shipping options can be created based on provided price configuration. For flat rate prices, it validates that regions exist for the shipping option prices. For calculated prices, it validates with the fulfillment provider if the price can be calculated. If not valid, the step throws an error.
   - [upsertShippingOptionsStep](/resources/references/medusa-workflows/steps/upsertShippingOptionsStep): This step creates or updates shipping options.
     - [createShippingOptionsPriceSetsStep](/resources/references/medusa-workflows/steps/createShippingOptionsPriceSetsStep): This step creates price sets for one or more shipping options. :::note Learn more about adding rules to the shipping option's prices in the Pricing Module's [Price Rules](/resources/commerce-modules/pricing/price-rules) documentation. :::

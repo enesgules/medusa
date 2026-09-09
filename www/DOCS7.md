@@ -17,9 +17,18 @@ The content was converted from upstream commit
 The project includes Learn, Resources, User Guide, UI, Cloud, and the Admin and
 Store API references. Resources use a section selector to keep pages small.
 Imported MDX sections are included in their parent pages.
-API pages use code examples and linked schema definitions. The full OpenAPI
-files are included in `www/docs7/openapi`. UI examples are provided as source code. Reference diagrams are provided as
-ordered step descriptions. Cloud pricing links to Medusa's current pricing page.
+The home page uses Docs7 cards, tabs, and a copyable AI prompt. The icon catalog
+uses the original SVG artwork and Docs7 copy controls. Color samples use Docs7's
+light and dark values and copy the displayed color value.
+
+API and schema pages use Docs7's OpenAPI renderer. The source files are in
+`www/docs7/openapi`. Page URLs stay the same. Links in the specifications point
+to the converted pages. The request playground is disabled.
+
+UI examples include their source code and links to the official live examples.
+Workflow diagrams use Mermaid and the stages in the original workflow data.
+The linked step descriptions remain below each diagram. Cloud pricing links to
+Medusa's current pricing page.
 
 Reference page names omit dots, as required by Docs7. Internal links use the new
 page names. Section links with no matching section open the target page.

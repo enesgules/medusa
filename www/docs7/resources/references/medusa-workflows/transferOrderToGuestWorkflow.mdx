@@ -133,6 +133,31 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["findOrCreateCustomerStep"]
+end
+subgraph stage1["Stage 2"]
+node1["transferOrderToGuestValidationStep"]
+end
+subgraph stage2["Stage 3"]
+node2["createOrderChangeStep"]
+end
+subgraph stage3["Stage 4"]
+node3["Workflow: createOrderChangeActionsWorkflow"]
+end
+subgraph stage4["Stage 5"]
+node4["previewOrderChangeStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [findOrCreateCustomerStep](/resources/references/medusa-workflows/steps/findOrCreateCustomerStep): This step finds or creates a customer based on the provided ID or email. It prioritizes finding the customer by ID, then by email. The step creates a new customer either if: - No customer is found with the provided ID and email; - Or if it found the customer by ID but their email does not match the email in the input. The step returns the details of the customer found or created, along with their email.
   - [transferOrderToGuestValidationStep](/resources/references/medusa-workflows/transferOrderToGuestValidationStep): This step validates that an order can be transferred to a guest customer. The step throws an error if the order is cancelled, if the resolved customer is the one already linked to the order, or if the resolved customer is a registered (non-guest) customer.
     - [createOrderChangeStep](/resources/references/medusa-workflows/steps/createOrderChangeStep): This step creates an order change.

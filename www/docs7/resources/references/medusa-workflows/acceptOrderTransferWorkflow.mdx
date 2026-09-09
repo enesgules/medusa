@@ -119,6 +119,19 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["acceptOrderTransferValidationStep"]
+end
+subgraph stage1["Stage 2"]
+node1["previewOrderChangeStep"]
+end
+stage0 --> stage1
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [acceptOrderTransferValidationStep](/resources/references/medusa-workflows/acceptOrderTransferValidationStep): This step validates that an order transfer can be accepted. If the order doesn't have an existing transfer request, the step throws an error. :::note You can retrieve an order and order change details using [Query](/learn/fundamentals/module-links/query), or [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep). :::
   - [previewOrderChangeStep](/resources/references/medusa-workflows/steps/previewOrderChangeStep): This step retrieves a preview of an order change.
 

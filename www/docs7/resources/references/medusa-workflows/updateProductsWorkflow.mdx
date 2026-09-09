@@ -317,6 +317,31 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["updateProductsStep"]
+end
+subgraph stage1["Stage 2"]
+node1["dismissProductVariantsInventoryStep"]
+end
+subgraph stage2["Stage 3"]
+node2["Workflow: upsertVariantPricesWorkflow"]
+end
+subgraph stage3["Stage 4"]
+node3["emitEventStep"]
+end
+subgraph stage4["Stage 5"]
+node4["Hook: productsUpdated"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [updateProductsStep](/resources/references/medusa-workflows/steps/updateProductsStep): This step updates one or more products.
   - [dismissProductVariantsInventoryStep](/resources/references/medusa-workflows/steps/dismissProductVariantsInventoryStep)
     - [upsertVariantPricesWorkflow](/resources/references/medusa-workflows/upsertVariantPricesWorkflow): Create, update, or remove variants' prices.

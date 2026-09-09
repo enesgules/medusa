@@ -139,6 +139,57 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["acquireLockStep"]
+end
+subgraph stage1["Stage 2"]
+node1["findLineItemToUpdateStep"]
+end
+subgraph stage2["Stage 3"]
+node2["validateCartStep"]
+end
+subgraph stage3["Stage 4"]
+node3["Hook: validate"]
+end
+subgraph stage4["Stage 5"]
+node4["Hook: setPricingContext"]
+end
+subgraph stage5["Stage 6"]
+subgraph condition5["Conditional steps"]
+node6["Workflow: deleteLineItemsWorkflow"]
+end
+end
+subgraph stage6["Stage 7"]
+subgraph condition7["Conditional steps"]
+node8["validateVariantPricesStep"]
+end
+end
+subgraph stage7["Stage 8"]
+subgraph condition9["Conditional steps"]
+node10["Workflow: confirmVariantInventoryWorkflow"]
+node11["prepareLineItemUpdateStep"]
+node12["updateLineItemsStepWithSelector"]
+node13["Workflow: refreshCartItemsWorkflow"]
+end
+end
+subgraph stage8["Stage 9"]
+node14["releaseLockStep"]
+node15["emitEventStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+stage4 --> stage5
+stage5 --> stage6
+stage6 --> stage7
+stage7 --> stage8
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [acquireLockStep](/resources/references/medusa-workflows/steps/acquireLockStep): This step acquires a lock for a given key. Learn more about locks in the [Locking Module](/resources/infrastructure-modules/locking) guide.
   - [findLineItemToUpdateStep](/resources/references/medusa-workflows/findLineItemToUpdateStep): This step finds the line item to update in the cart and collects its variant id. It throws an error if the line item isn't found in the cart.
     - [validateCartStep](/resources/references/medusa-workflows/steps/validateCartStep): This step validates a cart to ensure it exists and is not completed. If not valid, the step throws an error. :::tip You can use the [retrieveCartStep](/resources/references/medusa-workflows/steps/retrieveCartStep) to retrieve a cart's details. :::

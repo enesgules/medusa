@@ -120,6 +120,39 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["cancelValidateOrder"]
+end
+subgraph stage1["Stage 2"]
+node1["deleteReservationsByLineItemsStep"]
+node2["cancelPaymentStep"]
+node3["emitEventStep"]
+end
+subgraph stage2["Stage 3"]
+node4["emitEventStep"]
+end
+subgraph stage3["Stage 4"]
+subgraph condition5["Conditional steps"]
+node6["updatePaymentCollectionStep"]
+end
+end
+subgraph stage4["Stage 5"]
+node7["cancelOrdersStep"]
+end
+subgraph stage5["Stage 6"]
+node8["Hook: orderCanceled"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+stage4 --> stage5
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [cancelValidateOrder](/resources/references/medusa-workflows/cancelValidateOrder): This step validates that an order can be canceled. If the order has fulfillments that aren't canceled, or the order was canceled previously, the step throws an error. :::note You can retrieve an order's details using [Query](/learn/fundamentals/module-links/query), or [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep). :::
   - [deleteReservationsByLineItemsStep](/resources/references/medusa-workflows/steps/deleteReservationsByLineItemsStep): This step deletes reservations by their associated line items.
   - [cancelPaymentStep](/resources/references/medusa-workflows/steps/cancelPaymentStep): This step cancels one or more payments.

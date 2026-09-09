@@ -121,6 +121,33 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["validateClaimStoreCreditAccountInputStep"]
+end
+subgraph stage1["Stage 2"]
+subgraph condition1["Conditional steps"]
+node2["createStoreCreditAccountsStep"]
+end
+end
+subgraph stage2["Stage 3"]
+node3["validateSourceStoreCreditAccountsStep"]
+end
+subgraph stage3["Stage 4"]
+node4["debitAccountStep"]
+end
+subgraph stage4["Stage 5"]
+node5["creditAccountStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [validateClaimStoreCreditAccountInputStep](/resources/references/medusa-workflows/validateClaimStoreCreditAccountInputStep): This step validates the input for claiming a store credit account. It throws an error if the code or customer ID is missing, or if the customer does not have a registered account.
   - **when** (when: !existingCustomerStoreCreditAccount)
   - [createStoreCreditAccountsStep](/resources/references/medusa-workflows/steps/createStoreCreditAccountsStep): This step creates store credit accounts. If no code is provided, a unique code prefixed with "SC" is automatically generated. The step supports rollback by deleting the created accounts.

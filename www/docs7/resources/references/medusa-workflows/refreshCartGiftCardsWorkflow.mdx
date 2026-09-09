@@ -116,6 +116,31 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["Workflow: deleteCartCreditLinesWorkflow"]
+end
+subgraph stage1["Stage 2"]
+node1["Workflow: dismissLinksWorkflow"]
+end
+subgraph stage2["Stage 3"]
+node2["retrieveGiftCardsBalanceStep"]
+end
+subgraph stage3["Stage 4"]
+node3["Workflow: createCartCreditLinesWorkflow"]
+end
+subgraph stage4["Stage 5"]
+node4["Workflow: createLinksWorkflow"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [deleteCartCreditLinesWorkflow](/resources/references/medusa-workflows/deleteCartCreditLinesWorkflow): This workflow deletes one or more credit lines from a cart.
   - [dismissLinksWorkflow](/resources/references/medusa-workflows/dismissLinksWorkflow): Dismiss links between two records of linked data models.
     - [retrieveGiftCardsBalanceStep](/resources/references/medusa-workflows/steps/retrieveGiftCardsBalanceStep): This step retrieves the balance of gift cards from their associated store credit accounts. Returns a map of gift card codes to their account stats.

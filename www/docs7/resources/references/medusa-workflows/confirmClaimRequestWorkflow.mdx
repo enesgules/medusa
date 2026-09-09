@@ -115,6 +115,64 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
+```mermaid
+flowchart TB
+subgraph stage0["Stage 1"]
+node0["useRemoteQueryStep"]
+end
+subgraph stage1["Stage 2"]
+node1["useRemoteQueryStep"]
+end
+subgraph stage2["Stage 3"]
+node2["useRemoteQueryStep"]
+end
+subgraph stage3["Stage 4"]
+node3["confirmClaimRequestValidationStep"]
+end
+subgraph stage4["Stage 5"]
+node4["previewOrderChangeStep"]
+end
+subgraph stage5["Stage 6"]
+node5["createOrderClaimItemsFromActionsStep"]
+end
+subgraph stage6["Stage 7"]
+subgraph condition6["Conditional steps"]
+node7["updateReturnsStep"]
+end
+end
+subgraph stage7["Stage 8"]
+subgraph condition8["Conditional steps"]
+node9["useRemoteQueryStep"]
+node10["reserveInventoryStep"]
+node11["emitEventStep"]
+end
+end
+subgraph stage8["Stage 9"]
+subgraph condition12["Conditional steps"]
+node13["useRemoteQueryStep"]
+node14["Workflow: createReturnFulfillmentWorkflow"]
+end
+end
+subgraph stage9["Stage 10"]
+node15["Workflow: createOrUpdateOrderPaymentCollectionWorkflow"]
+end
+subgraph stage10["Stage 11"]
+node16["emitEventStep"]
+end
+stage0 --> stage1
+stage1 --> stage2
+stage2 --> stage3
+stage3 --> stage4
+stage4 --> stage5
+stage5 --> stage6
+stage6 --> stage7
+stage7 --> stage8
+stage8 --> stage9
+stage9 --> stage10
+```
+
+Stages follow the order in the workflow definition. Conditional steps run only when their condition is met. The step descriptions below include the conditions and reference links.
+
 - [useRemoteQueryStep](/resources/references/medusa-workflows/steps/useRemoteQueryStep): This step fetches data across modules using the remote query. Learn more in the [Remote Query documentation](/learn/fundamentals/module-links/query). :::note This step is deprecated. Use [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep) instead. :::
   - [useRemoteQueryStep](/resources/references/medusa-workflows/steps/useRemoteQueryStep): This step fetches data across modules using the remote query. Learn more in the [Remote Query documentation](/learn/fundamentals/module-links/query). :::note This step is deprecated. Use [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep) instead. :::
     - [useRemoteQueryStep](/resources/references/medusa-workflows/steps/useRemoteQueryStep): This step fetches data across modules using the remote query. Learn more in the [Remote Query documentation](/learn/fundamentals/module-links/query). :::note This step is deprecated. Use [useQueryGraphStep](/resources/references/medusa-workflows/steps/useQueryGraphStep) instead. :::
